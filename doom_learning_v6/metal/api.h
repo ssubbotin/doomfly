@@ -58,6 +58,17 @@ typedef struct {
   float *adaptation;
 } df_metal_state;
 
+typedef struct {
+  int64_t tick;
+  int32_t neuron;
+  int32_t reserved;
+} df_metal_kc_event;
+
+typedef struct {
+  double host_seconds;
+  double gpu_seconds;
+} df_metal_timing;
+
 int df_metal_probe(df_metal_device_info *info);
 int df_metal_create(const df_metal_graph *graph,const char *metallib_path,
     df_metal_handle *handle);
@@ -65,6 +76,9 @@ int df_metal_upload_state(df_metal_handle handle,const df_metal_state *state);
 int df_metal_download_state(df_metal_handle handle,df_metal_state *state);
 int df_metal_update_weights(df_metal_handle handle,int32_t count,
     const int64_t *edge_ids,const float *values);
+int df_metal_advance(df_metal_handle handle,int32_t steps,
+    df_metal_kc_event *events,int32_t event_capacity,int32_t *event_count,
+    df_metal_timing *timing);
 const char *df_metal_last_error(void);
 void df_metal_destroy(df_metal_handle handle);
 

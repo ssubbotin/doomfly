@@ -2,6 +2,7 @@
 import ctypes as C
 import hashlib
 from pathlib import Path
+import time
 
 import numpy as np
 
@@ -28,6 +29,14 @@ class State(C.Structure):
         ('modulation_last',C.c_void_p),('rest',C.c_void_p),('adaptation',C.c_void_p)]
 
 
+class KCEvent(C.Structure):
+    _fields_=[('tick',C.c_int64),('neuron',C.c_int32),('reserved',C.c_int32)]
+
+
+class Timing(C.Structure):
+    _fields_=[('host_seconds',C.c_double),('gpu_seconds',C.c_double)]
+
+
 def _pointer(array):return C.c_void_p(array.ctypes.data)
 
 
@@ -37,6 +46,7 @@ class MetalBackend:
     def __init__(self,brain):
         self.brain=brain;self.handle=C.c_void_p();self.library=None
         self.incoming=None;self._metadata=None;self.poisoned=False
+        self.last_kc_events=[];self.last_timing={}
 
     def _state(self):
         b=self.brain
@@ -64,6 +74,9 @@ class MetalBackend:
         self.library.df_metal_download_state.restype=C.c_int
         self.library.df_metal_update_weights.argtypes=[C.c_void_p,C.c_int32,C.c_void_p,C.c_void_p]
         self.library.df_metal_update_weights.restype=C.c_int
+        self.library.df_metal_advance.argtypes=[C.c_void_p,C.c_int32,C.POINTER(KCEvent),
+            C.c_int32,C.POINTER(C.c_int32),C.POINTER(Timing)]
+        self.library.df_metal_advance.restype=C.c_int
         self.library.df_metal_destroy.argtypes=[C.c_void_p]
         b=self.brain;i=self.incoming
         graph=Graph(b.n,len(b.post),b.queue.shape[0],b.dt,b.adaptation_jump,b.adaptation_tau,
@@ -77,7 +90,19 @@ class MetalBackend:
 
     def advance(self,steps):
         self.ensure_initialized()
-        raise BackendError('Metal neural advance is unavailable')
+        if self.poisoned:raise BackendError('Metal backend is poisoned')
+        self.restore_from_host()
+        capacity=max(1,int(np.count_nonzero(self.brain.circuit['kc_mask']))*(1+(steps-1)//22))
+        events=(KCEvent*capacity)();count=C.c_int32();timing=Timing();started=time.perf_counter()
+        status=self.library.df_metal_advance(self.handle,steps,events,capacity,C.byref(count),C.byref(timing))
+        if status:
+            self.poisoned=True;self._error(status)
+        self.sync_for_checkpoint()
+        elapsed=time.perf_counter()-started
+        self.last_kc_events=sorted((int(events[i].tick),int(events[i].neuron)) for i in range(count.value))
+        self.last_timing={'host_seconds':timing.host_seconds,'gpu_seconds':timing.gpu_seconds,
+            'backend_seconds':elapsed}
+        return elapsed
 
     def sync_for_checkpoint(self):
         if not self.handle.value:return

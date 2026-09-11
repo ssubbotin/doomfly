@@ -4,7 +4,10 @@
 #include "api.h"
 
 #include <algorithm>
+#include <chrono>
+#include <cmath>
 #include <cstring>
+#include <initializer_list>
 #include <string>
 #include <vector>
 
@@ -26,6 +29,25 @@ struct Backend {
   __strong id<MTLBuffer> out_ptr,out_post,in_ptr,in_pre,in_edge,kc_mask,modulation_mask;
   __strong id<MTLBuffer> weight,v,g,refractory,drive,previous_drive,counts,active_flag,last;
   __strong id<MTLBuffer> modulation,modulation_last,rest,adaptation,ring,touched;
+  __strong id<MTLBuffer> kc_events,event_count;
+  __strong id<MTLComputePipelineState> drive_pipeline,integrate_pipeline,mark_pipeline;
+  __strong id<MTLComputePipelineState> gather_pipeline,clear_pipeline,reset_pipeline,materialize_pipeline;
+  uint32_t kc_event_capacity=0;
+  bool poisoned=false;
+};
+
+struct KernelParams {
+  uint32_t neurons;
+  uint32_t words;
+  uint32_t slot;
+  uint32_t future;
+  int64_t clock;
+  float dt;
+  float adaptation_jump;
+  float adaptation_tau;
+  int32_t refractory_ticks;
+  uint32_t event_capacity;
+  uint32_t padding;
 };
 
 int fail(const char *message) {
@@ -42,6 +64,27 @@ id<MTLBuffer> make_buffer(id<MTLDevice> device,const void *bytes,size_t length) 
   id<MTLBuffer> buffer=[device newBufferWithLength:allocated options:MTLResourceStorageModeShared];
   if(buffer!=nil&&bytes!=nullptr&&length>0)std::memcpy(buffer.contents,bytes,length);
   return buffer;
+}
+
+id<MTLComputePipelineState> make_pipeline(Backend *backend,NSString *name,NSError **error) {
+  id<MTLFunction> function=[backend->library newFunctionWithName:name];
+  if(function==nil){
+    if(error!=nullptr)*error=[NSError errorWithDomain:@"org.doomfly.metal" code:1
+      userInfo:@{NSLocalizedDescriptionKey:[NSString stringWithFormat:@"Missing Metal kernel %@",name]}];
+    return nil;
+  }
+  return [backend->device newComputePipelineStateWithFunction:function error:error];
+}
+
+void encode(id<MTLCommandBuffer> command,id<MTLComputePipelineState> pipeline,
+    std::initializer_list<id<MTLBuffer>> buffers,const KernelParams &params,NSUInteger threads) {
+  id<MTLComputeCommandEncoder> encoder=[command computeCommandEncoder];
+  [encoder setComputePipelineState:pipeline];NSUInteger index=0;
+  for(id<MTLBuffer> buffer:buffers)[encoder setBuffer:buffer offset:0 atIndex:index++];
+  [encoder setBytes:&params length:sizeof(params) atIndex:index];
+  NSUInteger width=std::min<NSUInteger>(256,pipeline.maxTotalThreadsPerThreadgroup);
+  [encoder dispatchThreads:MTLSizeMake(threads,1,1) threadsPerThreadgroup:MTLSizeMake(width,1,1)];
+  [encoder endEncoding];
 }
 
 bool state_pointers_present(const df_metal_state *s) {
@@ -111,6 +154,20 @@ extern "C" int df_metal_create(const df_metal_graph *graph,const char *metallib_
       std::string message=error==nil?"Metal command queue or library creation failed":error.localizedDescription.UTF8String;
       delete backend;return fail(message.c_str());
     }
+    backend->drive_pipeline=make_pipeline(backend,@"df_drive_change",&error);
+    backend->integrate_pipeline=make_pipeline(backend,@"df_integrate",&error);
+    backend->mark_pipeline=make_pipeline(backend,@"df_mark_targets",&error);
+    backend->gather_pipeline=make_pipeline(backend,@"df_gather_targets",&error);
+    backend->clear_pipeline=make_pipeline(backend,@"df_clear_slot",&error);
+    backend->reset_pipeline=make_pipeline(backend,@"df_reset_future",&error);
+    backend->materialize_pipeline=make_pipeline(backend,@"df_materialize",&error);
+    if(backend->drive_pipeline==nil||backend->integrate_pipeline==nil||
+        backend->mark_pipeline==nil||backend->gather_pipeline==nil||
+        backend->clear_pipeline==nil||backend->reset_pipeline==nil||
+        backend->materialize_pipeline==nil){
+      std::string message=error==nil?"Metal pipeline creation failed":error.localizedDescription.UTF8String;
+      delete backend;return fail(message.c_str());
+    }
     backend->neurons=graph->neurons;backend->edges=graph->edges;
     backend->slots=graph->delay_slots;backend->words=(graph->neurons+31)/32;
     backend->dt=graph->dt_ms;backend->adaptation_jump=graph->adaptation_jump_mv;
@@ -138,12 +195,18 @@ extern "C" int df_metal_create(const df_metal_graph *graph,const char *metallib_
     backend->adaptation=make_buffer(backend->device,nullptr,n*sizeof(float));
     backend->ring=make_buffer(backend->device,nullptr,backend->slots*backend->words*sizeof(uint32_t));
     backend->touched=make_buffer(backend->device,nullptr,n*sizeof(uint32_t));
+    uint32_t kc_count=0;
+    for(size_t i=0;i<n;i++)if(graph->kc_mask[i])kc_count++;
+    backend->kc_event_capacity=std::max<uint32_t>(1,kc_count*5u);
+    backend->kc_events=make_buffer(backend->device,nullptr,
+      size_t(backend->kc_event_capacity)*sizeof(df_metal_kc_event));
+    backend->event_count=make_buffer(backend->device,nullptr,sizeof(uint32_t));
     const id<MTLBuffer> required[]={backend->out_ptr,backend->out_post,backend->in_ptr,
       backend->in_pre,backend->in_edge,backend->kc_mask,backend->modulation_mask,
       backend->weight,backend->v,backend->g,backend->refractory,backend->drive,
       backend->previous_drive,backend->counts,backend->active_flag,backend->last,
       backend->modulation,backend->modulation_last,backend->rest,backend->adaptation,
-      backend->ring,backend->touched};
+      backend->ring,backend->touched,backend->kc_events,backend->event_count};
     for(id<MTLBuffer> buffer:required)if(buffer==nil){
       delete backend;return fail("Metal shared buffer allocation failed");
     }
@@ -231,6 +294,56 @@ extern "C" int df_metal_update_weights(df_metal_handle handle,int32_t count,
     if(edge_ids[i]<0||edge_ids[i]>=b->edges)return fail("Plastic edge out of bounds");
     weight[edge_ids[i]]=values[i];
   }
+  last_error.clear();return 0;
+}
+
+extern "C" int df_metal_advance(df_metal_handle handle,int32_t steps,
+    df_metal_kc_event *events,int32_t event_capacity,int32_t *event_count,
+    df_metal_timing *timing) {
+  Backend *b=cast(handle);
+  if(b==nullptr||event_count==nullptr||timing==nullptr||steps<1||steps>100||
+      event_capacity<0||(event_capacity>0&&events==nullptr))return fail("Invalid Metal advance arguments");
+  if(b->poisoned)return fail("Metal backend is poisoned");
+  const uint32_t kernel_capacity=std::min<uint32_t>(b->kc_event_capacity,event_capacity);
+  *static_cast<uint32_t *>(b->event_count.contents)=0;
+  const auto started=std::chrono::steady_clock::now();
+  @autoreleasepool {
+    id<MTLCommandBuffer> command=[b->command_queue commandBuffer];
+    if(command==nil){b->poisoned=true;return fail("Metal command buffer creation failed");}
+    KernelParams p{uint32_t(b->neurons),uint32_t(b->words),0,0,b->cursor,b->dt,
+      b->adaptation_jump,b->adaptation_tau,int32_t(std::lround(2.2f/b->dt)),kernel_capacity,0};
+    encode(command,b->drive_pipeline,{b->v,b->g,b->refractory,b->drive,b->previous_drive,
+      b->active_flag,b->last,b->rest,b->adaptation},p,b->neurons);
+    const int32_t delay=std::lround(1.8f/b->dt);
+    for(int32_t step=0;step<steps;step++){
+      p.clock=b->cursor+step;p.slot=uint32_t(p.clock%b->slots);
+      p.future=uint32_t((p.clock+delay)%b->slots);
+      encode(command,b->integrate_pipeline,{b->v,b->g,b->refractory,b->drive,b->active_flag,
+        b->last,b->rest,b->adaptation,b->ring,b->counts,b->kc_mask,b->kc_events,b->event_count},p,b->neurons);
+      encode(command,b->mark_pipeline,{b->out_ptr,b->out_post,b->ring,b->touched},p,b->neurons);
+      encode(command,b->gather_pipeline,{b->in_ptr,b->in_pre,b->in_edge,b->weight,b->ring,
+        b->touched,b->v,b->g,b->refractory,b->drive,b->active_flag,b->last,b->modulation,
+        b->modulation_last,b->modulation_mask,b->rest,b->adaptation},p,b->neurons);
+      encode(command,b->clear_pipeline,{b->ring},p,b->words);
+      encode(command,b->reset_pipeline,{b->ring,b->v,b->g,b->refractory,b->rest},p,b->neurons);
+    }
+    p.clock=b->cursor+steps-1;
+    encode(command,b->materialize_pipeline,{b->v,b->g,b->refractory,b->drive,b->last,
+      b->rest,b->adaptation},p,b->neurons);
+    [command commit];[command waitUntilCompleted];
+    if(command.status!=MTLCommandBufferStatusCompleted){
+      b->poisoned=true;
+      if(command.error==nil)return fail("Metal command failed");
+      return fail(command.error.localizedDescription);
+    }
+    const uint32_t produced=*static_cast<uint32_t *>(b->event_count.contents);
+    if(produced>kernel_capacity){b->poisoned=true;return fail("KC event capacity exceeded");}
+    if(produced>0)std::memcpy(events,b->kc_events.contents,size_t(produced)*sizeof(df_metal_kc_event));
+    *event_count=int32_t(produced);b->cursor+=steps;
+    timing->gpu_seconds=command.GPUEndTime>=command.GPUStartTime?
+      command.GPUEndTime-command.GPUStartTime:0.0;
+  }
+  timing->host_seconds=std::chrono::duration<double>(std::chrono::steady_clock::now()-started).count();
   last_error.clear();return 0;
 }
 

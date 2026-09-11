@@ -352,7 +352,7 @@ git commit -m "Add Metal neural state bridge"
 - Produces: `df_metal_advance(handle, steps, kc_events, capacity, event_count, timing)` and deterministic 0.1 ms execution.
 - Preserves: CPU v6 lazy evolution, threshold, reset, delay, refractory, adaptation, modulation, and complete edge delivery semantics.
 
-- [ ] **Step 1: Write Darwin-only micrograph parity cases**
+- [x] **Step 1: Write Darwin-only micrograph parity cases**
 
 ```python
 @pytest.mark.skipif(sys.platform != 'darwin', reason='Metal requires macOS')
@@ -373,13 +373,13 @@ Add explicit assertions for the 18-tick delivery time, 22-tick refractory state,
 stable repeated Metal results, and retained negative, zero, self, and duplicate
 edge contributions.
 
-- [ ] **Step 2: Run on `mini` and confirm advancement fails**
+- [x] **Step 2: Run on `mini` and confirm advancement fails**
 
 Run: `ssh mini 'cd doomfly && python3 -m pytest tests/test_doom_metal_parity.py -q'`
 
 Expected: failure because `df_metal_advance` is absent.
 
-- [ ] **Step 3: Implement the shared lazy-evolution function**
+- [x] **Step 3: Implement the shared lazy-evolution function**
 
 ```metal
 inline void evolve(uint i, long now, float current,
@@ -414,7 +414,7 @@ Port the CPU adaptation term exactly after the base voltage update. Use one
 neuron-indexed thread for drive changes, integration, reset, and final
 materialization.
 
-- [ ] **Step 4: Implement the delayed ring and deterministic delivery**
+- [x] **Step 4: Implement the delayed ring and deterministic delivery**
 
 For each tick, encode separate drive/integrate, target-mark, target-gather,
 slot-clear, and future-reset dispatches. Use `atomic_fetch_or_explicit` only for
@@ -423,21 +423,21 @@ in stored order, test the current presynaptic bitmap, sum nonmodulatory weights
 locally, and update the modulatory trace once plus its stable local sum. Clear
 the delivered slot only after gather completes.
 
-- [ ] **Step 5: Add command completion and timing**
+- [x] **Step 5: Add command completion and timing**
 
 Encode all ticks into one command buffer with device-wide phase ordering. Wait
 for completion, check `MTLCommandBufferStatusCompleted`, copy GPU start/end time
 when available, and return host elapsed time. Mark the handle poisoned on every
 other terminal status.
 
-- [ ] **Step 6: Run micrograph parity repeatedly**
+- [x] **Step 6: Run micrograph parity repeatedly**
 
 Run: `for run in 1 2 3; do ssh mini 'cd doomfly && python3 -m pytest tests/test_doom_metal_parity.py -q' || exit 1; done`
 
 Expected: exact spike events and counters, float32 state within the specified
 tolerance, and bitwise-identical repeated Metal checkpoints.
 
-- [ ] **Step 7: Commit neural execution**
+- [x] **Step 7: Commit neural execution**
 
 ```bash
 git add doom_learning_v6/metal/api.h doom_learning_v6/metal/backend.mm doom_learning_v6/metal/kernels.metal tests/test_doom_metal_parity.py
