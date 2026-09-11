@@ -1,0 +1,2974 @@
+{
+  "schema": 1,
+  "experiment": "full-graph exact CPU batch parity",
+  "structure": {
+    "release": "MaleCNS v1.0",
+    "neurons": 166700,
+    "edges": 25582938,
+    "plastic_edges": 4184
+  },
+  "horizons_ms": [
+    40,
+    80
+  ],
+  "identity": {
+    "graph": {
+      "ptr_sha256": "a29aa0296125a5daa972c12d17711360d01a1209cd9cd9d7ccb1f6959224bcaf",
+      "post_sha256": "4cc5e857d3481f433576f35ddb8d580cc33cf8e22b6651fa03e08cde5d956d90",
+      "initial_weight_sha256": "40a2e78d7299197d24ba03a24c94a8e1cd0eb45a653d69f001fc3acee2fdc779",
+      "configuration_sha256": "9499403434ee781463272a83fcd88ee3df37acca3aeb220f436810b0028bfbd3",
+      "base_weight_sha256": "40a2e78d7299197d24ba03a24c94a8e1cd0eb45a653d69f001fc3acee2fdc779",
+      "plastic_edges_sha256": "550335ad546f5c3106e4988426197ad24d8556367c9285e2f4c8c33f37f3cc68",
+      "kc_mask_sha256": "43e6ed840af2d547a3ae5848155e639f6e2abf60d5b7caa83c4298a3fb64c617",
+      "modulation_mask_sha256": "914dcf25dae442aecbcf27565f7bc8be76ea8254e7fbc944f2efe6e2413e6d5a",
+      "rest_sha256": "275bd935e4f1a56cbc2ca22b8f258f1cef511894f42f531e9a52476dd7b02946"
+    },
+    "sources": {
+      "doom_learning_v6/brain.py": "53fd800304dca4b48f89b5f8df17bb8a826a63f361a5b59c2d0c2367f20d5487",
+      "doom_learning_v6/kernel.cpp": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+      "doom_learning_v6/cpu_batch/api.h": "7f4ec681c4987480433d3067a6ee26dcfdd471ad380c9c618e71911b79265ab8",
+      "doom_learning_v6/cpu_batch/executor.cpp": "58fac22610f0da8daadf9317e1f2d9fdb8ac383457d8efb584de002dda8ceb39",
+      "doom_learning_v6/cpu_batch/backend.py": "0e5d9564a71874f9b2501e887e4e29f1427283e5b46352ed61b4e702df86b93f",
+      "doom_learning_v6/cpu_batch/build.py": "bf2e26530f4edc4933c98b948bece27df65b33b9f482567f963584c7b83e8785",
+      "doom_learning_v6/cpu_batch/validate.py": "cf2013990de65f68d3e3bcf0c70c41235e9604864addde17adfe7b69b29ad3b2",
+      "doom_learning_v6/cpu_batch/benchmark.py": "3d04aeca6257aa0c0e54a3027676315836714ea6bd36a8d9f5043f9da97bdd62"
+    },
+    "graph_file_sha256": "346b8af85a11af13b8324e18669812c1924569e7d1adcb4e6f45cc461a2c344b",
+    "source_lock_equal": true
+  },
+  "results": [
+    {
+      "horizon_ms": 40,
+      "counts_equal": true,
+      "decoder_equal": true,
+      "state": {
+        "equal": true,
+        "fields": {
+          "v": true,
+          "g": true,
+          "refractory": true,
+          "drive": true,
+          "previous_drive": true,
+          "queue": true,
+          "queue_count": true,
+          "counts": true,
+          "active": true,
+          "active_flag": true,
+          "nactive": true,
+          "last": true,
+          "eligibility": true,
+          "eligibility_last": true,
+          "modulation": true,
+          "modulation_last": true,
+          "adaptation": true,
+          "cursor": true,
+          "plastic_weights": true
+        },
+        "cpu_sha256": "1be79438cc423c525c769e03a03ba5b9916a75b2e502e4d8a64298b13708a78f",
+        "batch_sha256": "1be79438cc423c525c769e03a03ba5b9916a75b2e502e4d8a64298b13708a78f"
+      },
+      "cpu_decisions": [
+        {
+          "turn": 0.0,
+          "forward": 0.0,
+          "attack": false,
+          "readouts": [
+            {
+              "index": 306,
+              "id": "10331",
+              "type": "MN9",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 332,
+              "id": "10360",
+              "type": "DNa02",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 706,
+              "id": "10763",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 725,
+              "id": "10783",
+              "type": "DNp09",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1087,
+              "id": "11177",
+              "type": "DNp09",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1196,
+              "id": "11288",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1240,
+              "id": "11332",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 2194,
+              "id": "12348",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 6367,
+              "id": "16949",
+              "type": "MN9",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 131957,
+              "id": "523769",
+              "type": "DNa02",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 48,
+              "id": "10059",
+              "type": "DNp20",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 146,
+              "id": "10162",
+              "type": "DNp20",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 489,
+              "id": "10527",
+              "type": "DNpe017",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 142493,
+              "id": "555871",
+              "type": "DNpe017",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            }
+          ]
+        },
+        {
+          "turn": 0.0,
+          "forward": 0.0,
+          "attack": false,
+          "readouts": [
+            {
+              "index": 306,
+              "id": "10331",
+              "type": "MN9",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 332,
+              "id": "10360",
+              "type": "DNa02",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 706,
+              "id": "10763",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 725,
+              "id": "10783",
+              "type": "DNp09",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1087,
+              "id": "11177",
+              "type": "DNp09",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1196,
+              "id": "11288",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1240,
+              "id": "11332",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 2194,
+              "id": "12348",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 6367,
+              "id": "16949",
+              "type": "MN9",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 131957,
+              "id": "523769",
+              "type": "DNa02",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 48,
+              "id": "10059",
+              "type": "DNp20",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 146,
+              "id": "10162",
+              "type": "DNp20",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 489,
+              "id": "10527",
+              "type": "DNpe017",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 142493,
+              "id": "555871",
+              "type": "DNpe017",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            }
+          ]
+        },
+        {
+          "turn": 0.0,
+          "forward": 7.61300655712323,
+          "attack": true,
+          "readouts": [
+            {
+              "index": 306,
+              "id": "10331",
+              "type": "MN9",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 332,
+              "id": "10360",
+              "type": "DNa02",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 706,
+              "id": "10763",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 725,
+              "id": "10783",
+              "type": "DNp09",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1087,
+              "id": "11177",
+              "type": "DNp09",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1196,
+              "id": "11288",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1240,
+              "id": "11332",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 2194,
+              "id": "12348",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 6367,
+              "id": "16949",
+              "type": "MN9",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 131957,
+              "id": "523769",
+              "type": "DNa02",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 48,
+              "id": "10059",
+              "type": "DNp20",
+              "side": "R",
+              "spikes": 1,
+              "rate_hz": 9.516
+            },
+            {
+              "index": 146,
+              "id": "10162",
+              "type": "DNp20",
+              "side": "L",
+              "spikes": 1,
+              "rate_hz": 9.516
+            },
+            {
+              "index": 489,
+              "id": "10527",
+              "type": "DNpe017",
+              "side": "L",
+              "spikes": 1,
+              "rate_hz": 9.516
+            },
+            {
+              "index": 142493,
+              "id": "555871",
+              "type": "DNpe017",
+              "side": "R",
+              "spikes": 1,
+              "rate_hz": 9.516
+            }
+          ]
+        },
+        {
+          "turn": 0.0,
+          "forward": 6.888533196638214,
+          "attack": false,
+          "readouts": [
+            {
+              "index": 306,
+              "id": "10331",
+              "type": "MN9",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 332,
+              "id": "10360",
+              "type": "DNa02",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 706,
+              "id": "10763",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 725,
+              "id": "10783",
+              "type": "DNp09",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1087,
+              "id": "11177",
+              "type": "DNp09",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1196,
+              "id": "11288",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1240,
+              "id": "11332",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 2194,
+              "id": "12348",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 6367,
+              "id": "16949",
+              "type": "MN9",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 131957,
+              "id": "523769",
+              "type": "DNa02",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 48,
+              "id": "10059",
+              "type": "DNp20",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 8.611
+            },
+            {
+              "index": 146,
+              "id": "10162",
+              "type": "DNp20",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 8.611
+            },
+            {
+              "index": 489,
+              "id": "10527",
+              "type": "DNpe017",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 8.611
+            },
+            {
+              "index": 142493,
+              "id": "555871",
+              "type": "DNpe017",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 8.611
+            }
+          ]
+        }
+      ],
+      "batch_decisions": [
+        {
+          "turn": 0.0,
+          "forward": 0.0,
+          "attack": false,
+          "readouts": [
+            {
+              "index": 306,
+              "id": "10331",
+              "type": "MN9",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 332,
+              "id": "10360",
+              "type": "DNa02",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 706,
+              "id": "10763",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 725,
+              "id": "10783",
+              "type": "DNp09",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1087,
+              "id": "11177",
+              "type": "DNp09",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1196,
+              "id": "11288",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1240,
+              "id": "11332",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 2194,
+              "id": "12348",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 6367,
+              "id": "16949",
+              "type": "MN9",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 131957,
+              "id": "523769",
+              "type": "DNa02",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 48,
+              "id": "10059",
+              "type": "DNp20",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 146,
+              "id": "10162",
+              "type": "DNp20",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 489,
+              "id": "10527",
+              "type": "DNpe017",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 142493,
+              "id": "555871",
+              "type": "DNpe017",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            }
+          ]
+        },
+        {
+          "turn": 0.0,
+          "forward": 0.0,
+          "attack": false,
+          "readouts": [
+            {
+              "index": 306,
+              "id": "10331",
+              "type": "MN9",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 332,
+              "id": "10360",
+              "type": "DNa02",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 706,
+              "id": "10763",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 725,
+              "id": "10783",
+              "type": "DNp09",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1087,
+              "id": "11177",
+              "type": "DNp09",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1196,
+              "id": "11288",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1240,
+              "id": "11332",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 2194,
+              "id": "12348",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 6367,
+              "id": "16949",
+              "type": "MN9",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 131957,
+              "id": "523769",
+              "type": "DNa02",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 48,
+              "id": "10059",
+              "type": "DNp20",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 146,
+              "id": "10162",
+              "type": "DNp20",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 489,
+              "id": "10527",
+              "type": "DNpe017",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 142493,
+              "id": "555871",
+              "type": "DNpe017",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            }
+          ]
+        },
+        {
+          "turn": 0.0,
+          "forward": 7.61300655712323,
+          "attack": true,
+          "readouts": [
+            {
+              "index": 306,
+              "id": "10331",
+              "type": "MN9",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 332,
+              "id": "10360",
+              "type": "DNa02",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 706,
+              "id": "10763",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 725,
+              "id": "10783",
+              "type": "DNp09",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1087,
+              "id": "11177",
+              "type": "DNp09",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1196,
+              "id": "11288",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1240,
+              "id": "11332",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 2194,
+              "id": "12348",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 6367,
+              "id": "16949",
+              "type": "MN9",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 131957,
+              "id": "523769",
+              "type": "DNa02",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 48,
+              "id": "10059",
+              "type": "DNp20",
+              "side": "R",
+              "spikes": 1,
+              "rate_hz": 9.516
+            },
+            {
+              "index": 146,
+              "id": "10162",
+              "type": "DNp20",
+              "side": "L",
+              "spikes": 1,
+              "rate_hz": 9.516
+            },
+            {
+              "index": 489,
+              "id": "10527",
+              "type": "DNpe017",
+              "side": "L",
+              "spikes": 1,
+              "rate_hz": 9.516
+            },
+            {
+              "index": 142493,
+              "id": "555871",
+              "type": "DNpe017",
+              "side": "R",
+              "spikes": 1,
+              "rate_hz": 9.516
+            }
+          ]
+        },
+        {
+          "turn": 0.0,
+          "forward": 6.888533196638214,
+          "attack": false,
+          "readouts": [
+            {
+              "index": 306,
+              "id": "10331",
+              "type": "MN9",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 332,
+              "id": "10360",
+              "type": "DNa02",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 706,
+              "id": "10763",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 725,
+              "id": "10783",
+              "type": "DNp09",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1087,
+              "id": "11177",
+              "type": "DNp09",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1196,
+              "id": "11288",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1240,
+              "id": "11332",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 2194,
+              "id": "12348",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 6367,
+              "id": "16949",
+              "type": "MN9",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 131957,
+              "id": "523769",
+              "type": "DNa02",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 48,
+              "id": "10059",
+              "type": "DNp20",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 8.611
+            },
+            {
+              "index": 146,
+              "id": "10162",
+              "type": "DNp20",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 8.611
+            },
+            {
+              "index": 489,
+              "id": "10527",
+              "type": "DNpe017",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 8.611
+            },
+            {
+              "index": 142493,
+              "id": "555871",
+              "type": "DNpe017",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 8.611
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "horizon_ms": 80,
+      "counts_equal": true,
+      "decoder_equal": true,
+      "state": {
+        "equal": true,
+        "fields": {
+          "v": true,
+          "g": true,
+          "refractory": true,
+          "drive": true,
+          "previous_drive": true,
+          "queue": true,
+          "queue_count": true,
+          "counts": true,
+          "active": true,
+          "active_flag": true,
+          "nactive": true,
+          "last": true,
+          "eligibility": true,
+          "eligibility_last": true,
+          "modulation": true,
+          "modulation_last": true,
+          "adaptation": true,
+          "cursor": true,
+          "plastic_weights": true
+        },
+        "cpu_sha256": "7556c1aeb89a782c62400e3605942ee7fe1d6c59c1437b6f1835249f990e53ae",
+        "batch_sha256": "7556c1aeb89a782c62400e3605942ee7fe1d6c59c1437b6f1835249f990e53ae"
+      },
+      "cpu_decisions": [
+        {
+          "turn": 0.0,
+          "forward": 0.0,
+          "attack": false,
+          "readouts": [
+            {
+              "index": 306,
+              "id": "10331",
+              "type": "MN9",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 332,
+              "id": "10360",
+              "type": "DNa02",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 706,
+              "id": "10763",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 725,
+              "id": "10783",
+              "type": "DNp09",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1087,
+              "id": "11177",
+              "type": "DNp09",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1196,
+              "id": "11288",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1240,
+              "id": "11332",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 2194,
+              "id": "12348",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 6367,
+              "id": "16949",
+              "type": "MN9",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 131957,
+              "id": "523769",
+              "type": "DNa02",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 48,
+              "id": "10059",
+              "type": "DNp20",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 146,
+              "id": "10162",
+              "type": "DNp20",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 489,
+              "id": "10527",
+              "type": "DNpe017",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 142493,
+              "id": "555871",
+              "type": "DNpe017",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            }
+          ]
+        },
+        {
+          "turn": 0.0,
+          "forward": 0.0,
+          "attack": false,
+          "readouts": [
+            {
+              "index": 306,
+              "id": "10331",
+              "type": "MN9",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 332,
+              "id": "10360",
+              "type": "DNa02",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 706,
+              "id": "10763",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 725,
+              "id": "10783",
+              "type": "DNp09",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1087,
+              "id": "11177",
+              "type": "DNp09",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1196,
+              "id": "11288",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1240,
+              "id": "11332",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 2194,
+              "id": "12348",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 6367,
+              "id": "16949",
+              "type": "MN9",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 131957,
+              "id": "523769",
+              "type": "DNa02",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 48,
+              "id": "10059",
+              "type": "DNp20",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 146,
+              "id": "10162",
+              "type": "DNp20",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 489,
+              "id": "10527",
+              "type": "DNpe017",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 142493,
+              "id": "555871",
+              "type": "DNpe017",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            }
+          ]
+        },
+        {
+          "turn": 0.0,
+          "forward": 7.61300655712323,
+          "attack": true,
+          "readouts": [
+            {
+              "index": 306,
+              "id": "10331",
+              "type": "MN9",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 332,
+              "id": "10360",
+              "type": "DNa02",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 706,
+              "id": "10763",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 725,
+              "id": "10783",
+              "type": "DNp09",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1087,
+              "id": "11177",
+              "type": "DNp09",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1196,
+              "id": "11288",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1240,
+              "id": "11332",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 2194,
+              "id": "12348",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 6367,
+              "id": "16949",
+              "type": "MN9",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 131957,
+              "id": "523769",
+              "type": "DNa02",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 48,
+              "id": "10059",
+              "type": "DNp20",
+              "side": "R",
+              "spikes": 1,
+              "rate_hz": 9.516
+            },
+            {
+              "index": 146,
+              "id": "10162",
+              "type": "DNp20",
+              "side": "L",
+              "spikes": 1,
+              "rate_hz": 9.516
+            },
+            {
+              "index": 489,
+              "id": "10527",
+              "type": "DNpe017",
+              "side": "L",
+              "spikes": 1,
+              "rate_hz": 9.516
+            },
+            {
+              "index": 142493,
+              "id": "555871",
+              "type": "DNpe017",
+              "side": "R",
+              "spikes": 1,
+              "rate_hz": 9.516
+            }
+          ]
+        },
+        {
+          "turn": 0.0,
+          "forward": 6.888533196638214,
+          "attack": false,
+          "readouts": [
+            {
+              "index": 306,
+              "id": "10331",
+              "type": "MN9",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 332,
+              "id": "10360",
+              "type": "DNa02",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 706,
+              "id": "10763",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 725,
+              "id": "10783",
+              "type": "DNp09",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1087,
+              "id": "11177",
+              "type": "DNp09",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1196,
+              "id": "11288",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1240,
+              "id": "11332",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 2194,
+              "id": "12348",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 6367,
+              "id": "16949",
+              "type": "MN9",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 131957,
+              "id": "523769",
+              "type": "DNa02",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 48,
+              "id": "10059",
+              "type": "DNp20",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 8.611
+            },
+            {
+              "index": 146,
+              "id": "10162",
+              "type": "DNp20",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 8.611
+            },
+            {
+              "index": 489,
+              "id": "10527",
+              "type": "DNpe017",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 8.611
+            },
+            {
+              "index": 142493,
+              "id": "555871",
+              "type": "DNpe017",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 8.611
+            }
+          ]
+        },
+        {
+          "turn": 1.1419509835684842,
+          "forward": 6.233002591701117,
+          "attack": false,
+          "readouts": [
+            {
+              "index": 306,
+              "id": "10331",
+              "type": "MN9",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 332,
+              "id": "10360",
+              "type": "DNa02",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 706,
+              "id": "10763",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 725,
+              "id": "10783",
+              "type": "DNp09",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1087,
+              "id": "11177",
+              "type": "DNp09",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1196,
+              "id": "11288",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1240,
+              "id": "11332",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 2194,
+              "id": "12348",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 6367,
+              "id": "16949",
+              "type": "MN9",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 131957,
+              "id": "523769",
+              "type": "DNa02",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 48,
+              "id": "10059",
+              "type": "DNp20",
+              "side": "R",
+              "spikes": 1,
+              "rate_hz": 17.308
+            },
+            {
+              "index": 146,
+              "id": "10162",
+              "type": "DNp20",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 7.791
+            },
+            {
+              "index": 489,
+              "id": "10527",
+              "type": "DNpe017",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 7.791
+            },
+            {
+              "index": 142493,
+              "id": "555871",
+              "type": "DNpe017",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 7.791
+            }
+          ]
+        },
+        {
+          "turn": -0.10867100407275251,
+          "forward": 9.446357250247898,
+          "attack": true,
+          "readouts": [
+            {
+              "index": 306,
+              "id": "10331",
+              "type": "MN9",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 332,
+              "id": "10360",
+              "type": "DNa02",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 706,
+              "id": "10763",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 725,
+              "id": "10783",
+              "type": "DNp09",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1087,
+              "id": "11177",
+              "type": "DNp09",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1196,
+              "id": "11288",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1240,
+              "id": "11332",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 2194,
+              "id": "12348",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 6367,
+              "id": "16949",
+              "type": "MN9",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 131957,
+              "id": "523769",
+              "type": "DNa02",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 48,
+              "id": "10059",
+              "type": "DNp20",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 15.66
+            },
+            {
+              "index": 146,
+              "id": "10162",
+              "type": "DNp20",
+              "side": "L",
+              "spikes": 1,
+              "rate_hz": 16.566
+            },
+            {
+              "index": 489,
+              "id": "10527",
+              "type": "DNpe017",
+              "side": "L",
+              "spikes": 1,
+              "rate_hz": 16.566
+            },
+            {
+              "index": 142493,
+              "id": "555871",
+              "type": "DNpe017",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 7.05
+            }
+          ]
+        },
+        {
+          "turn": -0.09832959074056476,
+          "forward": 8.547417504159576,
+          "attack": false,
+          "readouts": [
+            {
+              "index": 306,
+              "id": "10331",
+              "type": "MN9",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 332,
+              "id": "10360",
+              "type": "DNa02",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 706,
+              "id": "10763",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 725,
+              "id": "10783",
+              "type": "DNp09",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1087,
+              "id": "11177",
+              "type": "DNp09",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1196,
+              "id": "11288",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1240,
+              "id": "11332",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 2194,
+              "id": "12348",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 6367,
+              "id": "16949",
+              "type": "MN9",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 131957,
+              "id": "523769",
+              "type": "DNa02",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 48,
+              "id": "10059",
+              "type": "DNp20",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 14.17
+            },
+            {
+              "index": 146,
+              "id": "10162",
+              "type": "DNp20",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 14.99
+            },
+            {
+              "index": 489,
+              "id": "10527",
+              "type": "DNpe017",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 14.99
+            },
+            {
+              "index": 142493,
+              "id": "555871",
+              "type": "DNpe017",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 6.379
+            }
+          ]
+        },
+        {
+          "turn": -0.08897229300222491,
+          "forward": 15.347029742462347,
+          "attack": true,
+          "readouts": [
+            {
+              "index": 306,
+              "id": "10331",
+              "type": "MN9",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 332,
+              "id": "10360",
+              "type": "DNa02",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 706,
+              "id": "10763",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 725,
+              "id": "10783",
+              "type": "DNp09",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1087,
+              "id": "11177",
+              "type": "DNp09",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1196,
+              "id": "11288",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1240,
+              "id": "11332",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 2194,
+              "id": "12348",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 6367,
+              "id": "16949",
+              "type": "MN9",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 131957,
+              "id": "523769",
+              "type": "DNa02",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 48,
+              "id": "10059",
+              "type": "DNp20",
+              "side": "R",
+              "spikes": 1,
+              "rate_hz": 22.338
+            },
+            {
+              "index": 146,
+              "id": "10162",
+              "type": "DNp20",
+              "side": "L",
+              "spikes": 1,
+              "rate_hz": 23.079
+            },
+            {
+              "index": 489,
+              "id": "10527",
+              "type": "DNpe017",
+              "side": "L",
+              "spikes": 1,
+              "rate_hz": 23.079
+            },
+            {
+              "index": 142493,
+              "id": "555871",
+              "type": "DNpe017",
+              "side": "R",
+              "spikes": 1,
+              "rate_hz": 15.288
+            }
+          ]
+        }
+      ],
+      "batch_decisions": [
+        {
+          "turn": 0.0,
+          "forward": 0.0,
+          "attack": false,
+          "readouts": [
+            {
+              "index": 306,
+              "id": "10331",
+              "type": "MN9",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 332,
+              "id": "10360",
+              "type": "DNa02",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 706,
+              "id": "10763",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 725,
+              "id": "10783",
+              "type": "DNp09",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1087,
+              "id": "11177",
+              "type": "DNp09",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1196,
+              "id": "11288",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1240,
+              "id": "11332",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 2194,
+              "id": "12348",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 6367,
+              "id": "16949",
+              "type": "MN9",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 131957,
+              "id": "523769",
+              "type": "DNa02",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 48,
+              "id": "10059",
+              "type": "DNp20",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 146,
+              "id": "10162",
+              "type": "DNp20",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 489,
+              "id": "10527",
+              "type": "DNpe017",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 142493,
+              "id": "555871",
+              "type": "DNpe017",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            }
+          ]
+        },
+        {
+          "turn": 0.0,
+          "forward": 0.0,
+          "attack": false,
+          "readouts": [
+            {
+              "index": 306,
+              "id": "10331",
+              "type": "MN9",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 332,
+              "id": "10360",
+              "type": "DNa02",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 706,
+              "id": "10763",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 725,
+              "id": "10783",
+              "type": "DNp09",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1087,
+              "id": "11177",
+              "type": "DNp09",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1196,
+              "id": "11288",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1240,
+              "id": "11332",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 2194,
+              "id": "12348",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 6367,
+              "id": "16949",
+              "type": "MN9",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 131957,
+              "id": "523769",
+              "type": "DNa02",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 48,
+              "id": "10059",
+              "type": "DNp20",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 146,
+              "id": "10162",
+              "type": "DNp20",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 489,
+              "id": "10527",
+              "type": "DNpe017",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 142493,
+              "id": "555871",
+              "type": "DNpe017",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            }
+          ]
+        },
+        {
+          "turn": 0.0,
+          "forward": 7.61300655712323,
+          "attack": true,
+          "readouts": [
+            {
+              "index": 306,
+              "id": "10331",
+              "type": "MN9",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 332,
+              "id": "10360",
+              "type": "DNa02",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 706,
+              "id": "10763",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 725,
+              "id": "10783",
+              "type": "DNp09",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1087,
+              "id": "11177",
+              "type": "DNp09",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1196,
+              "id": "11288",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1240,
+              "id": "11332",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 2194,
+              "id": "12348",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 6367,
+              "id": "16949",
+              "type": "MN9",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 131957,
+              "id": "523769",
+              "type": "DNa02",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 48,
+              "id": "10059",
+              "type": "DNp20",
+              "side": "R",
+              "spikes": 1,
+              "rate_hz": 9.516
+            },
+            {
+              "index": 146,
+              "id": "10162",
+              "type": "DNp20",
+              "side": "L",
+              "spikes": 1,
+              "rate_hz": 9.516
+            },
+            {
+              "index": 489,
+              "id": "10527",
+              "type": "DNpe017",
+              "side": "L",
+              "spikes": 1,
+              "rate_hz": 9.516
+            },
+            {
+              "index": 142493,
+              "id": "555871",
+              "type": "DNpe017",
+              "side": "R",
+              "spikes": 1,
+              "rate_hz": 9.516
+            }
+          ]
+        },
+        {
+          "turn": 0.0,
+          "forward": 6.888533196638214,
+          "attack": false,
+          "readouts": [
+            {
+              "index": 306,
+              "id": "10331",
+              "type": "MN9",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 332,
+              "id": "10360",
+              "type": "DNa02",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 706,
+              "id": "10763",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 725,
+              "id": "10783",
+              "type": "DNp09",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1087,
+              "id": "11177",
+              "type": "DNp09",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1196,
+              "id": "11288",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1240,
+              "id": "11332",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 2194,
+              "id": "12348",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 6367,
+              "id": "16949",
+              "type": "MN9",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 131957,
+              "id": "523769",
+              "type": "DNa02",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 48,
+              "id": "10059",
+              "type": "DNp20",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 8.611
+            },
+            {
+              "index": 146,
+              "id": "10162",
+              "type": "DNp20",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 8.611
+            },
+            {
+              "index": 489,
+              "id": "10527",
+              "type": "DNpe017",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 8.611
+            },
+            {
+              "index": 142493,
+              "id": "555871",
+              "type": "DNpe017",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 8.611
+            }
+          ]
+        },
+        {
+          "turn": 1.1419509835684842,
+          "forward": 6.233002591701117,
+          "attack": false,
+          "readouts": [
+            {
+              "index": 306,
+              "id": "10331",
+              "type": "MN9",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 332,
+              "id": "10360",
+              "type": "DNa02",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 706,
+              "id": "10763",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 725,
+              "id": "10783",
+              "type": "DNp09",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1087,
+              "id": "11177",
+              "type": "DNp09",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1196,
+              "id": "11288",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1240,
+              "id": "11332",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 2194,
+              "id": "12348",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 6367,
+              "id": "16949",
+              "type": "MN9",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 131957,
+              "id": "523769",
+              "type": "DNa02",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 48,
+              "id": "10059",
+              "type": "DNp20",
+              "side": "R",
+              "spikes": 1,
+              "rate_hz": 17.308
+            },
+            {
+              "index": 146,
+              "id": "10162",
+              "type": "DNp20",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 7.791
+            },
+            {
+              "index": 489,
+              "id": "10527",
+              "type": "DNpe017",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 7.791
+            },
+            {
+              "index": 142493,
+              "id": "555871",
+              "type": "DNpe017",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 7.791
+            }
+          ]
+        },
+        {
+          "turn": -0.10867100407275251,
+          "forward": 9.446357250247898,
+          "attack": true,
+          "readouts": [
+            {
+              "index": 306,
+              "id": "10331",
+              "type": "MN9",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 332,
+              "id": "10360",
+              "type": "DNa02",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 706,
+              "id": "10763",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 725,
+              "id": "10783",
+              "type": "DNp09",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1087,
+              "id": "11177",
+              "type": "DNp09",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1196,
+              "id": "11288",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1240,
+              "id": "11332",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 2194,
+              "id": "12348",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 6367,
+              "id": "16949",
+              "type": "MN9",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 131957,
+              "id": "523769",
+              "type": "DNa02",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 48,
+              "id": "10059",
+              "type": "DNp20",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 15.66
+            },
+            {
+              "index": 146,
+              "id": "10162",
+              "type": "DNp20",
+              "side": "L",
+              "spikes": 1,
+              "rate_hz": 16.566
+            },
+            {
+              "index": 489,
+              "id": "10527",
+              "type": "DNpe017",
+              "side": "L",
+              "spikes": 1,
+              "rate_hz": 16.566
+            },
+            {
+              "index": 142493,
+              "id": "555871",
+              "type": "DNpe017",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 7.05
+            }
+          ]
+        },
+        {
+          "turn": -0.09832959074056476,
+          "forward": 8.547417504159576,
+          "attack": false,
+          "readouts": [
+            {
+              "index": 306,
+              "id": "10331",
+              "type": "MN9",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 332,
+              "id": "10360",
+              "type": "DNa02",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 706,
+              "id": "10763",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 725,
+              "id": "10783",
+              "type": "DNp09",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1087,
+              "id": "11177",
+              "type": "DNp09",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1196,
+              "id": "11288",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1240,
+              "id": "11332",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 2194,
+              "id": "12348",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 6367,
+              "id": "16949",
+              "type": "MN9",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 131957,
+              "id": "523769",
+              "type": "DNa02",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 48,
+              "id": "10059",
+              "type": "DNp20",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 14.17
+            },
+            {
+              "index": 146,
+              "id": "10162",
+              "type": "DNp20",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 14.99
+            },
+            {
+              "index": 489,
+              "id": "10527",
+              "type": "DNpe017",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 14.99
+            },
+            {
+              "index": 142493,
+              "id": "555871",
+              "type": "DNpe017",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 6.379
+            }
+          ]
+        },
+        {
+          "turn": -0.08897229300222491,
+          "forward": 15.347029742462347,
+          "attack": true,
+          "readouts": [
+            {
+              "index": 306,
+              "id": "10331",
+              "type": "MN9",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 332,
+              "id": "10360",
+              "type": "DNa02",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 706,
+              "id": "10763",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 725,
+              "id": "10783",
+              "type": "DNp09",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1087,
+              "id": "11177",
+              "type": "DNp09",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1196,
+              "id": "11288",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 1240,
+              "id": "11332",
+              "type": "MDN",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 2194,
+              "id": "12348",
+              "type": "MDN",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 6367,
+              "id": "16949",
+              "type": "MN9",
+              "side": "R",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 131957,
+              "id": "523769",
+              "type": "DNa02",
+              "side": "L",
+              "spikes": 0,
+              "rate_hz": 0.0
+            },
+            {
+              "index": 48,
+              "id": "10059",
+              "type": "DNp20",
+              "side": "R",
+              "spikes": 1,
+              "rate_hz": 22.338
+            },
+            {
+              "index": 146,
+              "id": "10162",
+              "type": "DNp20",
+              "side": "L",
+              "spikes": 1,
+              "rate_hz": 23.079
+            },
+            {
+              "index": 489,
+              "id": "10527",
+              "type": "DNpe017",
+              "side": "L",
+              "spikes": 1,
+              "rate_hz": 23.079
+            },
+            {
+              "index": 142493,
+              "id": "555871",
+              "type": "DNpe017",
+              "side": "R",
+              "spikes": 1,
+              "rate_hz": 15.288
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "state_bitwise_equal": true,
+  "decoder_equal": true,
+  "structural_identity_equal": true,
+  "passed": true,
+  "learning_demonstrated": false,
+  "biologically_validated": false,
+  "interpretation": "Exact neural propagation parity only. This result does not validate learning or modeled biology."
+}

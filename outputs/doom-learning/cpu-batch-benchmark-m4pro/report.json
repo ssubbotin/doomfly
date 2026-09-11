@@ -1,0 +1,331 @@
+{
+  "schema": 1,
+  "experiment": "shared-graph CPU trajectory scaling",
+  "lane_counts": [
+    1,
+    2,
+    4
+  ],
+  "repetitions": 5,
+  "horizon_ms": 40,
+  "results": {
+    "1": {
+      "workers": 1,
+      "samples": [
+        {
+          "wall_seconds": 0.035291084001073614,
+          "native_wall_seconds": 0.034975792,
+          "brain_seconds": 0.04,
+          "aggregate_brain_seconds_per_wall_second": 1.1334307554503888,
+          "per_lane_latency_seconds": 0.035291084001073614,
+          "lane_state_sha256": [
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3"
+          ]
+        },
+        {
+          "wall_seconds": 0.034955166000145255,
+          "native_wall_seconds": 0.034657334,
+          "brain_seconds": 0.04,
+          "aggregate_brain_seconds_per_wall_second": 1.1443229879049575,
+          "per_lane_latency_seconds": 0.034955166000145255,
+          "lane_state_sha256": [
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3"
+          ]
+        },
+        {
+          "wall_seconds": 0.03482570900087012,
+          "native_wall_seconds": 0.034546499,
+          "brain_seconds": 0.04,
+          "aggregate_brain_seconds_per_wall_second": 1.148576759743803,
+          "per_lane_latency_seconds": 0.03482570900087012,
+          "lane_state_sha256": [
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3"
+          ]
+        },
+        {
+          "wall_seconds": 0.03459962499982794,
+          "native_wall_seconds": 0.034315249000000006,
+          "brain_seconds": 0.04,
+          "aggregate_brain_seconds_per_wall_second": 1.156081893956912,
+          "per_lane_latency_seconds": 0.03459962499982794,
+          "lane_state_sha256": [
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3"
+          ]
+        },
+        {
+          "wall_seconds": 0.03493825000259676,
+          "native_wall_seconds": 0.034656875000000004,
+          "brain_seconds": 0.04,
+          "aggregate_brain_seconds_per_wall_second": 1.1448770329660767,
+          "per_lane_latency_seconds": 0.03493825000259676,
+          "lane_state_sha256": [
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3"
+          ]
+        }
+      ],
+      "wall_seconds": {
+        "minimum": 0.03459962499982794,
+        "median": 0.03493825000259676,
+        "maximum": 0.035291084001073614
+      },
+      "native_wall_seconds": {
+        "minimum": 0.034315249000000006,
+        "median": 0.034656875000000004,
+        "maximum": 0.034975792
+      },
+      "aggregate_brain_seconds_per_wall_second": {
+        "minimum": 1.1334307554503888,
+        "median": 1.1448770329660767,
+        "maximum": 1.156081893956912
+      },
+      "per_lane_latency_seconds": {
+        "minimum": 0.03459962499982794,
+        "median": 0.03493825000259676,
+        "maximum": 0.035291084001073614
+      },
+      "repeat_bitwise": true,
+      "shared_graph_bytes": 258196660,
+      "lane_bytes": 23854924,
+      "total_lane_bytes": 23854924,
+      "scaling_efficiency": 1.0
+    },
+    "2": {
+      "workers": 2,
+      "samples": [
+        {
+          "wall_seconds": 0.03548337499887566,
+          "native_wall_seconds": 0.035075291,
+          "brain_seconds": 0.08,
+          "aggregate_brain_seconds_per_wall_second": 2.2545769674540517,
+          "per_lane_latency_seconds": 0.01774168749943783,
+          "lane_state_sha256": [
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3",
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3"
+          ]
+        },
+        {
+          "wall_seconds": 0.03536537499894621,
+          "native_wall_seconds": 0.034965293,
+          "brain_seconds": 0.08,
+          "aggregate_brain_seconds_per_wall_second": 2.2620995819324348,
+          "per_lane_latency_seconds": 0.017682687499473104,
+          "lane_state_sha256": [
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3",
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3"
+          ]
+        },
+        {
+          "wall_seconds": 0.035615832999610575,
+          "native_wall_seconds": 0.035215751,
+          "brain_seconds": 0.08,
+          "aggregate_brain_seconds_per_wall_second": 2.246192023667528,
+          "per_lane_latency_seconds": 0.017807916499805287,
+          "lane_state_sha256": [
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3",
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3"
+          ]
+        },
+        {
+          "wall_seconds": 0.03615341699696728,
+          "native_wall_seconds": 0.035761833,
+          "brain_seconds": 0.08,
+          "aggregate_brain_seconds_per_wall_second": 2.212792223946931,
+          "per_lane_latency_seconds": 0.01807670849848364,
+          "lane_state_sha256": [
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3",
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3"
+          ]
+        },
+        {
+          "wall_seconds": 0.03575124999770196,
+          "native_wall_seconds": 0.035347375,
+          "brain_seconds": 0.08,
+          "aggregate_brain_seconds_per_wall_second": 2.237683997206875,
+          "per_lane_latency_seconds": 0.01787562499885098,
+          "lane_state_sha256": [
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3",
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3"
+          ]
+        }
+      ],
+      "wall_seconds": {
+        "minimum": 0.03536537499894621,
+        "median": 0.035615832999610575,
+        "maximum": 0.03615341699696728
+      },
+      "native_wall_seconds": {
+        "minimum": 0.034965293,
+        "median": 0.035215751,
+        "maximum": 0.035761833
+      },
+      "aggregate_brain_seconds_per_wall_second": {
+        "minimum": 2.212792223946931,
+        "median": 2.246192023667528,
+        "maximum": 2.2620995819324348
+      },
+      "per_lane_latency_seconds": {
+        "minimum": 0.017682687499473104,
+        "median": 0.017807916499805287,
+        "maximum": 0.01807670849848364
+      },
+      "repeat_bitwise": true,
+      "shared_graph_bytes": 258196660,
+      "lane_bytes": 23854924,
+      "total_lane_bytes": 47709848,
+      "scaling_efficiency": 0.9809752309591855
+    },
+    "4": {
+      "workers": 4,
+      "samples": [
+        {
+          "wall_seconds": 0.04031716600002255,
+          "native_wall_seconds": 0.039659542,
+          "brain_seconds": 0.16,
+          "aggregate_brain_seconds_per_wall_second": 3.9685329072958773,
+          "per_lane_latency_seconds": 0.010079291500005638,
+          "lane_state_sha256": [
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3",
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3",
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3",
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3"
+          ]
+        },
+        {
+          "wall_seconds": 0.040533416999096517,
+          "native_wall_seconds": 0.039905540999999996,
+          "brain_seconds": 0.16,
+          "aggregate_brain_seconds_per_wall_second": 3.9473602732176856,
+          "per_lane_latency_seconds": 0.010133354249774129,
+          "lane_state_sha256": [
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3",
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3",
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3",
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3"
+          ]
+        },
+        {
+          "wall_seconds": 0.04022550000081537,
+          "native_wall_seconds": 0.039600126,
+          "brain_seconds": 0.16,
+          "aggregate_brain_seconds_per_wall_second": 3.9775764128912456,
+          "per_lane_latency_seconds": 0.010056375000203843,
+          "lane_state_sha256": [
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3",
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3",
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3",
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3"
+          ]
+        },
+        {
+          "wall_seconds": 0.04062020900164498,
+          "native_wall_seconds": 0.040010000999999996,
+          "brain_seconds": 0.16,
+          "aggregate_brain_seconds_per_wall_second": 3.9389260649427125,
+          "per_lane_latency_seconds": 0.010155052250411245,
+          "lane_state_sha256": [
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3",
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3",
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3",
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3"
+          ]
+        },
+        {
+          "wall_seconds": 0.04042699999990873,
+          "native_wall_seconds": 0.039829001,
+          "brain_seconds": 0.16,
+          "aggregate_brain_seconds_per_wall_second": 3.9577510079986453,
+          "per_lane_latency_seconds": 0.010106749999977183,
+          "lane_state_sha256": [
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3",
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3",
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3",
+            "5f5e2891fef617f3f5347214321248a095c7c910e42b50e575603e20555ee3c3"
+          ]
+        }
+      ],
+      "wall_seconds": {
+        "minimum": 0.04022550000081537,
+        "median": 0.04042699999990873,
+        "maximum": 0.04062020900164498
+      },
+      "native_wall_seconds": {
+        "minimum": 0.039600126,
+        "median": 0.039829001,
+        "maximum": 0.040010000999999996
+      },
+      "aggregate_brain_seconds_per_wall_second": {
+        "minimum": 3.9389260649427125,
+        "median": 3.9577510079986453,
+        "maximum": 3.9775764128912456
+      },
+      "per_lane_latency_seconds": {
+        "minimum": 0.010056375000203843,
+        "median": 0.010106749999977183,
+        "maximum": 0.010155052250411245
+      },
+      "repeat_bitwise": true,
+      "shared_graph_bytes": 258196660,
+      "lane_bytes": 23854924,
+      "total_lane_bytes": 95419696,
+      "scaling_efficiency": 0.8642305885342875
+    }
+  },
+  "peak_rss_bytes": 1403191296,
+  "system": {
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "architecture": "arm64",
+    "logical_cpus": 12,
+    "physical_cpus": 12,
+    "load_average": [
+      1.1708984375,
+      1.21826171875,
+      1.16455078125
+    ]
+  },
+  "identity": {
+    "graph": {
+      "ptr_sha256": "a29aa0296125a5daa972c12d17711360d01a1209cd9cd9d7ccb1f6959224bcaf",
+      "post_sha256": "4cc5e857d3481f433576f35ddb8d580cc33cf8e22b6651fa03e08cde5d956d90",
+      "initial_weight_sha256": "40a2e78d7299197d24ba03a24c94a8e1cd0eb45a653d69f001fc3acee2fdc779",
+      "configuration_sha256": "9499403434ee781463272a83fcd88ee3df37acca3aeb220f436810b0028bfbd3",
+      "base_weight_sha256": "40a2e78d7299197d24ba03a24c94a8e1cd0eb45a653d69f001fc3acee2fdc779",
+      "plastic_edges_sha256": "550335ad546f5c3106e4988426197ad24d8556367c9285e2f4c8c33f37f3cc68",
+      "kc_mask_sha256": "43e6ed840af2d547a3ae5848155e639f6e2abf60d5b7caa83c4298a3fb64c617",
+      "modulation_mask_sha256": "914dcf25dae442aecbcf27565f7bc8be76ea8254e7fbc944f2efe6e2413e6d5a",
+      "rest_sha256": "275bd935e4f1a56cbc2ca22b8f258f1cef511894f42f531e9a52476dd7b02946"
+    },
+    "sources": {
+      "doom_learning_v6/brain.py": "53fd800304dca4b48f89b5f8df17bb8a826a63f361a5b59c2d0c2367f20d5487",
+      "doom_learning_v6/kernel.cpp": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+      "doom_learning_v6/cpu_batch/api.h": "7f4ec681c4987480433d3067a6ee26dcfdd471ad380c9c618e71911b79265ab8",
+      "doom_learning_v6/cpu_batch/executor.cpp": "58fac22610f0da8daadf9317e1f2d9fdb8ac383457d8efb584de002dda8ceb39",
+      "doom_learning_v6/cpu_batch/backend.py": "0e5d9564a71874f9b2501e887e4e29f1427283e5b46352ed61b4e702df86b93f",
+      "doom_learning_v6/cpu_batch/build.py": "bf2e26530f4edc4933c98b948bece27df65b33b9f482567f963584c7b83e8785",
+      "doom_learning_v6/cpu_batch/validate.py": "cf2013990de65f68d3e3bcf0c70c41235e9604864addde17adfe7b69b29ad3b2",
+      "doom_learning_v6/cpu_batch/benchmark.py": "3d04aeca6257aa0c0e54a3027676315836714ea6bd36a8d9f5043f9da97bdd62"
+    },
+    "build": {
+      "schema": 1,
+      "abi_version": 1,
+      "sources": {
+        "api.h": "7f4ec681c4987480433d3067a6ee26dcfdd471ad380c9c618e71911b79265ab8",
+        "executor.cpp": "58fac22610f0da8daadf9317e1f2d9fdb8ac383457d8efb584de002dda8ceb39"
+      },
+      "binary_sha256": "e86ac3da17ed363c67c7d143785243cc3e9b3082fb2e43ad512e56f2037084d1",
+      "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+      "flags": [
+        "-O3",
+        "-std=c++17",
+        "-pthread",
+        "-dynamiclib"
+      ],
+      "platform": "darwin",
+      "architecture": "arm64"
+    }
+  },
+  "correctness_validation_passed": true,
+  "complete": true,
+  "learning_demonstrated": false,
+  "biologically_validated": false,
+  "interpretation": "Propagation throughput only. These measurements do not establish learning or biological validity."
+}
