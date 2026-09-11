@@ -173,8 +173,42 @@
       }
     ]
   },
-  "next_slice": {
+  "two_dispatch_pipeline": {
+    "status": "retained",
+    "repository_commit": "c847791a75dd8d6a284b955d5c5ecd8c76379e3f",
+    "cpu_median_seconds_per_40ms": 0.03463679100241279,
+    "metal_median_seconds_per_40ms": 0.03327966699725948,
+    "gpu_median_seconds_per_40ms": 0.030097458333329996,
+    "wall_median_seconds_per_40ms": 0.038856416002090555,
+    "dispatches_per_40ms": 808,
+    "indirect_dispatches_per_40ms": 0,
+    "transferred_bytes_per_10ms": 1383816,
+    "steady_state_full_upload_bytes": 0,
+    "steady_state_materialize_bytes": 0,
+    "resident_state_gate_passed": true,
+    "gpu_target_passed": true,
+    "cpu_to_metal_speedup": 1.0407793745431728,
+    "real_time_ratio": 1.2019351035962567,
+    "two_x_cpu_gate_passed": false,
+    "reports": {
+      "validation_40ms": {
+        "path": "outputs/doom-learning/metal-two-dispatch-validation-m4pro/report.json",
+        "sha256": "a89123c204319d91f44a7c304f7da405797920c8029d3e472790a7a46c78c3ec"
+      },
+      "stress_control_80ms": {
+        "path": "outputs/doom-learning/metal-two-dispatch-stress-80ms-m4pro/report.json",
+        "sha256": "47b823a795a5a029a92224b74e88147f4cb342e1d7e30a3cd4b427a3c76dd7ca"
+      },
+      "benchmark": {
+        "path": "outputs/doom-learning/metal-two-dispatch-benchmark-m4pro/report.json",
+        "sha256": "0511ef343c23ecac3da4c67ae22f3e9838f870d69b99eec59b7947626aad4e19"
+      }
+    },
+    "interpretation": "The selected dispatch reduction exceeded its GPU target and reproduced every retained Metal digest. It runs faster than real time and slightly faster than the CPU reference, while the 2x CPU training gate remains closed."
+  },
+  "dispatch_reduction_selection": {
     "selection": "two-dispatch tick pipeline",
+    "status": "completed and retained",
     "plan": "docs/superpowers/plans/2026-09-11-metal-two-dispatch-pipeline.md",
     "evidence": {
       "path": "outputs/doom-learning/metal-resident-dispatch-lower-bound-m4pro.json",

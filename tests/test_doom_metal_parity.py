@@ -60,6 +60,25 @@ def cross_word_brains(tmp_path):
     return cpu,metal
 
 
+def shared_word_brains(tmp_path):
+    n=42;pre=np.arange(35,dtype=np.int32)
+    post=np.r_[np.full(10,40),np.full(25,41)].astype(np.int32)
+    weight=np.ones(len(pre),dtype=np.float32)
+    weight[0]=2.;weight[1]=-.5;weight[10]=3.;weight[11]=-1.
+    path=tmp_path/'shared-word-graph.npz'
+    np.savez(path,ptr=np.r_[0,np.cumsum(np.bincount(pre,minlength=n))].astype(np.int64),
+        post=post,weight=weight,ids=np.arange(n,dtype=np.int64),
+        retina=np.empty(0,dtype=np.int32),uv=np.empty((0,2),dtype=np.float32),
+        lamina=np.empty(0,dtype=np.int32),sugar=np.empty(0,dtype=np.int32),
+        superclass=np.array(['test']*n))
+    circuit={'edges':np.empty(0,dtype=np.int64),'pre':np.empty(0,dtype=np.int32),
+        'kc_mask':np.zeros(n,dtype=np.uint8),'dan_index':np.full(n,-1,dtype=np.int8),
+        'gain':np.empty((0,0),dtype=np.float32),'kc':np.empty(0,dtype=np.int32),
+        'mb':np.array([40,41]),'dan':np.empty(0,dtype=np.int32)}
+    kwargs={'eta':0.,'circuit':circuit,'modulation_mask':np.zeros(n,dtype=np.uint8)}
+    return MemoryBrain(path,backend='cpu',**kwargs),MemoryBrain(path,backend='metal',**kwargs)
+
+
 TRACE=[(([0],20.),10.),(None,10.),(([3],20.),10.),(([0,3],18.),20.)]
 
 
@@ -249,25 +268,24 @@ def test_sparse_edge_bitmap_supports_edgeless_graph(tmp_path):
 
 
 def test_sparse_edge_bitmap_masks_targets_sharing_a_word(tmp_path):
-    n=42;pre=np.arange(35,dtype=np.int32)
-    post=np.r_[np.full(10,40),np.full(25,41)].astype(np.int32)
-    weight=np.ones(len(pre),dtype=np.float32)
-    weight[0]=2.;weight[1]=-.5;weight[10]=3.;weight[11]=-1.
-    path=tmp_path/'shared-word-graph.npz'
-    np.savez(path,ptr=np.r_[0,np.cumsum(np.bincount(pre,minlength=n))].astype(np.int64),
-        post=post,weight=weight,ids=np.arange(n,dtype=np.int64),
-        retina=np.empty(0,dtype=np.int32),uv=np.empty((0,2),dtype=np.float32),
-        lamina=np.empty(0,dtype=np.int32),sugar=np.empty(0,dtype=np.int32),
-        superclass=np.array(['test']*n))
-    circuit={'edges':np.empty(0,dtype=np.int64),'pre':np.empty(0,dtype=np.int32),
-        'kc_mask':np.zeros(n,dtype=np.uint8),'dan_index':np.full(n,-1,dtype=np.int8),
-        'gain':np.empty((0,0),dtype=np.float32),'kc':np.empty(0,dtype=np.int32),
-        'mb':np.array([40,41]),'dan':np.empty(0,dtype=np.int32)}
-    kwargs={'eta':0.,'circuit':circuit,'modulation_mask':np.zeros(n,dtype=np.uint8)}
-    cpu=MemoryBrain(path,backend='cpu',**kwargs);metal=MemoryBrain(path,backend='metal',**kwargs)
+    cpu,metal=shared_word_brains(tmp_path)
     for brain in [cpu,metal]:
         brain.queue[0,:4]=[0,1,10,11];brain.queue_count[0]=4
     cpu.backend.advance(1);metal.backend.advance(1)
     materialize(metal)
     np.testing.assert_array_equal(metal.g,cpu.g)
     np.testing.assert_array_equal(metal.g[-2:],[1.5,2.])
+
+
+def test_sparse_edge_bitmap_clears_adjacent_target_range_between_ticks(tmp_path):
+    cpu,metal=shared_word_brains(tmp_path)
+    for brain in [cpu,metal]:
+        brain.queue[0,:2]=[0,1];brain.queue_count[0]=2
+        brain.queue[1,:2]=[10,11];brain.queue_count[1]=2
+    cpu.backend.advance(1);metal.backend.advance(1);materialize(metal)
+    np.testing.assert_array_equal(metal.g,cpu.g)
+    np.testing.assert_array_equal(metal.g[-2:],[1.5,0.])
+    cpu.backend.advance(1);metal.backend.advance(1);materialize(metal)
+    np.testing.assert_allclose(metal.g,cpu.g,rtol=1e-6,atol=1e-7)
+    assert metal.g[-2]<1.5
+    assert metal.g[-1]==2.
