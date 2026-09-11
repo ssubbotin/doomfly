@@ -113,7 +113,7 @@ git commit -m "Add v6 neural backend contract"
 - Produces: `IncomingGraph(ptr: np.ndarray, pre: np.ndarray, edge: np.ndarray, metadata: dict)` and `load_or_build_incoming(out_ptr, out_post, cache_dir) -> IncomingGraph`.
 - Consumes: contiguous outgoing `ptr:int64[n+1]` and `post:int32[e]` arrays.
 
-- [ ] **Step 1: Write failing ordering and integrity tests**
+- [x] **Step 1: Write failing ordering and integrity tests**
 
 ```python
 def test_incoming_csr_is_stable_complete_permutation(tmp_path):
@@ -134,13 +134,13 @@ def test_corrupt_cached_index_is_rejected(tmp_path):
         load_or_build_incoming(PTR, POST, tmp_path)
 ```
 
-- [ ] **Step 2: Run the tests and confirm the import fails**
+- [x] **Step 2: Run the tests and confirm the import fails**
 
 Run: `python -m pytest tests/test_doom_metal_graph.py -q`
 
 Expected: failure because `doom_learning_v6.metal.graph` is absent.
 
-- [ ] **Step 3: Implement stable construction, validation, and atomic caching**
+- [x] **Step 3: Implement stable construction, validation, and atomic caching**
 
 ```python
 order = np.argsort(out_post, kind='stable').astype(np.int32, copy=False)
@@ -156,13 +156,13 @@ the source/post pair for every incoming entry. Hash both outgoing inputs, builde
 source, and all produced arrays. Write `incoming.npz.partial`, then rename it to
 `incoming.npz`.
 
-- [ ] **Step 4: Run graph tests and a medium random-graph test**
+- [x] **Step 4: Run graph tests and a medium random-graph test**
 
 Run: `python -m pytest tests/test_doom_metal_graph.py -q`
 
 Expected: all tests pass, including cache reload with identical hashes.
 
-- [ ] **Step 5: Commit the graph index**
+- [x] **Step 5: Commit the graph index**
 
 ```bash
 git add doom_learning_v6/metal/__init__.py doom_learning_v6/metal/graph.py tests/test_doom_metal_graph.py
