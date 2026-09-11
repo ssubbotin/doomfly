@@ -33,14 +33,14 @@ Set `OPENBLAS_NUM_THREADS=1` for full experiment commands. Output directories mu
 
 ## M4 Pro Results
 
-Apple clang 21 built ABI version 1 on an M4 Pro with 24 GiB unified memory. Exact validation passed at 40 ms and 80 ms. Each horizon used four lanes, four workers, and two fresh repeats. Every retained mutable state buffer, spike-count buffer, structural identity, source lock, and fixed decoder decision matched the legacy CPU oracle bit for bit. All five timing repetitions were bitwise stable. Reports identify Git commit `55c562f5d68df0f43fee791c51907975dfb0ff75`, every runtime source, the graph and manifest, and the exact validation report used by the benchmark.
+Apple clang 21 built ABI version 1 on an M4 Pro with 24 GiB unified memory. Exact validation passed at 40 ms and 80 ms. Each horizon used four lanes, four workers, and two fresh repeats. Every retained mutable state buffer, spike-count buffer, structural identity, source lock, and fixed decoder decision matched the legacy CPU oracle bit for bit. All five timing repetitions were bitwise stable. Reports identify Git commit `6231796a977a2c4dab888c60f8e58563580a2454`, every runtime source, the graph and manifest, and the exact validation report used by the benchmark.
 
 | Lanes | Median brain-s/wall-s | Batch latency | Amortized wall cost per trajectory | Scaling efficiency |
 |---:|---:|---:|---:|---:|
-| 1 | 1.124 | 35.58 ms | 35.58 ms | 100.0% |
-| 2 | 1.996 | 40.07 ms | 20.04 ms | 88.8% |
-| 4 | 3.253 | 49.18 ms | 12.30 ms | 72.3% |
+| 1 | 0.971 | 41.19 ms | 41.19 ms | 100.0% |
+| 2 | 2.025 | 39.52 ms | 19.76 ms | 104.2% |
+| 4 | 3.180 | 50.31 ms | 12.58 ms | 81.9% |
 
-Peak process RSS was 1,695,350,784 bytes. Batch latency is the time observed by every synchronized lane. Dividing it by lane count gives amortized throughput cost, not individual-lane latency. The measurements include Python and native pre-dispatch safety checks. They exclude calibrated-brain construction, graph loading, graph freezing, and lane allocation. Those one-time stages can dominate a short command and should be amortized across a long-lived training process.
+Peak process RSS was 1,694,187,520 bytes. Batch latency is the time observed by every synchronized lane. Dividing it by lane count gives amortized throughput cost, not individual-lane latency. The measurements include Python and native pre-dispatch safety checks. They exclude calibrated-brain construction, graph loading, graph freezing, and lane allocation. Those one-time stages can dominate a short command and should be amortized across a long-lived training process.
 
 These results establish numerical parity and propagation throughput. They do not establish learned behavior, biological validity, or survival improvement. Integration with the training runner follows as a separate measured milestone.
