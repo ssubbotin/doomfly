@@ -1,11 +1,16 @@
+import sys
+
 import numpy as np
+import pytest
 
 from doom_learning_v6.metal.validate import (
+    _state_digest,
     compare_decisions,
     evaluate_gates,
     spike_metrics,
     weight_metrics,
 )
+from test_doom_metal_parity import paired_brains
 
 
 def test_parity_metrics_have_fixed_event_semantics():
@@ -48,3 +53,15 @@ def test_gate_boundaries_are_inclusive():
         weights={'maximum_relative_error':1e-4,'within_rtol':True})
     assert not report['spike_jaccard']
     assert not report['passed']
+
+
+@pytest.mark.skipif(sys.platform!='darwin',reason='Metal requires macOS')
+def test_state_digest_materializes_resident_metal_state(tmp_path):
+    _,metal=paired_brains(tmp_path)
+    metal.weights_frozen=True
+    metal.step([],10,stimulation=([0],20),lamina_bias=0)
+    metal.v.fill(np.nan)
+    first=_state_digest(metal)
+    assert np.isfinite(metal.v).all()
+    assert metal.backend._last_materialization_reason=='validation-digest'
+    assert _state_digest(metal)==first

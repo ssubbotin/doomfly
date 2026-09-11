@@ -55,6 +55,7 @@ class MetalBackend:
         self.last_kc_events=[];self.last_timing={};self.capture_spikes=False;self.spike_events=[]
         self._last_full_upload={'seconds':0.,'bytes':0}
         self._last_materialize={'seconds':0.,'bytes':0}
+        self._last_materialization_reason=None
         self._host_state_valid=True
         self._host_weight_epoch=0;self._device_weight_epoch=0
         self.initialization_timing={}
@@ -192,6 +193,7 @@ class MetalBackend:
 
     def materialize(self,reason):
         if not reason:raise ValueError('Metal materialization reason is required')
+        self._last_materialization_reason=reason
         if not self.handle.value:return
         if self._host_weight_epoch!=self._device_weight_epoch:
             raise BackendError('Metal host and device weight epochs disagree')

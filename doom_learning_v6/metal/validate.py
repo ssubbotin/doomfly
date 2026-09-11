@@ -82,6 +82,7 @@ def _file_digest(path):
 
 
 def _state_digest(brain):
+    brain.backend.materialize('validation-digest')
     value=hashlib.sha256()
     for name in ['weight',*brain.fields]:
         array=getattr(brain,name);value.update(name.encode());value.update(array.dtype.str.encode())

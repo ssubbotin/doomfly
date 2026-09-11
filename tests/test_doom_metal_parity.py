@@ -151,6 +151,8 @@ def test_diagnostic_capture_records_exact_all_neuron_spike_events(tmp_path):
     assert cpu.backend.spike_events
     assert metal.backend.spike_events==cpu.backend.spike_events
     assert any(neuron not in cpu.circuit['kc'] for neuron,_ in cpu.backend.spike_events)
+    cpu.backend.stop_diagnostics();metal.backend.stop_diagnostics()
+    assert metal.backend._last_materialization_reason=='diagnostics'
 
 
 def test_metal_advance_uses_one_compute_encoder(tmp_path):

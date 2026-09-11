@@ -44,6 +44,7 @@ def test_checkpoint_records_producer_without_requiring_same_backend(tmp_path):
     path=tmp_path/'metal.npz';metal.checkpoint(path)
     with np.load(path,allow_pickle=False) as archive:
         metadata=json.loads(str(archive['metadata']))
+    assert metal.backend._last_materialization_reason=='checkpoint'
     assert metadata['producer_backend']=='metal'
     assert metadata['backend']['device']['name']=='Apple M4 Pro'
 
@@ -56,3 +57,35 @@ def test_metal_checkpoint_repeats_bitwise(tmp_path):
     first.backend.materialize('test');second.backend.materialize('test')
     for name in ['weight',*first.fields]:
         np.testing.assert_array_equal(getattr(second,name),getattr(first,name),err_msg=name)
+
+
+def test_reset_replaces_stale_resident_state(tmp_path):
+    _,reset_model=paired_brains(tmp_path/'reset')
+    _,fresh=paired_brains(tmp_path/'fresh')
+    reset_model.weights_frozen=fresh.weights_frozen=True
+    reset_model.step([],10,stimulation=([0],20),lamina_bias=0)
+    reset_model.v.fill(np.nan);reset_model.queue.fill(-1)
+    reset_model.reset()
+    expected,_=fresh.step([],10,stimulation=([3],20),lamina_bias=0)
+    actual,_=reset_model.step([],10,stimulation=([3],20),lamina_bias=0)
+    np.testing.assert_array_equal(actual,expected)
+    reset_model.backend.materialize('test');fresh.backend.materialize('test')
+    for name in ['weight',*fresh.fields]:
+        np.testing.assert_array_equal(getattr(reset_model,name),getattr(fresh,name),err_msg=name)
+
+
+def test_restore_replaces_stale_resident_state(tmp_path):
+    _,source=paired_brains(tmp_path/'source')
+    _,restored=paired_brains(tmp_path/'restored')
+    source.weights_frozen=restored.weights_frozen=True
+    source.step([],10,stimulation=([0],20),lamina_bias=0)
+    path=tmp_path/'resident.npz';source.checkpoint(path)
+    restored.step([],10,stimulation=([3],20),lamina_bias=0)
+    restored.v.fill(np.nan);restored.queue.fill(-1)
+    restored.restore(path)
+    expected,_=source.step([],10,stimulation=([0,3],18),lamina_bias=0)
+    actual,_=restored.step([],10,stimulation=([0,3],18),lamina_bias=0)
+    np.testing.assert_array_equal(actual,expected)
+    source.backend.materialize('test');restored.backend.materialize('test')
+    for name in ['weight',*source.fields]:
+        np.testing.assert_array_equal(getattr(restored,name),getattr(source,name),err_msg=name)
