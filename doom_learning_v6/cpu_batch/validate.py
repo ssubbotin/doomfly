@@ -47,6 +47,18 @@ def repository_identity():
     return {'git_commit':commit,'source_tree_clean':not bool(changed)}
 
 
+def runtime_source_commit_compatible(recorded):
+    if not isinstance(recorded,str) or len(recorded)!=40 or any(
+            character not in '0123456789abcdef' for character in recorded):
+        return False
+    ancestor=subprocess.run(['git','merge-base','--is-ancestor',recorded,'HEAD'],
+        cwd=ROOT,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+    if ancestor.returncode:return False
+    changed=subprocess.run(['git','diff','--quiet',recorded,'HEAD','--',*SOURCE_FILES],
+        cwd=ROOT,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+    return changed.returncode==0
+
+
 def compare_state(brain,lane):
     fields={name:bool(np.array_equal(getattr(brain,name),lane.arrays[name]))
         for name in lane.STATE_FIELDS}
@@ -104,6 +116,9 @@ def run(out,*,brain_factory=None,readouts=None,expected_structure=None,
         horizons_ms=HORIZONS_MS):
     out=Path(out)
     if out.exists():raise ValueError('Fresh output directory required')
+    horizons_ms=tuple(horizons_ms)
+    if not horizons_ms or any(horizon<10 or horizon%10 for horizon in horizons_ms):
+        raise ValueError('Validation horizons must use positive 10 ms bins')
     expected=FULL_STRUCTURE if expected_structure is None else dict(expected_structure)
     factory=_default_factory if brain_factory is None else brain_factory
     selected_readouts=_default_readouts() if readouts is None else list(readouts)
@@ -112,6 +127,8 @@ def run(out,*,brain_factory=None,readouts=None,expected_structure=None,
         actual=_structure(brain,expected['release'])
         if actual!=expected:raise ValueError(f'Unexpected graph structure: {actual}')
         graph=SharedCpuGraph.from_brain(brain)
+        drive=np.stack([drive_for_bin(brain,index)
+            for index in range(max(horizons_ms)//10)])
         source_lock_equal=_source_lock_equal() if expected==FULL_STRUCTURE else True
         structure_equal=(actual==expected and graph.neurons==expected['neurons']
             and graph.edges==expected['edges'] and graph.plastic_edges==expected['plastic_edges']
@@ -119,7 +136,6 @@ def run(out,*,brain_factory=None,readouts=None,expected_structure=None,
         from doom.engine import NeuralControls
         results=[]
         for horizon in horizons_ms:
-            if horizon<10 or horizon%10:raise ValueError('Validation horizons must use 10 ms bins')
             runs=[]
             for repeat in range(VALIDATION_REPEATS):
                 brain.reset();lanes=[CpuBatchLane.from_brain(graph,brain)
@@ -132,8 +148,8 @@ def run(out,*,brain_factory=None,readouts=None,expected_structure=None,
                 with MultiTrajectoryCpuExecutor(graph,lanes,
                         workers=VALIDATION_WORKERS) as executor:
                     for index in range(horizon//10):
-                        drive=drive_for_bin(brain,index);brain.drive[:]=drive
-                        for lane in lanes:lane.drive[:]=drive
+                        brain.drive[:]=drive[index]
+                        for lane in lanes:lane.drive[:]=drive[index]
                         brain.counts.fill(0);brain._advance_cpu(100)
                         batch_counts=executor.advance(100)
                         cpu_decisions.append(cpu_controls.decode(brain.counts,.01))
@@ -166,10 +182,19 @@ def run(out,*,brain_factory=None,readouts=None,expected_structure=None,
         decoder_equal=all(result['decoder_equal'] for result in results)
         passed=state_equal and decoder_equal and structure_equal
         repository=repository_identity();manifest=GRAPH.parent/'manifest.json'
+        inputs={'file':'inputs.npz','bins':len(drive),'neurons':graph.neurons,
+            'dtype':drive.dtype.str,'drive_sha256':digest(drive)}
+        out.mkdir(parents=True);input_path=out/inputs['file']
+        temporary=input_path.with_suffix('.npz.partial')
+        with temporary.open('wb') as stream:
+            np.savez_compressed(stream,drive=drive,
+                horizons_ms=np.asarray(horizons_ms,dtype=np.int32))
+        temporary.replace(input_path);inputs['file_sha256']=_file_digest(input_path)
         report={'schema':2,'experiment':'full-graph exact CPU batch parity',
             'structure':actual,'horizons_ms':list(horizons_ms),
             'protocol':{'lane_count':VALIDATION_LANES,'workers':VALIDATION_WORKERS,
                 'repeats':VALIDATION_REPEATS,'bin_ms':10,'steps_per_bin':100},
+            'inputs':inputs,
             'identity':{'graph':dict(graph.identity),'sources':source_identity(),
                 'graph_file_sha256':_file_digest(GRAPH) if GRAPH.exists() else None,
                 'graph_manifest_sha256':_file_digest(manifest) if manifest.exists() else None,
@@ -179,7 +204,7 @@ def run(out,*,brain_factory=None,readouts=None,expected_structure=None,
             'passed':passed,'learning_demonstrated':False,
             'biologically_validated':False,
             'interpretation':'Exact neural propagation parity only. This result does not validate learning or modeled biology.'}
-        out.mkdir(parents=True);save_json(out/'report.json',report);return report
+        save_json(out/'report.json',report);return report
     finally:
         if hasattr(brain,'backend'):brain.backend.close()
 

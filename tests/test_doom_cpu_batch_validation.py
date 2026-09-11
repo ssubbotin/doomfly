@@ -1,4 +1,7 @@
 import json
+import subprocess
+
+import numpy as np
 
 import pytest
 
@@ -29,6 +32,12 @@ def test_validation_writes_exact_toy_report(tmp_path):
     assert report['horizons_ms']==[40,80]
     assert report['protocol']=={'lane_count':4,'workers':4,'repeats':2,
         'bin_ms':10,'steps_per_bin':100}
+    inputs=report['inputs']
+    assert inputs['file']=='inputs.npz' and inputs['bins']==8 and inputs['neurons']==6
+    assert len(inputs['drive_sha256'])==64 and len(inputs['file_sha256'])==64
+    with np.load(out/'inputs.npz',allow_pickle=False) as saved:
+        assert saved['drive'].shape==(8,6)
+        assert saved['horizons_ms'].tolist()==[40,80]
     assert all(len(result['runs'])==2 for result in report['results'])
     assert all(len(run['lanes'])==4 for result in report['results']
         for run in result['runs'])
@@ -83,3 +92,21 @@ def test_validation_rejects_wrong_release_counts(tmp_path):
     with pytest.raises(ValueError,match='structure'):
         run(tmp_path/'wrong',brain_factory=_factory(tmp_path),readouts=READOUTS,
             expected_structure=expected)
+
+
+def test_runtime_source_commit_accepts_documentation_only_descendant():
+    from pathlib import Path
+    from doom_learning_v6.cpu_batch.validate import runtime_source_commit_compatible
+    report=json.loads(Path(
+        'outputs/doom-learning/cpu-batch-validation-m4pro/report.json').read_text())
+    recorded=report['identity']['git_commit']
+    head=subprocess.run(['git','rev-parse','HEAD'],check=True,text=True,
+        stdout=subprocess.PIPE).stdout.strip()
+    assert recorded!=head
+    assert runtime_source_commit_compatible(recorded) is True
+
+
+def test_saved_m4_validation_inputs_can_be_committed():
+    result=subprocess.run(['git','check-ignore','-q',
+        'outputs/doom-learning/cpu-batch-validation-m4pro/inputs.npz'],check=False)
+    assert result.returncode==1

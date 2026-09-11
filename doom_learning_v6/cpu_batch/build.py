@@ -1,6 +1,7 @@
 """Reproducible native build for the portable CPU batch executor."""
 import argparse
 import ctypes as C
+import fcntl
 import hashlib
 import json
 import os
@@ -38,26 +39,30 @@ def build(output_dir=DEFAULT_OUTPUT):
     output=Path(output_dir);output.mkdir(parents=True,exist_ok=True)
     sources={name:_digest(SOURCE/name) for name in ['api.h','executor.cpp']}
     library=library_path(output);metadata=output/'build.json'
-    if metadata.exists() and library.exists():
-        record=json.loads(metadata.read_text())
-        if record.get('sources')==sources and record.get('binary_sha256')==_digest(library):
-            return record
-    compiler=_compiler()
-    flags=['-O3','-std=c++17','-pthread']
-    flags+=['-dynamiclib'] if sys.platform=='darwin' else ['-shared','-fPIC']
-    temporary=library.with_suffix(library.suffix+'.partial')
-    command=[compiler,*flags,'-I',str(SOURCE),str(SOURCE/'executor.cpp'),'-o',str(temporary)]
-    subprocess.run(command,check=True)
-    temporary.replace(library)
-    version=subprocess.run([compiler,'--version'],check=True,text=True,
-        stdout=subprocess.PIPE,stderr=subprocess.STDOUT).stdout.splitlines()[0]
-    record={'schema':1,'abi_version':ABI_VERSION,'sources':sources,
-        'binary_sha256':_digest(library),'compiler':version,'flags':flags,
-        'platform':sys.platform,'architecture':platform.machine()}
-    metadata_temporary=metadata.with_suffix('.json.partial')
-    metadata_temporary.write_text(json.dumps(record,indent=2)+'\n')
-    metadata_temporary.replace(metadata)
-    return record
+    with (output/'.build.lock').open('w') as lock:
+        fcntl.flock(lock,fcntl.LOCK_EX)
+        if metadata.exists() and library.exists():
+            record=json.loads(metadata.read_text())
+            if record.get('sources')==sources and \
+                    record.get('binary_sha256')==_digest(library):
+                return record
+        compiler=_compiler()
+        flags=['-O3','-std=c++17','-pthread']
+        flags+=['-dynamiclib'] if sys.platform=='darwin' else ['-shared','-fPIC']
+        temporary=library.with_suffix(library.suffix+'.partial')
+        command=[compiler,*flags,'-I',str(SOURCE),str(SOURCE/'executor.cpp'),
+            '-o',str(temporary)]
+        subprocess.run(command,check=True)
+        temporary.replace(library)
+        version=subprocess.run([compiler,'--version'],check=True,text=True,
+            stdout=subprocess.PIPE,stderr=subprocess.STDOUT).stdout.splitlines()[0]
+        record={'schema':1,'abi_version':ABI_VERSION,'sources':sources,
+            'binary_sha256':_digest(library),'compiler':version,'flags':flags,
+            'platform':sys.platform,'architecture':platform.machine()}
+        metadata_temporary=metadata.with_suffix('.json.partial')
+        metadata_temporary.write_text(json.dumps(record,indent=2)+'\n')
+        metadata_temporary.replace(metadata)
+        return record
 
 
 def probe(output_dir=DEFAULT_OUTPUT):

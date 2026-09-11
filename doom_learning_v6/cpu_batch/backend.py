@@ -15,6 +15,7 @@ from .build import ABI_VERSION,DEFAULT_OUTPUT,build,library_path
 
 
 _OWNER_TOKEN=object()
+_STATUS_POISONED=2
 _GRAPH_NATIVE_FIELDS=('ptr','post','base_weight','plastic_slot','kc_mask',
     'modulation_mask','rest')
 _LANE_NATIVE_FIELDS=('cursor','plastic_weights','v','g','refractory','drive',
@@ -142,9 +143,11 @@ def _validate_lane_buffers(graph,lane,*,finite,registered=False):
         if finite and np.issubdtype(value.dtype,np.floating):_finite(name,value)
 
 
-def _validate_runtime_state(graph,lane):
+def _validate_runtime_state(graph,lane,steps=None):
     cursor=int(lane.cursor[0])
     if cursor<0:raise ValueError('Invalid CPU batch cursor')
+    if steps is not None and cursor>np.iinfo(np.int64).max-steps:
+        raise ValueError('CPU batch cursor would overflow')
     nactive=int(lane.nactive[0])
     if not 0<=nactive<=graph.neurons:raise ValueError('Invalid CPU batch active count')
     active=lane.active[:nactive]
@@ -160,6 +163,13 @@ def _validate_runtime_state(graph,lane):
         queued=lane.queue[slot,:int(count)]
         if np.any(queued<0) or np.any(queued>=graph.neurons):
             raise ValueError('CPU batch queued neuron index out of range')
+    delay=graph.delay_slots-1;future=(cursor%graph.delay_slots+delay)%graph.delay_slots
+    if lane.queue_count[future]!=0:
+        raise ValueError('CPU batch future queue slot must be empty')
+    for name,minimum in (('last',-1),('eligibility_last',0),('modulation_last',0)):
+        timestamps=lane.arrays[name]
+        if np.any(timestamps<minimum) or np.any(timestamps>cursor):
+            raise ValueError(f'Invalid CPU batch {name} timestamp')
 
 
 class SharedCpuGraph:
@@ -270,7 +280,7 @@ class CpuBatchLane:
         self.graph_identity=MappingProxyType(dict(graph_identity))
         self.arrays=MappingProxyType(dict(arrays))
         for name,value in self.arrays.items():setattr(self,name,value)
-        self._poisoned=False;self._sealed=True
+        self._sealed=True
 
     def __setattr__(self,name,value):
         if getattr(self,'_sealed',False) and not name.startswith('_'):
@@ -296,20 +306,11 @@ class CpuBatchLane:
     @property
     def lane_bytes(self):return sum(value.nbytes for value in self.arrays.values())
 
-    @property
-    def poisoned(self):return self._poisoned
-
     def copy_from_brain(self,graph,brain):
         if not isinstance(graph,SharedCpuGraph) or self.graph_identity!=graph.identity:
             raise ValueError('Lane graph identity does not match shared graph')
-        graph.assert_compatible(brain);schema=_lane_schema(graph)
-        for name in self.STATE_FIELDS:
-            dtype,shape=schema[name]
-            source=_array(name,getattr(brain,name),dtype,shape)
-            self.arrays[name][:]=source
-        self.cursor[0]=brain.cursor
-        self.plastic_weights[:]=brain.weight[graph.plastic_edge]
-        _validate_lane_buffers(graph,self,finite=True);_validate_runtime_state(graph,self)
+        replacement=type(self).from_brain(graph,brain)
+        for name,value in replacement.arrays.items():self.arrays[name][:]=value
         return self
 
     def copy_to_brain(self,brain):
@@ -346,7 +347,7 @@ class MultiTrajectoryCpuExecutor:
             for array in self._registered_graph_buffers)
         self._registered_lane_addresses=tuple(tuple(array.ctypes.data for array in buffers)
             for buffers in self._registered_lane_buffers)
-        self.workers=workers;self._closed=False;self.last_timing={}
+        self.workers=workers;self._closed=False;self._poisoned=False;self.last_timing={}
         self._advance_lock=threading.Lock();self._lifecycle_lock=threading.Lock()
         self.build=build(DEFAULT_OUTPUT)
         self._library=C.CDLL(str(library_path(DEFAULT_OUTPUT)))
@@ -384,7 +385,7 @@ class MultiTrajectoryCpuExecutor:
     def _lane_descriptor(lane):
         return _NativeLane(*[_pointer(lane.arrays[name]) for name in _LANE_NATIVE_FIELDS])
 
-    def _validate_registered_state(self):
+    def _validate_registered_state(self,steps):
         _validate_graph_buffer_schema(self.graph,registered=True)
         for name,array,address in zip(self.graph.arrays,self._registered_graph_buffers,
                 self._registered_graph_addresses):
@@ -396,7 +397,7 @@ class MultiTrajectoryCpuExecutor:
             for name,array,address in zip(lane.arrays,buffers,addresses):
                 if lane.arrays[name] is not array or array.ctypes.data!=address:
                     raise ValueError(f'Invalid registered {name} buffer')
-            _validate_runtime_state(self.graph,lane)
+            _validate_runtime_state(self.graph,lane,steps)
 
     def _raise_native(self,status):
         message=self._library.df_cpu_batch_error(self._handle)
@@ -404,6 +405,7 @@ class MultiTrajectoryCpuExecutor:
 
     def advance(self,steps):
         if self._closed:raise BackendError('CPU batch executor is closed')
+        if self._poisoned:raise BackendError('CPU batch executor is poisoned')
         if isinstance(steps,bool) or not isinstance(steps,int) or not 1<=steps<=100:
             raise ValueError('CPU batch steps must be 1 through 100')
         if not self._advance_lock.acquire(blocking=False):
@@ -411,12 +413,13 @@ class MultiTrajectoryCpuExecutor:
         try:
             with self._lifecycle_lock:
                 if self._closed:raise BackendError('CPU batch executor is closed')
-                self._validate_registered_state()
+                if self._poisoned:raise BackendError('CPU batch executor is poisoned')
+                self._validate_registered_state(steps)
                 for lane in self.lanes:lane.counts.fill(0)
                 timing=_NativeTiming()
                 status=self._library.df_cpu_batch_advance(self._handle,steps,C.byref(timing))
                 if status:
-                    for lane in self.lanes:lane._poisoned=True
+                    if status==_STATUS_POISONED:self._poisoned=True
                     self._raise_native(status)
             self.last_timing={'native_wall_seconds':timing.native_wall_seconds,
                 'lanes_advanced':timing.lanes_advanced,'workers':timing.workers,
@@ -430,7 +433,7 @@ class MultiTrajectoryCpuExecutor:
             'lanes':len(self.lanes),'shared_graph_bytes':self.graph.shared_bytes,
             'lane_bytes':[lane.lane_bytes for lane in self.lanes],
             'total_lane_bytes':sum(lane.lane_bytes for lane in self.lanes),
-            'poisoned_lanes':[lane.poisoned for lane in self.lanes],
+            'poisoned':self._poisoned,
             'graph':self.graph.metadata(),'closed':self._closed}
 
     def close(self):

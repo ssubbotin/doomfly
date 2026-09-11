@@ -7,6 +7,8 @@
 extern "C" {
 #endif
 #define DF_CPU_BATCH_ABI_VERSION 1u
+#define DF_CPU_BATCH_STATUS_ERROR 1
+#define DF_CPU_BATCH_STATUS_POISONED 2
 
 typedef void *df_cpu_batch_handle;
 

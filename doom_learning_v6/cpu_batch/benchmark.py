@@ -9,12 +9,14 @@ import resource
 import statistics
 import time
 
+import numpy as np
+
 from doom_learning.common import GRAPH,save_json
 
 from .backend import CpuBatchLane,MultiTrajectoryCpuExecutor,SharedCpuGraph
 from .validate import (FULL_STRUCTURE,HORIZONS_MS,VALIDATION_LANES,
     VALIDATION_REPEATS,VALIDATION_WORKERS,_default_factory,_file_digest,
-    drive_for_bin,repository_identity,source_identity)
+    drive_for_bin,repository_identity,runtime_source_commit_compatible,source_identity)
 
 
 def summarize(values):
@@ -92,6 +94,22 @@ def _validate_report(report):
         raise ValueError('CPU batch validation result mismatch')
 
 
+def _validate_inputs(report,validation_path):
+    metadata=report.get('inputs',{});path=validation_path.parent/metadata.get('file','')
+    try:
+        if metadata.get('file')!='inputs.npz' or _file_digest(path)!=metadata['file_sha256']:
+            raise ValueError
+        with np.load(path,allow_pickle=False) as saved:
+            drive=saved['drive'];horizons=saved['horizons_ms']
+        expected_shape=(metadata['bins'],metadata['neurons'])
+        if drive.shape!=expected_shape or drive.dtype.str!=metadata['dtype'] or \
+                hashlib.sha256(drive.tobytes()).hexdigest()!=metadata['drive_sha256'] or \
+                horizons.tolist()!=report['horizons_ms']:
+            raise ValueError
+    except (OSError,KeyError,TypeError,ValueError):
+        raise ValueError('Exact CPU batch validation inputs are required') from None
+
+
 def run(out,validation,repetitions=5,lane_counts=(1,2,4),*,brain_factory=None,
         horizon_ms=40):
     if repetitions<5:raise ValueError('At least five benchmark repetitions required')
@@ -105,6 +123,7 @@ def run(out,validation,repetitions=5,lane_counts=(1,2,4),*,brain_factory=None,
     except (OSError,ValueError,TypeError):
         raise ValueError('A passing CPU batch validation report is required') from None
     _validate_report(validated)
+    _validate_inputs(validated,validation_path)
     factory=_default_factory if brain_factory is None else brain_factory
     brain=factory()
     try:
@@ -117,7 +136,7 @@ def run(out,validation,repetitions=5,lane_counts=(1,2,4),*,brain_factory=None,
                 for name,value in current_structure.items()) or \
                 identity.get('graph')!=graph.identity or \
                 identity.get('sources')!=source_identity() or \
-                identity.get('git_commit')!=repository['git_commit'] or \
+                not runtime_source_commit_compatible(identity.get('git_commit')) or \
                 identity.get('source_tree_clean')!=repository['source_tree_clean'] or \
                 identity.get('graph_file_sha256')!=(_file_digest(GRAPH) if GRAPH.exists() else None) or \
                 identity.get('graph_manifest_sha256')!=(

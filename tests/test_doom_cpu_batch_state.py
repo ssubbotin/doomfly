@@ -44,6 +44,20 @@ def test_lane_copy_from_brain_reuses_registered_storage(tmp_path):
     assert addresses=={name:value.ctypes.data for name,value in lane.arrays.items()}
 
 
+def test_lane_copy_from_brain_is_atomic_on_invalid_source(tmp_path):
+    import hashlib
+    from doom_learning_v6.cpu_batch.backend import CpuBatchLane,SharedCpuGraph
+    brain=toy_brain(tmp_path);graph=SharedCpuGraph.from_brain(brain)
+    lane=CpuBatchLane.from_brain(graph,brain);lane.v[0]=-49
+    before=hashlib.sha256(b''.join(value.tobytes()
+        for value in lane.arrays.values())).hexdigest()
+    brain.v[0]=-47;brain.g=brain.g[:-1]
+    with pytest.raises(ValueError,match='g shape'):lane.copy_from_brain(graph,brain)
+    after=hashlib.sha256(b''.join(value.tobytes()
+        for value in lane.arrays.values())).hexdigest()
+    assert after==before
+
+
 @pytest.mark.parametrize('mutation,match',[
     (lambda b:setattr(b,'ptr',b.ptr.astype(np.int32)),'ptr'),
     (lambda b:setattr(b,'post',np.repeat(b.post,2)[::2]),'contiguous'),

@@ -63,3 +63,10 @@ def test_benchmark_rejects_tampered_validation_protocol(tmp_path):
     validation.write_text(json.dumps(report))
     with pytest.raises(ValueError,match='protocol'):
         run(tmp_path/'benchmark',validation,repetitions=5,brain_factory=_factory(tmp_path))
+
+
+def test_benchmark_requires_exact_saved_validation_inputs(tmp_path):
+    from doom_learning_v6.cpu_batch.benchmark import run
+    validation=_validation(tmp_path);(validation.parent/'inputs.npz').unlink(missing_ok=True)
+    with pytest.raises(ValueError,match='validation inputs'):
+        run(tmp_path/'benchmark',validation,repetitions=5,brain_factory=_factory(tmp_path))

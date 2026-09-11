@@ -9,6 +9,7 @@
 #include <mutex>
 #include <new>
 #include <limits>
+#include <stdexcept>
 #include <string>
 #include <thread>
 #include <vector>
@@ -45,7 +46,7 @@ struct Executor {
 int fail(Executor *executor, const char *message) {
   if (executor) executor->error = message;
   last_error = message;
-  return 1;
+  return DF_CPU_BATCH_STATUS_ERROR;
 }
 
 bool present(const void *pointer) { return pointer != nullptr; }
@@ -70,6 +71,12 @@ const char *validate_lane_state(const df_cpu_batch_graph &graph,
     flagged += lane.active_flag[neuron] != 0;
     if (static_cast<bool>(lane.active_flag[neuron]) != static_cast<bool>(seen[neuron]))
       return "CPU batch active flags do not match active indices";
+    if (lane.last[neuron] < -1 || lane.last[neuron] > *lane.cursor ||
+        lane.eligibility_last[neuron] < 0 ||
+        lane.eligibility_last[neuron] > *lane.cursor ||
+        lane.modulation_last[neuron] < 0 ||
+        lane.modulation_last[neuron] > *lane.cursor)
+      return "Invalid CPU batch timestamp";
     if (!std::isfinite(lane.v[neuron]) || !std::isfinite(lane.g[neuron]) ||
         !std::isfinite(lane.drive[neuron]) ||
         !std::isfinite(lane.previous_drive[neuron]) ||
@@ -90,6 +97,11 @@ const char *validate_lane_state(const df_cpu_batch_graph &graph,
         return "CPU batch queued neuron index out of range";
     }
   }
+  const int32_t delay = graph.delay_slots - 1;
+  const int32_t future = (static_cast<int32_t>(*lane.cursor % graph.delay_slots) +
+      delay) % graph.delay_slots;
+  if (lane.queue_count[future] != 0)
+    return "CPU batch future queue slot must be empty";
   for (int32_t slot = 0; slot < graph.plastic_edges; ++slot)
     if (!std::isfinite(lane.plastic_weight[slot]))
       return "Nonfinite CPU batch plastic weight";
@@ -202,13 +214,15 @@ void advance_lane(const df_cpu_batch_graph &graph, df_cpu_batch_lane &lane, int 
   }
   for (int t = 0; t < steps; ++t, ++(*lane.cursor)) {
     const int slot = *lane.cursor % slots;
-    const int future = (*lane.cursor + delay) % slots;
+    const int future = (slot + delay) % slots;
     int kept = 0;
     const int original = *lane.nactive;
     for (int k = 0; k < original; ++k) {
       const int i = lane.active[k];
       evolve(i, *lane.cursor, lane.drive[i]);
       if (lane.refractory[i] == 0 && lane.v[i] > -45.f) {
+        if (lane.queue_count[future] >= n)
+          throw std::runtime_error("CPU batch future queue capacity exceeded");
         lane.queue[future * n + lane.queue_count[future]++] = i;
         lane.counts[i]++;
         if (graph.kc_mask[i]) {
@@ -350,11 +364,19 @@ extern "C" int df_cpu_batch_advance(df_cpu_batch_handle handle, int32_t steps,
     df_cpu_batch_timing *timing) {
   auto *executor = static_cast<Executor *>(handle);
   if (!executor) return fail(nullptr, "Missing CPU batch handle");
-  if (steps < 1 || steps > 100) return fail(executor, "CPU batch steps must be 1 through 100");
-  if (!timing) return fail(executor, "Missing CPU batch timing output");
   try {
     std::unique_lock<std::mutex> api_lock(executor->api_mutex, std::try_to_lock);
     if (!api_lock.owns_lock()) return fail(nullptr, "Reentrant CPU batch advance is forbidden");
+    {
+      std::lock_guard<std::mutex> lock(executor->state_mutex);
+      if (executor->poisoned) {
+        last_error = executor->error;
+        return DF_CPU_BATCH_STATUS_POISONED;
+      }
+    }
+    if (steps < 1 || steps > 100)
+      return fail(executor, "CPU batch steps must be 1 through 100");
+    if (!timing) return fail(executor, "Missing CPU batch timing output");
     for (const auto &lane : executor->lanes) {
       if (const char *message = validate_lane_state(executor->graph, lane))
         return fail(executor, message);
@@ -365,10 +387,6 @@ extern "C" int df_cpu_batch_advance(df_cpu_batch_handle handle, int32_t steps,
     uint64_t generation;
     {
       std::lock_guard<std::mutex> lock(executor->state_mutex);
-      if (executor->poisoned) {
-        last_error = executor->error;
-        return 1;
-      }
       executor->steps = steps;
       executor->completed_workers = 0;
       executor->next_lane.store(0, std::memory_order_relaxed);
@@ -381,7 +399,7 @@ extern "C" int df_cpu_batch_advance(df_cpu_batch_handle handle, int32_t steps,
       executor->work_done.wait(lock, [&] { return !executor->active; });
       if (executor->poisoned) {
         last_error = executor->error;
-        return 1;
+        return DF_CPU_BATCH_STATUS_POISONED;
       }
     }
     const auto completed = std::chrono::steady_clock::now();

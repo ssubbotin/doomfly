@@ -1,6 +1,7 @@
 import json
 import subprocess
 import sys
+from concurrent.futures import ThreadPoolExecutor
 
 
 def test_build_records_source_and_binary_identity(tmp_path):
@@ -33,3 +34,12 @@ def test_build_module_probe_cli_prints_native_identity_without_import_warning(tm
         stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     assert json.loads(result.stdout)['native_abi_version']==1
     assert 'RuntimeWarning' not in result.stderr
+
+
+def test_concurrent_builds_share_one_complete_artifact(tmp_path):
+    from doom_learning_v6.cpu_batch.build import build
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        calls=[pool.submit(build,tmp_path) for _ in range(8)]
+        records=[call.result() for call in calls]
+    assert all(record==records[0] for record in records[1:])
+    assert not list(tmp_path.glob('*.partial'))

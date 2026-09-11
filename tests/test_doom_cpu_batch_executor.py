@@ -140,6 +140,11 @@ def test_close_waits_until_an_inflight_native_call_returns(tmp_path):
     (lambda lane:lane.queue_count.__setitem__(0,lane.queue.shape[1]+1),'queue count'),
     (lambda lane:(lane.queue_count.__setitem__(0,1),lane.queue.__setitem__((0,0),-1)),
         'queued neuron'),
+    (lambda lane:lane.queue_count.__setitem__(
+        (int(lane.cursor[0])+18)%lane.queue.shape[0],1),'future queue slot'),
+    (lambda lane:lane.last.__setitem__(0,-2),'timestamp'),
+    (lambda lane:lane.eligibility_last.__setitem__(0,int(lane.cursor[0])+1),'timestamp'),
+    (lambda lane:lane.modulation_last.__setitem__(0,-1),'timestamp'),
 ])
 def test_advance_rejects_unsafe_mutable_index_state_before_native_call(
         tmp_path,corrupt,match):
@@ -166,6 +171,20 @@ def test_executor_detects_registered_buffer_reallocation_before_advance(tmp_path
             executor.advance(1)
 
 
+def test_advance_rejects_cursor_that_cannot_complete_without_overflow(tmp_path):
+    from doom_learning_v6.cpu_batch.backend import (CpuBatchLane,
+        MultiTrajectoryCpuExecutor,SharedCpuGraph)
+    brain=toy_brain(tmp_path);graph=SharedCpuGraph.from_brain(brain)
+    lane=CpuBatchLane.from_brain(graph,brain)
+    with MultiTrajectoryCpuExecutor(graph,[lane],1) as executor:
+        lane.cursor[0]=np.iinfo(np.int64).max
+        lane.last.fill(lane.cursor[0]);lane.eligibility_last.fill(lane.cursor[0])
+        lane.modulation_last.fill(lane.cursor[0]);called=[]
+        executor._library.df_cpu_batch_advance=lambda *arguments:called.append(1) or 0
+        with pytest.raises(ValueError,match='overflow'):executor.advance(1)
+        assert called==[]
+
+
 def test_executor_checks_native_abi_before_registering_buffers(tmp_path,monkeypatch):
     import doom_learning_v6.cpu_batch.backend as backend
     from doom_learning_v6.backend import BackendError
@@ -186,7 +205,7 @@ def test_executor_checks_native_abi_before_registering_buffers(tmp_path,monkeypa
     assert created==[]
 
 
-def test_native_failure_marks_every_lane_poisoned(tmp_path):
+def test_recoverable_native_failure_does_not_poison_executor(tmp_path):
     from doom_learning_v6.backend import BackendError
     from doom_learning_v6.cpu_batch.backend import (CpuBatchLane,
         MultiTrajectoryCpuExecutor,SharedCpuGraph)
@@ -194,15 +213,34 @@ def test_native_failure_marks_every_lane_poisoned(tmp_path):
     lanes=[CpuBatchLane.from_brain(graph,brain) for _ in range(2)]
     with MultiTrajectoryCpuExecutor(graph,lanes,2) as executor:
         executor._library.df_cpu_batch_advance=lambda *arguments:1
+        executor._library.df_cpu_batch_error=lambda handle:b'invalid state'
+        with pytest.raises(BackendError,match='invalid state'):executor.advance(1)
+        assert executor.metadata()['poisoned'] is False
+
+
+def test_poisoned_native_handle_preserves_failure_and_rejects_later_calls(tmp_path):
+    from doom_learning_v6.backend import BackendError
+    from doom_learning_v6.cpu_batch.backend import (CpuBatchLane,
+        MultiTrajectoryCpuExecutor,SharedCpuGraph)
+    brain=toy_brain(tmp_path);graph=SharedCpuGraph.from_brain(brain)
+    lane=CpuBatchLane.from_brain(graph,brain)
+    with MultiTrajectoryCpuExecutor(graph,[lane],1) as executor:
+        executor._library.df_cpu_batch_advance=lambda *arguments:2
         executor._library.df_cpu_batch_error=lambda handle:b'worker failed'
         with pytest.raises(BackendError,match='worker failed'):executor.advance(1)
-        assert executor.metadata()['poisoned_lanes']==[True,True]
+        assert executor.metadata()['poisoned'] is True
+        called=[];executor._library.df_cpu_batch_advance=lambda *arguments:called.append(1) or 0
+        with pytest.raises(BackendError,match='poisoned'):executor.advance(1)
+        assert called==[]
 
 
 @pytest.mark.parametrize('corrupt',[
     lambda lane:lane.cursor.__setitem__(0,-1),
     lambda lane:lane.queue_count.__setitem__(0,-1),
     lambda lane:(lane.nactive.__setitem__(0,1),lane.active.__setitem__(0,-1)),
+    lambda lane:lane.queue_count.__setitem__(
+        (int(lane.cursor[0])+18)%lane.queue.shape[0],lane.queue.shape[1]),
+    lambda lane:lane.last.__setitem__(0,-2),
 ])
 def test_native_registration_rejects_unsafe_index_state(tmp_path,corrupt):
     from doom_learning_v6.cpu_batch.backend import (CpuBatchLane,
@@ -216,3 +254,10 @@ def test_native_registration_rejects_unsafe_index_state(tmp_path,corrupt):
     try:assert status!=0
     finally:
         if handle.value:executor._library.df_cpu_batch_destroy(handle)
+
+
+def test_native_kernel_checks_queue_capacity_and_uses_bounded_future_slot():
+    from pathlib import Path
+    source=Path('doom_learning_v6/cpu_batch/executor.cpp').read_text()
+    assert 'if (lane.queue_count[future] >= n)' in source
+    assert 'const int future = (slot + delay) % slots;' in source
