@@ -79,6 +79,8 @@ int df_metal_update_weights(df_metal_handle handle,int32_t count,
 int df_metal_advance(df_metal_handle handle,int32_t steps,
     df_metal_kc_event *events,int32_t event_capacity,int32_t *event_count,
     df_metal_timing *timing);
+int df_metal_apply_eligibility(df_metal_handle handle,double *eligibility,
+    int64_t *eligibility_last,double tau_ms);
 const char *df_metal_last_error(void);
 void df_metal_destroy(df_metal_handle handle);
 

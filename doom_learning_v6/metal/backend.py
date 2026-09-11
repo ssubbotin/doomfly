@@ -77,6 +77,8 @@ class MetalBackend:
         self.library.df_metal_advance.argtypes=[C.c_void_p,C.c_int32,C.POINTER(KCEvent),
             C.c_int32,C.POINTER(C.c_int32),C.POINTER(Timing)]
         self.library.df_metal_advance.restype=C.c_int
+        self.library.df_metal_apply_eligibility.argtypes=[C.c_void_p,C.c_void_p,C.c_void_p,C.c_double]
+        self.library.df_metal_apply_eligibility.restype=C.c_int
         self.library.df_metal_destroy.argtypes=[C.c_void_p]
         b=self.brain;i=self.incoming
         graph=Graph(b.n,len(b.post),b.queue.shape[0],b.dt,b.adaptation_jump,b.adaptation_tau,
@@ -95,6 +97,11 @@ class MetalBackend:
         capacity=max(1,int(np.count_nonzero(self.brain.circuit['kc_mask']))*(1+(steps-1)//22))
         events=(KCEvent*capacity)();count=C.c_int32();timing=Timing();started=time.perf_counter()
         status=self.library.df_metal_advance(self.handle,steps,events,capacity,C.byref(count),C.byref(timing))
+        if status:
+            self.poisoned=True;self._error(status)
+        tau_ms=self.brain.rule_parameters['trace_kc_seconds']*1000
+        status=self.library.df_metal_apply_eligibility(self.handle,_pointer(self.brain.eligibility),
+            _pointer(self.brain.eligibility_last),tau_ms)
         if status:
             self.poisoned=True;self._error(status)
         self.sync_for_checkpoint()

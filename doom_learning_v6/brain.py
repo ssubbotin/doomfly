@@ -148,7 +148,8 @@ class MemoryBrain(NativeBrain):
 
     def checkpoint(self,path):
         self.backend.sync_for_checkpoint()
-        metadata={'model':MODEL,'build':self.build,'eta':self.eta,'parameters':PARAMETERS,'cursor':self.cursor,'weights_frozen':self.weights_frozen,
+        metadata={'model':MODEL,'build':self.build,'producer_backend':self.backend.name,'backend':self.backend.metadata(),
+            'eta':self.eta,'parameters':PARAMETERS,'cursor':self.cursor,'weights_frozen':self.weights_frozen,
             'total_spikes':self.total_spikes,'graph_ids_sha256':digest(self.ids),'graph_ptr_sha256':digest(self.ptr),
             'graph_post_sha256':digest(self.post),'plastic_edges_sha256':digest(self.circuit['edges']),
             'configuration_sha256':self.configuration_signature()}
@@ -158,7 +159,7 @@ class MemoryBrain(NativeBrain):
     def restore(self,path):
         with np.load(path,allow_pickle=False) as a:
             m=json.loads(str(a['metadata']))
-            expected={'model':MODEL,'build':self.build,'eta':self.eta,'parameters':PARAMETERS,
+            expected={'model':MODEL,'eta':self.eta,'parameters':PARAMETERS,
                 'graph_ids_sha256':digest(self.ids),'graph_ptr_sha256':digest(self.ptr),'graph_post_sha256':digest(self.post),
                 'plastic_edges_sha256':digest(self.circuit['edges']),
                 'configuration_sha256':self.configuration_signature()}

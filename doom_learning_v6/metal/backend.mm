@@ -33,6 +33,7 @@ struct Backend {
   __strong id<MTLComputePipelineState> drive_pipeline,integrate_pipeline,mark_pipeline;
   __strong id<MTLComputePipelineState> gather_pipeline,clear_pipeline,reset_pipeline,materialize_pipeline;
   uint32_t kc_event_capacity=0;
+  uint32_t last_event_count=0;
   bool poisoned=false;
 };
 
@@ -339,11 +340,31 @@ extern "C" int df_metal_advance(df_metal_handle handle,int32_t steps,
     const uint32_t produced=*static_cast<uint32_t *>(b->event_count.contents);
     if(produced>kernel_capacity){b->poisoned=true;return fail("KC event capacity exceeded");}
     if(produced>0)std::memcpy(events,b->kc_events.contents,size_t(produced)*sizeof(df_metal_kc_event));
-    *event_count=int32_t(produced);b->cursor+=steps;
+    *event_count=int32_t(produced);b->last_event_count=produced;b->cursor+=steps;
     timing->gpu_seconds=command.GPUEndTime>=command.GPUStartTime?
       command.GPUEndTime-command.GPUStartTime:0.0;
   }
   timing->host_seconds=std::chrono::duration<double>(std::chrono::steady_clock::now()-started).count();
+  last_error.clear();return 0;
+}
+
+extern "C" int df_metal_apply_eligibility(df_metal_handle handle,double *eligibility,
+    int64_t *eligibility_last,double tau_ms) {
+  Backend *b=cast(handle);
+  if(b==nullptr||eligibility==nullptr||eligibility_last==nullptr||
+      !std::isfinite(tau_ms)||tau_ms<=0)return fail("Invalid eligibility update");
+  const auto *stored=static_cast<const df_metal_kc_event *>(b->kc_events.contents);
+  std::vector<df_metal_kc_event> events(stored,stored+b->last_event_count);
+  std::sort(events.begin(),events.end(),[](const auto &left,const auto &right){
+    return left.tick<right.tick||(left.tick==right.tick&&left.neuron<right.neuron);
+  });
+  for(const auto &event:events){
+    if(event.neuron<0||event.neuron>=b->neurons)return fail("KC event neuron out of bounds");
+    const int64_t delta=event.tick-eligibility_last[event.neuron];
+    const float decay=std::exp(-b->dt*float(delta)/float(tau_ms));
+    eligibility[event.neuron]*=decay;
+    eligibility[event.neuron]+=1.0;eligibility_last[event.neuron]=event.tick;
+  }
   last_error.clear();return 0;
 }
 

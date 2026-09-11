@@ -457,7 +457,7 @@ git commit -m "Implement deterministic Metal neural propagation"
 - Consumes: tick-resolved `(tick:int64, neuron:int32)` KC events from Metal.
 - Produces: exact host-owned `eligibility`, `eligibility_last`, `rate_kc`, `rate_dan`, `memory_u`, and `memory_w` state plus backend-independent checkpoints.
 
-- [ ] **Step 1: Write failing eligibility and checkpoint migration tests**
+- [x] **Step 1: Write failing eligibility and checkpoint migration tests**
 
 ```python
 def test_cpu_checkpoint_continues_on_metal(tmp_path):
@@ -480,13 +480,13 @@ def test_metal_checkpoint_repeats_bitwise(tmp_path):
     np.testing.assert_array_equal(actual, expected)
 ```
 
-- [ ] **Step 2: Run on `mini` and confirm float64 or producer checks fail**
+- [x] **Step 2: Run on `mini` and confirm float64 or producer checks fail**
 
 Run: `ssh mini 'cd doomfly && python3 -m pytest tests/test_doom_metal_checkpoint.py -q'`
 
 Expected: failure before host KC-event processing and producer-independent restore exist.
 
-- [ ] **Step 3: Implement exact host eligibility updates**
+- [x] **Step 3: Implement exact host eligibility updates**
 
 Sort returned KC events by `(tick, neuron)` and run this C++ equation after a
 successful command:
@@ -502,7 +502,7 @@ Allocate event capacity as `kc_count * (1 + (steps - 1) / refractory_ticks)` and
 reject any impossible overflow. Keep all centered-rule float64 arrays in Python,
 where the existing `rule.advance` remains unchanged.
 
-- [ ] **Step 4: Make checkpoint provenance producer-independent**
+- [x] **Step 4: Make checkpoint provenance producer-independent**
 
 Store `producer_backend` and backend metadata in the checkpoint. Continue to
 validate model, configuration, graph, rule, sensory mapping, and plastic-edge
@@ -510,7 +510,7 @@ hashes. Exclude producer binary identity from compatibility checks. Call
 `sync_for_checkpoint()` before writing and `restore_from_host()` after all host
 arrays validate during restore.
 
-- [ ] **Step 5: Run checkpoint and existing recovery suites**
+- [x] **Step 5: Run checkpoint and existing recovery suites**
 
 Run locally: `python -m pytest tests/test_doom_learning_v6.py tests/test_doom_live_training.py -q`
 
@@ -519,7 +519,7 @@ Run on M4 Pro: `ssh mini 'cd doomfly && python3 -m pytest tests/test_doom_metal_
 Expected: CPU checkpoints remain exact; both migration directions pass; repeated
 Metal restoration is bitwise identical.
 
-- [ ] **Step 6: Commit checkpoint continuity**
+- [x] **Step 6: Commit checkpoint continuity**
 
 ```bash
 git add doom_learning_v6/brain.py doom_learning_v6/metal/backend.mm doom_learning_v6/metal/backend.py tests/test_doom_metal_parity.py tests/test_doom_metal_checkpoint.py
