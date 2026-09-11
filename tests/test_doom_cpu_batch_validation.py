@@ -94,16 +94,27 @@ def test_validation_rejects_wrong_release_counts(tmp_path):
             expected_structure=expected)
 
 
-def test_runtime_source_commit_accepts_documentation_only_descendant():
-    from pathlib import Path
+def test_runtime_source_commit_accepts_documentation_only_descendant(tmp_path):
     from doom_learning_v6.cpu_batch.validate import runtime_source_commit_compatible
-    report=json.loads(Path(
-        'outputs/doom-learning/cpu-batch-validation-m4pro/report.json').read_text())
-    recorded=report['identity']['git_commit']
-    head=subprocess.run(['git','rev-parse','HEAD'],check=True,text=True,
-        stdout=subprocess.PIPE).stdout.strip()
-    assert recorded!=head
-    assert runtime_source_commit_compatible(recorded) is True
+
+    def git(*args):
+        return subprocess.run(['git',*args],cwd=tmp_path,check=True,text=True,
+            stdout=subprocess.PIPE).stdout.strip()
+
+    git('init')
+    git('config','user.name','Test')
+    git('config','user.email','test@example.com')
+    (tmp_path/'runtime.py').write_text('value=1\n')
+    git('add','runtime.py');git('commit','-m','runtime')
+    recorded=git('rev-parse','HEAD')
+    (tmp_path/'guide.md').write_text('guide\n')
+    git('add','guide.md');git('commit','-m','docs')
+    assert runtime_source_commit_compatible(recorded,root=tmp_path,
+        source_files=('runtime.py',)) is True
+    (tmp_path/'runtime.py').write_text('value=2\n')
+    git('add','runtime.py');git('commit','-m','runtime change')
+    assert runtime_source_commit_compatible(recorded,root=tmp_path,
+        source_files=('runtime.py',)) is False
 
 
 def test_saved_m4_validation_inputs_can_be_committed():

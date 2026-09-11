@@ -47,15 +47,15 @@ def repository_identity():
     return {'git_commit':commit,'source_tree_clean':not bool(changed)}
 
 
-def runtime_source_commit_compatible(recorded):
+def runtime_source_commit_compatible(recorded,*,root=ROOT,source_files=SOURCE_FILES):
     if not isinstance(recorded,str) or len(recorded)!=40 or any(
             character not in '0123456789abcdef' for character in recorded):
         return False
     ancestor=subprocess.run(['git','merge-base','--is-ancestor',recorded,'HEAD'],
-        cwd=ROOT,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+        cwd=root,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
     if ancestor.returncode:return False
-    changed=subprocess.run(['git','diff','--quiet',recorded,'HEAD','--',*SOURCE_FILES],
-        cwd=ROOT,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+    changed=subprocess.run(['git','diff','--quiet',recorded,'HEAD','--',*source_files],
+        cwd=root,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
     return changed.returncode==0
 
 
