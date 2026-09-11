@@ -53,5 +53,6 @@ def test_metal_checkpoint_repeats_bitwise(tmp_path):
     advance(first,30);path=tmp_path/'metal.npz';first.checkpoint(path)
     expected=advance(first,20);second.restore(path);actual=advance(second,20)
     np.testing.assert_array_equal(actual,expected)
+    first.backend.materialize('test');second.backend.materialize('test')
     for name in ['weight',*first.fields]:
         np.testing.assert_array_equal(getattr(second,name),getattr(first,name),err_msg=name)

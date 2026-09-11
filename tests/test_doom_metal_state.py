@@ -133,6 +133,7 @@ def test_metal_state_round_trip_preserves_all_neural_arrays(tmp_path):
 
 def test_metal_reports_separate_native_command_phases(tmp_path):
     model=brain(tmp_path,backend='metal')
+    model.weights_frozen=True
     model.step([],10,stimulation=([0],20),lamina_bias=0)
     timing=model.backend.last_timing
     expected={
@@ -140,12 +141,16 @@ def test_metal_reports_separate_native_command_phases(tmp_path):
         'encode_seconds','commit_call_seconds','wait_call_seconds',
         'native_event_copy_seconds','native_event_copy_bytes',
         'full_upload_seconds','full_upload_bytes','materialize_seconds',
-        'materialize_bytes','event_conversion_sort_seconds','eligibility_seconds'}
+        'materialize_bytes','drive_copy_seconds','drive_copy_bytes',
+        'counts_copy_seconds','counts_copy_bytes','event_conversion_sort_seconds',
+        'eligibility_seconds'}
     assert expected<=timing.keys()
     assert all(timing[name]>=0 for name in expected)
     assert timing['native_total_seconds']>=timing['encode_seconds']
     assert timing['native_event_copy_bytes']==len(model.backend.last_kc_events)*C.sizeof(KCEvent)
-    assert timing['full_upload_bytes']==timing['materialize_bytes']>model.weight.nbytes
+    assert timing['full_upload_bytes']==timing['materialize_bytes']==0
+    assert timing['drive_copy_bytes']==model.drive.nbytes
+    assert timing['counts_copy_bytes']==model.counts.nbytes
 
 
 def test_metal_restore_rejects_duplicate_delayed_neuron(tmp_path):

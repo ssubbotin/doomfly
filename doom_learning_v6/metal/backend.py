@@ -55,6 +55,7 @@ class MetalBackend:
         self.last_kc_events=[];self.last_timing={};self.capture_spikes=False;self.spike_events=[]
         self._last_full_upload={'seconds':0.,'bytes':0}
         self._last_materialize={'seconds':0.,'bytes':0}
+        self._host_state_valid=True;self._requires_full_upload=False
         self.initialization_timing={}
 
     def _state(self):
@@ -115,6 +116,7 @@ class MetalBackend:
         try:self._error(self.library.df_metal_upload_state(self.handle,C.byref(self._state())))
         except Exception:
             self.close();raise
+        self._host_state_valid=True;self._requires_full_upload=False
         completed=time.perf_counter()
         self.initialization_timing={'total_seconds':completed-initialized,
             'build_probe_seconds':probed-initialized,
@@ -124,10 +126,13 @@ class MetalBackend:
     def advance(self,steps):
         self.ensure_initialized()
         if self.poisoned:raise BackendError('Metal backend is poisoned')
-        self.restore_from_host()
+        self._last_full_upload={'seconds':0.,'bytes':0}
+        self._last_materialize={'seconds':0.,'bytes':0}
+        if self._requires_full_upload:self.restore_from_host(reason='learning')
         cells=self.brain.n if self.capture_spikes else int(np.count_nonzero(self.brain.circuit['kc_mask']))
         capacity=max(1,cells*(1+(steps-1)//22))
         events=(KCEvent*capacity)();count=C.c_int32();timing=Timing();started=time.perf_counter()
+        drive_copy=self._upload_drive()
         status=self.library.df_metal_advance(self.handle,steps,events,capacity,C.byref(count),C.byref(timing))
         if status:
             self.poisoned=True;self._error(status)
@@ -138,7 +143,11 @@ class MetalBackend:
         eligibility_seconds=time.perf_counter()-eligibility_started
         if status:
             self.poisoned=True;self._error(status)
-        self.sync_for_checkpoint()
+        observation_copy=self._download_observation()
+        self._host_state_valid=False
+        if not self.brain.weights_frozen:
+            self.materialize('learning')
+            self._requires_full_upload=True
         elapsed=time.perf_counter()-started
         conversion_started=time.perf_counter()
         recorded=[(int(events[i].tick),int(events[i].neuron)) for i in range(count.value)]
@@ -156,8 +165,9 @@ class MetalBackend:
             'full_upload_bytes':self._last_full_upload['bytes'],
             'materialize_seconds':self._last_materialize['seconds'],
             'materialize_bytes':self._last_materialize['bytes'],
-            'drive_copy_seconds':0.,'drive_copy_bytes':0,
-            'counts_copy_seconds':0.,'counts_copy_bytes':0,
+            'drive_copy_seconds':drive_copy['seconds'],'drive_copy_bytes':drive_copy['bytes'],
+            'counts_copy_seconds':observation_copy['seconds'],
+            'counts_copy_bytes':observation_copy['bytes'],
             'event_conversion_sort_seconds':event_conversion_sort_seconds,
             'eligibility_seconds':eligibility_seconds,
             'sparse_weight_update_seconds':0.,'sparse_weight_update_bytes':0,
@@ -175,15 +185,22 @@ class MetalBackend:
 
     def stop_diagnostics(self):
         if self.handle.value:self._error(self.library.df_metal_set_diagnostics(self.handle,0))
+        self.materialize('diagnostics')
         self.capture_spikes=False
 
     def sync_for_checkpoint(self):
+        return self.materialize('checkpoint')
+
+    def materialize(self,reason):
+        if not reason:raise ValueError('Metal materialization reason is required')
         if not self.handle.value:return
+        if self._requires_full_upload:self.restore_from_host(reason=reason)
         state=self._state();started=time.perf_counter()
         self._error(self.library.df_metal_download_state(self.handle,C.byref(state)))
         self._last_materialize={'seconds':time.perf_counter()-started,
             'bytes':self._state_transfer_bytes()}
         self.brain.cursor=int(state.cursor)
+        self._host_state_valid=True
 
     def _upload_drive(self):
         started=time.perf_counter()
@@ -197,12 +214,17 @@ class MetalBackend:
         self.brain.cursor=int(cursor.value)
         return {'seconds':time.perf_counter()-started,'bytes':self.brain.counts.nbytes}
 
-    def restore_from_host(self):
-        if not self.handle.value:return
+    def restore_from_host(self,reason=None):
+        if not self._host_state_valid and reason not in ['reset','restore']:
+            raise BackendError('Metal host neural state is stale')
+        if not self.handle.value:
+            self._host_state_valid=True;self._requires_full_upload=False
+            return
         started=time.perf_counter()
         self._error(self.library.df_metal_upload_state(self.handle,C.byref(self._state())))
         self._last_full_upload={'seconds':time.perf_counter()-started,
             'bytes':self._state_transfer_bytes()}
+        self._host_state_valid=True;self._requires_full_upload=False
 
     def update_weights(self,edge_ids,values):
         self.ensure_initialized();edge_ids=np.ascontiguousarray(edge_ids,dtype=np.int64)

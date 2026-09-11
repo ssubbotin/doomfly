@@ -69,10 +69,15 @@ def run_trace(model):
     return np.asarray(counts)
 
 
+def materialize(model):
+    model.backend.materialize('test')
+
+
 def test_metal_matches_cpu_micrograph_events_and_state(tmp_path):
     cpu,metal=paired_brains(tmp_path)
     expected=run_trace(cpu);actual=run_trace(metal)
     np.testing.assert_array_equal(actual,expected)
+    materialize(metal)
     for name in ['v','g','drive','previous_drive','modulation','adaptation']:
         np.testing.assert_allclose(getattr(metal,name),getattr(cpu,name),rtol=1e-5,atol=.002,err_msg=name)
     for name in ['refractory','active_flag','last','modulation_last']:
@@ -87,6 +92,56 @@ def test_metal_repeated_runs_are_bitwise_identical(tmp_path):
     first.backend.sync_for_checkpoint();second.backend.sync_for_checkpoint()
     for name in ['weight',*first.fields]:
         np.testing.assert_array_equal(getattr(first,name),getattr(second,name),err_msg=name)
+
+
+def test_metal_resident_state_ignores_stale_host_arrays(tmp_path):
+    _,reference=paired_brains(tmp_path/'reference')
+    _,resident=paired_brains(tmp_path/'resident')
+    reference.weights_frozen=resident.weights_frozen=True
+    for model in [reference,resident]:
+        model.step([],10,stimulation=([0],20),lamina_bias=0)
+    resident.v.fill(-47);resident.g.fill(123);resident.refractory.fill(42)
+    resident.previous_drive.fill(-100);resident.queue.fill(0);resident.queue_count.fill(0)
+    resident.active.fill(0);resident.active_flag.fill(0);resident.nactive.fill(0)
+    resident.last.fill(-999);resident.modulation.fill(77);resident.modulation_last.fill(-999)
+    resident.adaptation.fill(55)
+    expected,_=reference.step([],10,stimulation=([3],20),lamina_bias=0)
+    actual,_=resident.step([],10,stimulation=([3],20),lamina_bias=0)
+    np.testing.assert_array_equal(actual,expected)
+    materialize(reference);materialize(resident)
+    for name in ['v','g','refractory','previous_drive','queue','queue_count','active',
+            'active_flag','nactive','last','modulation','modulation_last','adaptation']:
+        np.testing.assert_array_equal(getattr(resident,name),getattr(reference,name),err_msg=name)
+
+
+def test_metal_rejects_full_upload_of_stale_host_state(tmp_path):
+    _,metal=paired_brains(tmp_path)
+    metal.weights_frozen=True
+    metal.step([],10,stimulation=([0],20),lamina_bias=0)
+    with pytest.raises(RuntimeError,match='stale'):
+        metal.backend.restore_from_host()
+
+
+def test_metal_materialize_restores_device_state_to_host(tmp_path):
+    _,metal=paired_brains(tmp_path)
+    metal.weights_frozen=True
+    metal.step([],10,stimulation=([0],20),lamina_bias=0)
+    metal.v.fill(np.nan);metal.queue.fill(-1);metal.active_flag.fill(255)
+    materialize(metal)
+    assert np.isfinite(metal.v).all()
+    assert np.all(metal.queue>=0)
+    assert np.all(metal.active_flag<=1)
+
+
+def test_metal_resident_bin_uses_only_narrow_boundary_transfers(tmp_path):
+    _,metal=paired_brains(tmp_path)
+    metal.weights_frozen=True
+    metal.step([],10,stimulation=([0],20),lamina_bias=0)
+    timing=metal.backend.last_timing
+    assert timing['full_upload_bytes']==0
+    assert timing['materialize_bytes']==0
+    assert timing['drive_copy_bytes']==metal.drive.nbytes
+    assert timing['counts_copy_bytes']==metal.counts.nbytes
 
 
 def test_diagnostic_capture_records_exact_all_neuron_spike_events(tmp_path):
@@ -124,6 +179,7 @@ def test_sparse_edge_bitmap_preserves_cross_word_delivery(tmp_path):
     cpu,metal=cross_word_brains(tmp_path)
     cpu.backend.advance(1);metal.backend.advance(1)
     np.testing.assert_array_equal(metal.counts,cpu.counts)
+    materialize(metal)
     for name in ['v','g','modulation','adaptation']:
         np.testing.assert_array_equal(getattr(metal,name),getattr(cpu,name),err_msg=name)
     assert metal.g[-1]==pytest.approx(1.0)
@@ -139,6 +195,7 @@ def test_sparse_edge_bitmap_clears_words_between_ticks(tmp_path):
         brain.queue[1,0]=33
         brain.queue_count[1]=1
     cpu.backend.advance(2);metal.backend.advance(2)
+    materialize(metal)
     for name in ['v','g','modulation','adaptation']:
         np.testing.assert_array_equal(getattr(metal,name),getattr(cpu,name),err_msg=name)
     assert metal.backend.last_timing['indirect_dispatch_count']==2
@@ -160,6 +217,7 @@ def test_sparse_edge_bitmap_supports_edgeless_graph(tmp_path):
     for brain in [cpu,metal]:
         brain.queue[0,0]=0;brain.queue_count[0]=1
     cpu.backend.advance(2);metal.backend.advance(2)
+    materialize(metal)
     for name in ['v','g','refractory','queue_count','last']:
         np.testing.assert_array_equal(getattr(metal,name),getattr(cpu,name),err_msg=name)
     assert metal.backend.last_timing['edge_bitmap_words']==0
@@ -184,5 +242,6 @@ def test_sparse_edge_bitmap_masks_targets_sharing_a_word(tmp_path):
     for brain in [cpu,metal]:
         brain.queue[0,:2]=[0,10];brain.queue_count[0]=2
     cpu.backend.advance(1);metal.backend.advance(1)
+    materialize(metal)
     np.testing.assert_array_equal(metal.g,cpu.g)
     np.testing.assert_array_equal(metal.g[-2:],[2.,3.])

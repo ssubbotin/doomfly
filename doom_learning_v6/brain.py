@@ -85,7 +85,7 @@ class MemoryBrain(NativeBrain):
         self.cursor=0;self.sim_ms=0.;self.total_spikes=0
         if not keep_memory:self.weight[self.circuit['edges']]=self.baseline_plastic
         else:self.memory_u[:],self.memory_w[:]=saved
-        self.backend.restore_from_host()
+        self.backend.restore_from_host(reason='reset')
 
     def _advance_cpu(self,steps,capture_spikes=False):
         clock=np.asarray([self.cursor],dtype=np.int64);c=self.circuit
@@ -181,7 +181,7 @@ class MemoryBrain(NativeBrain):
             for k in ['weight',*self.fields]:getattr(self,k)[:]=a[k]
             self.cursor=int(m['cursor']);self.sim_ms=self.cursor*self.dt;self.total_spikes=int(m['total_spikes'])
             self.weights_frozen=bool(m['weights_frozen'])
-            self.backend.restore_from_host()
+            self.backend.restore_from_host(reason='restore')
 
     def configuration_signature(self):
         # Equal cell IDs and CSR endpoints alone do not imply equal input

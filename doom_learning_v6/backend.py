@@ -18,8 +18,9 @@ class CpuBackend:
         return elapsed
     def start_diagnostics(self):self.capture_spikes=True;self.spike_events=[]
     def stop_diagnostics(self):self.capture_spikes=False
-    def sync_for_checkpoint(self):return None
-    def restore_from_host(self):return None
+    def materialize(self,reason):return None
+    def sync_for_checkpoint(self):return self.materialize('checkpoint')
+    def restore_from_host(self,reason=None):return None
     def metadata(self):return {'name':self.name,'build':self.brain.build}
     def close(self):return None
 
