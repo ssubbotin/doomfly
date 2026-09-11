@@ -1,5 +1,6 @@
 import json
 import subprocess
+import sys
 
 
 def test_build_records_source_and_binary_identity(tmp_path):
@@ -24,3 +25,11 @@ def test_generated_cpu_batch_artifacts_are_ignored():
         'outputs/doom-learning/cpu-batch/libcpu-batch.dylib']
     for path in paths:
         assert subprocess.run(['git','check-ignore','-q',path],check=False).returncode==0,path
+
+
+def test_build_module_probe_cli_prints_native_identity_without_import_warning(tmp_path):
+    result=subprocess.run([sys.executable,'-m','doom_learning_v6.cpu_batch.build',
+        '--probe','--output',str(tmp_path)],check=True,text=True,
+        stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    assert json.loads(result.stdout)['native_abi_version']==1
+    assert 'RuntimeWarning' not in result.stderr

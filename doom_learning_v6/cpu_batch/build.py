@@ -1,4 +1,5 @@
 """Reproducible native build for the portable CPU batch executor."""
+import argparse
 import ctypes as C
 import hashlib
 import json
@@ -66,3 +67,15 @@ def probe(output_dir=DEFAULT_OUTPUT):
     native=int(function())
     if native!=ABI_VERSION:raise RuntimeError('Native CPU batch ABI version mismatch')
     return {**record,'native_abi_version':native}
+
+
+def main():
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--output',type=Path,default=DEFAULT_OUTPUT)
+    parser.add_argument('--probe',action='store_true')
+    args=parser.parse_args()
+    result=probe(args.output) if args.probe else build(args.output)
+    print(json.dumps(result,indent=2))
+
+
+if __name__=='__main__':main()
