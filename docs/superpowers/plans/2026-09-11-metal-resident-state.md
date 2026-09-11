@@ -120,7 +120,7 @@ git commit -m "Measure Metal state transfer phases"
 - Produces: `df_metal_download_observation(handle, counts, cursor)`.
 - Preserves: `df_metal_upload_state` and `df_metal_download_state` for lifecycle boundaries.
 
-- [ ] **Step 1: Write failing native boundary tests**
+- [x] **Step 1: Write failing native boundary tests**
 
 Add Darwin tests that upload a changed drive without altering any other state, advance one bin, and read counts and cursor without a full download. Add null-pointer tests with exact error messages.
 
@@ -131,13 +131,13 @@ assert library.df_metal_download_observation(
 assert cursor.value == 100
 ```
 
-- [ ] **Step 2: Run on M4 Pro and verify the symbols are missing**
+- [x] **Step 2: Run on M4 Pro and verify the symbols are missing**
 
 Run: `ssh mini 'cd doomfly && .venv-neural/bin/python -m pytest tests/test_doom_metal_state.py -q'`
 
 Expected: FAIL because the narrow C ABI functions do not exist.
 
-- [ ] **Step 3: Add the C ABI**
+- [x] **Step 3: Add the C ABI**
 
 ```c
 int df_metal_upload_drive(df_metal_handle handle, const float *drive);
@@ -147,11 +147,11 @@ int df_metal_download_observation(df_metal_handle handle,
 
 Copy exactly `neurons * sizeof(float)` bytes for drive and `neurons * sizeof(int32_t)` bytes for counts. Read the backend cursor after successful command completion. Validate every pointer.
 
-- [ ] **Step 4: Clear device counts safely**
+- [x] **Step 4: Clear device counts safely**
 
 Clear `b->counts.contents` after the previous command has completed and before encoding the next command. Keep this operation independent of `df_drive_change`, whose unchanged-drive threads return early.
 
-- [ ] **Step 5: Bind and test the narrow calls**
+- [x] **Step 5: Bind and test the narrow calls**
 
 Define exact `ctypes` signatures and private Python methods `_upload_drive()` and `_download_observation()`. Run the complete Darwin state and parity micrograph tests.
 
@@ -159,7 +159,7 @@ Run: `ssh mini 'cd doomfly && .venv-neural/bin/python -m pytest tests/test_doom_
 
 Expected: PASS with current full synchronization still active.
 
-- [ ] **Step 6: Commit the narrow ABI**
+- [x] **Step 6: Commit the narrow ABI**
 
 ```bash
 git add doom_learning_v6/metal/api.h doom_learning_v6/metal/backend.mm \

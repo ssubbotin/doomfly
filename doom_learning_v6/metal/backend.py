@@ -91,6 +91,11 @@ class MetalBackend:
         self.library.df_metal_upload_state.restype=C.c_int
         self.library.df_metal_download_state.argtypes=[C.c_void_p,C.POINTER(State)]
         self.library.df_metal_download_state.restype=C.c_int
+        self.library.df_metal_upload_drive.argtypes=[C.c_void_p,C.c_void_p]
+        self.library.df_metal_upload_drive.restype=C.c_int
+        self.library.df_metal_download_observation.argtypes=[
+            C.c_void_p,C.c_void_p,C.POINTER(C.c_int64)]
+        self.library.df_metal_download_observation.restype=C.c_int
         self.library.df_metal_update_weights.argtypes=[C.c_void_p,C.c_int32,C.c_void_p,C.c_void_p]
         self.library.df_metal_update_weights.restype=C.c_int
         self.library.df_metal_advance.argtypes=[C.c_void_p,C.c_int32,C.POINTER(KCEvent),
@@ -179,6 +184,18 @@ class MetalBackend:
         self._last_materialize={'seconds':time.perf_counter()-started,
             'bytes':self._state_transfer_bytes()}
         self.brain.cursor=int(state.cursor)
+
+    def _upload_drive(self):
+        started=time.perf_counter()
+        self._error(self.library.df_metal_upload_drive(self.handle,_pointer(self.brain.drive)))
+        return {'seconds':time.perf_counter()-started,'bytes':self.brain.drive.nbytes}
+
+    def _download_observation(self):
+        cursor=C.c_int64();started=time.perf_counter()
+        self._error(self.library.df_metal_download_observation(
+            self.handle,_pointer(self.brain.counts),C.byref(cursor)))
+        self.brain.cursor=int(cursor.value)
+        return {'seconds':time.perf_counter()-started,'bytes':self.brain.counts.nbytes}
 
     def restore_from_host(self):
         if not self.handle.value:return

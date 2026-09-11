@@ -86,6 +86,8 @@ int df_metal_create(const df_metal_graph *graph,const char *metallib_path,
     df_metal_handle *handle);
 int df_metal_upload_state(df_metal_handle handle,const df_metal_state *state);
 int df_metal_download_state(df_metal_handle handle,df_metal_state *state);
+int df_metal_upload_drive(df_metal_handle handle,const float *drive);
+int df_metal_download_observation(df_metal_handle handle,int32_t *counts,int64_t *cursor);
 int df_metal_update_weights(df_metal_handle handle,int32_t count,
     const int64_t *edge_ids,const float *values);
 int df_metal_advance(df_metal_handle handle,int32_t steps,

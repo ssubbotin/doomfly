@@ -343,6 +343,23 @@ extern "C" int df_metal_download_state(df_metal_handle handle,df_metal_state *s)
   last_error.clear();return 0;
 }
 
+extern "C" int df_metal_upload_drive(df_metal_handle handle,const float *drive) {
+  Backend *b=cast(handle);
+  if(b==nullptr||drive==nullptr)return fail("Metal drive pointer is null");
+  std::memcpy(b->drive.contents,drive,size_t(b->neurons)*sizeof(float));
+  last_error.clear();return 0;
+}
+
+extern "C" int df_metal_download_observation(df_metal_handle handle,int32_t *counts,
+    int64_t *cursor) {
+  Backend *b=cast(handle);
+  if(b==nullptr||counts==nullptr||cursor==nullptr)
+    return fail("Metal observation pointer is null");
+  std::memcpy(counts,b->counts.contents,size_t(b->neurons)*sizeof(int32_t));
+  *cursor=b->cursor;
+  last_error.clear();return 0;
+}
+
 extern "C" int df_metal_update_weights(df_metal_handle handle,int32_t count,
     const int64_t *edge_ids,const float *values) {
   Backend *b=cast(handle);

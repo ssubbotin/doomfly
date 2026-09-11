@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 
 from test_doom_learning_v6 import brain
-from doom_learning_v6.metal.backend import Graph,KCEvent,State
+from doom_learning_v6.metal.backend import Graph,KCEvent,State,Timing
 from doom_learning_v6.metal.build import DEFAULT_OUTPUT,library_path,probe
 
 
@@ -69,6 +69,53 @@ def test_metal_abi_rejects_noncanonical_delay_ring():
         assert library.df_metal_last_error().decode()=='Metal delay slot count must be 19'
     finally:
         if handle.value:library.df_metal_destroy(handle)
+
+
+def test_metal_narrow_boundary_transfers_drive_counts_and_cursor():
+    library=metal_library();graph,graph_keepalive=raw_empty_graph();handle=C.c_void_p()
+    assert library.df_metal_create(C.byref(graph),
+        str(DEFAULT_OUTPUT/'kernels.metallib').encode(),C.byref(handle))==0
+    try:
+        state,state_keepalive=raw_empty_state()
+        assert library.df_metal_upload_state(handle,C.byref(state))==0
+        upload=library.df_metal_upload_drive
+        upload.argtypes=[C.c_void_p,C.c_void_p];upload.restype=C.c_int
+        download=library.df_metal_download_observation
+        download.argtypes=[C.c_void_p,C.c_void_p,C.POINTER(C.c_int64)]
+        download.restype=C.c_int
+        advance=library.df_metal_advance
+        advance.argtypes=[C.c_void_p,C.c_int32,C.POINTER(KCEvent),C.c_int32,
+            C.POINTER(C.c_int32),C.POINTER(Timing)]
+        advance.restype=C.c_int
+        drive=np.array([20.],dtype=np.float32)
+        assert upload(handle,C.c_void_p(drive.ctypes.data))==0
+        events=(KCEvent*1)();event_count=C.c_int32();timing=Timing()
+        assert advance(handle,100,events,1,C.byref(event_count),C.byref(timing))==0
+        counts=np.full(1,-1,dtype=np.int32);cursor=C.c_int64(-1)
+        assert download(handle,C.c_void_p(counts.ctypes.data),C.byref(cursor))==0
+        assert counts[0]>0
+        assert cursor.value==100
+    finally:
+        library.df_metal_destroy(handle)
+
+
+def test_metal_narrow_boundary_rejects_null_pointers():
+    library=metal_library();graph,graph_keepalive=raw_empty_graph();handle=C.c_void_p()
+    assert library.df_metal_create(C.byref(graph),
+        str(DEFAULT_OUTPUT/'kernels.metallib').encode(),C.byref(handle))==0
+    try:
+        upload=library.df_metal_upload_drive
+        upload.argtypes=[C.c_void_p,C.c_void_p];upload.restype=C.c_int
+        assert upload(handle,None)!=0
+        assert library.df_metal_last_error().decode()=='Metal drive pointer is null'
+        download=library.df_metal_download_observation
+        download.argtypes=[C.c_void_p,C.c_void_p,C.POINTER(C.c_int64)]
+        download.restype=C.c_int
+        cursor=C.c_int64()
+        assert download(handle,None,C.byref(cursor))!=0
+        assert library.df_metal_last_error().decode()=='Metal observation pointer is null'
+    finally:
+        library.df_metal_destroy(handle)
 
 
 def test_metal_state_round_trip_preserves_all_neural_arrays(tmp_path):
