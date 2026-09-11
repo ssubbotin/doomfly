@@ -3,7 +3,7 @@ import pytest
 from doom_learning_v6.brain import MemoryBrain
 
 
-def brain(tmp_path):
+def brain(tmp_path,**kwargs):
     p=tmp_path/'graph.npz';n=4
     np.savez(p,ptr=np.array([0,1,1,2,2],dtype=np.int64),post=np.array([1,1],dtype=np.int32),
         weight=np.array([20.,.275],dtype=np.float32),ids=np.arange(n,dtype=np.int64),
@@ -12,7 +12,7 @@ def brain(tmp_path):
     c={'edges':np.array([0],dtype=np.int64),'pre':np.array([0],dtype=np.int32),
        'kc_mask':np.array([1,0,0,0],dtype=np.uint8),'dan_index':np.array([-1,-1,0,-1],dtype=np.int8),
        'gain':np.array([[1.]],dtype=np.float32),'kc':np.array([0]),'mb':np.array([1]),'dan':np.array([2])}
-    return MemoryBrain(p,eta=.001,circuit=c,modulation_mask=np.array([0,0,1,0]))
+    return MemoryBrain(p,eta=.001,circuit=c,modulation_mask=np.array([0,0,1,0]),**kwargs)
 
 
 def test_full_state_checkpoint_reproduces_ongoing_memory(tmp_path):

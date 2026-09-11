@@ -6,6 +6,7 @@ import numpy as np
 from doom.native import NativeBrain
 from doom_learning.common import ROOT, GRAPH, OUT, digest, save_json
 from doom_learning.circuit import identify
+from .backend import create_backend
 
 SOURCE=Path(__file__).with_name('kernel.cpp')
 LIBRARY=(OUT/'physiology-v6')/('libmemory.dylib' if sys.platform=='darwin' else 'libmemory.so')
@@ -32,13 +33,13 @@ def build():
 
 
 class MemoryBrain(NativeBrain):
-    def __init__(self,path=GRAPH,*,eta=.001,circuit=None,modulation_mask=None,tonic=None,dan_baseline_hz=None,kc_rest=-60.,adaptation_jump=8.,adaptation_tau=200.):
+    def __init__(self,path=GRAPH,*,eta=.001,circuit=None,modulation_mask=None,tonic=None,dan_baseline_hz=None,kc_rest=-60.,adaptation_jump=8.,adaptation_tau=200.,backend='cpu'):
         super().__init__(path)
-        self.build=build();self.library=C.CDLL(str(LIBRARY));self.advance=self.library.memory_advance
-        self.advance.argtypes=[C.c_int]+[C.c_void_p]*11+[C.c_int,C.c_float]+[C.c_void_p]*5+[
+        self.build=build();self.library=C.CDLL(str(LIBRARY));self._cpu_kernel=self.library.memory_advance
+        self._cpu_kernel.argtypes=[C.c_int]+[C.c_void_p]*11+[C.c_int,C.c_float]+[C.c_void_p]*5+[
             C.c_void_p,C.c_void_p,C.c_void_p,C.c_void_p,C.c_int]+[C.c_void_p]*4+[
             C.c_float,C.c_float,C.c_float,C.c_int,C.c_void_p,C.c_void_p,C.c_void_p,C.c_void_p,C.c_void_p,C.c_float,C.c_float]
-        self.advance.restype=None
+        self._cpu_kernel.restype=None
         self.circuit=identify(self) if circuit is None else circuit
         if not math.isfinite(kc_rest) or not -80<=kc_rest<=-45:raise ValueError('Invalid KC resting potential')
         self.rest=np.full(self.n,-52.,dtype=np.float32);self.rest[self.circuit['kc']]=kc_rest;self.v[:]=self.rest
@@ -74,6 +75,7 @@ class MemoryBrain(NativeBrain):
         self.weights_frozen=False
         for k in ['rate_kc','rate_dan','memory_u','memory_w']:
             self.fields.append(k);self.initial[k]=getattr(self,k).copy()
+        self.backend=create_backend(backend,self)
 
     def reset(self,keep_memory=False):
         if keep_memory:saved=(self.memory_u.copy(),self.memory_w.copy())
@@ -81,6 +83,22 @@ class MemoryBrain(NativeBrain):
         self.cursor=0;self.sim_ms=0.;self.total_spikes=0
         if not keep_memory:self.weight[self.circuit['edges']]=self.baseline_plastic
         else:self.memory_u[:],self.memory_w[:]=saved
+        self.backend.restore_from_host()
+
+    def _advance_cpu(self,steps):
+        clock=np.asarray([self.cursor],dtype=np.int64);c=self.circuit
+        arrays=[self.ptr,self.post,self.weight,self.v,self.g,self.refractory,self.drive,self.previous_drive,self.queue,self.queue_count,clock]
+        start=time.perf_counter()
+        self._cpu_kernel(self.n,*[x.ctypes.data for x in arrays],steps,self.dt,
+            *[getattr(self,k).ctypes.data for k in ['counts','active','active_flag','nactive','last']],
+            c['kc_mask'].ctypes.data,c['dan_index'].ctypes.data,self.eligibility.ctypes.data,self.eligibility_last.ctypes.data,
+            len(c['edges']),c['edges'].ctypes.data,c['pre'].ctypes.data,self.baseline_plastic.ctypes.data,c['gain'].ctypes.data,
+            self.eta,PARAMETERS['trace_kc_seconds']*1000,PARAMETERS['minimum_fraction'],0,
+            self.modulation.ctypes.data,self.modulation_last.ctypes.data,self.modulation_mask.ctypes.data,self.rest.ctypes.data,
+            self.adaptation.ctypes.data,self.adaptation_jump,self.adaptation_tau)
+        elapsed=time.perf_counter()-start
+        self.cursor=int(clock[0])
+        return elapsed
 
     def _neural_step(self,luminance,duration_ms,*,learning=False,stimulation=None,lamina_bias=12.):
         light=np.asarray(luminance)
@@ -98,18 +116,8 @@ class MemoryBrain(NativeBrain):
                 amplitude=np.asarray(current,dtype=np.float32)
                 if ix.ndim!=1 or np.any(ix<0) or np.any(ix>=self.n) or not np.isfinite(amplitude).all() or amplitude.shape not in [(),ix.shape]:raise ValueError('Invalid external stimulation')
                 self.drive[ix]+=amplitude
-        self.counts.fill(0);clock=np.asarray([self.cursor],dtype=np.int64);c=self.circuit
-        arrays=[self.ptr,self.post,self.weight,self.v,self.g,self.refractory,self.drive,self.previous_drive,self.queue,self.queue_count,clock]
-        start=time.perf_counter()
-        self.advance(self.n,*[x.ctypes.data for x in arrays],steps,self.dt,
-            *[getattr(self,k).ctypes.data for k in ['counts','active','active_flag','nactive','last']],
-            c['kc_mask'].ctypes.data,c['dan_index'].ctypes.data,self.eligibility.ctypes.data,self.eligibility_last.ctypes.data,
-            len(c['edges']),c['edges'].ctypes.data,c['pre'].ctypes.data,self.baseline_plastic.ctypes.data,c['gain'].ctypes.data,
-            self.eta,PARAMETERS['trace_kc_seconds']*1000,PARAMETERS['minimum_fraction'],int(learning),
-            self.modulation.ctypes.data,self.modulation_last.ctypes.data,self.modulation_mask.ctypes.data,self.rest.ctypes.data,
-            self.adaptation.ctypes.data,self.adaptation_jump,self.adaptation_tau)
-        elapsed=time.perf_counter()-start
-        self.cursor=int(clock[0]);self.sim_ms=self.cursor*self.dt;self.total_spikes+=int(self.counts.sum())
+        self.counts.fill(0);elapsed=self.backend.advance(steps)
+        self.sim_ms=self.cursor*self.dt;self.total_spikes+=int(self.counts.sum())
         return self.counts.copy(),elapsed
 
     def step(self,luminance,duration_ms,*,learning=False,stimulation=None,lamina_bias=12.):
@@ -139,6 +147,7 @@ class MemoryBrain(NativeBrain):
             'sha256':digest(w),'model':MODEL}
 
     def checkpoint(self,path):
+        self.backend.sync_for_checkpoint()
         metadata={'model':MODEL,'build':self.build,'eta':self.eta,'parameters':PARAMETERS,'cursor':self.cursor,'weights_frozen':self.weights_frozen,
             'total_spikes':self.total_spikes,'graph_ids_sha256':digest(self.ids),'graph_ptr_sha256':digest(self.ptr),
             'graph_post_sha256':digest(self.post),'plastic_edges_sha256':digest(self.circuit['edges']),
@@ -159,6 +168,7 @@ class MemoryBrain(NativeBrain):
             for k in ['weight',*self.fields]:getattr(self,k)[:]=a[k]
             self.cursor=int(m['cursor']);self.sim_ms=self.cursor*self.dt;self.total_spikes=int(m['total_spikes'])
             self.weights_frozen=bool(m['weights_frozen'])
+            self.backend.restore_from_host()
 
     def configuration_signature(self):
         # Equal cell IDs and CSR endpoints alone do not imply equal input

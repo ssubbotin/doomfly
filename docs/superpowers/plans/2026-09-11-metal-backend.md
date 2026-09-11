@@ -36,7 +36,7 @@
 - Produces: `BackendError`, `CpuBackend`, `create_backend(name: str, brain: MemoryBrain)`, and backend methods `advance(steps: int) -> float`, `sync_for_checkpoint() -> None`, `restore_from_host() -> None`, `metadata() -> dict`, and `close() -> None`.
 - Preserves: `MemoryBrain(..., backend='cpu')`, `MemoryBrain.step(...) -> tuple[np.ndarray, float]`, and all existing public arrays and checkpoint methods.
 
-- [ ] **Step 1: Write failing backend-selection tests**
+- [x] **Step 1: Write failing backend-selection tests**
 
 ```python
 def test_cpu_is_default_and_unknown_backend_fails(tmp_path):
@@ -54,13 +54,13 @@ def test_cpu_backend_preserves_existing_trace(tmp_path):
     np.testing.assert_array_equal(default.v, explicit.v)
 ```
 
-- [ ] **Step 2: Run the focused tests and confirm the new keyword fails**
+- [x] **Step 2: Run the focused tests and confirm the new keyword fails**
 
 Run: `python -m pytest tests/test_doom_backend_contract.py -q`
 
 Expected: failure reporting that `MemoryBrain.__init__` does not accept `backend`.
 
-- [ ] **Step 3: Implement the backend contract and CPU adapter**
+- [x] **Step 3: Implement the backend contract and CPU adapter**
 
 ```python
 class BackendError(RuntimeError):
@@ -89,13 +89,13 @@ backend lazily on the first neural step so `VisualMemoryBrain` can finish its R8
 weight corrections before Metal copies graph state. Change the shared fixture to
 `def brain(tmp_path, **kwargs)` and forward `**kwargs` to `MemoryBrain`.
 
-- [ ] **Step 4: Run CPU regression tests**
+- [x] **Step 4: Run CPU regression tests**
 
 Run: `python -m pytest tests/test_doom_backend_contract.py tests/test_doom_learning_v6.py tests/test_doom_live_training.py -q`
 
 Expected: all tests pass with unchanged CPU results.
 
-- [ ] **Step 5: Commit the contract**
+- [x] **Step 5: Commit the contract**
 
 ```bash
 git add doom_learning_v6/backend.py doom_learning_v6/brain.py tests/test_doom_learning_v6.py tests/test_doom_backend_contract.py
