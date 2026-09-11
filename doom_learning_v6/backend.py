@@ -21,6 +21,7 @@ class CpuBackend:
     def materialize(self,reason):return None
     def sync_for_checkpoint(self):return self.materialize('checkpoint')
     def restore_from_host(self,reason=None):return None
+    def update_weights(self,edge_ids,values):return None
     def metadata(self):return {'name':self.name,'build':self.brain.build}
     def close(self):return None
 

@@ -5,6 +5,7 @@ import numpy as np
 import pytest
 
 from test_doom_learning_v6 import brain
+from test_doom_metal_parity import paired_brains
 from doom_learning_v6.metal.backend import Graph,KCEvent,State,Timing
 from doom_learning_v6.metal.build import DEFAULT_OUTPUT,library_path,probe
 
@@ -151,6 +152,27 @@ def test_metal_reports_separate_native_command_phases(tmp_path):
     assert timing['full_upload_bytes']==timing['materialize_bytes']==0
     assert timing['drive_copy_bytes']==model.drive.nbytes
     assert timing['counts_copy_bytes']==model.counts.nbytes
+
+
+def test_metal_learning_mirrors_only_identified_weights(tmp_path):
+    cpu,metal=paired_brains(tmp_path)
+    before=metal.weight.copy()
+    expected,_=cpu.step([],30,learning=True,stimulation=([0,3],20),lamina_bias=0)
+    actual,_=metal.step([],30,learning=True,stimulation=([0,3],20),lamina_bias=0)
+    np.testing.assert_array_equal(actual,expected)
+    assert not np.array_equal(metal.weight[metal.circuit['edges']],
+        before[metal.circuit['edges']])
+    timing=metal.backend.last_timing
+    assert timing['full_upload_bytes']==timing['materialize_bytes']==0
+    assert timing['sparse_weight_update_bytes']==(
+        metal.circuit['edges'].nbytes+metal.weight[metal.circuit['edges']].nbytes)
+    assert metal.backend._host_weight_epoch==metal.backend._device_weight_epoch==3
+    metal.backend.materialize('test')
+    unidentified=np.setdiff1d(np.arange(len(metal.weight),dtype=np.int64),
+        metal.circuit['edges'])
+    np.testing.assert_array_equal(metal.weight[unidentified],before[unidentified])
+    np.testing.assert_allclose(metal.weight[metal.circuit['edges']],
+        cpu.weight[cpu.circuit['edges']],rtol=1e-6,atol=0)
 
 
 def test_metal_restore_rejects_duplicate_delayed_neuron(tmp_path):

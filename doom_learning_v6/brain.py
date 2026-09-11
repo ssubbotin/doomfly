@@ -146,7 +146,9 @@ class MemoryBrain(NativeBrain):
             advance(self.rate_kc,self.rate_dan,self.memory_u,self.memory_w,
                 c[self.circuit['pre']]/seconds,c[self.circuit['dan']]/seconds-self.dan_baseline_hz,
                 self.circuit['gain'],seconds,self.eta,learning,self.weights_frozen)
-            if not self.weights_frozen:self.weight[self.circuit['edges']]=self.baseline_plastic*(1+self.memory_w)
+            if not self.weights_frozen:
+                self.weight[self.circuit['edges']]=self.baseline_plastic*(1+self.memory_w)
+                self.backend.update_weights(self.circuit['edges'],self.weight[self.circuit['edges']])
             self.last_rule_seconds+=time.perf_counter()-rule_started
             total+=c;wall+=t;remaining-=ticks
         self.counts[:]=total
