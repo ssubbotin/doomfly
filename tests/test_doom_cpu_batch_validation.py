@@ -67,7 +67,9 @@ def test_validation_identity_covers_runtime_dependencies_and_git_commit(tmp_path
         expected_structure=expected,horizons_ms=(40,))
     sources=report['identity']['sources']
     for name in ['doom/engine.py','doom/native.py','doom_learning_v6/rule.py',
-            'doom_learning_v6/calibration.py','doom_learning_v6/visual.py']:
+            'doom_learning_v6/backend.py','doom_learning_v6/calibration.py',
+            'doom_learning_v6/visual.py',
+            'data-provenance/malecns_v1/source.lock.json']:
         assert name in sources
     assert len(report['identity']['git_commit'])==40
     assert isinstance(report['identity']['source_tree_clean'],bool)

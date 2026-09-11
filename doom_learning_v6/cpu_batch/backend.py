@@ -415,7 +415,6 @@ class MultiTrajectoryCpuExecutor:
                 if self._closed:raise BackendError('CPU batch executor is closed')
                 if self._poisoned:raise BackendError('CPU batch executor is poisoned')
                 self._validate_registered_state(steps)
-                for lane in self.lanes:lane.counts.fill(0)
                 timing=_NativeTiming()
                 status=self._library.df_cpu_batch_advance(self._handle,steps,C.byref(timing))
                 if status:

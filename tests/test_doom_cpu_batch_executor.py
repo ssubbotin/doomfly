@@ -218,6 +218,19 @@ def test_recoverable_native_failure_does_not_poison_executor(tmp_path):
         assert executor.metadata()['poisoned'] is False
 
 
+def test_failed_nonfinite_advance_preserves_counts(tmp_path):
+    from doom_learning_v6.backend import BackendError
+    from doom_learning_v6.cpu_batch.backend import (CpuBatchLane,
+        MultiTrajectoryCpuExecutor,SharedCpuGraph)
+    brain=toy_brain(tmp_path);graph=SharedCpuGraph.from_brain(brain)
+    lane=CpuBatchLane.from_brain(graph,brain);lane.counts[:]=np.arange(graph.neurons)+7
+    expected=lane.counts.copy()
+    with MultiTrajectoryCpuExecutor(graph,[lane],1) as executor:
+        lane.drive[0]=np.nan
+        with pytest.raises(BackendError,match='Nonfinite'):executor.advance(1)
+    np.testing.assert_array_equal(lane.counts,expected)
+
+
 def test_poisoned_native_handle_preserves_failure_and_rejects_later_calls(tmp_path):
     from doom_learning_v6.backend import BackendError
     from doom_learning_v6.cpu_batch.backend import (CpuBatchLane,
@@ -261,3 +274,18 @@ def test_native_kernel_checks_queue_capacity_and_uses_bounded_future_slot():
     source=Path('doom_learning_v6/cpu_batch/executor.cpp').read_text()
     assert 'if (lane.queue_count[future] >= n)' in source
     assert 'const int future = (slot + delay) % slots;' in source
+
+
+def test_native_error_prefers_latest_calling_thread_failure(tmp_path):
+    from doom_learning_v6.cpu_batch.backend import (_NativeTiming,CpuBatchLane,
+        MultiTrajectoryCpuExecutor,SharedCpuGraph)
+    brain=toy_brain(tmp_path);graph=SharedCpuGraph.from_brain(brain)
+    lane=CpuBatchLane.from_brain(graph,brain)
+    with MultiTrajectoryCpuExecutor(graph,[lane],1) as executor:
+        timing=_NativeTiming()
+        assert executor._library.df_cpu_batch_advance(
+            executor._handle,0,C.byref(timing))!=0
+        assert b'steps' in executor._library.df_cpu_batch_error(executor._handle)
+        assert executor._library.df_cpu_batch_create(None,None,0,0,None)!=0
+        assert executor._library.df_cpu_batch_error(executor._handle)== \
+            b'Missing CPU batch output handle'

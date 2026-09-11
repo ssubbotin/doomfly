@@ -383,6 +383,9 @@ extern "C" int df_cpu_batch_advance(df_cpu_batch_handle handle, int32_t steps,
       if (*lane.cursor > std::numeric_limits<int64_t>::max() - steps)
         return fail(executor, "CPU batch cursor would overflow");
     }
+    for (auto &lane : executor->lanes)
+      for (int32_t neuron = 0; neuron < executor->graph.neurons; ++neuron)
+        lane.counts[neuron] = 0;
     const auto started = std::chrono::steady_clock::now();
     uint64_t generation;
     {
@@ -419,7 +422,8 @@ extern "C" int df_cpu_batch_advance(df_cpu_batch_handle handle, int32_t steps,
 
 extern "C" const char *df_cpu_batch_error(df_cpu_batch_handle handle) {
   auto *executor = static_cast<Executor *>(handle);
-  return executor && !executor->error.empty() ? executor->error.c_str() : last_error.c_str();
+  if (!last_error.empty()) return last_error.c_str();
+  return executor && !executor->error.empty() ? executor->error.c_str() : "";
 }
 
 extern "C" void df_cpu_batch_destroy(df_cpu_batch_handle handle) {

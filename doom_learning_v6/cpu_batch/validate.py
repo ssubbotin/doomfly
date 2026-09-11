@@ -20,8 +20,10 @@ VALIDATION_WORKERS=4
 VALIDATION_REPEATS=2
 SOURCE_FILES=('doom/engine.py','doom/native.py','doom_learning/common.py',
     'doom_learning/circuit.py','doom_learning_v6/brain.py','doom_learning_v6/kernel.cpp',
-    'doom_learning_v6/rule.py','doom_learning_v6/calibration.py',
-    'doom_learning_v6/visual.py','doom_learning_v6/cpu_batch/api.h',
+    'doom_learning_v6/backend.py','doom_learning_v6/rule.py',
+    'doom_learning_v6/calibration.py','doom_learning_v6/visual.py',
+    'data-provenance/malecns_v1/source.lock.json',
+    'doom_learning_v6/cpu_batch/api.h',
     'doom_learning_v6/cpu_batch/executor.cpp','doom_learning_v6/cpu_batch/backend.py',
     'doom_learning_v6/cpu_batch/build.py','doom_learning_v6/cpu_batch/validate.py',
     'doom_learning_v6/cpu_batch/benchmark.py')
