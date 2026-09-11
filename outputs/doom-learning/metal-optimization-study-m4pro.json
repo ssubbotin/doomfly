@@ -123,5 +123,70 @@
     "stress_control_80ms_passed": false,
     "long_training_gate_passed": false
   },
+  "resident_state": {
+    "status": "retained",
+    "repository_commit": "8231aedbbeb2722e3b504074168cbe0f7ca76032",
+    "cpu_median_seconds_per_40ms": 0.037701083994761575,
+    "metal_median_seconds_per_40ms": 0.07223233200056711,
+    "gpu_median_seconds_per_40ms": 0.06975070833505015,
+    "wall_median_seconds_per_40ms": 0.0763001669984078,
+    "transferred_bytes_per_10ms": 1383816,
+    "steady_state_full_upload_bytes": 0,
+    "steady_state_materialize_bytes": 0,
+    "dispatches_per_40ms": 2008,
+    "resident_state_gate_passed": true,
+    "cpu_to_metal_speedup": 0.5219419469174216,
+    "real_time_ratio": 0.5537686364561226,
+    "two_x_cpu_gate_passed": false,
+    "reports": {
+      "validation_40ms": {
+        "path": "outputs/doom-learning/metal-resident-validation-m4pro/report.json",
+        "sha256": "480a9c6b0ad2d03754d4de9838e4b73da3fe0d35e6e21ec5b15fe2758e253a7c"
+      },
+      "stress_control_80ms": {
+        "path": "outputs/doom-learning/metal-resident-stress-80ms-m4pro/report.json",
+        "sha256": "d8a01b8105cb06e34f85ee573254aa7a615a4733dd1095bd44f385daf91f37b9"
+      },
+      "benchmark": {
+        "path": "outputs/doom-learning/metal-resident-benchmark-m4pro/report.json",
+        "sha256": "e0d919a183f79fc056b40919e6efa8a55e7cc96babaedef0590e6f5721da33a8"
+      }
+    },
+    "failed_controls": [
+      {
+        "name": "CPU-written scattered shared-buffer weights",
+        "metal_medians_seconds_per_40ms": [0.08867816799829598, 0.08640154100066866],
+        "paths": [
+          "outputs/doom-learning/metal-resident-optimization-m4pro/cpu-written-weight-buffer-1.json",
+          "outputs/doom-learning/metal-resident-optimization-m4pro/cpu-written-weight-buffer-2.json"
+        ],
+        "interpretation": "Scattered CPU writes caused a repeatable GPU coherence penalty. A compact Metal update kernel removed it."
+      },
+      {
+        "name": "interleaved CPU and Metal repetitions",
+        "metal_medians_seconds_per_40ms": [0.08568587499394198, 0.08647204199951375],
+        "paths": [
+          "outputs/doom-learning/metal-resident-optimization-m4pro/alternating-backends-1.json",
+          "outputs/doom-learning/metal-resident-optimization-m4pro/alternating-backends-2.json"
+        ],
+        "interpretation": "Every intervening CPU repetition reintroduced a GPU cold-start sample. Contiguous Metal blocks represent sustained training throughput."
+      }
+    ]
+  },
+  "next_slice": {
+    "selection": "two-dispatch tick pipeline",
+    "plan": "docs/superpowers/plans/2026-09-11-metal-two-dispatch-pipeline.md",
+    "evidence": {
+      "path": "outputs/doom-learning/metal-resident-dispatch-lower-bound-m4pro.json",
+      "sha256": "be119ed1b20b4659c4bdf81da23d50502bae0d381dd357fc505bc4def6f5bb7e",
+      "empty_dispatch_floor_seconds": 0.005378166668378981,
+      "full_grid_increment_seconds": 0.028648458337556804,
+      "estimated_launch_saving_seconds": 0.0032140438257244907,
+      "estimated_full_grid_saving_seconds": 0.014252964347043186,
+      "estimated_total_saving_seconds": 0.017467008172767678
+    },
+    "target_dispatches_per_40ms": 808,
+    "target_gpu_median_seconds_per_40ms": 0.0569
+  },
   "interpretation": "Performance and numerical parity evidence only. These results do not establish learning or biological validity."
 }

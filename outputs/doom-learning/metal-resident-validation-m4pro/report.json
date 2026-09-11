@@ -1,0 +1,432 @@
+{
+  "schema": 1,
+  "experiment": "full-graph CPU/Metal offline parity",
+  "validation_horizon_ms": 40,
+  "validation_sources": {
+    "doom_learning_v6/brain.py": "53fd800304dca4b48f89b5f8df17bb8a826a63f361a5b59c2d0c2367f20d5487",
+    "doom_learning_v6/kernel.cpp": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+    "doom_learning_v6/rule.py": "0df2ae1bf10b97a213064b3ac3934227539d08e51521a99cdb56fe7f5b44b725",
+    "doom_learning_v6/visual.py": "788c06afd646528b0f5a9d3a8daa6838278709a15f1a90159b2ed4f9e6531c88",
+    "doom_learning_v6/calibration.py": "c9006ef72436c74453209f896e4f1d9371179311e33fa1ae734ad52fc26408b9",
+    "doom_learning_v6/survival.py": "1c85e94e0a1fb9bc1f500c167a861ca91975a61e0716abce52eaea8801b7f568",
+    "doom_learning/common.py": "79de9a34c3d53db399ce67b12df084ab000d6b66123b658e5c2bfb5c6d108d12",
+    "doom_learning_v2/vision.py": "20279cdc14352b23fcbb76db2ee4bdebcc26394bccc04a1ad5fcedc5e3accdeb",
+    "doom/engine.py": "5fc0ce73c05a49ff58af01729a9169018080bb5b913cedb2268116a95c04aeb3",
+    "doom_learning_v6/metal/api.h": "35329eef027c9867db0c7c3d6e6b853c7b108553ffeb10ab3fde0fed72c955f7",
+    "doom_learning_v6/metal/backend.mm": "541b6d61ad1d969ff3feb11903fe567c0bf08050fec730fbb3b17177192ddf7d",
+    "doom_learning_v6/metal/backend.py": "9797b8bcd1e8a49ffb6e6133ff42dd42c7abfcdfa762ac96da9f00e2b41f71e7",
+    "doom_learning_v6/metal/build.py": "262f1534641b3e7327629aeb28a5ffe590a77f8d3702cc9d3d82c9697feef945",
+    "doom_learning_v6/metal/graph.py": "79286a9a37f606ace87218a1cb0ba6fb9bfc1a05526b46963c3564d146681f49",
+    "doom_learning_v6/metal/kernels.metal": "41f2553b3300a78796ea4bc4943236ad4d2470c3dcda041de25be938db2867ce",
+    "doom_learning_v6/metal/validate.py": "bece43c588c30d46f63584272cdd0a5b95e2508fa005188c843fd96690126734",
+    "doom_learning_v6/metal/benchmark.py": "4165153658310ea7da07b727904e917544ee96e26801e3ef7c79b0d7240c5fa2"
+  },
+  "identity": {
+    "validation_sources": {
+      "doom_learning_v6/brain.py": "53fd800304dca4b48f89b5f8df17bb8a826a63f361a5b59c2d0c2367f20d5487",
+      "doom_learning_v6/kernel.cpp": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+      "doom_learning_v6/rule.py": "0df2ae1bf10b97a213064b3ac3934227539d08e51521a99cdb56fe7f5b44b725",
+      "doom_learning_v6/visual.py": "788c06afd646528b0f5a9d3a8daa6838278709a15f1a90159b2ed4f9e6531c88",
+      "doom_learning_v6/calibration.py": "c9006ef72436c74453209f896e4f1d9371179311e33fa1ae734ad52fc26408b9",
+      "doom_learning_v6/survival.py": "1c85e94e0a1fb9bc1f500c167a861ca91975a61e0716abce52eaea8801b7f568",
+      "doom_learning/common.py": "79de9a34c3d53db399ce67b12df084ab000d6b66123b658e5c2bfb5c6d108d12",
+      "doom_learning_v2/vision.py": "20279cdc14352b23fcbb76db2ee4bdebcc26394bccc04a1ad5fcedc5e3accdeb",
+      "doom/engine.py": "5fc0ce73c05a49ff58af01729a9169018080bb5b913cedb2268116a95c04aeb3",
+      "doom_learning_v6/metal/api.h": "35329eef027c9867db0c7c3d6e6b853c7b108553ffeb10ab3fde0fed72c955f7",
+      "doom_learning_v6/metal/backend.mm": "541b6d61ad1d969ff3feb11903fe567c0bf08050fec730fbb3b17177192ddf7d",
+      "doom_learning_v6/metal/backend.py": "9797b8bcd1e8a49ffb6e6133ff42dd42c7abfcdfa762ac96da9f00e2b41f71e7",
+      "doom_learning_v6/metal/build.py": "262f1534641b3e7327629aeb28a5ffe590a77f8d3702cc9d3d82c9697feef945",
+      "doom_learning_v6/metal/graph.py": "79286a9a37f606ace87218a1cb0ba6fb9bfc1a05526b46963c3564d146681f49",
+      "doom_learning_v6/metal/kernels.metal": "41f2553b3300a78796ea4bc4943236ad4d2470c3dcda041de25be938db2867ce",
+      "doom_learning_v6/metal/validate.py": "bece43c588c30d46f63584272cdd0a5b95e2508fa005188c843fd96690126734",
+      "doom_learning_v6/metal/benchmark.py": "4165153658310ea7da07b727904e917544ee96e26801e3ef7c79b0d7240c5fa2"
+    },
+    "graph_file_sha256": "346b8af85a11af13b8324e18669812c1924569e7d1adcb4e6f45cc461a2c344b",
+    "metal_sources": {
+      "api.h": "35329eef027c9867db0c7c3d6e6b853c7b108553ffeb10ab3fde0fed72c955f7",
+      "backend.mm": "541b6d61ad1d969ff3feb11903fe567c0bf08050fec730fbb3b17177192ddf7d",
+      "kernels.metal": "41f2553b3300a78796ea4bc4943236ad4d2470c3dcda041de25be938db2867ce"
+    },
+    "metal_binaries": {
+      "air": "0b7bb6411d3ec5e963aa5a83c38bdb504c22813b6877511ef4aa88a8662c6fcc",
+      "metallib": "415c3c63a8d8a46d09991d8fbdefafe4d991782222b44a36297813d6f4a8850a",
+      "library": "467a93fc4f7ca72ab9d6861931d7a36f87efda8e15333067be62f233b743c1b4"
+    },
+    "metal_environment": {
+      "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+      "sdk": "26.5",
+      "macos": "26.6.2",
+      "architecture": "arm64",
+      "metal_language": "macos-metal2.4"
+    },
+    "metal_device": {
+      "name": "Apple M4 Pro",
+      "recommended_working_set": 19069665280,
+      "has_unified_memory": true,
+      "supports_apple7": true,
+      "supported": true
+    },
+    "ids_sha256": "6b6b40c3bddf84b1281ef0b18db06927c2bf61c5f4cb32a4219ec9b7839dc2e5",
+    "out_ptr_sha256": "a29aa0296125a5daa972c12d17711360d01a1209cd9cd9d7ccb1f6959224bcaf",
+    "out_post_sha256": "4cc5e857d3481f433576f35ddb8d580cc33cf8e22b6651fa03e08cde5d956d90",
+    "original_weight_sha256": "d95171c2d59cfe3ebef2e5bd52be779b8f74754d718fc8941a93b8f2921c632b",
+    "plastic_edges_sha256": "550335ad546f5c3106e4988426197ad24d8556367c9285e2f4c8c33f37f3cc68",
+    "configuration_sha256": "9499403434ee781463272a83fcd88ee3df37acca3aeb220f436810b0028bfbd3"
+  },
+  "structure": {
+    "release": "MaleCNS v1.0",
+    "neurons": 166700,
+    "edges": 25582938,
+    "graph_file_sha256": "346b8af85a11af13b8324e18669812c1924569e7d1adcb4e6f45cc461a2c344b",
+    "ids_sha256": "6b6b40c3bddf84b1281ef0b18db06927c2bf61c5f4cb32a4219ec9b7839dc2e5",
+    "out_ptr_sha256": "a29aa0296125a5daa972c12d17711360d01a1209cd9cd9d7ccb1f6959224bcaf",
+    "out_post_sha256": "4cc5e857d3481f433576f35ddb8d580cc33cf8e22b6651fa03e08cde5d956d90",
+    "original_weight_sha256": "d95171c2d59cfe3ebef2e5bd52be779b8f74754d718fc8941a93b8f2921c632b",
+    "plastic_edges_sha256": "550335ad546f5c3106e4988426197ad24d8556367c9285e2f4c8c33f37f3cc68",
+    "plastic_edges": 4184,
+    "source_hashes": {
+      "annotations.feather": {
+        "url": "https://storage.googleapis.com/flyem-male-cns/v1.0/connectome-data/flat-connectome/body-annotations-male-cns-v1.0-minconf-0.5.feather",
+        "bytes": 14483314,
+        "sha256": "2177e246113e4cfbf1e7772ec37c6da1955ff22e8063d0b1f833101f99a9a3b2"
+      },
+      "neurotransmitters.feather": {
+        "url": "https://storage.googleapis.com/flyem-male-cns/v1.0/connectome-data/flat-connectome/body-neurotransmitters-male-cns-v1.0.feather",
+        "bytes": 43282834,
+        "sha256": "95c9289220663abeb3409f3ad9e5a7f8a53f8093f5139d15502cd08da8879621"
+      },
+      "edges.feather": {
+        "url": "https://storage.googleapis.com/flyem-male-cns/v1.0/connectome-data/flat-connectome/connectome-weights-male-cns-v1.0-minconf-0.5.feather",
+        "bytes": 1051241946,
+        "sha256": "e35da783d1c686b2b58b3b87cd6a403ae43bfcfba8bff28e08ef752c1a56afc1"
+      }
+    },
+    "incoming": {
+      "builder_sha256": "79286a9a37f606ace87218a1cb0ba6fb9bfc1a05526b46963c3564d146681f49",
+      "edges": 25582938,
+      "incoming_edge_sha256": "f202d2d9515998595db836e2f55cb7ddcc76e927dc0e2f401946bd4238175fd6",
+      "incoming_pre_sha256": "c0a2d02fbe1ab449a2cdf7377024361a625f201266f7d6415c3c8584dc67a2db",
+      "incoming_ptr_sha256": "6e58b593426b23e4a95ccc0fa9ed97f7944e7f532639f004260b9c520b40b9dc",
+      "neurons": 166700,
+      "out_post_sha256": "4cc5e857d3481f433576f35ddb8d580cc33cf8e22b6651fa03e08cde5d956d90",
+      "out_ptr_sha256": "a29aa0296125a5daa972c12d17711360d01a1209cd9cd9d7ccb1f6959224bcaf",
+      "schema": 1
+    },
+    "source_lock_equal": true
+  },
+  "input_trace": {
+    "format": "procedural RGB frames saved in ignored input-trace.npz",
+    "labels": [
+      "black",
+      "blue",
+      "green",
+      "white"
+    ],
+    "duration_ms_per_frame": 10,
+    "frames_sha256": "b5d352797d958b47ed2eafb48c7af34113d970f9e4e48808fbb15312ed5ea5e9"
+  },
+  "cpu": {
+    "decisions": [
+      {
+        "turn": 0.0,
+        "forward": 0.0,
+        "attack": false
+      },
+      {
+        "turn": 0.0,
+        "forward": 0.0,
+        "attack": false
+      },
+      {
+        "turn": 0.0,
+        "forward": 7.61300655712323,
+        "attack": true
+      },
+      {
+        "turn": 0.0,
+        "forward": 6.888533196638214,
+        "attack": false
+      }
+    ],
+    "state_sha256": "32efcd8e14bf7f6bf5b834c56d439c14b2ae9b2cdeb19ec5a16019df7bfe7ee6",
+    "event_count": 21326,
+    "total_counts_sha256": "89ec6db8cc45677533caf82db7f288bb68285525adf799f7e2204339a1363605",
+    "scientific_outcomes": {
+      "all_spikes_observed": true,
+      "KC_spikes_observed": true,
+      "DAN_spikes_observed": true,
+      "MBON_spikes_observed": true,
+      "fixed_readout_spikes_observed": true,
+      "finite_neural_state": true
+    },
+    "group_spikes": {
+      "all": 21326,
+      "KC": 2,
+      "DAN": 2,
+      "MBON": 2,
+      "fixed_readout": 4
+    },
+    "bins": [
+      {
+        "label": "black",
+        "stimulated_DAN": false,
+        "spikes": 0,
+        "counts_sha256": "59bc68b376b730245aa0a6187794bf1b8bb5cf893925f731adc6d454c4034d10"
+      },
+      {
+        "label": "blue",
+        "stimulated_DAN": false,
+        "spikes": 10973,
+        "counts_sha256": "8afb964cb72d2ed1b86e96cdea650481ce8dc1b73156fd1837ef9fe171bfee95"
+      },
+      {
+        "label": "green",
+        "stimulated_DAN": false,
+        "spikes": 4829,
+        "counts_sha256": "0fc87025152fdb95ef5095853bc6ab37dd915380c33958fe9552275ff3aba44d"
+      },
+      {
+        "label": "white",
+        "stimulated_DAN": true,
+        "spikes": 5524,
+        "counts_sha256": "653256735945972f513ca35d1b632f55cfb126266e50852a231fbd5b13f46346"
+      }
+    ],
+    "neural_wall_seconds": 0.03438750000714208,
+    "backend": {
+      "name": "cpu",
+      "build": {
+        "model": "adaptive-centered-v6",
+        "source_sha256": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+        "binary_sha256": "62e5f094c616255bb7c25d29169a94993f0b76233da6c1147213dbd129dbce3c",
+        "flags": [
+          "-O3",
+          "-std=c++17",
+          "-shared",
+          "-fPIC"
+        ]
+      }
+    }
+  },
+  "metal": {
+    "decisions": [
+      {
+        "turn": 0.0,
+        "forward": 0.0,
+        "attack": false
+      },
+      {
+        "turn": 0.0,
+        "forward": 0.0,
+        "attack": false
+      },
+      {
+        "turn": 0.0,
+        "forward": 7.61300655712323,
+        "attack": true
+      },
+      {
+        "turn": 0.0,
+        "forward": 6.888533196638214,
+        "attack": false
+      }
+    ],
+    "state_sha256": "59a2739ed22f68ba13811fe4d241e8a2a0a7e8f88a90ef94576385e69d0272e6",
+    "event_count": 21326,
+    "total_counts_sha256": "89ec6db8cc45677533caf82db7f288bb68285525adf799f7e2204339a1363605",
+    "scientific_outcomes": {
+      "all_spikes_observed": true,
+      "KC_spikes_observed": true,
+      "DAN_spikes_observed": true,
+      "MBON_spikes_observed": true,
+      "fixed_readout_spikes_observed": true,
+      "finite_neural_state": true
+    },
+    "group_spikes": {
+      "all": 21326,
+      "KC": 2,
+      "DAN": 2,
+      "MBON": 2,
+      "fixed_readout": 4
+    },
+    "bins": [
+      {
+        "label": "black",
+        "stimulated_DAN": false,
+        "spikes": 0,
+        "counts_sha256": "59bc68b376b730245aa0a6187794bf1b8bb5cf893925f731adc6d454c4034d10"
+      },
+      {
+        "label": "blue",
+        "stimulated_DAN": false,
+        "spikes": 10973,
+        "counts_sha256": "8afb964cb72d2ed1b86e96cdea650481ce8dc1b73156fd1837ef9fe171bfee95"
+      },
+      {
+        "label": "green",
+        "stimulated_DAN": false,
+        "spikes": 4829,
+        "counts_sha256": "0fc87025152fdb95ef5095853bc6ab37dd915380c33958fe9552275ff3aba44d"
+      },
+      {
+        "label": "white",
+        "stimulated_DAN": true,
+        "spikes": 5524,
+        "counts_sha256": "653256735945972f513ca35d1b632f55cfb126266e50852a231fbd5b13f46346"
+      }
+    ],
+    "neural_wall_seconds": 0.11107366599753732,
+    "backend": {
+      "schema": 1,
+      "abi_version": 3,
+      "sources": {
+        "api.h": "35329eef027c9867db0c7c3d6e6b853c7b108553ffeb10ab3fde0fed72c955f7",
+        "backend.mm": "541b6d61ad1d969ff3feb11903fe567c0bf08050fec730fbb3b17177192ddf7d",
+        "kernels.metal": "41f2553b3300a78796ea4bc4943236ad4d2470c3dcda041de25be938db2867ce"
+      },
+      "binaries": {
+        "air": "0b7bb6411d3ec5e963aa5a83c38bdb504c22813b6877511ef4aa88a8662c6fcc",
+        "metallib": "415c3c63a8d8a46d09991d8fbdefafe4d991782222b44a36297813d6f4a8850a",
+        "library": "467a93fc4f7ca72ab9d6861931d7a36f87efda8e15333067be62f233b743c1b4"
+      },
+      "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+      "sdk": "26.5",
+      "macos": "26.6.2",
+      "architecture": "arm64",
+      "metal_language": "macos-metal2.4",
+      "device": {
+        "name": "Apple M4 Pro",
+        "recommended_working_set": 19069665280,
+        "has_unified_memory": true,
+        "supports_apple7": true,
+        "supported": true
+      }
+    }
+  },
+  "metal_repeat": {
+    "decisions": [
+      {
+        "turn": 0.0,
+        "forward": 0.0,
+        "attack": false
+      },
+      {
+        "turn": 0.0,
+        "forward": 0.0,
+        "attack": false
+      },
+      {
+        "turn": 0.0,
+        "forward": 7.61300655712323,
+        "attack": true
+      },
+      {
+        "turn": 0.0,
+        "forward": 6.888533196638214,
+        "attack": false
+      }
+    ],
+    "state_sha256": "59a2739ed22f68ba13811fe4d241e8a2a0a7e8f88a90ef94576385e69d0272e6",
+    "event_count": 21326,
+    "total_counts_sha256": "89ec6db8cc45677533caf82db7f288bb68285525adf799f7e2204339a1363605",
+    "scientific_outcomes": {
+      "all_spikes_observed": true,
+      "KC_spikes_observed": true,
+      "DAN_spikes_observed": true,
+      "MBON_spikes_observed": true,
+      "fixed_readout_spikes_observed": true,
+      "finite_neural_state": true
+    },
+    "group_spikes": {
+      "all": 21326,
+      "KC": 2,
+      "DAN": 2,
+      "MBON": 2,
+      "fixed_readout": 4
+    },
+    "bins": [
+      {
+        "label": "black",
+        "stimulated_DAN": false,
+        "spikes": 0,
+        "counts_sha256": "59bc68b376b730245aa0a6187794bf1b8bb5cf893925f731adc6d454c4034d10"
+      },
+      {
+        "label": "blue",
+        "stimulated_DAN": false,
+        "spikes": 10973,
+        "counts_sha256": "8afb964cb72d2ed1b86e96cdea650481ce8dc1b73156fd1837ef9fe171bfee95"
+      },
+      {
+        "label": "green",
+        "stimulated_DAN": false,
+        "spikes": 4829,
+        "counts_sha256": "0fc87025152fdb95ef5095853bc6ab37dd915380c33958fe9552275ff3aba44d"
+      },
+      {
+        "label": "white",
+        "stimulated_DAN": true,
+        "spikes": 5524,
+        "counts_sha256": "653256735945972f513ca35d1b632f55cfb126266e50852a231fbd5b13f46346"
+      }
+    ],
+    "neural_wall_seconds": 0.09440279199770885,
+    "backend": {
+      "schema": 1,
+      "abi_version": 3,
+      "sources": {
+        "api.h": "35329eef027c9867db0c7c3d6e6b853c7b108553ffeb10ab3fde0fed72c955f7",
+        "backend.mm": "541b6d61ad1d969ff3feb11903fe567c0bf08050fec730fbb3b17177192ddf7d",
+        "kernels.metal": "41f2553b3300a78796ea4bc4943236ad4d2470c3dcda041de25be938db2867ce"
+      },
+      "binaries": {
+        "air": "0b7bb6411d3ec5e963aa5a83c38bdb504c22813b6877511ef4aa88a8662c6fcc",
+        "metallib": "415c3c63a8d8a46d09991d8fbdefafe4d991782222b44a36297813d6f4a8850a",
+        "library": "467a93fc4f7ca72ab9d6861931d7a36f87efda8e15333067be62f233b743c1b4"
+      },
+      "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+      "sdk": "26.5",
+      "macos": "26.6.2",
+      "architecture": "arm64",
+      "metal_language": "macos-metal2.4",
+      "device": {
+        "name": "Apple M4 Pro",
+        "recommended_working_set": 19069665280,
+        "has_unified_memory": true,
+        "supports_apple7": true,
+        "supported": true
+      }
+    }
+  },
+  "comparison": {
+    "spikes": {
+      "jaccard": 0.9973775405076333,
+      "total_spike_fraction": 0.0,
+      "rate_correlation": 1.0,
+      "within_one_tick_fraction": 1.0
+    },
+    "decoder_equal": true,
+    "scientific_gates_equal": true,
+    "weights": {
+      "maximum_relative_error": 0.0,
+      "within_rtol": true
+    },
+    "metal_repeat_bitwise": true
+  },
+  "gates": {
+    "spike_jaccard": true,
+    "total_spike_fraction": true,
+    "rate_correlation": true,
+    "within_one_tick": true,
+    "decoder_equal": true,
+    "scientific_gates_equal": true,
+    "weights_within_rtol": true,
+    "structural_integrity": true,
+    "metal_repeat_bitwise": true,
+    "passed": true
+  },
+  "passed": true,
+  "biologically_validated": false,
+  "learning_demonstrated": false,
+  "interpretation": "Numerical backend parity only. Passing does not validate modeled fly physiology, vision, learning, or game performance."
+}

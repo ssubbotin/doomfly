@@ -181,7 +181,7 @@ git commit -m "Add narrow Metal boundary transfers"
 - Produces: host validity and device/weight epoch checks.
 - Changes: `restore_from_host(reason: str)` requires an explicit authoritative lifecycle reason for Metal.
 
-- [ ] **Step 1: Write failing residency and stale-host tests**
+- [x] **Step 1: Write failing residency and stale-host tests**
 
 Run two frozen-weight bins through a retained full-sync reference and a resident backend, then compare counts, events, cursor, and fully materialized state. Between resident bins, poison host `v`, `g`, `queue`, and `active_flag`; assert that the next Metal result is unchanged. Task 4 adds the learning-enabled comparison after sparse weight mirroring exists.
 
@@ -199,13 +199,13 @@ np.testing.assert_array_equal(actual, expected)
 
 Add a test proving a generic full upload rejects stale host neural state.
 
-- [ ] **Step 2: Run on M4 Pro and confirm the current full upload consumes poisoned arrays**
+- [x] **Step 2: Run on M4 Pro and confirm the current full upload consumes poisoned arrays**
 
 Run: `ssh mini 'cd doomfly && .venv-neural/bin/python -m pytest tests/test_doom_metal_state.py -q'`
 
 Expected: FAIL because `advance` calls `restore_from_host()`.
 
-- [ ] **Step 3: Implement explicit ownership**
+- [x] **Step 3: Implement explicit ownership**
 
 After initialization or full upload, host and device are synchronized. After every Metal advance, mark host neural arrays stale while keeping copied counts, cursor, KC events, eligibility, and plastic host weights valid.
 
@@ -220,17 +220,17 @@ After initialization or full upload, host and device are synchronized. After eve
 
 Remove hot-path `restore_from_host()` and `sync_for_checkpoint()`.
 
-- [ ] **Step 4: Protect lifecycle boundaries**
+- [x] **Step 4: Protect lifecycle boundaries**
 
 `materialize(reason)` waits for completion, downloads full state, and marks host neural arrays valid. `checkpoint`, validation state digests, diagnostic shutdown, and explicit inspection must materialize. Reset and restore overwrite every canonical host array before a reason-tagged full upload. Reject a full upload while host neural arrays are stale unless the reason is `reset` or `restore`.
 
-- [ ] **Step 5: Run residency and parity tests**
+- [x] **Step 5: Run residency and parity tests**
 
 Run: `ssh mini 'cd doomfly && .venv-neural/bin/python -m pytest tests/test_doom_metal_state.py tests/test_doom_metal_checkpoint.py tests/test_doom_metal_parity.py -q'`
 
 Expected: PASS, including poisoned-host isolation and all continuation directions.
 
-- [ ] **Step 6: Commit resident ownership**
+- [x] **Step 6: Commit resident ownership**
 
 ```bash
 git add doom_learning_v6/backend.py doom_learning_v6/brain.py \
@@ -252,7 +252,7 @@ git commit -m "Keep Metal neural state resident"
 - Produces: backend method `update_weights(edge_ids, values) -> None`.
 - Guarantees: the Metal propagation weight epoch equals the host plastic-weight epoch before every advance.
 
-- [ ] **Step 1: Write a failing multi-bin learning test**
+- [x] **Step 1: Write a failing multi-bin learning test**
 
 Use a micrograph whose first bin changes its identified plastic edge. Assert that the second bin observes the changed efficacy on Metal. Materialize afterward and prove every unidentified weight is bitwise unchanged.
 
@@ -270,13 +270,13 @@ np.testing.assert_array_equal(
     model.weight[unidentified], before[unidentified])
 ```
 
-- [ ] **Step 2: Run on M4 Pro and confirm resident Metal misses the update**
+- [x] **Step 2: Run on M4 Pro and confirm resident Metal misses the update**
 
 Run: `ssh mini 'cd doomfly && .venv-neural/bin/python -m pytest tests/test_doom_metal_state.py -q'`
 
 Expected: FAIL because the existing `df_metal_update_weights` call is not connected to `MemoryBrain.step`.
 
-- [ ] **Step 3: Connect the backend contract**
+- [x] **Step 3: Connect the backend contract**
 
 Add a no-op `CpuBackend.update_weights`. After each host rule update that writes `self.weight[self.circuit['edges']]`, call:
 
@@ -288,13 +288,13 @@ self.backend.update_weights(
 
 The Metal method sends all 4,184 canonical edge IDs and contiguous float32 values, including after the final bin. Increment host and device weight epochs together and assert equality before the next advance.
 
-- [ ] **Step 4: Run learning and checkpoint tests**
+- [x] **Step 4: Run learning and checkpoint tests**
 
 Run: `ssh mini 'cd doomfly && .venv-neural/bin/python -m pytest tests/test_doom_metal_state.py tests/test_doom_metal_checkpoint.py tests/test_doom_learning_v6.py -q'`
 
 Expected: PASS with exact float64 eligibility and unchanged nonplastic weights.
 
-- [ ] **Step 5: Commit weight mirroring**
+- [x] **Step 5: Commit weight mirroring**
 
 ```bash
 git add doom_learning_v6/backend.py doom_learning_v6/brain.py \
@@ -314,21 +314,21 @@ git commit -m "Mirror plastic weights to resident Metal state"
 - Produces: explicit materialization before every validation digest.
 - Preserves: existing validation thresholds and the retained 40 ms and 80 ms controls.
 
-- [ ] **Step 1: Write failing explicit-materialization tests**
+- [x] **Step 1: Write failing explicit-materialization tests**
 
 Add a validation helper test that poisons host mirrors after Metal advancement and proves the digest helper materializes device state before hashing. Add reset and restore tests after a stale resident interval.
 
-- [ ] **Step 2: Verify the tests fail for stale host state**
+- [x] **Step 2: Verify the tests fail for stale host state**
 
 Run: `ssh mini 'cd doomfly && .venv-neural/bin/python -m pytest tests/test_doom_metal_checkpoint.py tests/test_doom_metal_validation.py -q'`
 
 Expected: FAIL until validation requests materialization.
 
-- [ ] **Step 3: Materialize at every observer boundary**
+- [x] **Step 3: Materialize at every observer boundary**
 
 Update state-digest, checkpoint, diagnostic-finalization, and continuation helpers to request full materialization with a recorded reason. Keep ordinary count and decoder observation on the narrow path.
 
-- [ ] **Step 4: Run the complete local and M4 Pro suites**
+- [x] **Step 4: Run the complete local and M4 Pro suites**
 
 Run locally: `.venv-neural/bin/python -m pytest -q`
 
@@ -336,7 +336,7 @@ Run on M4 Pro: `ssh mini 'cd doomfly && .venv-neural/bin/python -m pytest -q'`
 
 Expected: all tests pass; platform-specific skips remain explained.
 
-- [ ] **Step 5: Commit lifecycle validation**
+- [x] **Step 5: Commit lifecycle validation**
 
 ```bash
 git add doom_learning_v6/metal/validate.py \
@@ -355,14 +355,14 @@ git commit -m "Validate resident Metal lifecycle boundaries"
 - Produces: a source-hashed five-repetition residency benchmark and updated optimization decision.
 - Selects: two-dispatch fusion or an ID-ordered block-sparse prototype from measured evidence.
 
-- [ ] **Step 1: Push the implementation commits and update M4 Pro**
+- [x] **Step 1: Push the implementation commits and update M4 Pro**
 
 ```bash
 git push origin metal-backend
 ssh mini 'cd doomfly && git pull --ff-only origin metal-backend'
 ```
 
-- [ ] **Step 2: Run fresh validation**
+- [x] **Step 2: Run fresh validation**
 
 ```bash
 ssh mini 'cd doomfly && OPENBLAS_NUM_THREADS=1 .venv-neural/bin/python \
@@ -383,7 +383,7 @@ counts
 and 52,236 events. Compare every per-bin `counts_sha256` value from the
 corresponding retained report.
 
-- [ ] **Step 3: Run a fresh five-repetition benchmark**
+- [x] **Step 3: Run a fresh five-repetition benchmark**
 
 ```bash
 ssh mini 'cd doomfly && OPENBLAS_NUM_THREADS=1 .venv-neural/bin/python \
@@ -401,7 +401,7 @@ Promotion requires:
 - GPU median at most 73.25 ms;
 - every reset, checkpoint, diagnostic, continuation, parity, and determinism gate passing.
 
-- [ ] **Step 4: Record the decision**
+- [x] **Step 4: Record the decision**
 
 If any correctness gate fails, roll back resident ownership and retain correct instrumentation plus the failed reports. If neural improvement is below 5 ms or wall improvement is below 8 ms, retain instrumentation and restore the full-sync hot path.
 
@@ -409,7 +409,7 @@ When removable clear, finalize, and full-grid boundary cost measures at least 14
 
 When that cost is lower and the active-tick 95th-percentile occupied 128/256-neuron-block fraction is below 40%, write the next plan for an ascending-ID block-sparse prototype with a dense fallback.
 
-- [ ] **Step 5: Update documentation and commit evidence**
+- [x] **Step 5: Update documentation and commit evidence**
 
 Document measured timings, transfer bytes, retained digests, failures, and the chosen second slice. Do not describe the 2x CPU gate as passed unless Metal neural median is at most 17.27 ms.
 

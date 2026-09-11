@@ -1,0 +1,820 @@
+{
+  "schema": 1,
+  "experiment": "M4 Pro full-graph backend benchmark",
+  "validation_report_sha256": "c2a753d858b7a16ef21b7b7ef4ebd45706d8d59a694c96367d45682e9e4b594d",
+  "validation_identity": {
+    "validation_sources": {
+      "doom_learning_v6/brain.py": "53fd800304dca4b48f89b5f8df17bb8a826a63f361a5b59c2d0c2367f20d5487",
+      "doom_learning_v6/kernel.cpp": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+      "doom_learning_v6/rule.py": "0df2ae1bf10b97a213064b3ac3934227539d08e51521a99cdb56fe7f5b44b725",
+      "doom_learning_v6/visual.py": "788c06afd646528b0f5a9d3a8daa6838278709a15f1a90159b2ed4f9e6531c88",
+      "doom_learning_v6/calibration.py": "c9006ef72436c74453209f896e4f1d9371179311e33fa1ae734ad52fc26408b9",
+      "doom_learning_v6/survival.py": "1c85e94e0a1fb9bc1f500c167a861ca91975a61e0716abce52eaea8801b7f568",
+      "doom_learning/common.py": "79de9a34c3d53db399ce67b12df084ab000d6b66123b658e5c2bfb5c6d108d12",
+      "doom_learning_v2/vision.py": "20279cdc14352b23fcbb76db2ee4bdebcc26394bccc04a1ad5fcedc5e3accdeb",
+      "doom/engine.py": "5fc0ce73c05a49ff58af01729a9169018080bb5b913cedb2268116a95c04aeb3",
+      "doom_learning_v6/metal/api.h": "35329eef027c9867db0c7c3d6e6b853c7b108553ffeb10ab3fde0fed72c955f7",
+      "doom_learning_v6/metal/backend.mm": "541b6d61ad1d969ff3feb11903fe567c0bf08050fec730fbb3b17177192ddf7d",
+      "doom_learning_v6/metal/backend.py": "9797b8bcd1e8a49ffb6e6133ff42dd42c7abfcdfa762ac96da9f00e2b41f71e7",
+      "doom_learning_v6/metal/build.py": "262f1534641b3e7327629aeb28a5ffe590a77f8d3702cc9d3d82c9697feef945",
+      "doom_learning_v6/metal/graph.py": "79286a9a37f606ace87218a1cb0ba6fb9bfc1a05526b46963c3564d146681f49",
+      "doom_learning_v6/metal/kernels.metal": "41f2553b3300a78796ea4bc4943236ad4d2470c3dcda041de25be938db2867ce",
+      "doom_learning_v6/metal/validate.py": "bece43c588c30d46f63584272cdd0a5b95e2508fa005188c843fd96690126734",
+      "doom_learning_v6/metal/benchmark.py": "df5d88621798ec668b14070579c29dc061627a0931b26de2413684f7bfd9fc02"
+    },
+    "graph_file_sha256": "346b8af85a11af13b8324e18669812c1924569e7d1adcb4e6f45cc461a2c344b",
+    "metal_sources": {
+      "api.h": "35329eef027c9867db0c7c3d6e6b853c7b108553ffeb10ab3fde0fed72c955f7",
+      "backend.mm": "541b6d61ad1d969ff3feb11903fe567c0bf08050fec730fbb3b17177192ddf7d",
+      "kernels.metal": "41f2553b3300a78796ea4bc4943236ad4d2470c3dcda041de25be938db2867ce"
+    },
+    "metal_binaries": {
+      "air": "0d78ef0c7d150c1f0dd099edb2e51985fb58ffb2a43017561925de89257ea912",
+      "metallib": "415c3c63a8d8a46d09991d8fbdefafe4d991782222b44a36297813d6f4a8850a",
+      "library": "866f584368f451a5becc3b6f18426ebc0dcbae8bea8c48ce877d4b9ff295228b"
+    },
+    "metal_environment": {
+      "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+      "sdk": "26.5",
+      "macos": "26.6.2",
+      "architecture": "arm64",
+      "metal_language": "macos-metal2.4"
+    },
+    "metal_device": {
+      "name": "Apple M4 Pro",
+      "recommended_working_set": 19069665280,
+      "has_unified_memory": true,
+      "supports_apple7": true,
+      "supported": true
+    },
+    "ids_sha256": "6b6b40c3bddf84b1281ef0b18db06927c2bf61c5f4cb32a4219ec9b7839dc2e5",
+    "out_ptr_sha256": "a29aa0296125a5daa972c12d17711360d01a1209cd9cd9d7ccb1f6959224bcaf",
+    "out_post_sha256": "4cc5e857d3481f433576f35ddb8d580cc33cf8e22b6651fa03e08cde5d956d90",
+    "original_weight_sha256": "d95171c2d59cfe3ebef2e5bd52be779b8f74754d718fc8941a93b8f2921c632b",
+    "plastic_edges_sha256": "550335ad546f5c3106e4988426197ad24d8556367c9285e2f4c8c33f37f3cc68",
+    "configuration_sha256": "9499403434ee781463272a83fcd88ee3df37acca3aeb220f436810b0028bfbd3"
+  },
+  "graph_file_sha256": "346b8af85a11af13b8324e18669812c1924569e7d1adcb4e6f45cc461a2c344b",
+  "repetitions": 5,
+  "cpu_samples": [
+    {
+      "wall_seconds": 0.036983457997848745,
+      "neural_seconds": 0.03433150000273599,
+      "gpu_seconds": 0.0,
+      "command_seconds": 0.0,
+      "synchronization_seconds": 0.0,
+      "kernel_seconds": 0.03433150000273599,
+      "plasticity_seconds": 0.00043312499474268407,
+      "vision_and_python_seconds": 0.0022188330003700685,
+      "encoder_count": 0,
+      "dispatch_count": 0,
+      "mark_grid_threads": 0,
+      "gather_grid_threads": 0,
+      "indirect_dispatch_count": 0,
+      "edge_bitmap_words": 0,
+      "native_total_seconds": 0,
+      "encode_seconds": 0,
+      "commit_call_seconds": 0,
+      "wait_call_seconds": 0,
+      "full_upload_seconds": 0,
+      "full_upload_bytes": 0,
+      "materialize_seconds": 0,
+      "materialize_bytes": 0,
+      "drive_copy_seconds": 0,
+      "drive_copy_bytes": 0,
+      "counts_clear_seconds": 0,
+      "counts_copy_seconds": 0,
+      "counts_copy_bytes": 0,
+      "native_event_copy_seconds": 0,
+      "native_event_copy_bytes": 0,
+      "event_conversion_sort_seconds": 0,
+      "eligibility_seconds": 0,
+      "sparse_weight_update_seconds": 0,
+      "sparse_weight_update_bytes": 0
+    },
+    {
+      "wall_seconds": 0.03735312500066357,
+      "neural_seconds": 0.03470329100309755,
+      "gpu_seconds": 0.0,
+      "command_seconds": 0.0,
+      "synchronization_seconds": 0.0,
+      "kernel_seconds": 0.03470329100309755,
+      "plasticity_seconds": 0.00042929299524985254,
+      "vision_and_python_seconds": 0.0022205410023161676,
+      "encoder_count": 0,
+      "dispatch_count": 0,
+      "mark_grid_threads": 0,
+      "gather_grid_threads": 0,
+      "indirect_dispatch_count": 0,
+      "edge_bitmap_words": 0,
+      "native_total_seconds": 0,
+      "encode_seconds": 0,
+      "commit_call_seconds": 0,
+      "wait_call_seconds": 0,
+      "full_upload_seconds": 0,
+      "full_upload_bytes": 0,
+      "materialize_seconds": 0,
+      "materialize_bytes": 0,
+      "drive_copy_seconds": 0,
+      "drive_copy_bytes": 0,
+      "counts_clear_seconds": 0,
+      "counts_copy_seconds": 0,
+      "counts_copy_bytes": 0,
+      "native_event_copy_seconds": 0,
+      "native_event_copy_bytes": 0,
+      "event_conversion_sort_seconds": 0,
+      "eligibility_seconds": 0,
+      "sparse_weight_update_seconds": 0,
+      "sparse_weight_update_bytes": 0
+    },
+    {
+      "wall_seconds": 0.03766029100006563,
+      "neural_seconds": 0.03498799999943003,
+      "gpu_seconds": 0.0,
+      "command_seconds": 0.0,
+      "synchronization_seconds": 0.0,
+      "kernel_seconds": 0.03498799999943003,
+      "plasticity_seconds": 0.00042137500349781476,
+      "vision_and_python_seconds": 0.0022509159971377812,
+      "encoder_count": 0,
+      "dispatch_count": 0,
+      "mark_grid_threads": 0,
+      "gather_grid_threads": 0,
+      "indirect_dispatch_count": 0,
+      "edge_bitmap_words": 0,
+      "native_total_seconds": 0,
+      "encode_seconds": 0,
+      "commit_call_seconds": 0,
+      "wait_call_seconds": 0,
+      "full_upload_seconds": 0,
+      "full_upload_bytes": 0,
+      "materialize_seconds": 0,
+      "materialize_bytes": 0,
+      "drive_copy_seconds": 0,
+      "drive_copy_bytes": 0,
+      "counts_clear_seconds": 0,
+      "counts_copy_seconds": 0,
+      "counts_copy_bytes": 0,
+      "native_event_copy_seconds": 0,
+      "native_event_copy_bytes": 0,
+      "event_conversion_sort_seconds": 0,
+      "eligibility_seconds": 0,
+      "sparse_weight_update_seconds": 0,
+      "sparse_weight_update_bytes": 0
+    },
+    {
+      "wall_seconds": 0.037253500002407236,
+      "neural_seconds": 0.03459991700219689,
+      "gpu_seconds": 0.0,
+      "command_seconds": 0.0,
+      "synchronization_seconds": 0.0,
+      "kernel_seconds": 0.03459991700219689,
+      "plasticity_seconds": 0.0004310410004109144,
+      "vision_and_python_seconds": 0.0022225419997994322,
+      "encoder_count": 0,
+      "dispatch_count": 0,
+      "mark_grid_threads": 0,
+      "gather_grid_threads": 0,
+      "indirect_dispatch_count": 0,
+      "edge_bitmap_words": 0,
+      "native_total_seconds": 0,
+      "encode_seconds": 0,
+      "commit_call_seconds": 0,
+      "wait_call_seconds": 0,
+      "full_upload_seconds": 0,
+      "full_upload_bytes": 0,
+      "materialize_seconds": 0,
+      "materialize_bytes": 0,
+      "drive_copy_seconds": 0,
+      "drive_copy_bytes": 0,
+      "counts_clear_seconds": 0,
+      "counts_copy_seconds": 0,
+      "counts_copy_bytes": 0,
+      "native_event_copy_seconds": 0,
+      "native_event_copy_bytes": 0,
+      "event_conversion_sort_seconds": 0,
+      "eligibility_seconds": 0,
+      "sparse_weight_update_seconds": 0,
+      "sparse_weight_update_bytes": 0
+    },
+    {
+      "wall_seconds": 0.037136415998247685,
+      "neural_seconds": 0.03444779199344339,
+      "gpu_seconds": 0.0,
+      "command_seconds": 0.0,
+      "synchronization_seconds": 0.0,
+      "kernel_seconds": 0.03444779199344339,
+      "plasticity_seconds": 0.0004235829983372241,
+      "vision_and_python_seconds": 0.0022650410064670723,
+      "encoder_count": 0,
+      "dispatch_count": 0,
+      "mark_grid_threads": 0,
+      "gather_grid_threads": 0,
+      "indirect_dispatch_count": 0,
+      "edge_bitmap_words": 0,
+      "native_total_seconds": 0,
+      "encode_seconds": 0,
+      "commit_call_seconds": 0,
+      "wait_call_seconds": 0,
+      "full_upload_seconds": 0,
+      "full_upload_bytes": 0,
+      "materialize_seconds": 0,
+      "materialize_bytes": 0,
+      "drive_copy_seconds": 0,
+      "drive_copy_bytes": 0,
+      "counts_clear_seconds": 0,
+      "counts_copy_seconds": 0,
+      "counts_copy_bytes": 0,
+      "native_event_copy_seconds": 0,
+      "native_event_copy_bytes": 0,
+      "event_conversion_sort_seconds": 0,
+      "eligibility_seconds": 0,
+      "sparse_weight_update_seconds": 0,
+      "sparse_weight_update_bytes": 0
+    }
+  ],
+  "metal_samples": [
+    {
+      "wall_seconds": 0.09281650000048103,
+      "neural_seconds": 0.08909441599462298,
+      "gpu_seconds": 0.08690720833328669,
+      "command_seconds": 0.088827125,
+      "synchronization_seconds": 0.0002672909946229707,
+      "kernel_seconds": 0.08690720833328669,
+      "plasticity_seconds": 0.0012374990001262631,
+      "vision_and_python_seconds": 0.0024845850057317875,
+      "encoder_count": 4,
+      "dispatch_count": 2008,
+      "mark_grid_threads": 66680000,
+      "gather_grid_threads": 66680000,
+      "indirect_dispatch_count": 400,
+      "edge_bitmap_words": 799467,
+      "native_total_seconds": 0.088827125,
+      "encode_seconds": 0.000588667,
+      "commit_call_seconds": 3.0291e-05,
+      "wait_call_seconds": 0.08817808400000002,
+      "full_upload_seconds": 0.0,
+      "full_upload_bytes": 0,
+      "materialize_seconds": 0.0,
+      "materialize_bytes": 0,
+      "drive_copy_seconds": 4.1374001739313826e-05,
+      "drive_copy_bytes": 2667200,
+      "counts_clear_seconds": 1.0707e-05,
+      "counts_copy_seconds": 0.00014779099728912115,
+      "counts_copy_bytes": 2667200,
+      "native_event_copy_seconds": 2.2920000000000002e-06,
+      "native_event_copy_bytes": 32,
+      "event_conversion_sort_seconds": 2.1250998543109745e-05,
+      "eligibility_seconds": 4.245700256433338e-05,
+      "sparse_weight_update_seconds": 0.0007810409988451283,
+      "sparse_weight_update_bytes": 200832
+    },
+    {
+      "wall_seconds": 0.08816079199823434,
+      "neural_seconds": 0.08481029200265766,
+      "gpu_seconds": 0.08271650000460795,
+      "command_seconds": 0.084572917,
+      "synchronization_seconds": 0.00023737500265766376,
+      "kernel_seconds": 0.08271650000460795,
+      "plasticity_seconds": 0.001029541999741923,
+      "vision_and_python_seconds": 0.0023209579958347604,
+      "encoder_count": 4,
+      "dispatch_count": 2008,
+      "mark_grid_threads": 66680000,
+      "gather_grid_threads": 66680000,
+      "indirect_dispatch_count": 400,
+      "edge_bitmap_words": 799467,
+      "native_total_seconds": 0.084572917,
+      "encode_seconds": 0.000542625,
+      "commit_call_seconds": 2.6499e-05,
+      "wait_call_seconds": 0.08397412599999998,
+      "full_upload_seconds": 0.0,
+      "full_upload_bytes": 0,
+      "materialize_seconds": 0.0,
+      "materialize_bytes": 0,
+      "drive_copy_seconds": 3.929200829588808e-05,
+      "drive_copy_bytes": 2667200,
+      "counts_clear_seconds": 1.0208e-05,
+      "counts_copy_seconds": 0.00012566599980345927,
+      "counts_copy_bytes": 2667200,
+      "native_event_copy_seconds": 2.333e-06,
+      "native_event_copy_bytes": 32,
+      "event_conversion_sort_seconds": 1.800100289983675e-05,
+      "eligibility_seconds": 4.1292994865216315e-05,
+      "sparse_weight_update_seconds": 0.0005974590021651238,
+      "sparse_weight_update_bytes": 200832
+    },
+    {
+      "wall_seconds": 0.0938430829992285,
+      "neural_seconds": 0.09044400099810446,
+      "gpu_seconds": 0.08842541666308534,
+      "command_seconds": 0.090210084,
+      "synchronization_seconds": 0.00023391699810446087,
+      "kernel_seconds": 0.08842541666308534,
+      "plasticity_seconds": 0.0010500400021555834,
+      "vision_and_python_seconds": 0.0023490419989684597,
+      "encoder_count": 4,
+      "dispatch_count": 2008,
+      "mark_grid_threads": 66680000,
+      "gather_grid_threads": 66680000,
+      "indirect_dispatch_count": 400,
+      "edge_bitmap_words": 799467,
+      "native_total_seconds": 0.090210084,
+      "encode_seconds": 0.000536625,
+      "commit_call_seconds": 2.971e-05,
+      "wait_call_seconds": 0.08962099999999999,
+      "full_upload_seconds": 0.0,
+      "full_upload_bytes": 0,
+      "materialize_seconds": 0.0,
+      "materialize_bytes": 0,
+      "drive_copy_seconds": 3.837400072370656e-05,
+      "drive_copy_bytes": 2667200,
+      "counts_clear_seconds": 1.0167e-05,
+      "counts_copy_seconds": 0.0001328329999523703,
+      "counts_copy_bytes": 2667200,
+      "native_event_copy_seconds": 1.1249999999999998e-06,
+      "native_event_copy_bytes": 32,
+      "event_conversion_sort_seconds": 1.841700213844888e-05,
+      "eligibility_seconds": 3.604199810069986e-05,
+      "sparse_weight_update_seconds": 0.0006290839992288966,
+      "sparse_weight_update_bytes": 200832
+    },
+    {
+      "wall_seconds": 0.08978650000062771,
+      "neural_seconds": 0.08647204199951375,
+      "gpu_seconds": 0.08456316666706698,
+      "command_seconds": 0.086249625,
+      "synchronization_seconds": 0.0002224169995137526,
+      "kernel_seconds": 0.08456316666706698,
+      "plasticity_seconds": 0.0010131669951078948,
+      "vision_and_python_seconds": 0.0023012910060060676,
+      "encoder_count": 4,
+      "dispatch_count": 2008,
+      "mark_grid_threads": 66680000,
+      "gather_grid_threads": 66680000,
+      "indirect_dispatch_count": 400,
+      "edge_bitmap_words": 799467,
+      "native_total_seconds": 0.086249625,
+      "encode_seconds": 0.0005348750000000001,
+      "commit_call_seconds": 2.4875e-05,
+      "wait_call_seconds": 0.085663999,
+      "full_upload_seconds": 0.0,
+      "full_upload_bytes": 0,
+      "materialize_seconds": 0.0,
+      "materialize_bytes": 0,
+      "drive_copy_seconds": 3.8124999264255166e-05,
+      "drive_copy_bytes": 2667200,
+      "counts_clear_seconds": 1.0167e-05,
+      "counts_copy_seconds": 0.00011587500193854794,
+      "counts_copy_bytes": 2667200,
+      "native_event_copy_seconds": 1.876e-06,
+      "native_event_copy_bytes": 32,
+      "event_conversion_sort_seconds": 1.3916000170866027e-05,
+      "eligibility_seconds": 3.912600004696287e-05,
+      "sparse_weight_update_seconds": 0.0005946240016783122,
+      "sparse_weight_update_bytes": 200832
+    },
+    {
+      "wall_seconds": 0.07858858299732674,
+      "neural_seconds": 0.07421895799780032,
+      "gpu_seconds": 0.07085450000158744,
+      "command_seconds": 0.074006501,
+      "synchronization_seconds": 0.00021245699780031435,
+      "kernel_seconds": 0.07085450000158744,
+      "plasticity_seconds": 0.0019834170052490663,
+      "vision_and_python_seconds": 0.002386207994277356,
+      "encoder_count": 4,
+      "dispatch_count": 2008,
+      "mark_grid_threads": 66680000,
+      "gather_grid_threads": 66680000,
+      "indirect_dispatch_count": 400,
+      "edge_bitmap_words": 799467,
+      "native_total_seconds": 0.074006501,
+      "encode_seconds": 0.000531084,
+      "commit_call_seconds": 2.3168e-05,
+      "wait_call_seconds": 0.073434582,
+      "full_upload_seconds": 0.0,
+      "full_upload_bytes": 0,
+      "materialize_seconds": 0.0,
+      "materialize_bytes": 0,
+      "drive_copy_seconds": 3.774899960262701e-05,
+      "drive_copy_bytes": 2667200,
+      "counts_clear_seconds": 1.0334999999999998e-05,
+      "counts_copy_seconds": 0.0001212089991895482,
+      "counts_copy_bytes": 2667200,
+      "native_event_copy_seconds": 8.329999999999999e-07,
+      "native_event_copy_bytes": 32,
+      "event_conversion_sort_seconds": 2.108299668179825e-05,
+      "eligibility_seconds": 3.216700133634731e-05,
+      "sparse_weight_update_seconds": 0.0015662919977330603,
+      "sparse_weight_update_bytes": 200832
+    }
+  ],
+  "timing_summary": {
+    "cpu": {
+      "wall_seconds": {
+        "minimum": 0.036983457997848745,
+        "median": 0.037253500002407236,
+        "maximum": 0.03766029100006563
+      },
+      "neural_seconds": {
+        "minimum": 0.03433150000273599,
+        "median": 0.03459991700219689,
+        "maximum": 0.03498799999943003
+      },
+      "gpu_seconds": {
+        "minimum": 0.0,
+        "median": 0.0,
+        "maximum": 0.0
+      },
+      "command_seconds": {
+        "minimum": 0.0,
+        "median": 0.0,
+        "maximum": 0.0
+      },
+      "synchronization_seconds": {
+        "minimum": 0.0,
+        "median": 0.0,
+        "maximum": 0.0
+      },
+      "kernel_seconds": {
+        "minimum": 0.03433150000273599,
+        "median": 0.03459991700219689,
+        "maximum": 0.03498799999943003
+      },
+      "plasticity_seconds": {
+        "minimum": 0.00042137500349781476,
+        "median": 0.00042929299524985254,
+        "maximum": 0.00043312499474268407
+      },
+      "vision_and_python_seconds": {
+        "minimum": 0.0022188330003700685,
+        "median": 0.0022225419997994322,
+        "maximum": 0.0022650410064670723
+      },
+      "encoder_count": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "dispatch_count": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "mark_grid_threads": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "gather_grid_threads": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "indirect_dispatch_count": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "edge_bitmap_words": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "native_total_seconds": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "encode_seconds": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "commit_call_seconds": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "wait_call_seconds": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "full_upload_seconds": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "full_upload_bytes": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "materialize_seconds": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "materialize_bytes": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "drive_copy_seconds": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "drive_copy_bytes": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "counts_clear_seconds": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "counts_copy_seconds": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "counts_copy_bytes": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "native_event_copy_seconds": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "native_event_copy_bytes": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "event_conversion_sort_seconds": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "eligibility_seconds": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "sparse_weight_update_seconds": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "sparse_weight_update_bytes": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      }
+    },
+    "metal": {
+      "wall_seconds": {
+        "minimum": 0.07858858299732674,
+        "median": 0.08978650000062771,
+        "maximum": 0.0938430829992285
+      },
+      "neural_seconds": {
+        "minimum": 0.07421895799780032,
+        "median": 0.08647204199951375,
+        "maximum": 0.09044400099810446
+      },
+      "gpu_seconds": {
+        "minimum": 0.07085450000158744,
+        "median": 0.08456316666706698,
+        "maximum": 0.08842541666308534
+      },
+      "command_seconds": {
+        "minimum": 0.074006501,
+        "median": 0.086249625,
+        "maximum": 0.090210084
+      },
+      "synchronization_seconds": {
+        "minimum": 0.00021245699780031435,
+        "median": 0.00023391699810446087,
+        "maximum": 0.0002672909946229707
+      },
+      "kernel_seconds": {
+        "minimum": 0.07085450000158744,
+        "median": 0.08456316666706698,
+        "maximum": 0.08842541666308534
+      },
+      "plasticity_seconds": {
+        "minimum": 0.0010131669951078948,
+        "median": 0.0010500400021555834,
+        "maximum": 0.0019834170052490663
+      },
+      "vision_and_python_seconds": {
+        "minimum": 0.0023012910060060676,
+        "median": 0.0023490419989684597,
+        "maximum": 0.0024845850057317875
+      },
+      "encoder_count": {
+        "minimum": 4,
+        "median": 4,
+        "maximum": 4
+      },
+      "dispatch_count": {
+        "minimum": 2008,
+        "median": 2008,
+        "maximum": 2008
+      },
+      "mark_grid_threads": {
+        "minimum": 66680000,
+        "median": 66680000,
+        "maximum": 66680000
+      },
+      "gather_grid_threads": {
+        "minimum": 66680000,
+        "median": 66680000,
+        "maximum": 66680000
+      },
+      "indirect_dispatch_count": {
+        "minimum": 400,
+        "median": 400,
+        "maximum": 400
+      },
+      "edge_bitmap_words": {
+        "minimum": 799467,
+        "median": 799467,
+        "maximum": 799467
+      },
+      "native_total_seconds": {
+        "minimum": 0.074006501,
+        "median": 0.086249625,
+        "maximum": 0.090210084
+      },
+      "encode_seconds": {
+        "minimum": 0.000531084,
+        "median": 0.000536625,
+        "maximum": 0.000588667
+      },
+      "commit_call_seconds": {
+        "minimum": 2.3168e-05,
+        "median": 2.6499e-05,
+        "maximum": 3.0291e-05
+      },
+      "wait_call_seconds": {
+        "minimum": 0.073434582,
+        "median": 0.085663999,
+        "maximum": 0.08962099999999999
+      },
+      "full_upload_seconds": {
+        "minimum": 0.0,
+        "median": 0.0,
+        "maximum": 0.0
+      },
+      "full_upload_bytes": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "materialize_seconds": {
+        "minimum": 0.0,
+        "median": 0.0,
+        "maximum": 0.0
+      },
+      "materialize_bytes": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "drive_copy_seconds": {
+        "minimum": 3.774899960262701e-05,
+        "median": 3.837400072370656e-05,
+        "maximum": 4.1374001739313826e-05
+      },
+      "drive_copy_bytes": {
+        "minimum": 2667200,
+        "median": 2667200,
+        "maximum": 2667200
+      },
+      "counts_clear_seconds": {
+        "minimum": 1.0167e-05,
+        "median": 1.0208e-05,
+        "maximum": 1.0707e-05
+      },
+      "counts_copy_seconds": {
+        "minimum": 0.00011587500193854794,
+        "median": 0.00012566599980345927,
+        "maximum": 0.00014779099728912115
+      },
+      "counts_copy_bytes": {
+        "minimum": 2667200,
+        "median": 2667200,
+        "maximum": 2667200
+      },
+      "native_event_copy_seconds": {
+        "minimum": 8.329999999999999e-07,
+        "median": 1.876e-06,
+        "maximum": 2.333e-06
+      },
+      "native_event_copy_bytes": {
+        "minimum": 32,
+        "median": 32,
+        "maximum": 32
+      },
+      "event_conversion_sort_seconds": {
+        "minimum": 1.3916000170866027e-05,
+        "median": 1.841700213844888e-05,
+        "maximum": 2.1250998543109745e-05
+      },
+      "eligibility_seconds": {
+        "minimum": 3.216700133634731e-05,
+        "median": 3.912600004696287e-05,
+        "maximum": 4.245700256433338e-05
+      },
+      "sparse_weight_update_seconds": {
+        "minimum": 0.0005946240016783122,
+        "median": 0.0006290839992288966,
+        "maximum": 0.0015662919977330603
+      },
+      "sparse_weight_update_bytes": {
+        "minimum": 200832,
+        "median": 200832,
+        "maximum": 200832
+      }
+    }
+  },
+  "construction_seconds": {
+    "cpu": 0.5564812909979082,
+    "metal": 0.5544464159975178
+  },
+  "metal_initialization": {
+    "total_seconds": 1.8061483339988627,
+    "build_probe_seconds": 0.0005385840013332199,
+    "graph_index_load_or_build_seconds": 1.7076159579992236,
+    "handle_create_and_upload_seconds": 0.09799379199830582
+  },
+  "memory": {
+    "before": {
+      "free_percent": 87,
+      "swap_used_mib": 0.0
+    },
+    "after": {
+      "free_percent": 85,
+      "swap_used_mib": 0.0
+    }
+  },
+  "system_load": {
+    "load_average": [
+      2.53662109375,
+      1.48193359375,
+      1.46728515625
+    ],
+    "logical_cpus": 12
+  },
+  "metal": {
+    "schema": 1,
+    "abi_version": 3,
+    "sources": {
+      "api.h": "35329eef027c9867db0c7c3d6e6b853c7b108553ffeb10ab3fde0fed72c955f7",
+      "backend.mm": "541b6d61ad1d969ff3feb11903fe567c0bf08050fec730fbb3b17177192ddf7d",
+      "kernels.metal": "41f2553b3300a78796ea4bc4943236ad4d2470c3dcda041de25be938db2867ce"
+    },
+    "binaries": {
+      "air": "0d78ef0c7d150c1f0dd099edb2e51985fb58ffb2a43017561925de89257ea912",
+      "metallib": "415c3c63a8d8a46d09991d8fbdefafe4d991782222b44a36297813d6f4a8850a",
+      "library": "866f584368f451a5becc3b6f18426ebc0dcbae8bea8c48ce877d4b9ff295228b"
+    },
+    "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+    "sdk": "26.5",
+    "macos": "26.6.2",
+    "architecture": "arm64",
+    "metal_language": "macos-metal2.4",
+    "device": {
+      "name": "Apple M4 Pro",
+      "recommended_working_set": 19069665280,
+      "has_unified_memory": true,
+      "supports_apple7": true,
+      "supported": true
+    }
+  },
+  "gate": {
+    "cpu_median": 0.03459991700219689,
+    "metal_median": 0.08647204199951375,
+    "simulated_seconds": 0.04,
+    "peak_rss_gib": 2.360748291015625,
+    "critical_memory_pressure": false,
+    "sustained_swap_growth": false,
+    "speedup": 0.40012836752937386,
+    "real_time_ratio": 0.4625772570540769,
+    "speed": false,
+    "memory": true,
+    "memory_pressure": true,
+    "swap": true,
+    "passed": false
+  },
+  "passed": false,
+  "interpretation": "Wall-clock viability only. Speed does not change sample efficiency or establish learning."
+}
