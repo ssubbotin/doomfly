@@ -1,9 +1,11 @@
+import hashlib
 import sys
 
 import numpy as np
 import pytest
 
 from doom_learning_v6.brain import MemoryBrain
+from doom_learning_v6.metal.validate import _state_digest
 
 
 pytestmark=pytest.mark.skipif(sys.platform!='darwin',reason='Metal requires macOS')
@@ -94,6 +96,18 @@ def test_metal_repeated_runs_are_bitwise_identical(tmp_path):
         np.testing.assert_array_equal(getattr(first,name),getattr(second,name),err_msg=name)
 
 
+def test_metal_micrograph_digest_is_retained(tmp_path):
+    _,metal=paired_brains(tmp_path)
+    metal.backend.start_diagnostics();counts=run_trace(metal);metal.backend.stop_diagnostics()
+    events=np.asarray(metal.backend.spike_events,dtype=np.int64)
+    assert hashlib.sha256(counts.tobytes()).hexdigest()==(
+        'de7d06da6e31fe80c35eb54c19926e81db5c514483fa170ca4eccf878d0fec90')
+    assert _state_digest(metal)=='0fdec182c34b38bc8aa9289d9eab39ace678df5f38d598a8f043d83bc29674e9'
+    assert hashlib.sha256(events.tobytes()).hexdigest()==(
+        '00ff37a29ca8cc916a39436e1ac4f4aac1bef46291502d751bb4860e21cd6ad1')
+    assert len(events)==3
+
+
 def test_metal_resident_state_ignores_stale_host_arrays(tmp_path):
     _,reference=paired_brains(tmp_path/'reference')
     _,resident=paired_brains(tmp_path/'resident')
@@ -161,12 +175,21 @@ def test_metal_advance_uses_one_compute_encoder(tmp_path):
     assert metal.backend.last_timing['encoder_count']==1
 
 
-def test_metal_uses_one_sparse_clear_dispatch_per_tick(tmp_path):
+def test_metal_uses_two_dispatches_per_tick(tmp_path):
     _,metal=paired_brains(tmp_path)
     metal.step([],10,stimulation=([0],20),lamina_bias=0)
     timing=metal.backend.last_timing
-    assert timing['dispatch_count']==502
-    assert timing['indirect_dispatch_count']==100
+    assert timing['dispatch_count']==202
+    assert timing['indirect_dispatch_count']==0
+
+
+def test_metal_uses_808_dispatches_per_40ms_trace(tmp_path):
+    _,metal=paired_brains(tmp_path)
+    dispatches=0
+    for _ in range(4):
+        metal.step([],10,stimulation=([0,3],20),lamina_bias=0)
+        dispatches+=metal.backend.last_timing['dispatch_count']
+    assert dispatches==808
 
 
 def test_metal_reports_mark_and_gather_grid_sizes(tmp_path):
@@ -187,8 +210,8 @@ def test_sparse_edge_bitmap_preserves_cross_word_delivery(tmp_path):
     assert metal.g[-1]==pytest.approx(1.0)
     timing=metal.backend.last_timing
     assert timing['edge_bitmap_words']==2
-    assert timing['indirect_dispatch_count']==1
-    assert timing['dispatch_count']==7
+    assert timing['indirect_dispatch_count']==0
+    assert timing['dispatch_count']==4
 
 
 def test_sparse_edge_bitmap_clears_words_between_ticks(tmp_path):
@@ -200,7 +223,7 @@ def test_sparse_edge_bitmap_clears_words_between_ticks(tmp_path):
     materialize(metal)
     for name in ['v','g','modulation','adaptation']:
         np.testing.assert_array_equal(getattr(metal,name),getattr(cpu,name),err_msg=name)
-    assert metal.backend.last_timing['indirect_dispatch_count']==2
+    assert metal.backend.last_timing['indirect_dispatch_count']==0
 
 
 def test_sparse_edge_bitmap_supports_edgeless_graph(tmp_path):
@@ -228,7 +251,8 @@ def test_sparse_edge_bitmap_supports_edgeless_graph(tmp_path):
 def test_sparse_edge_bitmap_masks_targets_sharing_a_word(tmp_path):
     n=42;pre=np.arange(35,dtype=np.int32)
     post=np.r_[np.full(10,40),np.full(25,41)].astype(np.int32)
-    weight=np.ones(len(pre),dtype=np.float32);weight[0]=2.;weight[10]=3.
+    weight=np.ones(len(pre),dtype=np.float32)
+    weight[0]=2.;weight[1]=-.5;weight[10]=3.;weight[11]=-1.
     path=tmp_path/'shared-word-graph.npz'
     np.savez(path,ptr=np.r_[0,np.cumsum(np.bincount(pre,minlength=n))].astype(np.int64),
         post=post,weight=weight,ids=np.arange(n,dtype=np.int64),
@@ -242,8 +266,8 @@ def test_sparse_edge_bitmap_masks_targets_sharing_a_word(tmp_path):
     kwargs={'eta':0.,'circuit':circuit,'modulation_mask':np.zeros(n,dtype=np.uint8)}
     cpu=MemoryBrain(path,backend='cpu',**kwargs);metal=MemoryBrain(path,backend='metal',**kwargs)
     for brain in [cpu,metal]:
-        brain.queue[0,:2]=[0,10];brain.queue_count[0]=2
+        brain.queue[0,:4]=[0,1,10,11];brain.queue_count[0]=4
     cpu.backend.advance(1);metal.backend.advance(1)
     materialize(metal)
     np.testing.assert_array_equal(metal.g,cpu.g)
-    np.testing.assert_array_equal(metal.g[-2:],[2.,3.])
+    np.testing.assert_array_equal(metal.g[-2:],[1.5,2.])

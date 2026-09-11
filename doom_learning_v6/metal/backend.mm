@@ -28,17 +28,15 @@ struct Backend {
   float adaptation_jump=8.0f;
   float adaptation_tau=200.0f;
   __strong id<MTLBuffer> out_ptr,out_post,in_ptr,in_pre,in_edge,kc_mask,modulation_mask;
-  __strong id<MTLBuffer> edge_to_incoming,active_edge_bits,active_edge_words;
-  __strong id<MTLBuffer> active_word_count,clear_dispatch;
+  __strong id<MTLBuffer> edge_to_incoming,active_edge_bits;
   __strong id<MTLBuffer> weight,v,g,refractory,drive,previous_drive,counts,active_flag,last;
   __strong id<MTLBuffer> modulation,modulation_last,rest,adaptation,ring,touched;
   __strong id<MTLBuffer> kc_events,event_count;
   __strong id<MTLBuffer> weight_update_ids,weight_update_values;
-  __strong id<MTLComputePipelineState> drive_pipeline,integrate_pipeline,mark_pipeline;
-  __strong id<MTLComputePipelineState> gather_pipeline,clear_pipeline,finalize_pipeline;
+  __strong id<MTLComputePipelineState> drive_pipeline,integrate_mark_pipeline;
+  __strong id<MTLComputePipelineState> gather_finalize_pipeline;
   __strong id<MTLComputePipelineState> materialize_pipeline,weight_update_pipeline;
   int32_t edge_words=0;
-  uint32_t clear_width=1;
   uint32_t event_capacity=0;
   uint32_t last_event_count=0;
   uint32_t weight_update_capacity=0;
@@ -97,18 +95,6 @@ void encode(id<MTLComputeCommandEncoder> encoder,id<MTLComputePipelineState> pip
   NSUInteger width=std::min<NSUInteger>(256,pipeline.maxTotalThreadsPerThreadgroup);
   [encoder dispatchThreads:MTLSizeMake(threads,1,1) threadsPerThreadgroup:MTLSizeMake(width,1,1)];
   dispatch_count++;
-}
-
-void encode_indirect(id<MTLComputeCommandEncoder> encoder,id<MTLComputePipelineState> pipeline,
-    std::initializer_list<id<MTLBuffer>> buffers,const KernelParams &params,
-    id<MTLBuffer> indirect,NSUInteger width,uint32_t &dispatch_count,
-    uint32_t &indirect_dispatch_count) {
-  [encoder setComputePipelineState:pipeline];NSUInteger index=0;
-  for(id<MTLBuffer> buffer:buffers)[encoder setBuffer:buffer offset:0 atIndex:index++];
-  [encoder setBytes:&params length:sizeof(params) atIndex:index];
-  [encoder dispatchThreadgroupsWithIndirectBuffer:indirect indirectBufferOffset:0
-    threadsPerThreadgroup:MTLSizeMake(width,1,1)];
-  dispatch_count++;indirect_dispatch_count++;
 }
 
 bool state_pointers_present(const Backend *backend,const df_metal_state *s) {
@@ -189,17 +175,12 @@ extern "C" int df_metal_create(const df_metal_graph *graph,const char *metallib_
       delete backend;return fail(message.c_str());
     }
     backend->drive_pipeline=make_pipeline(backend,@"df_drive_change",&error);
-    backend->integrate_pipeline=make_pipeline(backend,@"df_integrate",&error);
-    backend->mark_pipeline=make_pipeline(backend,@"df_mark_targets",&error);
-    backend->gather_pipeline=make_pipeline(backend,@"df_gather_targets",&error);
-    backend->clear_pipeline=make_pipeline(backend,@"df_clear_active_edge_words",&error);
-    backend->finalize_pipeline=make_pipeline(backend,@"df_finalize_tick",&error);
+    backend->integrate_mark_pipeline=make_pipeline(backend,@"df_integrate_mark",&error);
+    backend->gather_finalize_pipeline=make_pipeline(backend,@"df_gather_finalize",&error);
     backend->materialize_pipeline=make_pipeline(backend,@"df_materialize",&error);
     backend->weight_update_pipeline=make_pipeline(backend,@"df_update_weights",&error);
-    if(backend->drive_pipeline==nil||backend->integrate_pipeline==nil||
-        backend->mark_pipeline==nil||backend->gather_pipeline==nil||
-        backend->clear_pipeline==nil||
-        backend->finalize_pipeline==nil||
+    if(backend->drive_pipeline==nil||backend->integrate_mark_pipeline==nil||
+        backend->gather_finalize_pipeline==nil||
         backend->materialize_pipeline==nil||backend->weight_update_pipeline==nil){
       std::string message=error==nil?"Metal pipeline creation failed":error.localizedDescription.UTF8String;
       delete backend;return fail(message.c_str());
@@ -211,8 +192,6 @@ extern "C" int df_metal_create(const df_metal_graph *graph,const char *metallib_
     backend->neurons=graph->neurons;backend->edges=graph->edges;
     backend->slots=graph->delay_slots;backend->words=int32_t(word_count);
     backend->edge_words=int32_t((graph->edges+31)/32);
-    backend->clear_width=uint32_t(std::min<NSUInteger>(256,
-      backend->clear_pipeline.maxTotalThreadsPerThreadgroup));
     backend->dt=graph->dt_ms;backend->adaptation_jump=graph->adaptation_jump_mv;
     backend->adaptation_tau=graph->adaptation_tau_ms;
     const size_t n=graph->neurons,e=graph->edges;
@@ -225,11 +204,6 @@ extern "C" int df_metal_create(const df_metal_graph *graph,const char *metallib_
       e*sizeof(int32_t));
     backend->active_edge_bits=make_buffer(backend->device,nullptr,
       size_t(backend->edge_words)*sizeof(uint32_t));
-    backend->active_edge_words=make_buffer(backend->device,nullptr,
-      size_t(backend->edge_words)*sizeof(uint32_t));
-    backend->active_word_count=make_buffer(backend->device,nullptr,sizeof(uint32_t));
-    const uint32_t clear_arguments[3]={1,1,1};
-    backend->clear_dispatch=make_buffer(backend->device,clear_arguments,sizeof(clear_arguments));
     backend->kc_mask=make_buffer(backend->device,graph->kc_mask,n);
     backend->modulation_mask=make_buffer(backend->device,graph->modulation_mask,n);
     backend->weight=make_buffer(backend->device,nullptr,e*sizeof(float));
@@ -256,8 +230,7 @@ extern "C" int df_metal_create(const df_metal_graph *graph,const char *metallib_
     backend->event_count=make_buffer(backend->device,nullptr,sizeof(uint32_t));
     const id<MTLBuffer> required[]={backend->out_ptr,backend->out_post,backend->in_ptr,
       backend->in_pre,backend->in_edge,backend->kc_mask,backend->modulation_mask,
-      backend->edge_to_incoming,backend->active_edge_bits,backend->active_edge_words,
-      backend->active_word_count,backend->clear_dispatch,
+      backend->edge_to_incoming,backend->active_edge_bits,
       backend->weight,backend->v,backend->g,backend->refractory,backend->drive,
       backend->previous_drive,backend->counts,backend->active_flag,backend->last,
       backend->modulation,backend->modulation_last,backend->rest,backend->adaptation,
@@ -269,7 +242,6 @@ extern "C" int df_metal_create(const df_metal_graph *graph,const char *metallib_
     std::memset(backend->touched.contents,0,n*sizeof(uint32_t));
     std::memset(backend->active_edge_bits.contents,0,
       size_t(backend->edge_words)*sizeof(uint32_t));
-    *static_cast<uint32_t *>(backend->active_word_count.contents)=0;
     *handle=backend;
   }
   last_error.clear();return 0;
@@ -312,9 +284,6 @@ extern "C" int df_metal_upload_state(df_metal_handle handle,const df_metal_state
   std::memcpy(b->ring.contents,ring.data(),ring.size()*sizeof(uint32_t));
   std::memset(b->touched.contents,0,size_t(n)*sizeof(uint32_t));b->cursor=s->cursor;
   std::memset(b->active_edge_bits.contents,0,size_t(b->edge_words)*sizeof(uint32_t));
-  *static_cast<uint32_t *>(b->active_word_count.contents)=0;
-  uint32_t *clear=static_cast<uint32_t *>(b->clear_dispatch.contents);
-  clear[0]=1;clear[1]=1;clear[2]=1;
   last_error.clear();return 0;
 }
 
@@ -420,9 +389,9 @@ extern "C" int df_metal_advance(df_metal_handle handle,int32_t steps,
     if(command==nil){b->poisoned=true;return fail("Metal command buffer creation failed");}
     id<MTLComputeCommandEncoder> encoder=[command computeCommandEncoder];
     if(encoder==nil){b->poisoned=true;return fail("Metal compute encoder creation failed");}
-    uint32_t dispatch_count=0,indirect_dispatch_count=0;
+    uint32_t dispatch_count=0;
     KernelParams p{uint32_t(b->neurons),uint32_t(b->words),uint32_t(b->edge_words),
-      b->clear_width,0,0,b->cursor,b->dt,
+      0,0,0,b->cursor,b->dt,
       b->adaptation_jump,b->adaptation_tau,int32_t(std::lround(2.2f/b->dt)),kernel_capacity,
       b->capture_all_spikes?1u:0u};
     encode(encoder,b->drive_pipeline,{b->v,b->g,b->refractory,b->drive,b->previous_drive,
@@ -431,21 +400,14 @@ extern "C" int df_metal_advance(df_metal_handle handle,int32_t steps,
     for(int32_t step=0;step<steps;step++){
       p.clock=b->cursor+step;p.slot=uint32_t(p.clock%b->slots);
       p.future=uint32_t((p.clock+delay)%b->slots);
-      encode(encoder,b->integrate_pipeline,{b->v,b->g,b->refractory,b->drive,b->active_flag,
-        b->last,b->rest,b->adaptation,b->ring,b->counts,b->kc_mask,b->kc_events,b->event_count},
-        p,b->neurons,dispatch_count);
-      encode(encoder,b->mark_pipeline,{b->out_ptr,b->out_post,b->edge_to_incoming,b->ring,
-        b->touched,b->active_edge_bits,b->active_edge_words,b->active_word_count,b->clear_dispatch},
-        p,b->neurons,dispatch_count);
-      encode(encoder,b->gather_pipeline,{b->in_ptr,b->in_pre,b->in_edge,b->weight,b->active_edge_bits,
+      encode(encoder,b->integrate_mark_pipeline,{b->v,b->g,b->refractory,b->drive,
+        b->active_flag,b->last,b->rest,b->adaptation,b->ring,b->counts,b->kc_mask,
+        b->kc_events,b->event_count,b->out_ptr,b->out_post,b->edge_to_incoming,
+        b->touched,b->active_edge_bits},p,b->neurons,dispatch_count);
+      encode(encoder,b->gather_finalize_pipeline,{b->in_ptr,b->in_pre,b->in_edge,b->weight,
+        b->active_edge_bits,
         b->touched,b->v,b->g,b->refractory,b->drive,b->active_flag,b->last,b->modulation,
-        b->modulation_last,b->modulation_mask,b->rest,b->adaptation},
-        p,b->neurons,dispatch_count);
-      encode_indirect(encoder,b->clear_pipeline,
-        {b->active_edge_bits,b->active_edge_words,b->active_word_count},p,
-        b->clear_dispatch,b->clear_width,dispatch_count,indirect_dispatch_count);
-      encode(encoder,b->finalize_pipeline,{b->ring,b->v,b->g,b->refractory,b->rest,
-        b->active_word_count,b->clear_dispatch},
+        b->modulation_last,b->modulation_mask,b->rest,b->adaptation,b->ring},
         p,b->neurons,dispatch_count);
     }
     p.clock=b->cursor+steps-1;
@@ -478,7 +440,7 @@ extern "C" int df_metal_advance(df_metal_handle handle,int32_t steps,
     timing->gpu_seconds=command.GPUEndTime>=command.GPUStartTime?
       command.GPUEndTime-command.GPUStartTime:0.0;
     timing->encoder_count=1;timing->dispatch_count=dispatch_count;
-    timing->indirect_dispatch_count=indirect_dispatch_count;
+    timing->indirect_dispatch_count=0;
     timing->mark_grid_threads=uint32_t(steps)*uint32_t(b->neurons);
     timing->gather_grid_threads=uint32_t(steps)*uint32_t(b->neurons);
   }
