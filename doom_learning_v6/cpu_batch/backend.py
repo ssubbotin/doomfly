@@ -1,4 +1,5 @@
 """Python-owned shared graph and compact mutable CPU trajectory state."""
+import ctypes as C
 import hashlib
 import json
 
@@ -7,6 +8,37 @@ import numpy as np
 from doom_learning.common import digest
 from doom_learning_v6.backend import BackendError
 from doom_learning_v6.rule import PARAMETERS
+
+from .build import DEFAULT_OUTPUT,build,library_path
+
+
+class _NativeGraph(C.Structure):
+    _fields_=[('neurons',C.c_int32),('edges',C.c_int64),
+        ('delay_slots',C.c_int32),('plastic_edges',C.c_int32),
+        ('dt_ms',C.c_float),('eligibility_tau_ms',C.c_float),
+        ('adaptation_jump_mv',C.c_float),('adaptation_tau_ms',C.c_float),
+        ('out_ptr',C.c_void_p),('out_post',C.c_void_p),
+        ('base_weight',C.c_void_p),('plastic_slot',C.c_void_p),
+        ('kc_mask',C.c_void_p),('modulation_mask',C.c_void_p),('rest',C.c_void_p)]
+
+
+class _NativeLane(C.Structure):
+    _fields_=[('cursor',C.c_void_p),('plastic_weight',C.c_void_p),
+        ('v',C.c_void_p),('g',C.c_void_p),('refractory',C.c_void_p),
+        ('drive',C.c_void_p),('previous_drive',C.c_void_p),
+        ('queue',C.c_void_p),('queue_count',C.c_void_p),('counts',C.c_void_p),
+        ('active',C.c_void_p),('active_flag',C.c_void_p),('nactive',C.c_void_p),
+        ('last',C.c_void_p),('eligibility',C.c_void_p),
+        ('eligibility_last',C.c_void_p),('modulation',C.c_void_p),
+        ('modulation_last',C.c_void_p),('adaptation',C.c_void_p)]
+
+
+class _NativeTiming(C.Structure):
+    _fields_=[('native_wall_seconds',C.c_double),
+        ('lanes_advanced',C.c_int32),('workers',C.c_int32),('steps',C.c_int32)]
+
+
+def _pointer(array):return C.c_void_p(array.ctypes.data)
 
 
 def _array(name,value,dtype,shape):
@@ -165,5 +197,78 @@ class MultiTrajectoryCpuExecutor:
                 if any(np.shares_memory(array,other) for other in seen):
                     raise ValueError('Mutable lane buffers must not alias')
                 seen.append(array)
-        self.workers=workers
-        raise BackendError('Native CPU batch execution is not implemented')
+        self.workers=workers;self._closed=False;self.last_timing={}
+        self.build=build(DEFAULT_OUTPUT)
+        self._library=C.CDLL(str(library_path(DEFAULT_OUTPUT)))
+        self._library.df_cpu_batch_create.argtypes=[C.POINTER(_NativeGraph),
+            C.POINTER(_NativeLane),C.c_int32,C.c_int32,C.POINTER(C.c_void_p)]
+        self._library.df_cpu_batch_create.restype=C.c_int
+        self._library.df_cpu_batch_advance.argtypes=[C.c_void_p,C.c_int32,
+            C.POINTER(_NativeTiming)]
+        self._library.df_cpu_batch_advance.restype=C.c_int
+        self._library.df_cpu_batch_error.argtypes=[C.c_void_p]
+        self._library.df_cpu_batch_error.restype=C.c_char_p
+        self._library.df_cpu_batch_destroy.argtypes=[C.c_void_p]
+        self._library.df_cpu_batch_destroy.restype=None
+        self._native_graph=self._graph_descriptor()
+        lane_type=_NativeLane*len(self.lanes)
+        self._native_lanes=lane_type(*(self._lane_descriptor(lane) for lane in self.lanes))
+        self._handle=C.c_void_p()
+        status=self._library.df_cpu_batch_create(C.byref(self._native_graph),
+            self._native_lanes,len(self.lanes),workers,C.byref(self._handle))
+        if status:self._raise_native(status)
+
+    def _graph_descriptor(self):
+        graph=self.graph
+        return _NativeGraph(graph.neurons,graph.edges,graph.delay_slots,
+            graph.plastic_edges,graph.dt_ms,graph.eligibility_tau_ms,
+            graph.adaptation_jump_mv,graph.adaptation_tau_ms,
+            *[_pointer(graph.arrays[name]) for name in ['ptr','post','base_weight',
+                'plastic_slot','kc_mask','modulation_mask','rest']])
+
+    @staticmethod
+    def _lane_descriptor(lane):
+        names=['cursor','plastic_weights','v','g','refractory','drive',
+            'previous_drive','queue','queue_count','counts','active','active_flag',
+            'nactive','last','eligibility','eligibility_last','modulation',
+            'modulation_last','adaptation']
+        return _NativeLane(*[_pointer(lane.arrays[name]) for name in names])
+
+    def _raise_native(self,status):
+        message=self._library.df_cpu_batch_error(self._handle)
+        raise BackendError(message.decode() if message else f'CPU batch error {status}')
+
+    def advance(self,steps):
+        if self._closed:raise BackendError('CPU batch executor is closed')
+        if isinstance(steps,bool) or not isinstance(steps,int) or not 1<=steps<=100:
+            raise ValueError('CPU batch steps must be 1 through 100')
+        for lane in self.lanes:lane.counts.fill(0)
+        timing=_NativeTiming()
+        status=self._library.df_cpu_batch_advance(self._handle,steps,C.byref(timing))
+        if status:self._raise_native(status)
+        self.last_timing={'native_wall_seconds':timing.native_wall_seconds,
+            'lanes_advanced':timing.lanes_advanced,'workers':timing.workers,
+            'steps':timing.steps}
+        return [lane.counts.copy() for lane in self.lanes]
+
+    def metadata(self):
+        return {'name':'cpu-batch','build':self.build,'workers':self.workers,
+            'lanes':len(self.lanes),'shared_graph_bytes':self.graph.shared_bytes,
+            'lane_bytes':[lane.lane_bytes for lane in self.lanes],
+            'total_lane_bytes':sum(lane.lane_bytes for lane in self.lanes),
+            'graph':self.graph.metadata(),'closed':self._closed}
+
+    def close(self):
+        if self._closed:return
+        self._closed=True
+        if self._handle.value:self._library.df_cpu_batch_destroy(self._handle)
+        self._handle=C.c_void_p()
+
+    def __enter__(self):return self
+
+    def __exit__(self,exception_type,exception,traceback):self.close()
+
+    def __del__(self):
+        if hasattr(self,'_closed'):
+            try:self.close()
+            except Exception:pass

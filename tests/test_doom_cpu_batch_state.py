@@ -59,12 +59,11 @@ def test_lane_rejects_a_different_graph_identity(tmp_path):
 def test_executor_rejects_aliased_lanes_before_native_creation(tmp_path):
     from doom_learning_v6.cpu_batch.backend import (CpuBatchLane,
         MultiTrajectoryCpuExecutor,SharedCpuGraph)
-    from doom_learning_v6.backend import BackendError
     brain=toy_brain(tmp_path);graph=SharedCpuGraph.from_brain(brain)
     lane=CpuBatchLane.from_brain(graph,brain)
     with pytest.raises(ValueError,match='alias'):
         MultiTrajectoryCpuExecutor(graph,[lane,lane],workers=2)
     with pytest.raises(ValueError,match='workers'):
         MultiTrajectoryCpuExecutor(graph,[lane],workers=2)
-    with pytest.raises(BackendError,match='not implemented'):
-        MultiTrajectoryCpuExecutor(graph,[lane],workers=1)
+    with MultiTrajectoryCpuExecutor(graph,[lane],workers=1) as executor:
+        assert executor.graph is graph and executor.lanes==[lane]
