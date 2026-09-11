@@ -30,6 +30,11 @@ SOURCE_FILES=('doom/engine.py','doom/native.py','doom_learning/common.py',
 def _file_digest(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def _json_digest(value):
+    encoded=json.dumps(value,sort_keys=True,separators=(',',':')).encode()
+    return hashlib.sha256(encoded).hexdigest()
+
+
 def source_identity():
     return {name:_file_digest(ROOT/name) for name in SOURCE_FILES if (ROOT/name).exists()}
 
@@ -143,8 +148,10 @@ def run(out,*,brain_factory=None,readouts=None,expected_structure=None,
                         'counts_equal':bool(counts_equal[lane_index]),
                         'decoder_equal':cpu_decisions==batch_decisions[lane_index],
                         'state':compare_state(brain,lane),
-                        'batch_decisions':batch_decisions[lane_index]})
-                runs.append({'repeat':repeat,'cpu_decisions':cpu_decisions,
+                        'batch_decisions_sha256':_json_digest(
+                            batch_decisions[lane_index])})
+                runs.append({'repeat':repeat,
+                    'cpu_decisions_sha256':_json_digest(cpu_decisions),
                     'lanes':lane_results})
             lane_results=[lane for run_result in runs for lane in run_result['lanes']]
             batch_digests=[lane['state']['batch_sha256'] for lane in lane_results]

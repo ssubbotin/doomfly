@@ -33,6 +33,13 @@ def test_validation_writes_exact_toy_report(tmp_path):
     assert all(len(run['lanes'])==4 for result in report['results']
         for run in result['runs'])
     assert all(result['batch_repeat_bitwise'] for result in report['results'])
+    for result in report['results']:
+        for run_result in result['runs']:
+            assert len(run_result['cpu_decisions_sha256'])==64
+            assert 'cpu_decisions' not in run_result
+            for lane in run_result['lanes']:
+                assert len(lane['batch_decisions_sha256'])==64
+                assert 'batch_decisions' not in lane
     assert report['state_bitwise_equal'] is True
     assert report['decoder_equal'] is True
     assert report['structural_identity_equal'] is True
