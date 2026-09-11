@@ -13,6 +13,15 @@ import time
 import numpy as np
 
 
+METAL_TIMING_TOTALS=(
+    'native_total_seconds','encode_seconds','commit_call_seconds','wait_call_seconds',
+    'full_upload_seconds','full_upload_bytes','materialize_seconds','materialize_bytes',
+    'drive_copy_seconds','drive_copy_bytes','counts_clear_seconds','counts_copy_seconds',
+    'counts_copy_bytes','native_event_copy_seconds','native_event_copy_bytes',
+    'event_conversion_sort_seconds','eligibility_seconds','sparse_weight_update_seconds',
+    'sparse_weight_update_bytes')
+
+
 def gate(metrics):
     cpu=float(metrics['cpu_median']);metal=float(metrics['metal_median'])
     result={**metrics,'speedup':cpu/metal,
@@ -94,13 +103,18 @@ def _sample(brain,frames):
     from .validate import TRACE
     started=time.perf_counter();neural=rule=gpu=command=0.
     encoders=dispatches=mark_threads=gather_threads=indirect_dispatches=edge_bitmap_words=0
+    metal_timing={name:0 for name in METAL_TIMING_TOTALS}
     for frame,(_,stimulated) in zip(frames,TRACE):
         stimulation=(brain.circuit['dan'],4.) if stimulated else None
         _,elapsed=brain.rgb_step(frame,10,learning=True,stimulation=stimulation)
         neural+=elapsed;rule+=brain.last_rule_seconds
         if brain.backend.name=='metal':
             timing=brain.backend.last_timing
-            gpu+=timing['gpu_seconds'];command+=timing['host_seconds']
+            gpu+=timing['gpu_seconds']
+            native_total=timing.get('native_total_seconds',timing.get('host_seconds',0.))
+            command+=native_total
+            for name in METAL_TIMING_TOTALS:
+                metal_timing[name]+=native_total if name=='native_total_seconds' else timing.get(name,0)
             encoders+=timing['encoder_count'];dispatches+=timing['dispatch_count']
             mark_threads+=timing['mark_grid_threads'];gather_threads+=timing['gather_grid_threads']
             indirect_dispatches+=timing['indirect_dispatch_count']
@@ -115,7 +129,7 @@ def _sample(brain,frames):
         'mark_grid_threads':mark_threads,
         'gather_grid_threads':gather_threads,
         'indirect_dispatch_count':indirect_dispatches,
-        'edge_bitmap_words':edge_bitmap_words}
+        'edge_bitmap_words':edge_bitmap_words,**metal_timing}
 
 
 def run(out,validation,repetitions=5):

@@ -38,7 +38,7 @@
 - Produces: `MetalBackend.last_timing: dict[str, int | float]` containing raw per-bin measurements.
 - Preserves: current full synchronization and numerical behavior until Task 3.
 
-- [ ] **Step 1: Add a failing aggregation test**
+- [x] **Step 1: Add a failing aggregation test**
 
 Extend `test_sample_aggregates_metal_dispatch_work` with this timing payload and assertions:
 
@@ -76,29 +76,29 @@ assert result['counts_copy_bytes'] == 64
 assert result['event_conversion_sort_seconds'] == pytest.approx(.024)
 ```
 
-- [ ] **Step 2: Run the focused test and confirm the missing fields fail**
+- [x] **Step 2: Run the focused test and confirm the missing fields fail**
 
 Run: `.venv-neural/bin/python -m pytest tests/test_doom_metal_benchmark.py::test_sample_aggregates_metal_dispatch_work -q`
 
 Expected: FAIL because `_sample` does not aggregate the new fields.
 
-- [ ] **Step 3: Extend the timing ABI and Python mapping**
+- [x] **Step 3: Extend the timing ABI and Python mapping**
 
 Add native fields for `encode_seconds`, `commit_call_seconds`, `wait_call_seconds`, `counts_clear_seconds`, `native_event_copy_seconds`, and `native_event_copy_bytes`. Measure around the named operation only. Keep `gpu_seconds` from `GPUStartTime` and `GPUEndTime`.
 
 Measure full upload, materialization, drive and counts copies, event conversion, eligibility, and sparse weight update around their Python or C ABI calls. Record explicit byte counts. Do not derive encoding time by subtracting GPU time from a wait-containing duration.
 
-- [ ] **Step 4: Aggregate raw timing fields**
+- [x] **Step 4: Aggregate raw timing fields**
 
 Update `_sample` to sum durations and bytes across all four frames. Preserve each repetition in the benchmark report before computing minimum, median, and maximum summaries.
 
-- [ ] **Step 5: Run focused tests**
+- [x] **Step 5: Run focused tests**
 
 Run: `.venv-neural/bin/python -m pytest tests/test_doom_metal_benchmark.py tests/test_doom_metal_state.py -q`
 
 Expected on Linux: benchmark tests pass and Darwin tests skip.
 
-- [ ] **Step 6: Commit instrumentation**
+- [x] **Step 6: Commit instrumentation**
 
 ```bash
 git add doom_learning_v6/metal/api.h doom_learning_v6/metal/backend.mm \

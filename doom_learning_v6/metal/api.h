@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-#define DF_METAL_ABI_VERSION 2u
+#define DF_METAL_ABI_VERSION 3u
 
 typedef void *df_metal_handle;
 
@@ -65,8 +65,14 @@ typedef struct {
 } df_metal_kc_event;
 
 typedef struct {
-  double host_seconds;
+  double native_total_seconds;
   double gpu_seconds;
+  double counts_clear_seconds;
+  double encode_seconds;
+  double commit_call_seconds;
+  double wait_call_seconds;
+  double native_event_copy_seconds;
+  uint64_t native_event_copy_bytes;
   uint32_t encoder_count;
   uint32_t dispatch_count;
   uint32_t mark_grid_threads;

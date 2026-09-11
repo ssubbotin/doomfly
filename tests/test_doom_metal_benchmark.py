@@ -4,6 +4,7 @@ import numpy as np
 import pytest
 
 from doom_learning_v6.metal.benchmark import _sample,gate,require_metal_validation
+from doom_learning_v6.metal.backend import Timing
 from doom_learning_v6.survival import build_parser
 from doom_learning.common import provenance_sources
 
@@ -59,7 +60,16 @@ def test_sample_aggregates_metal_dispatch_work():
         circuit={'dan':np.array([0],dtype=np.int32)}
         last_rule_seconds=.05
         def rgb_step(self,*args,**kwargs):
-            self.backend.last_timing={'gpu_seconds':.1,'host_seconds':.2,
+            self.backend.last_timing={'gpu_seconds':.1,'native_total_seconds':.2,
+                'encode_seconds':.01,'commit_call_seconds':.002,
+                'wait_call_seconds':.188,'full_upload_seconds':.03,
+                'full_upload_bytes':100,'materialize_seconds':.04,
+                'materialize_bytes':200,'drive_copy_seconds':.001,
+                'drive_copy_bytes':12,'counts_clear_seconds':.003,
+                'counts_copy_seconds':.004,'counts_copy_bytes':16,
+                'native_event_copy_seconds':.005,'native_event_copy_bytes':32,
+                'event_conversion_sort_seconds':.006,'eligibility_seconds':.007,
+                'sparse_weight_update_seconds':.008,'sparse_weight_update_bytes':48,
                 'encoder_count':1,'dispatch_count':502,
                 'mark_grid_threads':7,'gather_grid_threads':9,
                 'indirect_dispatch_count':100,'edge_bitmap_words':11}
@@ -71,3 +81,17 @@ def test_sample_aggregates_metal_dispatch_work():
     assert result['gather_grid_threads']==36
     assert result['indirect_dispatch_count']==400
     assert result['edge_bitmap_words']==11
+    assert result['full_upload_bytes']==400
+    assert result['materialize_bytes']==800
+    assert result['counts_copy_bytes']==64
+    assert result['native_event_copy_bytes']==128
+    assert result['sparse_weight_update_bytes']==192
+    assert result['event_conversion_sort_seconds']==pytest.approx(.024)
+
+
+def test_native_timing_contract_separates_command_phases():
+    names=[name for name,_ in Timing._fields_]
+    assert names[:8]==[
+        'native_total_seconds','gpu_seconds','counts_clear_seconds',
+        'encode_seconds','commit_call_seconds','wait_call_seconds',
+        'native_event_copy_seconds','native_event_copy_bytes']

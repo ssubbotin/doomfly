@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 
 from test_doom_learning_v6 import brain
-from doom_learning_v6.metal.backend import Graph,State
+from doom_learning_v6.metal.backend import Graph,KCEvent,State
 from doom_learning_v6.metal.build import DEFAULT_OUTPUT,library_path,probe
 
 
@@ -82,6 +82,23 @@ def test_metal_state_round_trip_preserves_all_neural_arrays(tmp_path):
     metadata=model.backend.metadata()
     assert metadata['name']=='metal'
     assert metadata['device']['name']=='Apple M4 Pro'
+
+
+def test_metal_reports_separate_native_command_phases(tmp_path):
+    model=brain(tmp_path,backend='metal')
+    model.step([],10,stimulation=([0],20),lamina_bias=0)
+    timing=model.backend.last_timing
+    expected={
+        'native_total_seconds','gpu_seconds','counts_clear_seconds',
+        'encode_seconds','commit_call_seconds','wait_call_seconds',
+        'native_event_copy_seconds','native_event_copy_bytes',
+        'full_upload_seconds','full_upload_bytes','materialize_seconds',
+        'materialize_bytes','event_conversion_sort_seconds','eligibility_seconds'}
+    assert expected<=timing.keys()
+    assert all(timing[name]>=0 for name in expected)
+    assert timing['native_total_seconds']>=timing['encode_seconds']
+    assert timing['native_event_copy_bytes']==len(model.backend.last_kc_events)*C.sizeof(KCEvent)
+    assert timing['full_upload_bytes']==timing['materialize_bytes']>model.weight.nbytes
 
 
 def test_metal_restore_rejects_duplicate_delayed_neuron(tmp_path):

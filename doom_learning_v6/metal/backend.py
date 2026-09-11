@@ -34,7 +34,10 @@ class KCEvent(C.Structure):
 
 
 class Timing(C.Structure):
-    _fields_=[('host_seconds',C.c_double),('gpu_seconds',C.c_double),
+    _fields_=[('native_total_seconds',C.c_double),('gpu_seconds',C.c_double),
+        ('counts_clear_seconds',C.c_double),('encode_seconds',C.c_double),
+        ('commit_call_seconds',C.c_double),('wait_call_seconds',C.c_double),
+        ('native_event_copy_seconds',C.c_double),('native_event_copy_bytes',C.c_uint64),
         ('encoder_count',C.c_uint32),('dispatch_count',C.c_uint32),
         ('mark_grid_threads',C.c_uint32),('gather_grid_threads',C.c_uint32),
         ('indirect_dispatch_count',C.c_uint32),('edge_bitmap_words',C.c_uint32)]
@@ -50,6 +53,8 @@ class MetalBackend:
         self.brain=brain;self.handle=C.c_void_p();self.library=None
         self.incoming=None;self._metadata=None;self.poisoned=False
         self.last_kc_events=[];self.last_timing={};self.capture_spikes=False;self.spike_events=[]
+        self._last_full_upload={'seconds':0.,'bytes':0}
+        self._last_materialize={'seconds':0.,'bytes':0}
         self.initialization_timing={}
 
     def _state(self):
@@ -62,6 +67,13 @@ class MetalBackend:
         if status:
             message=self.library.df_metal_last_error()
             raise BackendError(message.decode() if message else f'Metal backend error {status}')
+
+    def _state_transfer_bytes(self):
+        b=self.brain
+        names=['weight','v','g','refractory','drive','previous_drive','queue','queue_count',
+            'counts','active','active_flag','nactive','last','modulation','modulation_last',
+            'rest','adaptation']
+        return sum(getattr(b,name).nbytes for name in names)
 
     def ensure_initialized(self):
         if self.handle.value:return
@@ -115,17 +127,35 @@ class MetalBackend:
         if status:
             self.poisoned=True;self._error(status)
         tau_ms=self.brain.rule_parameters['trace_kc_seconds']*1000
+        eligibility_started=time.perf_counter()
         status=self.library.df_metal_apply_eligibility(self.handle,_pointer(self.brain.eligibility),
             _pointer(self.brain.eligibility_last),tau_ms)
+        eligibility_seconds=time.perf_counter()-eligibility_started
         if status:
             self.poisoned=True;self._error(status)
         self.sync_for_checkpoint()
         elapsed=time.perf_counter()-started
+        conversion_started=time.perf_counter()
         recorded=[(int(events[i].tick),int(events[i].neuron)) for i in range(count.value)]
         self.last_kc_events=sorted((tick,neuron) for tick,neuron in recorded
             if self.brain.circuit['kc_mask'][neuron])
         if self.capture_spikes:self.spike_events.extend(sorted((neuron,tick) for tick,neuron in recorded))
-        self.last_timing={'host_seconds':timing.host_seconds,'gpu_seconds':timing.gpu_seconds,
+        event_conversion_sort_seconds=time.perf_counter()-conversion_started
+        self.last_timing={'native_total_seconds':timing.native_total_seconds,
+            'gpu_seconds':timing.gpu_seconds,'counts_clear_seconds':timing.counts_clear_seconds,
+            'encode_seconds':timing.encode_seconds,'commit_call_seconds':timing.commit_call_seconds,
+            'wait_call_seconds':timing.wait_call_seconds,
+            'native_event_copy_seconds':timing.native_event_copy_seconds,
+            'native_event_copy_bytes':timing.native_event_copy_bytes,
+            'full_upload_seconds':self._last_full_upload['seconds'],
+            'full_upload_bytes':self._last_full_upload['bytes'],
+            'materialize_seconds':self._last_materialize['seconds'],
+            'materialize_bytes':self._last_materialize['bytes'],
+            'drive_copy_seconds':0.,'drive_copy_bytes':0,
+            'counts_copy_seconds':0.,'counts_copy_bytes':0,
+            'event_conversion_sort_seconds':event_conversion_sort_seconds,
+            'eligibility_seconds':eligibility_seconds,
+            'sparse_weight_update_seconds':0.,'sparse_weight_update_bytes':0,
             'backend_seconds':elapsed,'encoder_count':timing.encoder_count,
             'dispatch_count':timing.dispatch_count,
             'mark_grid_threads':timing.mark_grid_threads,
@@ -144,18 +174,28 @@ class MetalBackend:
 
     def sync_for_checkpoint(self):
         if not self.handle.value:return
-        state=self._state();self._error(self.library.df_metal_download_state(self.handle,C.byref(state)))
+        state=self._state();started=time.perf_counter()
+        self._error(self.library.df_metal_download_state(self.handle,C.byref(state)))
+        self._last_materialize={'seconds':time.perf_counter()-started,
+            'bytes':self._state_transfer_bytes()}
         self.brain.cursor=int(state.cursor)
 
     def restore_from_host(self):
         if not self.handle.value:return
+        started=time.perf_counter()
         self._error(self.library.df_metal_upload_state(self.handle,C.byref(self._state())))
+        self._last_full_upload={'seconds':time.perf_counter()-started,
+            'bytes':self._state_transfer_bytes()}
 
     def update_weights(self,edge_ids,values):
         self.ensure_initialized();edge_ids=np.ascontiguousarray(edge_ids,dtype=np.int64)
         values=np.ascontiguousarray(values,dtype=np.float32)
         if edge_ids.shape!=values.shape:raise ValueError('Plastic edge/value shape mismatch')
+        started=time.perf_counter()
         self._error(self.library.df_metal_update_weights(self.handle,len(edge_ids),_pointer(edge_ids),_pointer(values)))
+        if self.last_timing:
+            self.last_timing['sparse_weight_update_seconds']=time.perf_counter()-started
+            self.last_timing['sparse_weight_update_bytes']=edge_ids.nbytes+values.nbytes
 
     def metadata(self):
         if self._metadata is None:self.ensure_initialized()

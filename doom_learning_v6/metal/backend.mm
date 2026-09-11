@@ -363,14 +363,17 @@ extern "C" int df_metal_advance(df_metal_handle handle,int32_t steps,
   if(b==nullptr||event_count==nullptr||timing==nullptr||steps<1||steps>100||
       event_capacity<0||(event_capacity>0&&events==nullptr))return fail("Invalid Metal advance arguments");
   if(b->poisoned)return fail("Metal backend is poisoned");
-  timing->host_seconds=0.0;timing->gpu_seconds=0.0;
-  timing->encoder_count=0;timing->dispatch_count=0;
-  timing->mark_grid_threads=0;timing->gather_grid_threads=0;
-  timing->indirect_dispatch_count=0;timing->edge_bitmap_words=uint32_t(b->edge_words);
+  std::memset(timing,0,sizeof(*timing));
+  timing->edge_bitmap_words=uint32_t(b->edge_words);
   const uint32_t kernel_capacity=std::min<uint32_t>(b->event_capacity,event_capacity);
   *static_cast<uint32_t *>(b->event_count.contents)=0;
   const auto started=std::chrono::steady_clock::now();
+  const auto clear_started=std::chrono::steady_clock::now();
+  std::memset(b->counts.contents,0,size_t(b->neurons)*sizeof(int32_t));
+  timing->counts_clear_seconds=std::chrono::duration<double>(
+    std::chrono::steady_clock::now()-clear_started).count();
   @autoreleasepool {
+    const auto encode_started=std::chrono::steady_clock::now();
     id<MTLCommandBuffer> command=[b->command_queue commandBuffer];
     if(command==nil){b->poisoned=true;return fail("Metal command buffer creation failed");}
     id<MTLComputeCommandEncoder> encoder=[command computeCommandEncoder];
@@ -407,15 +410,28 @@ extern "C" int df_metal_advance(df_metal_handle handle,int32_t steps,
     encode(encoder,b->materialize_pipeline,{b->v,b->g,b->refractory,b->drive,b->last,
       b->rest,b->adaptation},p,b->neurons,dispatch_count);
     [encoder endEncoding];
-    [command commit];[command waitUntilCompleted];
+    timing->encode_seconds=std::chrono::duration<double>(
+      std::chrono::steady_clock::now()-encode_started).count();
+    const auto commit_started=std::chrono::steady_clock::now();
+    [command commit];
+    timing->commit_call_seconds=std::chrono::duration<double>(
+      std::chrono::steady_clock::now()-commit_started).count();
+    const auto wait_started=std::chrono::steady_clock::now();
+    [command waitUntilCompleted];
+    timing->wait_call_seconds=std::chrono::duration<double>(
+      std::chrono::steady_clock::now()-wait_started).count();
     if(command.status!=MTLCommandBufferStatusCompleted){
       b->poisoned=true;
       if(command.error==nil)return fail("Metal command failed");
       return fail(command.error.localizedDescription);
     }
+    const auto event_copy_started=std::chrono::steady_clock::now();
     const uint32_t produced=*static_cast<uint32_t *>(b->event_count.contents);
     if(produced>kernel_capacity){b->poisoned=true;return fail("KC event capacity exceeded");}
     if(produced>0)std::memcpy(events,b->kc_events.contents,size_t(produced)*sizeof(df_metal_kc_event));
+    timing->native_event_copy_seconds=std::chrono::duration<double>(
+      std::chrono::steady_clock::now()-event_copy_started).count();
+    timing->native_event_copy_bytes=uint64_t(produced)*sizeof(df_metal_kc_event);
     *event_count=int32_t(produced);b->last_event_count=produced;b->cursor+=steps;
     timing->gpu_seconds=command.GPUEndTime>=command.GPUStartTime?
       command.GPUEndTime-command.GPUStartTime:0.0;
@@ -424,7 +440,8 @@ extern "C" int df_metal_advance(df_metal_handle handle,int32_t steps,
     timing->mark_grid_threads=uint32_t(steps)*uint32_t(b->neurons);
     timing->gather_grid_threads=uint32_t(steps)*uint32_t(b->neurons);
   }
-  timing->host_seconds=std::chrono::duration<double>(std::chrono::steady_clock::now()-started).count();
+  timing->native_total_seconds=std::chrono::duration<double>(
+    std::chrono::steady_clock::now()-started).count();
   last_error.clear();return 0;
 }
 
