@@ -183,7 +183,7 @@ git commit -m "Add deterministic incoming graph index"
 - Produces: `build(output_dir: Path) -> dict`, `library_path(output_dir: Path) -> Path`, and C functions `df_metal_probe`, `df_metal_last_error`, and `df_metal_destroy`.
 - Metadata schema: source hashes, binary hashes, commands, compiler, SDK, macOS, architecture, and Metal language version.
 
-- [ ] **Step 1: Write failing platform and metadata tests**
+- [x] **Step 1: Write failing platform and metadata tests**
 
 ```python
 def test_build_rejects_non_macos(monkeypatch, tmp_path):
@@ -199,13 +199,13 @@ def test_generated_artifacts_are_ignored():
         'outputs/doom-learning/metal/kernels.metallib']).returncode == 0
 ```
 
-- [ ] **Step 2: Run the tests and confirm missing modules or ignore rules fail**
+- [x] **Step 2: Run the tests and confirm missing modules or ignore rules fail**
 
 Run: `python -m pytest tests/test_doom_metal_build.py -q`
 
 Expected: failure before build support exists.
 
-- [ ] **Step 3: Define the initial C ABI and probe**
+- [x] **Step 3: Define the initial C ABI and probe**
 
 ```c
 typedef void *df_metal_handle;
@@ -227,14 +227,14 @@ Implement `df_metal_probe` with `MTLCreateSystemDefaultDevice`,
 `hasUnifiedMemory`, and `supportsFamily:MTLGPUFamilyApple7`. Return a stable
 nonzero error code and thread-local error string on failure.
 
-- [ ] **Step 4: Implement the atomic build**
+- [x] **Step 4: Implement the atomic build**
 
 Run `xcrun metal` for `kernels.metal`, `xcrun metallib` for the AIR output, and
 `clang++ -std=c++17 -shared -fPIC -arch arm64 -framework Foundation -framework Metal`
 for `backend.mm`. Build into `.partial` files, hash them, then rename only after
 all commands succeed. Add `*.air` and `*.metallib` to `.gitignore`.
 
-- [ ] **Step 5: Run local platform tests and remote M4 probe**
+- [x] **Step 5: Run local platform tests and remote M4 probe**
 
 Run locally: `python -m pytest tests/test_doom_metal_build.py -q`
 
@@ -243,7 +243,7 @@ Run on M4 Pro: `ssh mini 'cd doomfly && python3 -m doom_learning_v6.metal.build 
 Expected: local guard tests pass; remote JSON reports arm64, unified memory,
 Apple family 7 support, source hashes, and the M4 Pro device name.
 
-- [ ] **Step 6: Commit the build path**
+- [x] **Step 6: Commit the build path**
 
 ```bash
 git add .gitignore doom_learning_v6/metal/api.h doom_learning_v6/metal/build.py doom_learning_v6/metal/backend.mm doom_learning_v6/metal/kernels.metal tests/test_doom_metal_build.py
