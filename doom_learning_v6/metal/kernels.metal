@@ -19,6 +19,12 @@ struct Params {
 
 struct KCEvent { long tick; int neuron; int reserved; };
 
+kernel void df_update_weights(device float *weight [[buffer(0)]],
+    device const long *edge_ids [[buffer(1)]],device const float *values [[buffer(2)]],
+    constant Params &p [[buffer(3)]],uint i [[thread_position_in_grid]]) {
+  if(i<p.neurons)weight[edge_ids[i]]=values[i];
+}
+
 inline bool ring_contains(device atomic_uint *ring,uint words,uint slot,uint neuron) {
   uint word=atomic_load_explicit(&ring[slot*words+(neuron>>5)],memory_order_relaxed);
   return (word&(1u<<(neuron&31)))!=0;

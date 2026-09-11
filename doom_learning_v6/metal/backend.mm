@@ -33,13 +33,15 @@ struct Backend {
   __strong id<MTLBuffer> weight,v,g,refractory,drive,previous_drive,counts,active_flag,last;
   __strong id<MTLBuffer> modulation,modulation_last,rest,adaptation,ring,touched;
   __strong id<MTLBuffer> kc_events,event_count;
+  __strong id<MTLBuffer> weight_update_ids,weight_update_values;
   __strong id<MTLComputePipelineState> drive_pipeline,integrate_pipeline,mark_pipeline;
   __strong id<MTLComputePipelineState> gather_pipeline,clear_pipeline,finalize_pipeline;
-  __strong id<MTLComputePipelineState> materialize_pipeline;
+  __strong id<MTLComputePipelineState> materialize_pipeline,weight_update_pipeline;
   int32_t edge_words=0;
   uint32_t clear_width=1;
   uint32_t event_capacity=0;
   uint32_t last_event_count=0;
+  uint32_t weight_update_capacity=0;
   bool capture_all_spikes=false;
   bool poisoned=false;
 };
@@ -193,11 +195,12 @@ extern "C" int df_metal_create(const df_metal_graph *graph,const char *metallib_
     backend->clear_pipeline=make_pipeline(backend,@"df_clear_active_edge_words",&error);
     backend->finalize_pipeline=make_pipeline(backend,@"df_finalize_tick",&error);
     backend->materialize_pipeline=make_pipeline(backend,@"df_materialize",&error);
+    backend->weight_update_pipeline=make_pipeline(backend,@"df_update_weights",&error);
     if(backend->drive_pipeline==nil||backend->integrate_pipeline==nil||
         backend->mark_pipeline==nil||backend->gather_pipeline==nil||
         backend->clear_pipeline==nil||
         backend->finalize_pipeline==nil||
-        backend->materialize_pipeline==nil){
+        backend->materialize_pipeline==nil||backend->weight_update_pipeline==nil){
       std::string message=error==nil?"Metal pipeline creation failed":error.localizedDescription.UTF8String;
       delete backend;return fail(message.c_str());
     }
@@ -365,10 +368,32 @@ extern "C" int df_metal_update_weights(df_metal_handle handle,int32_t count,
   Backend *b=cast(handle);
   if(b==nullptr||count<0||(count>0&&(!present(edge_ids)||!present(values))))
     return fail("Invalid plastic weight update");
-  float *weight=static_cast<float *>(b->weight.contents);
-  for(int32_t i=0;i<count;i++){
+  for(int32_t i=0;i<count;i++)
     if(edge_ids[i]<0||edge_ids[i]>=b->edges)return fail("Plastic edge out of bounds");
-    weight[edge_ids[i]]=values[i];
+  if(count==0){last_error.clear();return 0;}
+  if(uint32_t(count)>b->weight_update_capacity){
+    b->weight_update_ids=make_buffer(b->device,nullptr,size_t(count)*sizeof(int64_t));
+    b->weight_update_values=make_buffer(b->device,nullptr,size_t(count)*sizeof(float));
+    if(b->weight_update_ids==nil||b->weight_update_values==nil)
+      return fail("Metal plastic weight buffer allocation failed");
+    b->weight_update_capacity=uint32_t(count);
+  }
+  std::memcpy(b->weight_update_ids.contents,edge_ids,size_t(count)*sizeof(int64_t));
+  std::memcpy(b->weight_update_values.contents,values,size_t(count)*sizeof(float));
+  @autoreleasepool {
+    id<MTLCommandBuffer> command=[b->command_queue commandBuffer];
+    if(command==nil){b->poisoned=true;return fail("Metal weight command buffer creation failed");}
+    id<MTLComputeCommandEncoder> encoder=[command computeCommandEncoder];
+    if(encoder==nil){b->poisoned=true;return fail("Metal weight encoder creation failed");}
+    KernelParams p{};p.neurons=uint32_t(count);uint32_t dispatch_count=0;
+    encode(encoder,b->weight_update_pipeline,
+      {b->weight,b->weight_update_ids,b->weight_update_values},p,count,dispatch_count);
+    [encoder endEncoding];[command commit];[command waitUntilCompleted];
+    if(command.status!=MTLCommandBufferStatusCompleted){
+      b->poisoned=true;
+      if(command.error==nil)return fail("Metal weight command failed");
+      return fail(command.error.localizedDescription);
+    }
   }
   last_error.clear();return 0;
 }
