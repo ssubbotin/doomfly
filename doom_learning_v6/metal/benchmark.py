@@ -34,6 +34,19 @@ def gate(metrics):
     return result
 
 
+def resident_state_gate(metrics):
+    result={**metrics,
+        'no_full_state_transfers':metrics['full_upload_bytes']==0
+            and metrics['materialize_bytes']==0,
+        'transfer_limit':metrics['transferred_bytes_per_bin']<=2*1024**2,
+        'neural_limit':metrics['neural_median']<=.076,
+        'wall_limit':metrics['wall_median']<=.08613,
+        'gpu_limit':metrics['gpu_median']<=.07325}
+    result['passed']=all(result[name] for name in ['no_full_state_transfers',
+        'transfer_limit','neural_limit','wall_limit','gpu_limit'])
+    return result
+
+
 def _contains(actual,expected):
     if isinstance(expected,dict):
         return isinstance(actual,dict) and all(key in actual and _contains(actual[key],value)
@@ -132,6 +145,15 @@ def _sample(brain,frames):
         'edge_bitmap_words':edge_bitmap_words,**metal_timing}
 
 
+def _collect_samples(cpu,metal,checkpoint,frames,repetitions,sampler=_sample):
+    cpu_samples=[];metal_samples=[]
+    for _ in range(repetitions):
+        cpu.restore(checkpoint);cpu_samples.append(sampler(cpu,frames))
+    for _ in range(repetitions):
+        metal.restore(checkpoint);metal_samples.append(sampler(metal,frames))
+    return cpu_samples,metal_samples
+
+
 def run(out,validation,repetitions=5):
     from doom_learning.common import GRAPH,save_json
     from doom_learning_v2.vision import frame_for
@@ -151,10 +173,7 @@ def run(out,validation,repetitions=5):
     metal.backend.ensure_initialized();metal_initialization=metal.backend.initialization_timing
     before=_memory_status();cpu.restore(checkpoint);metal.restore(checkpoint)
     _sample(cpu,frames);_sample(metal,frames)
-    cpu_samples=[];metal_samples=[]
-    for _ in range(repetitions):
-        cpu.restore(checkpoint);cpu_samples.append(_sample(cpu,frames))
-        metal.restore(checkpoint);metal_samples.append(_sample(metal,frames))
+    cpu_samples,metal_samples=_collect_samples(cpu,metal,checkpoint,frames,repetitions)
     after=_memory_status()
     peak=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024**3
     metrics={'cpu_median':statistics.median(x['neural_seconds'] for x in cpu_samples),
@@ -167,14 +186,25 @@ def run(out,validation,repetitions=5):
             'maximum':max(row[field] for row in samples)}
         for field in samples[0]} for name,samples in [('cpu',cpu_samples),('metal',metal_samples)]}
     result=gate(metrics)
+    metal_summary=summary['metal'];transferred=sum(metal_summary[name]['median']
+        for name in ['drive_copy_bytes','counts_copy_bytes','native_event_copy_bytes',
+            'sparse_weight_update_bytes'])/len(TRACE)
+    residency=resident_state_gate({'neural_median':metal_summary['neural_seconds']['median'],
+        'wall_median':metal_summary['wall_seconds']['median'],
+        'gpu_median':metal_summary['gpu_seconds']['median'],
+        'full_upload_bytes':metal_summary['full_upload_bytes']['median'],
+        'materialize_bytes':metal_summary['materialize_bytes']['median'],
+        'transferred_bytes_per_bin':transferred})
     report={'schema':1,'experiment':'M4 Pro full-graph backend benchmark',
         'validation_report_sha256':_file_digest(validation),'validation_identity':validated['identity'],
         'graph_file_sha256':_file_digest(GRAPH),'repetitions':repetitions,
+        'sampling_order':'one warmup per backend, then contiguous CPU and Metal blocks',
         'cpu_samples':cpu_samples,'metal_samples':metal_samples,'timing_summary':summary,
         'construction_seconds':{'cpu':cpu_construction,'metal':metal_construction},
         'metal_initialization':metal_initialization,'memory':{'before':before,'after':after},
         'system_load':{'load_average':list(os.getloadavg()),'logical_cpus':os.cpu_count()},
-        'metal':portable_backend_metadata(metal.backend.metadata()),'gate':result,
+        'metal':portable_backend_metadata(metal.backend.metadata()),
+        'resident_state_gate':residency,'gate':result,
         'passed':result['passed'],'interpretation':'Wall-clock viability only. Speed does not change sample efficiency or establish learning.'}
     save_json(out/'report.json',report);cpu.backend.close();metal.backend.close();return report
 

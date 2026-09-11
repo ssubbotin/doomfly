@@ -3,7 +3,13 @@ import json
 import numpy as np
 import pytest
 
-from doom_learning_v6.metal.benchmark import _sample,gate,require_metal_validation
+from doom_learning_v6.metal.benchmark import (
+    _collect_samples,
+    _sample,
+    gate,
+    require_metal_validation,
+    resident_state_gate,
+)
 from doom_learning_v6.metal.backend import Timing
 from doom_learning_v6.survival import build_parser
 from doom_learning.common import provenance_sources
@@ -33,6 +39,28 @@ def test_benchmark_gate_requires_speed_and_memory():
     assert report['passed'] is True
     assert not gate({**report,'metal_median':2.1})['passed']
     assert not gate({**report,'peak_rss_gib':8.0})['passed']
+
+
+def test_resident_state_gate_enforces_timing_and_transfer_limits():
+    metrics={'neural_median':.076,'wall_median':.08613,'gpu_median':.07325,
+        'full_upload_bytes':0,'materialize_bytes':0,'transferred_bytes_per_bin':2*1024**2}
+    assert resident_state_gate(metrics)['passed']
+    assert not resident_state_gate({**metrics,'neural_median':.076001})['passed']
+    assert not resident_state_gate({**metrics,'full_upload_bytes':1})['passed']
+
+
+def test_benchmark_collects_contiguous_backend_blocks():
+    order=[]
+    class Brain:
+        def __init__(self,name):self.name=name
+        def restore(self,path):order.append((self.name,'restore'))
+    def sample(brain,frames):
+        order.append((brain.name,'sample'));return {'backend':brain.name}
+    cpu,metal=_collect_samples(Brain('cpu'),Brain('metal'),'initial',[],2,sample)
+    assert cpu==[{'backend':'cpu'}]*2
+    assert metal==[{'backend':'metal'}]*2
+    assert order==[('cpu','restore'),('cpu','sample')]*2+[
+        ('metal','restore'),('metal','sample')]*2
 
 
 def test_survival_parser_exposes_explicit_backend_and_evidence():
