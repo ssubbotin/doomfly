@@ -262,7 +262,7 @@ git commit -m "Add portable Metal build and device probe"
 - Produces: `MetalBackend(brain)`, opaque Metal handles, full state upload/export, plastic-weight updates, and `metadata()`.
 - Consumes: the `IncomingGraph` from Task 2 and build artifacts from Task 3.
 
-- [ ] **Step 1: Write a Darwin-only round-trip state test**
+- [x] **Step 1: Write a Darwin-only round-trip state test**
 
 ```python
 @pytest.mark.skipif(sys.platform != 'darwin', reason='Metal requires macOS')
@@ -276,13 +276,13 @@ def test_metal_state_round_trip_preserves_all_arrays(tmp_path):
     assert b.backend.metadata()['name'] == 'metal'
 ```
 
-- [ ] **Step 2: Run on `mini` and confirm creation is absent**
+- [x] **Step 2: Run on `mini` and confirm creation is absent**
 
 Run: `ssh mini 'cd doomfly && python3 -m pytest tests/test_doom_metal_state.py -q'`
 
 Expected: failure because the full Metal handle API is not implemented.
 
-- [ ] **Step 3: Extend the C ABI with exact graph and state descriptors**
+- [x] **Step 3: Extend the C ABI with exact graph and state descriptors**
 
 ```c
 typedef struct {
@@ -312,7 +312,7 @@ Define `df_metal_state` in `api.h` with pointers for `weight`, `v`, `g`,
 `rest`, and `adaptation`. Validate every pointer, size, and graph count before
 allocating buffers.
 
-- [ ] **Step 4: Implement Objective-C++ buffer ownership**
+- [x] **Step 4: Implement Objective-C++ buffer ownership**
 
 Allocate `MTLStorageModeShared` buffers for immutable graph arrays, incoming CSR,
 mutable float32/int state, delay bitmaps, touched flags, and tick-resolved KC
@@ -320,20 +320,20 @@ events. Convert host queue lists to ring bitmaps on upload and materialize sorte
 lists on download. Reject duplicate IDs within a delay slot and inconsistent
 `queue_count`, `active`, or `active_flag` state.
 
-- [ ] **Step 5: Implement the Python wrapper**
+- [x] **Step 5: Implement the Python wrapper**
 
 Load only binaries whose metadata hashes match `api.h`, `backend.mm`, and
 `kernels.metal`. Define matching `ctypes.Structure` layouts, keep all NumPy inputs
 alive for each call, translate nonzero C status into `BackendError`, and poison
 the instance after command failure.
 
-- [ ] **Step 6: Run round-trip and CPU tests**
+- [x] **Step 6: Run round-trip and CPU tests**
 
 Run on M4 Pro: `ssh mini 'cd doomfly && python3 -m pytest tests/test_doom_metal_state.py tests/test_doom_backend_contract.py -q'`
 
 Expected: exact round-trip state and unchanged CPU behavior.
 
-- [ ] **Step 7: Commit state ownership**
+- [x] **Step 7: Commit state ownership**
 
 ```bash
 git add doom_learning_v6/metal/api.h doom_learning_v6/metal/backend.mm doom_learning_v6/metal/backend.py tests/test_doom_metal_state.py
