@@ -32,8 +32,9 @@ struct Backend {
   __strong id<MTLBuffer> kc_events,event_count;
   __strong id<MTLComputePipelineState> drive_pipeline,integrate_pipeline,mark_pipeline;
   __strong id<MTLComputePipelineState> gather_pipeline,clear_pipeline,reset_pipeline,materialize_pipeline;
-  uint32_t kc_event_capacity=0;
+  uint32_t event_capacity=0;
   uint32_t last_event_count=0;
+  bool capture_all_spikes=false;
   bool poisoned=false;
 };
 
@@ -48,7 +49,7 @@ struct KernelParams {
   float adaptation_tau;
   int32_t refractory_ticks;
   uint32_t event_capacity;
-  uint32_t padding;
+  uint32_t capture_all_spikes;
 };
 
 int fail(const char *message) {
@@ -198,9 +199,9 @@ extern "C" int df_metal_create(const df_metal_graph *graph,const char *metallib_
     backend->touched=make_buffer(backend->device,nullptr,n*sizeof(uint32_t));
     uint32_t kc_count=0;
     for(size_t i=0;i<n;i++)if(graph->kc_mask[i])kc_count++;
-    backend->kc_event_capacity=std::max<uint32_t>(1,kc_count*5u);
+    backend->event_capacity=std::max<uint32_t>(1,kc_count*5u);
     backend->kc_events=make_buffer(backend->device,nullptr,
-      size_t(backend->kc_event_capacity)*sizeof(df_metal_kc_event));
+      size_t(backend->event_capacity)*sizeof(df_metal_kc_event));
     backend->event_count=make_buffer(backend->device,nullptr,sizeof(uint32_t));
     const id<MTLBuffer> required[]={backend->out_ptr,backend->out_post,backend->in_ptr,
       backend->in_pre,backend->in_edge,backend->kc_mask,backend->modulation_mask,
@@ -305,14 +306,15 @@ extern "C" int df_metal_advance(df_metal_handle handle,int32_t steps,
   if(b==nullptr||event_count==nullptr||timing==nullptr||steps<1||steps>100||
       event_capacity<0||(event_capacity>0&&events==nullptr))return fail("Invalid Metal advance arguments");
   if(b->poisoned)return fail("Metal backend is poisoned");
-  const uint32_t kernel_capacity=std::min<uint32_t>(b->kc_event_capacity,event_capacity);
+  const uint32_t kernel_capacity=std::min<uint32_t>(b->event_capacity,event_capacity);
   *static_cast<uint32_t *>(b->event_count.contents)=0;
   const auto started=std::chrono::steady_clock::now();
   @autoreleasepool {
     id<MTLCommandBuffer> command=[b->command_queue commandBuffer];
     if(command==nil){b->poisoned=true;return fail("Metal command buffer creation failed");}
     KernelParams p{uint32_t(b->neurons),uint32_t(b->words),0,0,b->cursor,b->dt,
-      b->adaptation_jump,b->adaptation_tau,int32_t(std::lround(2.2f/b->dt)),kernel_capacity,0};
+      b->adaptation_jump,b->adaptation_tau,int32_t(std::lround(2.2f/b->dt)),kernel_capacity,
+      b->capture_all_spikes?1u:0u};
     encode(command,b->drive_pipeline,{b->v,b->g,b->refractory,b->drive,b->previous_drive,
       b->active_flag,b->last,b->rest,b->adaptation},p,b->neurons);
     const int32_t delay=std::lround(1.8f/b->dt);
@@ -360,12 +362,26 @@ extern "C" int df_metal_apply_eligibility(df_metal_handle handle,double *eligibi
   });
   for(const auto &event:events){
     if(event.neuron<0||event.neuron>=b->neurons)return fail("KC event neuron out of bounds");
+    const auto *kc_mask=static_cast<const uint8_t *>(b->kc_mask.contents);
+    if(!kc_mask[event.neuron])continue;
     const int64_t delta=event.tick-eligibility_last[event.neuron];
     const float decay=std::exp(-b->dt*float(delta)/float(tau_ms));
     eligibility[event.neuron]*=decay;
     eligibility[event.neuron]+=1.0;eligibility_last[event.neuron]=event.tick;
   }
   last_error.clear();return 0;
+}
+
+extern "C" int df_metal_set_diagnostics(df_metal_handle handle,int32_t enabled) {
+  Backend *b=cast(handle);
+  if(b==nullptr||(enabled!=0&&enabled!=1))return fail("Invalid Metal diagnostic mode");
+  if(enabled&&b->event_capacity<uint32_t(b->neurons)*5u){
+    const uint32_t capacity=uint32_t(b->neurons)*5u;
+    id<MTLBuffer> events=make_buffer(b->device,nullptr,size_t(capacity)*sizeof(df_metal_kc_event));
+    if(events==nil)return fail("Metal diagnostic event allocation failed");
+    b->kc_events=events;b->event_capacity=capacity;
+  }
+  b->capture_all_spikes=enabled!=0;last_error.clear();return 0;
 }
 
 extern "C" void df_metal_destroy(df_metal_handle handle) { delete cast(handle); }

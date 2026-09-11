@@ -61,3 +61,12 @@ def test_metal_repeated_runs_are_bitwise_identical(tmp_path):
     first.backend.sync_for_checkpoint();second.backend.sync_for_checkpoint()
     for name in ['weight',*first.fields]:
         np.testing.assert_array_equal(getattr(first,name),getattr(second,name),err_msg=name)
+
+
+def test_diagnostic_capture_records_exact_all_neuron_spike_events(tmp_path):
+    cpu,metal=paired_brains(tmp_path)
+    cpu.backend.start_diagnostics();metal.backend.start_diagnostics()
+    np.testing.assert_array_equal(run_trace(metal),run_trace(cpu))
+    assert cpu.backend.spike_events
+    assert metal.backend.spike_events==cpu.backend.spike_events
+    assert any(neuron not in cpu.circuit['kc'] for neuron,_ in cpu.backend.spike_events)

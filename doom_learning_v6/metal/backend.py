@@ -46,7 +46,7 @@ class MetalBackend:
     def __init__(self,brain):
         self.brain=brain;self.handle=C.c_void_p();self.library=None
         self.incoming=None;self._metadata=None;self.poisoned=False
-        self.last_kc_events=[];self.last_timing={}
+        self.last_kc_events=[];self.last_timing={};self.capture_spikes=False;self.spike_events=[]
 
     def _state(self):
         b=self.brain
@@ -79,6 +79,8 @@ class MetalBackend:
         self.library.df_metal_advance.restype=C.c_int
         self.library.df_metal_apply_eligibility.argtypes=[C.c_void_p,C.c_void_p,C.c_void_p,C.c_double]
         self.library.df_metal_apply_eligibility.restype=C.c_int
+        self.library.df_metal_set_diagnostics.argtypes=[C.c_void_p,C.c_int32]
+        self.library.df_metal_set_diagnostics.restype=C.c_int
         self.library.df_metal_destroy.argtypes=[C.c_void_p]
         b=self.brain;i=self.incoming
         graph=Graph(b.n,len(b.post),b.queue.shape[0],b.dt,b.adaptation_jump,b.adaptation_tau,
@@ -94,7 +96,8 @@ class MetalBackend:
         self.ensure_initialized()
         if self.poisoned:raise BackendError('Metal backend is poisoned')
         self.restore_from_host()
-        capacity=max(1,int(np.count_nonzero(self.brain.circuit['kc_mask']))*(1+(steps-1)//22))
+        cells=self.brain.n if self.capture_spikes else int(np.count_nonzero(self.brain.circuit['kc_mask']))
+        capacity=max(1,cells*(1+(steps-1)//22))
         events=(KCEvent*capacity)();count=C.c_int32();timing=Timing();started=time.perf_counter()
         status=self.library.df_metal_advance(self.handle,steps,events,capacity,C.byref(count),C.byref(timing))
         if status:
@@ -106,10 +109,21 @@ class MetalBackend:
             self.poisoned=True;self._error(status)
         self.sync_for_checkpoint()
         elapsed=time.perf_counter()-started
-        self.last_kc_events=sorted((int(events[i].tick),int(events[i].neuron)) for i in range(count.value))
+        recorded=[(int(events[i].tick),int(events[i].neuron)) for i in range(count.value)]
+        self.last_kc_events=sorted((tick,neuron) for tick,neuron in recorded
+            if self.brain.circuit['kc_mask'][neuron])
+        if self.capture_spikes:self.spike_events.extend(sorted((neuron,tick) for tick,neuron in recorded))
         self.last_timing={'host_seconds':timing.host_seconds,'gpu_seconds':timing.gpu_seconds,
             'backend_seconds':elapsed}
         return elapsed
+
+    def start_diagnostics(self):
+        self.ensure_initialized();self._error(self.library.df_metal_set_diagnostics(self.handle,1))
+        self.capture_spikes=True;self.spike_events=[]
+
+    def stop_diagnostics(self):
+        if self.handle.value:self._error(self.library.df_metal_set_diagnostics(self.handle,0))
+        self.capture_spikes=False
 
     def sync_for_checkpoint(self):
         if not self.handle.value:return

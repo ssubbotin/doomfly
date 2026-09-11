@@ -537,7 +537,7 @@ git commit -m "Preserve v6 state across CPU and Metal"
 - Produces: `python -m doom_learning_v6.metal.validate --out PATH`, a JSON report containing structural hashes, spike metrics, decoder comparison, weight comparison, device/build provenance, and pass/fail gates.
 - Consumes: a verified MaleCNS graph and deterministic saved RGB/input trace.
 
-- [ ] **Step 1: Write failing metric tests with known synthetic events**
+- [x] **Step 1: Write failing metric tests with known synthetic events**
 
 ```python
 def test_parity_metrics_have_fixed_gate_boundaries():
@@ -553,13 +553,13 @@ Add unit cases for empty spike sets, zero-rate correlation, exact decoder
 decisions, maximum weight relative error, and a gate value exactly on each
 accepted threshold.
 
-- [ ] **Step 2: Run the metric tests and confirm the module is absent**
+- [x] **Step 2: Run the metric tests and confirm the module is absent**
 
 Run: `python -m pytest tests/test_doom_metal_validation.py -q`
 
 Expected: import failure for `doom_learning_v6.metal.validate`.
 
-- [ ] **Step 3: Implement trace capture and gate calculations**
+- [x] **Step 3: Implement trace capture and gate calculations**
 
 Add a diagnostic backend option that records compressed per-tick spike pairs for
 validation intervals. Run CPU and Metal from the same checkpoint and input trace.
@@ -570,7 +570,7 @@ sort each backend's ticks, and greedily pair each CPU tick with the earliest
 unused Metal tick within `[-1, +1]`; divide matched pairs by the larger event
 count. Write reports atomically with `allow_nan=False`.
 
-- [ ] **Step 4: Record full-graph evidence on M4 Pro**
+- [x] **Step 4: Record full-graph evidence on M4 Pro**
 
 Run: `ssh mini 'cd doomfly && OPENBLAS_NUM_THREADS=1 python3 -m doom_learning_v6.metal.validate --out outputs/doom-learning/metal-validation-m4pro'`
 
@@ -578,7 +578,7 @@ Expected gates: Jaccard `>=0.995`, total-spike difference `<=0.005`, rate
 correlation `>=0.999`, one-tick match `>=0.999`, exact decoder and scientific
 gate outputs, and plastic-weight `rtol<=1e-4`.
 
-- [ ] **Step 5: Commit code and compact evidence**
+- [x] **Step 5: Commit code and compact evidence**
 
 ```bash
 git add doom_learning_v6/metal/validate.py doom_learning_v6/metal/backend.py tests/test_doom_metal_validation.py outputs/doom-learning/metal-validation-m4pro

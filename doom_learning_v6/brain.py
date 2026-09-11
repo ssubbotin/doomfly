@@ -6,7 +6,7 @@ import numpy as np
 from doom.native import NativeBrain
 from doom_learning.common import ROOT, GRAPH, OUT, digest, save_json
 from doom_learning.circuit import identify
-from .backend import create_backend
+from .backend import BackendError,create_backend
 
 SOURCE=Path(__file__).with_name('kernel.cpp')
 LIBRARY=(OUT/'physiology-v6')/('libmemory.dylib' if sys.platform=='darwin' else 'libmemory.so')
@@ -38,7 +38,8 @@ class MemoryBrain(NativeBrain):
         self.build=build();self.library=C.CDLL(str(LIBRARY));self._cpu_kernel=self.library.memory_advance
         self._cpu_kernel.argtypes=[C.c_int]+[C.c_void_p]*11+[C.c_int,C.c_float]+[C.c_void_p]*5+[
             C.c_void_p,C.c_void_p,C.c_void_p,C.c_void_p,C.c_int]+[C.c_void_p]*4+[
-            C.c_float,C.c_float,C.c_float,C.c_int,C.c_void_p,C.c_void_p,C.c_void_p,C.c_void_p,C.c_void_p,C.c_float,C.c_float]
+            C.c_float,C.c_float,C.c_float,C.c_int,C.c_void_p,C.c_void_p,C.c_void_p,C.c_void_p,C.c_void_p,C.c_float,C.c_float,
+            C.c_void_p,C.c_void_p,C.c_int64,C.c_void_p]
         self._cpu_kernel.restype=None
         self.circuit=identify(self) if circuit is None else circuit
         if not math.isfinite(kc_rest) or not -80<=kc_rest<=-45:raise ValueError('Invalid KC resting potential')
@@ -85,9 +86,12 @@ class MemoryBrain(NativeBrain):
         else:self.memory_u[:],self.memory_w[:]=saved
         self.backend.restore_from_host()
 
-    def _advance_cpu(self,steps):
+    def _advance_cpu(self,steps,capture_spikes=False):
         clock=np.asarray([self.cursor],dtype=np.int64);c=self.circuit
         arrays=[self.ptr,self.post,self.weight,self.v,self.g,self.refractory,self.drive,self.previous_drive,self.queue,self.queue_count,clock]
+        capacity=self.n*(1+(steps-1)//22) if capture_spikes else 0
+        event_ticks=np.empty(capacity,dtype=np.int64);event_neurons=np.empty(capacity,dtype=np.int32)
+        event_count=np.zeros(1,dtype=np.int64)
         start=time.perf_counter()
         self._cpu_kernel(self.n,*[x.ctypes.data for x in arrays],steps,self.dt,
             *[getattr(self,k).ctypes.data for k in ['counts','active','active_flag','nactive','last']],
@@ -95,8 +99,13 @@ class MemoryBrain(NativeBrain):
             len(c['edges']),c['edges'].ctypes.data,c['pre'].ctypes.data,self.baseline_plastic.ctypes.data,c['gain'].ctypes.data,
             self.eta,PARAMETERS['trace_kc_seconds']*1000,PARAMETERS['minimum_fraction'],0,
             self.modulation.ctypes.data,self.modulation_last.ctypes.data,self.modulation_mask.ctypes.data,self.rest.ctypes.data,
-            self.adaptation.ctypes.data,self.adaptation_jump,self.adaptation_tau)
+            self.adaptation.ctypes.data,self.adaptation_jump,self.adaptation_tau,
+            event_ticks.ctypes.data if capture_spikes else None,event_neurons.ctypes.data if capture_spikes else None,
+            capacity,event_count.ctypes.data if capture_spikes else None)
         elapsed=time.perf_counter()-start
+        if event_count[0]>capacity:raise BackendError('CPU diagnostic spike capacity exceeded')
+        self._cpu_last_spike_events=sorted((int(neuron),int(tick))
+            for neuron,tick in zip(event_neurons[:event_count[0]],event_ticks[:event_count[0]]))
         self.cursor=int(clock[0])
         return elapsed
 

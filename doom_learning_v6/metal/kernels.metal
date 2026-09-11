@@ -12,7 +12,7 @@ struct Params {
   float adaptation_tau;
   int refractory_ticks;
   uint event_capacity;
-  uint padding;
+  uint capture_all_spikes;
 };
 
 struct KCEvent { long tick; int neuron; int reserved; };
@@ -67,9 +67,11 @@ kernel void df_integrate(device float *v [[buffer(0)]],device float *g [[buffer(
   if(refractory[i]==0&&v[i]>-45.0f){
     atomic_fetch_or_explicit(&ring[p.future*p.words+(i>>5)],1u<<(i&31),memory_order_relaxed);
     counts[i]++;
-    if(kc_mask[i]){
+    if(kc_mask[i]||p.capture_all_spikes){
       uint position=atomic_fetch_add_explicit(event_count,1u,memory_order_relaxed);
       if(position<p.event_capacity)events[position]=KCEvent{p.clock,(int)i,0};
+    }
+    if(kc_mask[i]){
       adaptation[i]+=p.adaptation_jump;
     }
   }

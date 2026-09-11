@@ -16,7 +16,8 @@ extern "C" void memory_advance(
  int nplastic,const int64_t* plastic_edge,const int32_t* plastic_pre,
  const float* baseline_weight,const float* dan_gain,float eta,float tau_elig_ms,float floor_fraction,
  int learning_enabled,float* modulation,int64_t* modulation_last,const uint8_t* modulation_mask,const float* rest,
- float* adaptation,float adaptation_jump,float adaptation_tau) {
+ float* adaptation,float adaptation_jump,float adaptation_tau,
+ int64_t* event_ticks,int32_t* event_neurons,int64_t event_capacity,int64_t* event_count) {
  const int delay=std::lround(1.8f/dt),rfc=std::lround(2.2f/dt),slots=delay+1;
  float av[1024],ag[1024],aa[1024];
  for(int i=0;i<1024;i++){av[i]=std::exp(-dt*i/20.f);ag[i]=std::exp(-dt*i/5.f);aa[i]=std::exp(-dt*i/adaptation_tau);}
@@ -44,6 +45,8 @@ extern "C" void memory_advance(
    for(int k=0;k<original;k++){
      const int i=active[k];evolve(i,*clock,drive[i]);
      if(refractory[i]==0 && v[i]>-45.f){queue[future*n+queue_count[future]++]=i;counts[i]++;
+       if(event_count){const int64_t position=(*event_count)++;
+         if(position<event_capacity){event_ticks[position]=*clock;event_neurons[position]=i;}}
        if(kc_mask[i]){
          adaptation[i]+=adaptation_jump;
          eligibility[i]*=std::exp(-dt*(*clock-eligibility_last[i])/tau_elig_ms);
