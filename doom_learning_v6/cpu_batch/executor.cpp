@@ -1,10 +1,15 @@
 #include "api.h"
 
+#include <atomic>
 #include <chrono>
 #include <cmath>
+#include <condition_variable>
 #include <cstdint>
+#include <exception>
+#include <mutex>
 #include <new>
 #include <string>
+#include <thread>
 #include <vector>
 
 namespace {
@@ -16,6 +21,24 @@ struct Executor {
   std::vector<df_cpu_batch_lane> lanes;
   int32_t workers;
   std::string error;
+  std::mutex api_mutex;
+  std::mutex state_mutex;
+  std::condition_variable work_ready;
+  std::condition_variable work_done;
+  std::vector<std::thread> threads;
+  std::atomic<int32_t> next_lane{0};
+  uint64_t generation = 0;
+  int32_t steps = 0;
+  int32_t completed_workers = 0;
+  bool active = false;
+  bool stopping = false;
+  bool poisoned = false;
+
+  Executor(const df_cpu_batch_graph &shared_graph,
+           const df_cpu_batch_lane *registered_lanes, int32_t lane_count,
+           int32_t worker_count);
+  ~Executor();
+  void worker_loop();
 };
 
 int fail(Executor *executor, const char *message) {
@@ -187,6 +210,72 @@ void advance_lane(const df_cpu_batch_graph &graph, df_cpu_batch_lane &lane, int 
   for (int i = 0; i < n; ++i) evolve(i, *lane.cursor - 1, lane.drive[i]);
 }
 
+Executor::Executor(const df_cpu_batch_graph &shared_graph,
+                   const df_cpu_batch_lane *registered_lanes, int32_t lane_count,
+                   int32_t worker_count)
+    : graph(shared_graph), lanes(registered_lanes, registered_lanes + lane_count),
+      workers(worker_count) {
+  try {
+    threads.reserve(workers);
+    for (int32_t worker = 0; worker < workers; ++worker)
+      threads.emplace_back(&Executor::worker_loop, this);
+  } catch (...) {
+    {
+      std::lock_guard<std::mutex> lock(state_mutex);
+      stopping = true;
+    }
+    work_ready.notify_all();
+    for (auto &thread : threads) if (thread.joinable()) thread.join();
+    throw;
+  }
+}
+
+Executor::~Executor() {
+  std::unique_lock<std::mutex> api_lock(api_mutex);
+  {
+    std::lock_guard<std::mutex> state_lock(state_mutex);
+    stopping = true;
+  }
+  work_ready.notify_all();
+  for (auto &thread : threads) if (thread.joinable()) thread.join();
+}
+
+void Executor::worker_loop() {
+  uint64_t observed_generation = 0;
+  while (true) {
+    int32_t local_steps;
+    {
+      std::unique_lock<std::mutex> lock(state_mutex);
+      work_ready.wait(lock, [&] { return stopping || generation != observed_generation; });
+      if (stopping) return;
+      observed_generation = generation;
+      local_steps = steps;
+    }
+    try {
+      while (true) {
+        const int32_t lane = next_lane.fetch_add(1, std::memory_order_relaxed);
+        if (lane >= static_cast<int32_t>(lanes.size())) break;
+        advance_lane(graph, lanes[lane], local_steps);
+      }
+    } catch (const std::exception &exception) {
+      std::lock_guard<std::mutex> lock(state_mutex);
+      if (!poisoned) error = exception.what();
+      poisoned = true;
+    } catch (...) {
+      std::lock_guard<std::mutex> lock(state_mutex);
+      if (!poisoned) error = "Unknown CPU batch worker failure";
+      poisoned = true;
+    }
+    {
+      std::lock_guard<std::mutex> lock(state_mutex);
+      if (++completed_workers == workers) {
+        active = false;
+        work_done.notify_all();
+      }
+    }
+  }
+}
+
 }  // namespace
 
 extern "C" uint32_t df_cpu_batch_abi_version(void) {
@@ -200,8 +289,7 @@ extern "C" int df_cpu_batch_create(const df_cpu_batch_graph *graph,
   *handle = nullptr;
   if (validate(graph, lanes, lane_count, workers)) return 1;
   try {
-    auto *executor = new Executor{*graph,
-        std::vector<df_cpu_batch_lane>(lanes, lanes + lane_count), workers, {}};
+    auto *executor = new Executor(*graph, lanes, lane_count, workers);
     *handle = executor;
     return 0;
   } catch (const std::exception &exception) {
@@ -217,25 +305,44 @@ extern "C" int df_cpu_batch_advance(df_cpu_batch_handle handle, int32_t steps,
   if (!executor) return fail(nullptr, "Missing CPU batch handle");
   if (steps < 1 || steps > 100) return fail(executor, "CPU batch steps must be 1 through 100");
   if (!timing) return fail(executor, "Missing CPU batch timing output");
+  std::unique_lock<std::mutex> api_lock(executor->api_mutex, std::try_to_lock);
+  if (!api_lock.owns_lock()) return fail(nullptr, "Reentrant CPU batch advance is forbidden");
   const auto started = std::chrono::steady_clock::now();
-  try {
-    for (auto &lane : executor->lanes) advance_lane(executor->graph, lane, steps);
-  } catch (const std::exception &exception) {
-    return fail(executor, exception.what());
-  } catch (...) {
-    return fail(executor, "Unknown CPU batch worker failure");
+  uint64_t generation;
+  {
+    std::lock_guard<std::mutex> lock(executor->state_mutex);
+    if (executor->poisoned) {
+      last_error = executor->error;
+      return 1;
+    }
+    executor->steps = steps;
+    executor->completed_workers = 0;
+    executor->next_lane.store(0, std::memory_order_relaxed);
+    executor->active = true;
+    generation = ++executor->generation;
+  }
+  executor->work_ready.notify_all();
+  {
+    std::unique_lock<std::mutex> lock(executor->state_mutex);
+    executor->work_done.wait(lock, [&] { return !executor->active; });
+    if (executor->poisoned) {
+      last_error = executor->error;
+      return 1;
+    }
   }
   const auto completed = std::chrono::steady_clock::now();
   timing->native_wall_seconds = std::chrono::duration<double>(completed - started).count();
   timing->lanes_advanced = static_cast<int32_t>(executor->lanes.size());
   timing->workers = executor->workers;
   timing->steps = steps;
+  timing->generation = generation;
+  timing->pool_threads = static_cast<int32_t>(executor->threads.size());
   return 0;
 }
 
 extern "C" const char *df_cpu_batch_error(df_cpu_batch_handle handle) {
   auto *executor = static_cast<Executor *>(handle);
-  return executor ? executor->error.c_str() : last_error.c_str();
+  return executor && !executor->error.empty() ? executor->error.c_str() : last_error.c_str();
 }
 
 extern "C" void df_cpu_batch_destroy(df_cpu_batch_handle handle) {

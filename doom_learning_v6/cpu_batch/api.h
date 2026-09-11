@@ -55,6 +55,8 @@ typedef struct {
   int32_t lanes_advanced;
   int32_t workers;
   int32_t steps;
+  uint64_t generation;
+  int32_t pool_threads;
 } df_cpu_batch_timing;
 
 uint32_t df_cpu_batch_abi_version(void);

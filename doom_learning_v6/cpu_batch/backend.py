@@ -2,6 +2,7 @@
 import ctypes as C
 import hashlib
 import json
+import threading
 
 import numpy as np
 
@@ -35,7 +36,8 @@ class _NativeLane(C.Structure):
 
 class _NativeTiming(C.Structure):
     _fields_=[('native_wall_seconds',C.c_double),
-        ('lanes_advanced',C.c_int32),('workers',C.c_int32),('steps',C.c_int32)]
+        ('lanes_advanced',C.c_int32),('workers',C.c_int32),('steps',C.c_int32),
+        ('generation',C.c_uint64),('pool_threads',C.c_int32)]
 
 
 def _pointer(array):return C.c_void_p(array.ctypes.data)
@@ -198,6 +200,7 @@ class MultiTrajectoryCpuExecutor:
                     raise ValueError('Mutable lane buffers must not alias')
                 seen.append(array)
         self.workers=workers;self._closed=False;self.last_timing={}
+        self._advance_lock=threading.Lock();self._lifecycle_lock=threading.Lock()
         self.build=build(DEFAULT_OUTPUT)
         self._library=C.CDLL(str(library_path(DEFAULT_OUTPUT)))
         self._library.df_cpu_batch_create.argtypes=[C.POINTER(_NativeGraph),
@@ -242,14 +245,20 @@ class MultiTrajectoryCpuExecutor:
         if self._closed:raise BackendError('CPU batch executor is closed')
         if isinstance(steps,bool) or not isinstance(steps,int) or not 1<=steps<=100:
             raise ValueError('CPU batch steps must be 1 through 100')
-        for lane in self.lanes:lane.counts.fill(0)
-        timing=_NativeTiming()
-        status=self._library.df_cpu_batch_advance(self._handle,steps,C.byref(timing))
-        if status:self._raise_native(status)
-        self.last_timing={'native_wall_seconds':timing.native_wall_seconds,
-            'lanes_advanced':timing.lanes_advanced,'workers':timing.workers,
-            'steps':timing.steps}
-        return [lane.counts.copy() for lane in self.lanes]
+        if not self._advance_lock.acquire(blocking=False):
+            raise BackendError('Reentrant CPU batch advance is forbidden')
+        try:
+            if self._closed:raise BackendError('CPU batch executor is closed')
+            for lane in self.lanes:lane.counts.fill(0)
+            timing=_NativeTiming()
+            status=self._library.df_cpu_batch_advance(self._handle,steps,C.byref(timing))
+            if status:self._raise_native(status)
+            self.last_timing={'native_wall_seconds':timing.native_wall_seconds,
+                'lanes_advanced':timing.lanes_advanced,'workers':timing.workers,
+                'steps':timing.steps,'generation':timing.generation,
+                'pool_threads':timing.pool_threads}
+            return [lane.counts.copy() for lane in self.lanes]
+        finally:self._advance_lock.release()
 
     def metadata(self):
         return {'name':'cpu-batch','build':self.build,'workers':self.workers,
@@ -259,10 +268,11 @@ class MultiTrajectoryCpuExecutor:
             'graph':self.graph.metadata(),'closed':self._closed}
 
     def close(self):
-        if self._closed:return
-        self._closed=True
-        if self._handle.value:self._library.df_cpu_batch_destroy(self._handle)
-        self._handle=C.c_void_p()
+        with self._lifecycle_lock:
+            if self._closed:return
+            self._closed=True
+            if self._handle.value:self._library.df_cpu_batch_destroy(self._handle)
+            self._handle=C.c_void_p()
 
     def __enter__(self):return self
 
