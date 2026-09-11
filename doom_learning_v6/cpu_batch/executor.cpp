@@ -8,6 +8,7 @@
 #include <exception>
 #include <mutex>
 #include <new>
+#include <limits>
 #include <string>
 #include <thread>
 #include <vector>
@@ -48,6 +49,52 @@ int fail(Executor *executor, const char *message) {
 }
 
 bool present(const void *pointer) { return pointer != nullptr; }
+
+const char *validate_lane_state(const df_cpu_batch_graph &graph,
+                                const df_cpu_batch_lane &lane) {
+  if (*lane.cursor < 0) return "Invalid CPU batch cursor";
+  if (*lane.nactive < 0 || *lane.nactive > graph.neurons)
+    return "Invalid CPU batch active count";
+  std::vector<uint8_t> seen(static_cast<size_t>(graph.neurons), 0);
+  for (int32_t index = 0; index < *lane.nactive; ++index) {
+    const int32_t neuron = lane.active[index];
+    if (neuron < 0 || neuron >= graph.neurons)
+      return "CPU batch active index out of range";
+    if (seen[neuron]) return "CPU batch active indices must be unique";
+    seen[neuron] = 1;
+  }
+  int32_t flagged = 0;
+  for (int32_t neuron = 0; neuron < graph.neurons; ++neuron) {
+    if (lane.active_flag[neuron] > 1)
+      return "Invalid CPU batch active flag";
+    flagged += lane.active_flag[neuron] != 0;
+    if (static_cast<bool>(lane.active_flag[neuron]) != static_cast<bool>(seen[neuron]))
+      return "CPU batch active flags do not match active indices";
+    if (!std::isfinite(lane.v[neuron]) || !std::isfinite(lane.g[neuron]) ||
+        !std::isfinite(lane.drive[neuron]) ||
+        !std::isfinite(lane.previous_drive[neuron]) ||
+        !std::isfinite(lane.eligibility[neuron]) ||
+        !std::isfinite(lane.modulation[neuron]) ||
+        !std::isfinite(lane.adaptation[neuron]))
+      return "Nonfinite CPU batch lane state";
+  }
+  if (flagged != *lane.nactive)
+    return "CPU batch active flags do not match active count";
+  for (int32_t slot = 0; slot < graph.delay_slots; ++slot) {
+    const int32_t count = lane.queue_count[slot];
+    if (count < 0 || count > graph.neurons)
+      return "Invalid CPU batch queue count";
+    for (int32_t index = 0; index < count; ++index) {
+      const int32_t neuron = lane.queue[static_cast<int64_t>(slot) * graph.neurons + index];
+      if (neuron < 0 || neuron >= graph.neurons)
+        return "CPU batch queued neuron index out of range";
+    }
+  }
+  for (int32_t slot = 0; slot < graph.plastic_edges; ++slot)
+    if (!std::isfinite(lane.plastic_weight[slot]))
+      return "Nonfinite CPU batch plastic weight";
+  return nullptr;
+}
 
 int validate(const df_cpu_batch_graph *graph, const df_cpu_batch_lane *lanes,
              int32_t lane_count, int32_t workers) {
@@ -90,8 +137,8 @@ int validate(const df_cpu_batch_graph *graph, const df_cpu_batch_lane *lanes,
         !present(lane.adaptation) ||
         (graph->plastic_edges && !present(lane.plastic_weight)))
       return fail(nullptr, "Missing CPU batch lane buffer");
-    if (*lane.nactive < 0 || *lane.nactive > graph->neurons)
-      return fail(nullptr, "Invalid CPU batch active count");
+    if (const char *message = validate_lane_state(*graph, lane))
+      return fail(nullptr, message);
   }
   return 0;
 }
@@ -287,8 +334,8 @@ extern "C" int df_cpu_batch_create(const df_cpu_batch_graph *graph,
     df_cpu_batch_handle *handle) {
   if (!handle) return fail(nullptr, "Missing CPU batch output handle");
   *handle = nullptr;
-  if (validate(graph, lanes, lane_count, workers)) return 1;
   try {
+    if (validate(graph, lanes, lane_count, workers)) return 1;
     auto *executor = new Executor(*graph, lanes, lane_count, workers);
     *handle = executor;
     return 0;
@@ -305,39 +352,51 @@ extern "C" int df_cpu_batch_advance(df_cpu_batch_handle handle, int32_t steps,
   if (!executor) return fail(nullptr, "Missing CPU batch handle");
   if (steps < 1 || steps > 100) return fail(executor, "CPU batch steps must be 1 through 100");
   if (!timing) return fail(executor, "Missing CPU batch timing output");
-  std::unique_lock<std::mutex> api_lock(executor->api_mutex, std::try_to_lock);
-  if (!api_lock.owns_lock()) return fail(nullptr, "Reentrant CPU batch advance is forbidden");
-  const auto started = std::chrono::steady_clock::now();
-  uint64_t generation;
-  {
-    std::lock_guard<std::mutex> lock(executor->state_mutex);
-    if (executor->poisoned) {
-      last_error = executor->error;
-      return 1;
+  try {
+    std::unique_lock<std::mutex> api_lock(executor->api_mutex, std::try_to_lock);
+    if (!api_lock.owns_lock()) return fail(nullptr, "Reentrant CPU batch advance is forbidden");
+    for (const auto &lane : executor->lanes) {
+      if (const char *message = validate_lane_state(executor->graph, lane))
+        return fail(executor, message);
+      if (*lane.cursor > std::numeric_limits<int64_t>::max() - steps)
+        return fail(executor, "CPU batch cursor would overflow");
     }
-    executor->steps = steps;
-    executor->completed_workers = 0;
-    executor->next_lane.store(0, std::memory_order_relaxed);
-    executor->active = true;
-    generation = ++executor->generation;
-  }
-  executor->work_ready.notify_all();
-  {
-    std::unique_lock<std::mutex> lock(executor->state_mutex);
-    executor->work_done.wait(lock, [&] { return !executor->active; });
-    if (executor->poisoned) {
-      last_error = executor->error;
-      return 1;
+    const auto started = std::chrono::steady_clock::now();
+    uint64_t generation;
+    {
+      std::lock_guard<std::mutex> lock(executor->state_mutex);
+      if (executor->poisoned) {
+        last_error = executor->error;
+        return 1;
+      }
+      executor->steps = steps;
+      executor->completed_workers = 0;
+      executor->next_lane.store(0, std::memory_order_relaxed);
+      executor->active = true;
+      generation = ++executor->generation;
     }
+    executor->work_ready.notify_all();
+    {
+      std::unique_lock<std::mutex> lock(executor->state_mutex);
+      executor->work_done.wait(lock, [&] { return !executor->active; });
+      if (executor->poisoned) {
+        last_error = executor->error;
+        return 1;
+      }
+    }
+    const auto completed = std::chrono::steady_clock::now();
+    timing->native_wall_seconds = std::chrono::duration<double>(completed - started).count();
+    timing->lanes_advanced = static_cast<int32_t>(executor->lanes.size());
+    timing->workers = executor->workers;
+    timing->steps = steps;
+    timing->generation = generation;
+    timing->pool_threads = static_cast<int32_t>(executor->threads.size());
+    return 0;
+  } catch (const std::exception &exception) {
+    return fail(executor, exception.what());
+  } catch (...) {
+    return fail(executor, "Unknown CPU batch advance failure");
   }
-  const auto completed = std::chrono::steady_clock::now();
-  timing->native_wall_seconds = std::chrono::duration<double>(completed - started).count();
-  timing->lanes_advanced = static_cast<int32_t>(executor->lanes.size());
-  timing->workers = executor->workers;
-  timing->steps = steps;
-  timing->generation = generation;
-  timing->pool_threads = static_cast<int32_t>(executor->threads.size());
-  return 0;
 }
 
 extern "C" const char *df_cpu_batch_error(df_cpu_batch_handle handle) {

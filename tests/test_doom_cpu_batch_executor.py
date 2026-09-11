@@ -63,12 +63,17 @@ def test_changing_one_overlay_does_not_change_neighboring_lanes(tmp_path):
     from doom_learning_v6.cpu_batch.backend import (CpuBatchLane,
         MultiTrajectoryCpuExecutor,SharedCpuGraph)
     brain=toy_brain(tmp_path);graph=SharedCpuGraph.from_brain(brain)
-    lanes=[CpuBatchLane.from_brain(graph,brain) for _ in range(3)]
-    with MultiTrajectoryCpuExecutor(graph,lanes,workers=3) as executor:
-        executor.advance(100);before=[_state_digest(lane) for lane in lanes]
-        lanes[1].plastic_weights[0]+=3;executor.advance(1)
-    assert lanes[0].plastic_weights[0]==lanes[2].plastic_weights[0]
-    assert before[0]!=_state_digest(lanes[0]) and before[2]!=_state_digest(lanes[2])
+    control=[CpuBatchLane.from_brain(graph,brain) for _ in range(3)]
+    changed=[CpuBatchLane.from_brain(graph,brain) for _ in range(3)]
+    for lane in [*control,*changed]:lane.drive[1]=30
+    with MultiTrajectoryCpuExecutor(graph,control,workers=3) as baseline, \
+            MultiTrajectoryCpuExecutor(graph,changed,workers=3) as experiment:
+        baseline.advance(100);experiment.advance(100)
+        changed[1].plastic_weights[0]+=3
+        baseline.advance(100);experiment.advance(100)
+    assert _state_digest(changed[0])==_state_digest(control[0])
+    assert _state_digest(changed[2])==_state_digest(control[2])
+    assert _state_digest(changed[1])!=_state_digest(control[1])
 
 
 def test_reentrant_advance_is_rejected_without_waiting_for_first_call(tmp_path):
@@ -120,3 +125,94 @@ def test_close_waits_until_an_inflight_native_call_returns(tmp_path):
         finally:release.set()
         advance.result();closing.result()
     assert executor.metadata()['closed'] is True
+
+
+@pytest.mark.parametrize('corrupt,match',[
+    (lambda lane:lane.cursor.__setitem__(0,-1),'cursor'),
+    (lambda lane:lane.nactive.__setitem__(0,-1),'active count'),
+    (lambda lane:lane.nactive.__setitem__(0,len(lane.active)+1),'active count'),
+    (lambda lane:(lane.nactive.__setitem__(0,1),lane.active.__setitem__(0,-1)),'active index'),
+    (lambda lane:(lane.nactive.__setitem__(0,2),lane.active.__setitem__(slice(0,2),[1,1]),
+        lane.active_flag.__setitem__(1,1)),'unique'),
+    (lambda lane:(lane.nactive.__setitem__(0,1),lane.active.__setitem__(0,1),
+        lane.active_flag.fill(0)),'active flags'),
+    (lambda lane:lane.queue_count.__setitem__(0,-1),'queue count'),
+    (lambda lane:lane.queue_count.__setitem__(0,lane.queue.shape[1]+1),'queue count'),
+    (lambda lane:(lane.queue_count.__setitem__(0,1),lane.queue.__setitem__((0,0),-1)),
+        'queued neuron'),
+])
+def test_advance_rejects_unsafe_mutable_index_state_before_native_call(
+        tmp_path,corrupt,match):
+    from doom_learning_v6.cpu_batch.backend import (CpuBatchLane,
+        MultiTrajectoryCpuExecutor,SharedCpuGraph)
+    brain=toy_brain(tmp_path);graph=SharedCpuGraph.from_brain(brain)
+    lane=CpuBatchLane.from_brain(graph,brain)
+    with MultiTrajectoryCpuExecutor(graph,[lane],1) as executor:
+        corrupt(lane);called=[]
+        def forbidden(*arguments):called.append(arguments);return 0
+        executor._library.df_cpu_batch_advance=forbidden
+        with pytest.raises(ValueError,match=match):executor.advance(1)
+        assert called==[]
+
+
+def test_executor_detects_registered_buffer_reallocation_before_advance(tmp_path):
+    from doom_learning_v6.cpu_batch.backend import (CpuBatchLane,
+        MultiTrajectoryCpuExecutor,SharedCpuGraph)
+    brain=toy_brain(tmp_path);graph=SharedCpuGraph.from_brain(brain)
+    lane=CpuBatchLane.from_brain(graph,brain)
+    with MultiTrajectoryCpuExecutor(graph,[lane],1) as executor:
+        lane.v.resize((graph.neurons*2,),refcheck=False)
+        with pytest.raises(ValueError,match='registered v buffer'):
+            executor.advance(1)
+
+
+def test_executor_checks_native_abi_before_registering_buffers(tmp_path,monkeypatch):
+    import doom_learning_v6.cpu_batch.backend as backend
+    from doom_learning_v6.backend import BackendError
+    brain=toy_brain(tmp_path);graph=backend.SharedCpuGraph.from_brain(brain)
+    lane=backend.CpuBatchLane.from_brain(graph,brain);created=[]
+    class Function:
+        def __init__(self,result):self.result=result
+        def __call__(self,*arguments):return self.result(*arguments) if callable(self.result) else self.result
+    class Library:
+        df_cpu_batch_abi_version=Function(999)
+        df_cpu_batch_create=Function(lambda *arguments:created.append(arguments) or 0)
+        df_cpu_batch_advance=Function(0)
+        df_cpu_batch_error=Function(None)
+        df_cpu_batch_destroy=Function(None)
+    monkeypatch.setattr(backend.C,'CDLL',lambda path:Library())
+    with pytest.raises(BackendError,match='ABI version'):
+        backend.MultiTrajectoryCpuExecutor(graph,[lane],1)
+    assert created==[]
+
+
+def test_native_failure_marks_every_lane_poisoned(tmp_path):
+    from doom_learning_v6.backend import BackendError
+    from doom_learning_v6.cpu_batch.backend import (CpuBatchLane,
+        MultiTrajectoryCpuExecutor,SharedCpuGraph)
+    brain=toy_brain(tmp_path);graph=SharedCpuGraph.from_brain(brain)
+    lanes=[CpuBatchLane.from_brain(graph,brain) for _ in range(2)]
+    with MultiTrajectoryCpuExecutor(graph,lanes,2) as executor:
+        executor._library.df_cpu_batch_advance=lambda *arguments:1
+        executor._library.df_cpu_batch_error=lambda handle:b'worker failed'
+        with pytest.raises(BackendError,match='worker failed'):executor.advance(1)
+        assert executor.metadata()['poisoned_lanes']==[True,True]
+
+
+@pytest.mark.parametrize('corrupt',[
+    lambda lane:lane.cursor.__setitem__(0,-1),
+    lambda lane:lane.queue_count.__setitem__(0,-1),
+    lambda lane:(lane.nactive.__setitem__(0,1),lane.active.__setitem__(0,-1)),
+])
+def test_native_registration_rejects_unsafe_index_state(tmp_path,corrupt):
+    from doom_learning_v6.cpu_batch.backend import (CpuBatchLane,
+        MultiTrajectoryCpuExecutor,SharedCpuGraph)
+    brain=toy_brain(tmp_path);graph=SharedCpuGraph.from_brain(brain)
+    lane=CpuBatchLane.from_brain(graph,brain)
+    executor=MultiTrajectoryCpuExecutor(graph,[lane],1)
+    executor.close();corrupt(lane);handle=C.c_void_p()
+    status=executor._library.df_cpu_batch_create(C.byref(executor._native_graph),
+        executor._native_lanes,1,1,C.byref(handle))
+    try:assert status!=0
+    finally:
+        if handle.value:executor._library.df_cpu_batch_destroy(handle)

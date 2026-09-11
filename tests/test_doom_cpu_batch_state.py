@@ -32,6 +32,18 @@ def test_lane_copies_only_mutable_state_and_plastic_overlay(tmp_path):
     assert brain.v[1]==-47 and brain.weight[3]==7.5 and brain.cursor==17
 
 
+def test_lane_copy_from_brain_reuses_registered_storage(tmp_path):
+    from doom_learning_v6.cpu_batch.backend import CpuBatchLane,SharedCpuGraph
+    brain=toy_brain(tmp_path);graph=SharedCpuGraph.from_brain(brain)
+    lane=CpuBatchLane.from_brain(graph,brain);addresses={name:value.ctypes.data
+        for name,value in lane.arrays.items()}
+    brain.v[2]=-47;brain.cursor=23;brain.weight[3]=8.25
+    returned=lane.copy_from_brain(graph,brain)
+    assert returned is lane and lane.v[2]==-47 and lane.cursor[0]==23
+    assert lane.plastic_weights[0]==8.25
+    assert addresses=={name:value.ctypes.data for name,value in lane.arrays.items()}
+
+
 @pytest.mark.parametrize('mutation,match',[
     (lambda b:setattr(b,'ptr',b.ptr.astype(np.int32)),'ptr'),
     (lambda b:setattr(b,'post',np.repeat(b.post,2)[::2]),'contiguous'),
@@ -56,6 +68,55 @@ def test_lane_rejects_a_different_graph_identity(tmp_path):
     with pytest.raises(ValueError,match='identity'):CpuBatchLane.from_brain(graph,second)
 
 
+def test_state_owners_cannot_be_constructed_from_arbitrary_mappings(tmp_path):
+    from doom_learning_v6.cpu_batch.backend import CpuBatchLane,SharedCpuGraph
+    brain=toy_brain(tmp_path);graph=SharedCpuGraph.from_brain(brain)
+    with pytest.raises(TypeError,match='from_brain'):
+        CpuBatchLane(graph.identity,dict(graph.arrays))
+    with pytest.raises(TypeError,match='from_brain'):
+        SharedCpuGraph(neurons=graph.neurons,edges=graph.edges,
+            delay_slots=graph.delay_slots,plastic_edges=graph.plastic_edges,
+            dt_ms=graph.dt_ms,eligibility_tau_ms=graph.eligibility_tau_ms,
+            adaptation_jump_mv=graph.adaptation_jump_mv,
+            adaptation_tau_ms=graph.adaptation_tau_ms,
+            arrays=dict(graph.arrays),identity=dict(graph.identity))
+
+
+def test_state_owner_buffer_bindings_are_read_only(tmp_path):
+    from doom_learning_v6.cpu_batch.backend import CpuBatchLane,SharedCpuGraph
+    brain=toy_brain(tmp_path);graph=SharedCpuGraph.from_brain(brain)
+    lane=CpuBatchLane.from_brain(graph,brain)
+    with pytest.raises(TypeError):lane.arrays['v']=np.zeros_like(lane.v)
+    with pytest.raises(AttributeError,match='buffer binding'):lane.v=np.zeros_like(lane.v)
+    with pytest.raises(AttributeError,match='buffer binding'):graph.ptr=np.zeros_like(graph.ptr)
+
+
+def test_compatibility_rejects_changed_immutable_weights_only(tmp_path):
+    from doom_learning_v6.cpu_batch.backend import CpuBatchLane,SharedCpuGraph
+    brain=toy_brain(tmp_path);graph=SharedCpuGraph.from_brain(brain)
+    brain.weight[0]+=1
+    with pytest.raises(ValueError,match='immutable weights'):
+        CpuBatchLane.from_brain(graph,brain)
+    brain.weight[0]=graph.base_weight[0];brain.weight[3]+=1
+    lane=CpuBatchLane.from_brain(graph,brain)
+    assert lane.plastic_weights[0]==brain.weight[3]
+
+
+@pytest.mark.parametrize('corrupt,match',[
+    (lambda graph,lane:lane.v.resize((graph.neurons,1),refcheck=False),'v shape'),
+    (lambda graph,lane:setattr(lane.v.flags,'writeable',False),'writeable'),
+    (lambda graph,lane:setattr(graph.ptr.flags,'writeable',True),'read-only'),
+    (lambda graph,lane:object.__setattr__(lane,'last',graph.ptr[:-1]),'binding'),
+])
+def test_executor_revalidates_registered_buffer_schema(tmp_path,corrupt,match):
+    from doom_learning_v6.cpu_batch.backend import (CpuBatchLane,
+        MultiTrajectoryCpuExecutor,SharedCpuGraph)
+    brain=toy_brain(tmp_path);graph=SharedCpuGraph.from_brain(brain)
+    lane=CpuBatchLane.from_brain(graph,brain);corrupt(graph,lane)
+    with pytest.raises(ValueError,match=match):
+        MultiTrajectoryCpuExecutor(graph,[lane],workers=1)
+
+
 def test_executor_rejects_aliased_lanes_before_native_creation(tmp_path):
     from doom_learning_v6.cpu_batch.backend import (CpuBatchLane,
         MultiTrajectoryCpuExecutor,SharedCpuGraph)
@@ -67,3 +128,7 @@ def test_executor_rejects_aliased_lanes_before_native_creation(tmp_path):
         MultiTrajectoryCpuExecutor(graph,[lane],workers=2)
     with MultiTrajectoryCpuExecutor(graph,[lane],workers=1) as executor:
         assert executor.graph is graph and executor.lanes==[lane]
+        assert all(left is right for left,right in zip(
+            executor._registered_graph_buffers,graph.arrays.values()))
+        assert all(left is right for left,right in zip(
+            executor._registered_lane_buffers[0],lane.arrays.values()))

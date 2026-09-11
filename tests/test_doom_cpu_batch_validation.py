@@ -23,10 +23,16 @@ def test_validation_writes_exact_toy_report(tmp_path):
     expected={'release':'test','neurons':6,'edges':7,'plastic_edges':2}
     report=run(out,brain_factory=_factory(tmp_path),readouts=READOUTS,
         expected_structure=expected)
-    assert report['schema']==1
+    assert report['schema']==2
     assert report['experiment']=='full-graph exact CPU batch parity'
     assert report['structure']==expected
     assert report['horizons_ms']==[40,80]
+    assert report['protocol']=={'lane_count':4,'workers':4,'repeats':2,
+        'bin_ms':10,'steps_per_bin':100}
+    assert all(len(result['runs'])==2 for result in report['results'])
+    assert all(len(run['lanes'])==4 for result in report['results']
+        for run in result['runs'])
+    assert all(result['batch_repeat_bitwise'] for result in report['results'])
     assert report['state_bitwise_equal'] is True
     assert report['decoder_equal'] is True
     assert report['structural_identity_equal'] is True
@@ -36,6 +42,20 @@ def test_validation_writes_exact_toy_report(tmp_path):
     assert json.loads((out/'report.json').read_text())==report
     with pytest.raises(ValueError,match='Fresh output'):run(out,
         brain_factory=_factory(tmp_path),readouts=READOUTS,expected_structure=expected)
+
+
+def test_validation_identity_covers_runtime_dependencies_and_git_commit(tmp_path):
+    from doom_learning_v6.cpu_batch.validate import run
+    expected={'release':'test','neurons':6,'edges':7,'plastic_edges':2}
+    report=run(tmp_path/'validation',brain_factory=_factory(tmp_path),readouts=READOUTS,
+        expected_structure=expected,horizons_ms=(40,))
+    sources=report['identity']['sources']
+    for name in ['doom/engine.py','doom/native.py','doom_learning_v6/rule.py',
+            'doom_learning_v6/calibration.py','doom_learning_v6/visual.py']:
+        assert name in sources
+    assert len(report['identity']['git_commit'])==40
+    assert isinstance(report['identity']['source_tree_clean'],bool)
+    assert len(report['identity']['graph_manifest_sha256'])==64
 
 
 def test_state_comparison_names_the_first_changed_buffer(tmp_path):
