@@ -47,6 +47,7 @@ class MetalBackend:
         self.brain=brain;self.handle=C.c_void_p();self.library=None
         self.incoming=None;self._metadata=None;self.poisoned=False
         self.last_kc_events=[];self.last_timing={};self.capture_spikes=False;self.spike_events=[]
+        self.initialization_timing={}
 
     def _state(self):
         b=self.brain
@@ -61,9 +62,12 @@ class MetalBackend:
 
     def ensure_initialized(self):
         if self.handle.value:return
+        initialized=time.perf_counter()
         self._metadata=probe(DEFAULT_OUTPUT)
+        probed=time.perf_counter()
         signature=hashlib.sha256(self.brain.ptr.tobytes()+self.brain.post.tobytes()).hexdigest()
         self.incoming=load_or_build_incoming(self.brain.ptr,self.brain.post,OUT/'metal'/'graphs'/signature)
+        indexed=time.perf_counter()
         self.library=C.CDLL(str(library_path(DEFAULT_OUTPUT)))
         self.library.df_metal_last_error.restype=C.c_char_p
         self.library.df_metal_create.argtypes=[C.POINTER(Graph),C.c_char_p,C.POINTER(C.c_void_p)]
@@ -91,6 +95,11 @@ class MetalBackend:
         try:self._error(self.library.df_metal_upload_state(self.handle,C.byref(self._state())))
         except Exception:
             self.close();raise
+        completed=time.perf_counter()
+        self.initialization_timing={'total_seconds':completed-initialized,
+            'build_probe_seconds':probed-initialized,
+            'graph_index_load_or_build_seconds':indexed-probed,
+            'handle_create_and_upload_seconds':completed-indexed}
 
     def advance(self,steps):
         self.ensure_initialized()

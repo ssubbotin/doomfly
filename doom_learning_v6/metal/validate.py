@@ -98,19 +98,18 @@ def _portable_metal_metadata(metadata):
 def source_identity():
     root=Path(__file__).resolve().parents[2]
     names=['doom_learning_v6/brain.py','doom_learning_v6/kernel.cpp','doom_learning_v6/rule.py',
-        'doom_learning_v6/visual.py','doom_learning_v6/metal/api.h','doom_learning_v6/metal/backend.mm',
+        'doom_learning_v6/visual.py','doom_learning_v6/calibration.py','doom_learning_v6/survival.py',
+        'doom_learning/common.py','doom_learning_v2/vision.py','doom/engine.py',
+        'doom_learning_v6/metal/api.h','doom_learning_v6/metal/backend.mm',
         'doom_learning_v6/metal/backend.py','doom_learning_v6/metal/build.py',
         'doom_learning_v6/metal/graph.py','doom_learning_v6/metal/kernels.metal',
-        'doom_learning_v6/metal/validate.py']
+        'doom_learning_v6/metal/validate.py','doom_learning_v6/metal/benchmark.py']
     return {name:_file_digest(root/name) for name in names}
 
 
 def _calibrated(backend):
-    from doom_learning_v6.visual import VisualMemoryBrain
-    brain=VisualMemoryBrain(backend=backend)
-    brain.tonic[brain.circuit['mb']]=9.87;brain.tonic[brain.circuit['dan']]=11.3125
-    brain.dan_baseline_hz[:]=20.09
-    return brain
+    from doom_learning_v6.calibration import calibrated_brain
+    return calibrated_brain(backend=backend)
 
 
 def _scientific_outcomes(brain,counts,readouts):
@@ -168,7 +167,9 @@ def run(out):
     out.mkdir(parents=True)
     frames=np.stack([frame_for(label) for label,_ in TRACE]);_save_trace(out/'input-trace.npz',frames)
     manifest=json.loads((GRAPH.parent/'manifest.json').read_text())
+    from .benchmark import model_identity
     initial=_calibrated('cpu');checkpoint=out/'initial.npz';initial.checkpoint(checkpoint)
+    model=model_identity(initial)
     with np.load(GRAPH,allow_pickle=False) as graph:
         structure={'release':'MaleCNS v1.0','neurons':initial.n,'edges':len(initial.post),
             'graph_file_sha256':_file_digest(GRAPH),'ids_sha256':digest(initial.ids),
@@ -191,10 +192,16 @@ def run(out):
         and manifest['source_hashes']==locked and metal['incoming']['edges']==structure['edges'])
     gates=evaluate_gates(spikes,decoder_equal=decoder_equal,scientific_gates_equal=scientific_equal,
         weights=weights,structural_integrity=structural,metal_repeat_bitwise=repeat_equal)
+    identity={'validation_sources':source_identity(),'graph_file_sha256':structure['graph_file_sha256'],
+        'metal_sources':metal['backend']['sources'],'metal_binaries':metal['backend']['binaries'],
+        'metal_environment':{key:metal['backend'][key]
+            for key in ['compiler','sdk','macos','architecture','metal_language']},
+        'metal_device':metal['backend']['device'],**model}
     def compact(result):return {k:v for k,v in result.items()
         if k not in ['events','rates','weights','incoming']}
     report={'schema':1,'experiment':'full-graph CPU/Metal offline parity',
         'validation_horizon_ms':len(TRACE)*10,'validation_sources':source_identity(),
+        'identity':identity,
         'structure':{**structure,'source_hashes':manifest['source_hashes'],
             'incoming':metal['incoming'],'source_lock_equal':manifest['source_hashes']==locked},
         'input_trace':{'format':'procedural RGB frames saved in ignored input-trace.npz',

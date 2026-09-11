@@ -599,7 +599,7 @@ git commit -m "Validate full-graph Metal parity"
 - Produces: `python -m doom_learning_v6.metal.benchmark --out PATH`, `calibrated_brain(eta=.001, backend='cpu')`, and survival CLI option `--backend {cpu,metal}`.
 - Requires: passing validation JSON whose exact source, binary, graph, and configuration hashes match the requested Metal run.
 
-- [ ] **Step 1: Write failing benchmark-gate and CLI tests**
+- [x] **Step 1: Write failing benchmark-gate and CLI tests**
 
 ```python
 def test_training_rejects_missing_or_stale_metal_validation(tmp_path):
@@ -614,13 +614,13 @@ def test_benchmark_gate_requires_speed_and_memory():
     assert report['passed'] is True
 ```
 
-- [ ] **Step 2: Run tests and confirm the benchmark API is absent**
+- [x] **Step 2: Run tests and confirm the benchmark API is absent**
 
 Run: `python -m pytest tests/test_doom_metal_benchmark.py -q`
 
 Expected: import failure for `benchmark` and missing CLI backend selection.
 
-- [ ] **Step 3: Implement repeatable benchmark reporting**
+- [x] **Step 3: Implement repeatable benchmark reporting**
 
 Warm each backend, run at least five matched repetitions, and report all samples,
 median, minimum, maximum, kernel GPU time, host command time, synchronization,
@@ -629,7 +629,7 @@ Gate on median speedup `>=2`, RSS `<8 GiB`, no critical pressure, and no sustain
 swap growth. Report real-time ratio separately as a target rather than silently
 changing the acceptance result.
 
-- [ ] **Step 4: Add explicit offline training selection**
+- [x] **Step 4: Add explicit offline training selection**
 
 Pass `backend` through `calibrated_brain`, `VisualMemoryBrain`, and `MemoryBrain`.
 Add `--backend` and `--metal-validation` to `survival.py`. For Metal, load the
@@ -637,13 +637,13 @@ validation report before model construction and require matching hashes plus all
 passed gates. Record the backend, device, build, validation report hash, neural
 time, wall time, and their ratio in protocol and episode output.
 
-- [ ] **Step 5: Expand provenance capture for Metal sources**
+- [x] **Step 5: Expand provenance capture for Metal sources**
 
 Change `capture_provenance` to recurse and include `.py`, `.cpp`, `.h`, `.mm`,
 and `.metal` sources. Keep external data, compiled artifacts, machine-specific
 configuration, and dependency checkouts excluded.
 
-- [ ] **Step 6: Run CPU tests and M4 Pro benchmark**
+- [x] **Step 6: Run CPU tests and M4 Pro benchmark**
 
 Run locally: `python -m pytest tests/test_doom_backend_contract.py tests/test_doom_metal_graph.py tests/test_doom_metal_build.py tests/test_doom_metal_validation.py tests/test_doom_metal_benchmark.py tests/test_doom_learning_v6.py tests/test_doom_live_training.py -q`
 
@@ -652,7 +652,7 @@ Run on M4 Pro: `ssh mini 'cd doomfly && OPENBLAS_NUM_THREADS=1 python3 -m doom_l
 Expected: CPU suite passes and the benchmark records an honest pass or preserved
 failure without stopping another workload.
 
-- [ ] **Step 7: Commit benchmark and gated training support**
+- [x] **Step 7: Commit benchmark and gated training support**
 
 ```bash
 git add .gitignore doom_learning/common.py doom_learning_v6/calibration.py doom_learning_v6/survival.py doom_learning_v6/metal/benchmark.py tests/test_doom_metal_benchmark.py outputs/doom-learning/metal-benchmark-m4pro

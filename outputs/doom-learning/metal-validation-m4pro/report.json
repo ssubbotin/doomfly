@@ -3,17 +3,75 @@
   "experiment": "full-graph CPU/Metal offline parity",
   "validation_horizon_ms": 40,
   "validation_sources": {
-    "doom_learning_v6/brain.py": "d2e2b840dbc84b9870ae7955dd4de26a26b6b762af2e5f81a8063cbbe7c8aa58",
+    "doom_learning_v6/brain.py": "6fd7e06caf3e7611fc81a2334155c4b6a87d0e7ba0aacdf9ba0187ca9197739b",
     "doom_learning_v6/kernel.cpp": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
     "doom_learning_v6/rule.py": "0df2ae1bf10b97a213064b3ac3934227539d08e51521a99cdb56fe7f5b44b725",
     "doom_learning_v6/visual.py": "788c06afd646528b0f5a9d3a8daa6838278709a15f1a90159b2ed4f9e6531c88",
+    "doom_learning_v6/calibration.py": "c9006ef72436c74453209f896e4f1d9371179311e33fa1ae734ad52fc26408b9",
+    "doom_learning_v6/survival.py": "1c85e94e0a1fb9bc1f500c167a861ca91975a61e0716abce52eaea8801b7f568",
+    "doom_learning/common.py": "79de9a34c3d53db399ce67b12df084ab000d6b66123b658e5c2bfb5c6d108d12",
+    "doom_learning_v2/vision.py": "20279cdc14352b23fcbb76db2ee4bdebcc26394bccc04a1ad5fcedc5e3accdeb",
+    "doom/engine.py": "5fc0ce73c05a49ff58af01729a9169018080bb5b913cedb2268116a95c04aeb3",
     "doom_learning_v6/metal/api.h": "cd971052f006b567325a149f90367ca949771f31de3ce2344b007649f815d161",
     "doom_learning_v6/metal/backend.mm": "6736dc97fcf45adce68e9503de4bec86e0da9540212198b6a17d8ab45dfb9342",
-    "doom_learning_v6/metal/backend.py": "e71276a0b5e2be8f2cf45a97049815a43823bdc866dc8a872a00920d4269b822",
+    "doom_learning_v6/metal/backend.py": "ddad0d72c9dd614509a0d6da91e84755abd90caa90936f18cbb6a0b84d3da003",
     "doom_learning_v6/metal/build.py": "c8f1728efc944a05e467cbe723fbf5be552505693a78f0ed181374eaed913308",
     "doom_learning_v6/metal/graph.py": "79286a9a37f606ace87218a1cb0ba6fb9bfc1a05526b46963c3564d146681f49",
     "doom_learning_v6/metal/kernels.metal": "8ccc5052458df3e42f890abd0a58f9da1edf3dd081653cd5241bdfa43a9c5ac2",
-    "doom_learning_v6/metal/validate.py": "15d2ff48f514f1336726968ac1f1848ad3ab4eec6d1ede232f3ac85212a539fb"
+    "doom_learning_v6/metal/validate.py": "1dfa95bea4b90d74f96a387a8a7f8cfd546e82efb8844ff02589b43564fa3975",
+    "doom_learning_v6/metal/benchmark.py": "753a964336640fad66caed241a53906664fd262cbdcd6b25ba28b1d86706e5ce"
+  },
+  "identity": {
+    "validation_sources": {
+      "doom_learning_v6/brain.py": "6fd7e06caf3e7611fc81a2334155c4b6a87d0e7ba0aacdf9ba0187ca9197739b",
+      "doom_learning_v6/kernel.cpp": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+      "doom_learning_v6/rule.py": "0df2ae1bf10b97a213064b3ac3934227539d08e51521a99cdb56fe7f5b44b725",
+      "doom_learning_v6/visual.py": "788c06afd646528b0f5a9d3a8daa6838278709a15f1a90159b2ed4f9e6531c88",
+      "doom_learning_v6/calibration.py": "c9006ef72436c74453209f896e4f1d9371179311e33fa1ae734ad52fc26408b9",
+      "doom_learning_v6/survival.py": "1c85e94e0a1fb9bc1f500c167a861ca91975a61e0716abce52eaea8801b7f568",
+      "doom_learning/common.py": "79de9a34c3d53db399ce67b12df084ab000d6b66123b658e5c2bfb5c6d108d12",
+      "doom_learning_v2/vision.py": "20279cdc14352b23fcbb76db2ee4bdebcc26394bccc04a1ad5fcedc5e3accdeb",
+      "doom/engine.py": "5fc0ce73c05a49ff58af01729a9169018080bb5b913cedb2268116a95c04aeb3",
+      "doom_learning_v6/metal/api.h": "cd971052f006b567325a149f90367ca949771f31de3ce2344b007649f815d161",
+      "doom_learning_v6/metal/backend.mm": "6736dc97fcf45adce68e9503de4bec86e0da9540212198b6a17d8ab45dfb9342",
+      "doom_learning_v6/metal/backend.py": "ddad0d72c9dd614509a0d6da91e84755abd90caa90936f18cbb6a0b84d3da003",
+      "doom_learning_v6/metal/build.py": "c8f1728efc944a05e467cbe723fbf5be552505693a78f0ed181374eaed913308",
+      "doom_learning_v6/metal/graph.py": "79286a9a37f606ace87218a1cb0ba6fb9bfc1a05526b46963c3564d146681f49",
+      "doom_learning_v6/metal/kernels.metal": "8ccc5052458df3e42f890abd0a58f9da1edf3dd081653cd5241bdfa43a9c5ac2",
+      "doom_learning_v6/metal/validate.py": "1dfa95bea4b90d74f96a387a8a7f8cfd546e82efb8844ff02589b43564fa3975",
+      "doom_learning_v6/metal/benchmark.py": "753a964336640fad66caed241a53906664fd262cbdcd6b25ba28b1d86706e5ce"
+    },
+    "graph_file_sha256": "346b8af85a11af13b8324e18669812c1924569e7d1adcb4e6f45cc461a2c344b",
+    "metal_sources": {
+      "api.h": "cd971052f006b567325a149f90367ca949771f31de3ce2344b007649f815d161",
+      "backend.mm": "6736dc97fcf45adce68e9503de4bec86e0da9540212198b6a17d8ab45dfb9342",
+      "kernels.metal": "8ccc5052458df3e42f890abd0a58f9da1edf3dd081653cd5241bdfa43a9c5ac2"
+    },
+    "metal_binaries": {
+      "air": "6b2ed524ebc70cd671599ce905cae63123be2bf53e2cb26c5bea02202529f7e6",
+      "metallib": "a6d5c81f562686d76750b263a2b313f2a880fd30b1a506445e282fc4c520d9f6",
+      "library": "80e3a439fddaa614c41d84322688bb8892b00d537ca0e1e326fb986275fefa92"
+    },
+    "metal_environment": {
+      "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+      "sdk": "26.5",
+      "macos": "26.6.2",
+      "architecture": "arm64",
+      "metal_language": "macos-metal2.4"
+    },
+    "metal_device": {
+      "name": "Apple M4 Pro",
+      "recommended_working_set": 19069665280,
+      "has_unified_memory": true,
+      "supports_apple7": true,
+      "supported": true
+    },
+    "ids_sha256": "6b6b40c3bddf84b1281ef0b18db06927c2bf61c5f4cb32a4219ec9b7839dc2e5",
+    "out_ptr_sha256": "a29aa0296125a5daa972c12d17711360d01a1209cd9cd9d7ccb1f6959224bcaf",
+    "out_post_sha256": "4cc5e857d3481f433576f35ddb8d580cc33cf8e22b6651fa03e08cde5d956d90",
+    "original_weight_sha256": "d95171c2d59cfe3ebef2e5bd52be779b8f74754d718fc8941a93b8f2921c632b",
+    "plastic_edges_sha256": "550335ad546f5c3106e4988426197ad24d8556367c9285e2f4c8c33f37f3cc68",
+    "configuration_sha256": "9499403434ee781463272a83fcd88ee3df37acca3aeb220f436810b0028bfbd3"
   },
   "structure": {
     "release": "MaleCNS v1.0",
@@ -134,7 +192,7 @@
         "counts_sha256": "653256735945972f513ca35d1b632f55cfb126266e50852a231fbd5b13f46346"
       }
     ],
-    "neural_wall_seconds": 0.036054917003639275,
+    "neural_wall_seconds": 0.03555779200178222,
     "backend": {
       "name": "cpu",
       "build": {
@@ -217,7 +275,7 @@
         "counts_sha256": "653256735945972f513ca35d1b632f55cfb126266e50852a231fbd5b13f46346"
       }
     ],
-    "neural_wall_seconds": 0.2494316680022166,
+    "neural_wall_seconds": 0.2280101670003205,
     "backend": {
       "schema": 1,
       "abi_version": 1,
@@ -312,7 +370,7 @@
         "counts_sha256": "653256735945972f513ca35d1b632f55cfb126266e50852a231fbd5b13f46346"
       }
     ],
-    "neural_wall_seconds": 0.19517066599655664,
+    "neural_wall_seconds": 0.19855791699228575,
     "backend": {
       "schema": 1,
       "abi_version": 1,

@@ -1,0 +1,320 @@
+{
+  "schema": 1,
+  "experiment": "M4 Pro full-graph backend benchmark",
+  "validation_report_sha256": "20687ca988c5433680ccb9e6de7a5f03b790acdc8338292ea5dd8f53ce49c561",
+  "validation_identity": {
+    "validation_sources": {
+      "doom_learning_v6/brain.py": "6fd7e06caf3e7611fc81a2334155c4b6a87d0e7ba0aacdf9ba0187ca9197739b",
+      "doom_learning_v6/kernel.cpp": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+      "doom_learning_v6/rule.py": "0df2ae1bf10b97a213064b3ac3934227539d08e51521a99cdb56fe7f5b44b725",
+      "doom_learning_v6/visual.py": "788c06afd646528b0f5a9d3a8daa6838278709a15f1a90159b2ed4f9e6531c88",
+      "doom_learning_v6/calibration.py": "c9006ef72436c74453209f896e4f1d9371179311e33fa1ae734ad52fc26408b9",
+      "doom_learning_v6/survival.py": "1c85e94e0a1fb9bc1f500c167a861ca91975a61e0716abce52eaea8801b7f568",
+      "doom_learning/common.py": "79de9a34c3d53db399ce67b12df084ab000d6b66123b658e5c2bfb5c6d108d12",
+      "doom_learning_v2/vision.py": "20279cdc14352b23fcbb76db2ee4bdebcc26394bccc04a1ad5fcedc5e3accdeb",
+      "doom/engine.py": "5fc0ce73c05a49ff58af01729a9169018080bb5b913cedb2268116a95c04aeb3",
+      "doom_learning_v6/metal/api.h": "cd971052f006b567325a149f90367ca949771f31de3ce2344b007649f815d161",
+      "doom_learning_v6/metal/backend.mm": "6736dc97fcf45adce68e9503de4bec86e0da9540212198b6a17d8ab45dfb9342",
+      "doom_learning_v6/metal/backend.py": "ddad0d72c9dd614509a0d6da91e84755abd90caa90936f18cbb6a0b84d3da003",
+      "doom_learning_v6/metal/build.py": "c8f1728efc944a05e467cbe723fbf5be552505693a78f0ed181374eaed913308",
+      "doom_learning_v6/metal/graph.py": "79286a9a37f606ace87218a1cb0ba6fb9bfc1a05526b46963c3564d146681f49",
+      "doom_learning_v6/metal/kernels.metal": "8ccc5052458df3e42f890abd0a58f9da1edf3dd081653cd5241bdfa43a9c5ac2",
+      "doom_learning_v6/metal/validate.py": "1dfa95bea4b90d74f96a387a8a7f8cfd546e82efb8844ff02589b43564fa3975",
+      "doom_learning_v6/metal/benchmark.py": "753a964336640fad66caed241a53906664fd262cbdcd6b25ba28b1d86706e5ce"
+    },
+    "graph_file_sha256": "346b8af85a11af13b8324e18669812c1924569e7d1adcb4e6f45cc461a2c344b",
+    "metal_sources": {
+      "api.h": "cd971052f006b567325a149f90367ca949771f31de3ce2344b007649f815d161",
+      "backend.mm": "6736dc97fcf45adce68e9503de4bec86e0da9540212198b6a17d8ab45dfb9342",
+      "kernels.metal": "8ccc5052458df3e42f890abd0a58f9da1edf3dd081653cd5241bdfa43a9c5ac2"
+    },
+    "metal_binaries": {
+      "air": "6b2ed524ebc70cd671599ce905cae63123be2bf53e2cb26c5bea02202529f7e6",
+      "metallib": "a6d5c81f562686d76750b263a2b313f2a880fd30b1a506445e282fc4c520d9f6",
+      "library": "80e3a439fddaa614c41d84322688bb8892b00d537ca0e1e326fb986275fefa92"
+    },
+    "metal_environment": {
+      "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+      "sdk": "26.5",
+      "macos": "26.6.2",
+      "architecture": "arm64",
+      "metal_language": "macos-metal2.4"
+    },
+    "metal_device": {
+      "name": "Apple M4 Pro",
+      "recommended_working_set": 19069665280,
+      "has_unified_memory": true,
+      "supports_apple7": true,
+      "supported": true
+    },
+    "ids_sha256": "6b6b40c3bddf84b1281ef0b18db06927c2bf61c5f4cb32a4219ec9b7839dc2e5",
+    "out_ptr_sha256": "a29aa0296125a5daa972c12d17711360d01a1209cd9cd9d7ccb1f6959224bcaf",
+    "out_post_sha256": "4cc5e857d3481f433576f35ddb8d580cc33cf8e22b6651fa03e08cde5d956d90",
+    "original_weight_sha256": "d95171c2d59cfe3ebef2e5bd52be779b8f74754d718fc8941a93b8f2921c632b",
+    "plastic_edges_sha256": "550335ad546f5c3106e4988426197ad24d8556367c9285e2f4c8c33f37f3cc68",
+    "configuration_sha256": "9499403434ee781463272a83fcd88ee3df37acca3aeb220f436810b0028bfbd3"
+  },
+  "graph_file_sha256": "346b8af85a11af13b8324e18669812c1924569e7d1adcb4e6f45cc461a2c344b",
+  "repetitions": 5,
+  "cpu_samples": [
+    {
+      "wall_seconds": 0.03866533399923355,
+      "neural_seconds": 0.03594766599780996,
+      "gpu_seconds": 0.0,
+      "command_seconds": 0.0,
+      "synchronization_seconds": 0.0,
+      "kernel_seconds": 0.03594766599780996,
+      "plasticity_seconds": 0.00043141800779267214,
+      "vision_and_python_seconds": 0.0022862499936309177
+    },
+    {
+      "wall_seconds": 0.039293957997870166,
+      "neural_seconds": 0.036514832998364,
+      "gpu_seconds": 0.0,
+      "command_seconds": 0.0,
+      "synchronization_seconds": 0.0,
+      "kernel_seconds": 0.036514832998364,
+      "plasticity_seconds": 0.00042541699804132804,
+      "vision_and_python_seconds": 0.002353708001464838
+    },
+    {
+      "wall_seconds": 0.03883179199692677,
+      "neural_seconds": 0.03611183199973311,
+      "gpu_seconds": 0.0,
+      "command_seconds": 0.0,
+      "synchronization_seconds": 0.0,
+      "kernel_seconds": 0.03611183199973311,
+      "plasticity_seconds": 0.00043424899558885954,
+      "vision_and_python_seconds": 0.0022857110016047955
+    },
+    {
+      "wall_seconds": 0.03892295799960266,
+      "neural_seconds": 0.036214748997736024,
+      "gpu_seconds": 0.0,
+      "command_seconds": 0.0,
+      "synchronization_seconds": 0.0,
+      "kernel_seconds": 0.036214748997736024,
+      "plasticity_seconds": 0.0004518750029092189,
+      "vision_and_python_seconds": 0.002256333998957416
+    },
+    {
+      "wall_seconds": 0.038996167000732385,
+      "neural_seconds": 0.036303666998719564,
+      "gpu_seconds": 0.0,
+      "command_seconds": 0.0,
+      "synchronization_seconds": 0.0,
+      "kernel_seconds": 0.036303666998719564,
+      "plasticity_seconds": 0.00041962600153055973,
+      "vision_and_python_seconds": 0.002272874000482261
+    }
+  ],
+  "metal_samples": [
+    {
+      "wall_seconds": 0.18227191700134426,
+      "neural_seconds": 0.17262524900070275,
+      "gpu_seconds": 0.1591184583339782,
+      "command_seconds": 0.162728749,
+      "synchronization_seconds": 0.009896500000702746,
+      "kernel_seconds": 0.1591184583339782,
+      "plasticity_seconds": 0.00046033299804548733,
+      "vision_and_python_seconds": 0.009186335002596024
+    },
+    {
+      "wall_seconds": 0.18291800000224612,
+      "neural_seconds": 0.17260533399894484,
+      "gpu_seconds": 0.1591030000054161,
+      "command_seconds": 0.162641875,
+      "synchronization_seconds": 0.009963458998944852,
+      "kernel_seconds": 0.1591030000054161,
+      "plasticity_seconds": 0.0004510000071604736,
+      "vision_and_python_seconds": 0.0098616659961408
+    },
+    {
+      "wall_seconds": 0.18249424999885377,
+      "neural_seconds": 0.17274724999879254,
+      "gpu_seconds": 0.1592638333349896,
+      "command_seconds": 0.16281041599999999,
+      "synchronization_seconds": 0.009936833998792555,
+      "kernel_seconds": 0.1592638333349896,
+      "plasticity_seconds": 0.00045162699825596064,
+      "vision_and_python_seconds": 0.009295373001805274
+    },
+    {
+      "wall_seconds": 0.18350687500060303,
+      "neural_seconds": 0.1731737490008527,
+      "gpu_seconds": 0.15983354166382924,
+      "command_seconds": 0.163236041,
+      "synchronization_seconds": 0.009937708000852696,
+      "kernel_seconds": 0.15983354166382924,
+      "plasticity_seconds": 0.0004443340003490448,
+      "vision_and_python_seconds": 0.009888791999401292
+    },
+    {
+      "wall_seconds": 0.18318204199749744,
+      "neural_seconds": 0.17331487499905052,
+      "gpu_seconds": 0.16039354166423436,
+      "command_seconds": 0.163275125,
+      "synchronization_seconds": 0.010039749999050523,
+      "kernel_seconds": 0.16039354166423436,
+      "plasticity_seconds": 0.0004493340020417236,
+      "vision_and_python_seconds": 0.009417832996405195
+    }
+  ],
+  "timing_summary": {
+    "cpu": {
+      "wall_seconds": {
+        "minimum": 0.03866533399923355,
+        "median": 0.03892295799960266,
+        "maximum": 0.039293957997870166
+      },
+      "neural_seconds": {
+        "minimum": 0.03594766599780996,
+        "median": 0.036214748997736024,
+        "maximum": 0.036514832998364
+      },
+      "gpu_seconds": {
+        "minimum": 0.0,
+        "median": 0.0,
+        "maximum": 0.0
+      },
+      "command_seconds": {
+        "minimum": 0.0,
+        "median": 0.0,
+        "maximum": 0.0
+      },
+      "synchronization_seconds": {
+        "minimum": 0.0,
+        "median": 0.0,
+        "maximum": 0.0
+      },
+      "kernel_seconds": {
+        "minimum": 0.03594766599780996,
+        "median": 0.036214748997736024,
+        "maximum": 0.036514832998364
+      },
+      "plasticity_seconds": {
+        "minimum": 0.00041962600153055973,
+        "median": 0.00043141800779267214,
+        "maximum": 0.0004518750029092189
+      },
+      "vision_and_python_seconds": {
+        "minimum": 0.002256333998957416,
+        "median": 0.0022857110016047955,
+        "maximum": 0.002353708001464838
+      }
+    },
+    "metal": {
+      "wall_seconds": {
+        "minimum": 0.18227191700134426,
+        "median": 0.18291800000224612,
+        "maximum": 0.18350687500060303
+      },
+      "neural_seconds": {
+        "minimum": 0.17260533399894484,
+        "median": 0.17274724999879254,
+        "maximum": 0.17331487499905052
+      },
+      "gpu_seconds": {
+        "minimum": 0.1591030000054161,
+        "median": 0.1592638333349896,
+        "maximum": 0.16039354166423436
+      },
+      "command_seconds": {
+        "minimum": 0.162641875,
+        "median": 0.16281041599999999,
+        "maximum": 0.163275125
+      },
+      "synchronization_seconds": {
+        "minimum": 0.009896500000702746,
+        "median": 0.009937708000852696,
+        "maximum": 0.010039749999050523
+      },
+      "kernel_seconds": {
+        "minimum": 0.1591030000054161,
+        "median": 0.1592638333349896,
+        "maximum": 0.16039354166423436
+      },
+      "plasticity_seconds": {
+        "minimum": 0.0004443340003490448,
+        "median": 0.0004510000071604736,
+        "maximum": 0.00046033299804548733
+      },
+      "vision_and_python_seconds": {
+        "minimum": 0.009186335002596024,
+        "median": 0.009417832996405195,
+        "maximum": 0.009888791999401292
+      }
+    }
+  },
+  "construction_seconds": {
+    "cpu": 0.5697756660010782,
+    "metal": 0.5711892920007813
+  },
+  "metal_initialization": {
+    "total_seconds": 1.7533747920024325,
+    "build_probe_seconds": 0.0004905830028292257,
+    "graph_index_load_or_build_seconds": 1.7281226249979227,
+    "handle_create_and_upload_seconds": 0.024761584001680603
+  },
+  "memory": {
+    "before": {
+      "free_percent": 68,
+      "swap_used_mib": 0.0
+    },
+    "after": {
+      "free_percent": 66,
+      "swap_used_mib": 0.0
+    }
+  },
+  "system_load": {
+    "load_average": [
+      1.859375,
+      2.16455078125,
+      2.4130859375
+    ],
+    "logical_cpus": 12
+  },
+  "metal": {
+    "schema": 1,
+    "abi_version": 1,
+    "sources": {
+      "api.h": "cd971052f006b567325a149f90367ca949771f31de3ce2344b007649f815d161",
+      "backend.mm": "6736dc97fcf45adce68e9503de4bec86e0da9540212198b6a17d8ab45dfb9342",
+      "kernels.metal": "8ccc5052458df3e42f890abd0a58f9da1edf3dd081653cd5241bdfa43a9c5ac2"
+    },
+    "binaries": {
+      "air": "6b2ed524ebc70cd671599ce905cae63123be2bf53e2cb26c5bea02202529f7e6",
+      "metallib": "a6d5c81f562686d76750b263a2b313f2a880fd30b1a506445e282fc4c520d9f6",
+      "library": "80e3a439fddaa614c41d84322688bb8892b00d537ca0e1e326fb986275fefa92"
+    },
+    "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+    "sdk": "26.5",
+    "macos": "26.6.2",
+    "architecture": "arm64",
+    "metal_language": "macos-metal2.4",
+    "device": {
+      "name": "Apple M4 Pro",
+      "recommended_working_set": 19069665280,
+      "has_unified_memory": true,
+      "supports_apple7": true,
+      "supported": true
+    }
+  },
+  "gate": {
+    "cpu_median": 0.036214748997736024,
+    "metal_median": 0.17274724999879254,
+    "simulated_seconds": 0.04,
+    "peak_rss_gib": 2.276275634765625,
+    "critical_memory_pressure": false,
+    "sustained_swap_growth": false,
+    "speedup": 0.2096400897727122,
+    "real_time_ratio": 0.23155216653393668,
+    "speed": false,
+    "memory": true,
+    "memory_pressure": true,
+    "swap": true,
+    "passed": false
+  },
+  "passed": false,
+  "interpretation": "Wall-clock viability only. Speed does not change sample efficiency or establish learning."
+}

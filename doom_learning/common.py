@@ -31,16 +31,21 @@ def require_single_blas_thread():
         raise SystemExit('Launch with OPENBLAS_NUM_THREADS=1 before importing NumPy.')
 
 
+def provenance_sources(root,folders):
+    root=Path(root);suffixes={'.py','.cpp','.h','.mm','.metal'}
+    return [path for folder in folders for path in sorted((root/folder).rglob('*'))
+        if path.is_file() and path.suffix in suffixes
+        and not any(part.startswith('.') or part=='__pycache__' for part in path.relative_to(root).parts)]
+
+
 def capture_provenance(out,additional=()):
     """Freeze exact sources and inputs before a new experiment starts."""
     import importlib.metadata, platform, shutil
     out=Path(out);snapshot=out/'source-snapshot';snapshot.mkdir(parents=True)
     sources={}
-    for folder in ['doom_learning','doom',*additional]:
-        for p in sorted((ROOT/folder).iterdir()):
-            if p.suffix not in ['.py','.cpp']:continue
-            relative=p.relative_to(ROOT);target=snapshot/relative;target.parent.mkdir(parents=True,exist_ok=True)
-            shutil.copyfile(p,target);sources[str(relative)]=hashlib.sha256(p.read_bytes()).hexdigest()
+    for p in provenance_sources(ROOT,['doom_learning','doom',*additional]):
+        relative=p.relative_to(ROOT);target=snapshot/relative;target.parent.mkdir(parents=True,exist_ok=True)
+        shutil.copyfile(p,target);sources[str(relative)]=hashlib.sha256(p.read_bytes()).hexdigest()
     h=hashlib.sha256()
     with GRAPH.open('rb') as f:
         for block in iter(lambda:f.read(1024*1024),b''):h.update(block)

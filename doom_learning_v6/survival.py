@@ -69,22 +69,38 @@ def episode(b,seed,seconds,*,out,learning=False,freeze=True,schedule=None,vision
                     f=out/'frames';f.mkdir(exist_ok=True);Image.fromarray(rgb).save(f'{f}/{tick:05d}.png')
         elapsed=time.perf_counter()-wall;state=a.observation();sim=(b.cursor-origin)*.0001
         record={'seed':seed,'seconds_limit':seconds,'learning_enabled':learning,'weights_frozen':freeze,
+            'execution':b.execution_provenance,
             'vision':vision,'game_tics':len(rows),'brain_seconds':sim,'survival_seconds':len(rows)/35,
             'dead':state['dead'],'right_censored':not state['dead'],'end_health':state['health'],
             'damage_total':sum(r['damage'] for r in rows),'US_tics':sum(r['US_active'] for r in rows),
             'US_ms':float(delivered.sum()*.1),
             'before':initial_memory,'after':b.memory(),'assets':a.assets,
-            'timing':{'wall_seconds':elapsed,'kernel_seconds':kernel,'brain_seconds_including_warmup':sim+2,'speed':(sim+2)/elapsed},'trace':rows}
+            'timing':{'wall_seconds':elapsed,'neural_backend_seconds':kernel,
+                'kernel_seconds':kernel,'brain_seconds_including_warmup':sim+2,
+                'brain_to_wall_ratio':(sim+2)/elapsed},'trace':rows}
         save_json(out/'episode.json',record);save_json(out/'current.json',{'status':'complete','summary':{k:v for k,v in record.items() if k not in ['trace','assets']}})
         return record,delivered
     finally:a.close()
 
 
 def run(args):
+    from .metal.benchmark import (_file_digest,current_preflight_identity,model_identity,
+        portable_backend_metadata,require_metal_validation)
+    validation=None;expected=None
+    if args.backend=='metal':
+        expected=current_preflight_identity()
+        validation=require_metal_validation(args.metal_validation,expected)
     out=Path(args.out)
     if out.exists():raise ValueError('Fresh output directory required')
     out.mkdir(parents=True);capture_provenance(out,additional=['doom_learning_v2','doom_learning_v6'])
+    b=calibrated_brain(args.eta,backend=args.backend)
+    if args.backend=='metal':validation=require_metal_validation(args.metal_validation,{**expected,**model_identity(b)})
+    backend_metadata=portable_backend_metadata(b.backend.metadata())
+    b.execution_provenance={'backend':args.backend,'backend_metadata':backend_metadata,
+        'metal_validation_sha256':_file_digest(args.metal_validation) if validation else None,
+        'metal_validation_horizon_ms':validation['validation_horizon_ms'] if validation else None}
     protocol={'model':'adaptive-centered-v6','status':'exploratory; physiological validation failed/pending',
+        'execution':b.execution_provenance,
         'training_seeds':args.seeds,'heldout_seeds':args.eval_seeds,'episode_seconds':args.seconds,
         'training_episodes':args.train_episodes,'eta':args.eta,'arms':['plastic','frozen','shuffled'],
         'reinforcement':'Observed damage schedules 200 ms +4 mV-equivalent PPL101 stimulation from the next tic. No game state reaches the fixed decoder.',
@@ -92,7 +108,7 @@ def run(args):
         'shuffling':'Circularly shift donor exposure; record actual delivered duration and mark mismatches, including early recipient deaths.',
         'fast_mode':'No UI or pacing. Every 35 Hz game frame and every 0.1 ms neural step retained. Two seconds dark equilibration per episode.',
         'claim_gate':'Requires independently validated physiology/conditioning and held-out survival benefit across independent replicas, frozen and timing-shuffled controls, retention and erasure. This exploratory runner cannot certify the claim.'}
-    save_json(out/'protocol.json',protocol);b=calibrated_brain(args.eta);rows=[];donors={}
+    save_json(out/'protocol.json',protocol);rows=[];donors={}
     save_json(out/'circuit.json',b.circuit['report']);save_json(out/'visual.json',b.visual_report)
     def record(r,replicate,mode,phase):
         slim={k:v for k,v in r.items() if k not in ['trace','assets']};slim.update(replicate=replicate,condition=mode,phase=phase)
@@ -132,12 +148,18 @@ def run(args):
     save_json(out/'results.json',result)
 
 
-if __name__=='__main__':
-    require_single_blas_thread();p=argparse.ArgumentParser();p.add_argument('--out',default='outputs/doom-learning/physiology-v6/survival-pilot')
+def build_parser():
+    p=argparse.ArgumentParser();p.add_argument('--out',default='outputs/doom-learning/physiology-v6/survival-pilot')
     p.add_argument('--seeds',type=lambda x:list(map(int,x.split(','))),default=[41031,41032,41033])
     p.add_argument('--eval-seeds',type=lambda x:list(map(int,x.split(','))),default=[61031,61032,61033])
     p.add_argument('--seconds',type=float,default=30);p.add_argument('--train-episodes',type=int,default=2)
-    p.add_argument('--eta',type=float,default=.001);p.add_argument('--frames',action='store_true');a=p.parse_args()
+    p.add_argument('--eta',type=float,default=.001);p.add_argument('--frames',action='store_true')
+    p.add_argument('--backend',choices=['cpu','metal'],default='cpu');p.add_argument('--metal-validation')
+    return p
+
+
+if __name__=='__main__':
+    require_single_blas_thread();p=build_parser();a=p.parse_args()
     train=[s+n*1000 for s in a.seeds for n in range(a.train_episodes)]
     if a.seconds<=0 or a.train_episodes<1 or not a.seeds or not a.eval_seeds:p.error('Positive durations/counts and nonempty seeds required')
     if len(set(train))!=len(train) or len(set(a.eval_seeds))!=len(a.eval_seeds) or set(train)&set(a.eval_seeds):p.error('Training and test seeds must be distinct and nonoverlapping')

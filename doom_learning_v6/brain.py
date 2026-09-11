@@ -74,6 +74,7 @@ class MemoryBrain(NativeBrain):
         if self.tonic.shape!=(self.n,) or not np.isfinite(self.tonic).all():raise ValueError('Invalid tonic current')
         if self.dan_baseline_hz.shape!=(len(self.rate_dan),) or not np.isfinite(self.dan_baseline_hz).all():raise ValueError('Invalid DAN baseline')
         self.weights_frozen=False
+        self.last_rule_seconds=0.
         for k in ['rate_kc','rate_dan','memory_u','memory_w']:
             self.fields.append(k);self.initial[k]=getattr(self,k).copy()
         self.backend=create_backend(backend,self)
@@ -134,17 +135,19 @@ class MemoryBrain(NativeBrain):
         if not math.isfinite(duration_ms) or duration_ms<=0:raise ValueError('Invalid duration')
         remaining=round(duration_ms/self.dt)
         if remaining<1:raise ValueError('Duration too short')
-        total=np.zeros(self.n,dtype=np.int32);wall=0.
+        total=np.zeros(self.n,dtype=np.int32);wall=0.;self.last_rule_seconds=0.
         while remaining:
             ticks=min(100,remaining);interval=ticks*self.dt
             # The original LTD update is disabled. Only the centered rule below
             # writes candidate memory efficacies; all neural integration remains.
             c,t=self._neural_step(luminance,interval,learning=False,stimulation=stimulation,lamina_bias=lamina_bias)
             seconds=interval/1000
+            rule_started=time.perf_counter()
             advance(self.rate_kc,self.rate_dan,self.memory_u,self.memory_w,
                 c[self.circuit['pre']]/seconds,c[self.circuit['dan']]/seconds-self.dan_baseline_hz,
                 self.circuit['gain'],seconds,self.eta,learning,self.weights_frozen)
             if not self.weights_frozen:self.weight[self.circuit['edges']]=self.baseline_plastic*(1+self.memory_w)
+            self.last_rule_seconds+=time.perf_counter()-rule_started
             total+=c;wall+=t;remaining-=ticks
         self.counts[:]=total
         return total,wall
