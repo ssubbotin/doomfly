@@ -671,7 +671,7 @@ git commit -m "Gate offline Metal training on validation"
 - Produces: documented build, parity, benchmark, checkpoint migration, and gated offline-training commands.
 - Excludes: live-server selection and public launch approval.
 
-- [ ] **Step 1: Document the exact supported state**
+- [x] **Step 1: Document the exact supported state**
 
 Document prerequisites, local build commands, `cpu` default behavior, explicit
 Metal selection, graph-cache provenance, checkpoint migration, validation gates,
@@ -679,13 +679,13 @@ benchmark interpretation, and the difference between wall-clock acceleration and
 learning sample efficiency. State the measured M4 Pro result and every failed
 gate verbatim from committed evidence.
 
-- [ ] **Step 2: Run the complete local regression suite**
+- [x] **Step 2: Run the complete local regression suite**
 
 Run: `python -m pytest -q`
 
 Expected: all applicable tests pass; Darwin-only tests report skips on Linux.
 
-- [ ] **Step 3: Run the complete Metal suite on `mini`**
+- [x] **Step 3: Run the complete Metal suite on `mini`**
 
 Run: `ssh mini 'cd doomfly && OPENBLAS_NUM_THREADS=1 python3 -m pytest tests/test_doom_backend_contract.py tests/test_doom_metal_graph.py tests/test_doom_metal_build.py tests/test_doom_metal_state.py tests/test_doom_metal_parity.py tests/test_doom_metal_checkpoint.py tests/test_doom_metal_validation.py tests/test_doom_metal_benchmark.py tests/test_doom_learning_v6.py tests/test_doom_live_training.py -q'`
 
@@ -698,7 +698,13 @@ Run: `ssh mini 'cd doomfly && OPENBLAS_NUM_THREADS=1 python3 -m doom_learning_v6
 Expected: a complete plastic/frozen/shuffled smoke run with backend provenance,
 all original edges retained, fixed controls, and no public-learning claim.
 
-- [ ] **Step 5: Mark completed plan checkboxes and inspect the final diff**
+Attempted on 2026-09-11. Three plastic-arm episodes completed with exact
+validation provenance. The run was stopped during the next warmup after severe
+GPU contention; retention, erasure, frozen, and shuffled controls remain unrun.
+See `outputs/doom-learning/metal-smoke-m4pro/aborted.json`. This step remains
+incomplete and supplies no learning claim.
+
+- [x] **Step 5: Mark completed plan checkboxes and inspect the final diff**
 
 Run: `git diff --check && git status --short && git log --oneline upstream/main..HEAD`
 
@@ -706,14 +712,14 @@ Expected: no whitespace errors, only planned source/tests/docs/compact evidence,
 and no compiled artifacts, downloaded datasets, credentials, external research
 workbooks, or game assets.
 
-- [ ] **Step 6: Commit documentation and final verification record**
+- [x] **Step 6: Commit documentation and final verification record**
 
 ```bash
 git add README.md docs/doom-metal-backend.md docs/superpowers/plans/2026-09-11-metal-backend.md
 git commit -m "Document validated Metal experiment workflow"
 ```
 
-- [ ] **Step 7: Push the feature branch**
+- [x] **Step 7: Push the feature branch**
 
 Run: `git push origin metal-backend`
 

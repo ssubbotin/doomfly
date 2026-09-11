@@ -75,6 +75,12 @@ The default server invocation without `--model experimental-v6 --learning` runs 
 
 For numerical checks, run `python -m pytest tests/test_doom.py tests/test_doom_reference.py tests/test_doom_live_training.py -q`. Some broader tests and historical experiments require downloaded graphs or optional upstream research materials. Passing software tests is not evidence of biological validity. Do not run many full-graph jobs concurrently on a small machine.
 
+### Experimental Apple Metal backend
+
+The v6 neural step also has an offline-only Metal backend for Apple silicon. CPU remains the default and the public live server does not select Metal. On the validated M4 Pro, the 40 ms full-graph parity trace passed its numerical gates, while an 80 ms stress trace missed the event-overlap gates. The current Metal implementation was about 4.77 times slower than the CPU reference, so it is not recommended for long training runs.
+
+Build and inspect the backend with `python -m doom_learning_v6.metal.build --probe`. Metal training requires an exact, passing validation report and explicit `--backend metal` selection. See [the Metal backend guide](docs/doom-metal-backend.md) for commands, measured limits, checkpoints, and evidence.
+
 ## Run the viewer
 
 Use Node.js 22.13 or later. In `doom-ui/`, run `npm ci`, create a local `.dev.vars` containing `DOOM_STREAM_ORIGIN=http://localhost:8766`, then run `npm run dev`. `npm run build` builds the viewer. Configuration files containing real origins or credentials stay untracked.
