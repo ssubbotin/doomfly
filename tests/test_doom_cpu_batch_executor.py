@@ -1,4 +1,5 @@
 from concurrent.futures import ThreadPoolExecutor
+import ctypes as C
 import hashlib
 import threading
 
@@ -96,3 +97,26 @@ def test_close_is_idempotent_and_prevents_further_advance(tmp_path):
     executor.close();executor.close()
     assert executor.metadata()['closed'] is True
     with pytest.raises(BackendError,match='closed'):executor.advance(1)
+
+
+def test_close_waits_until_an_inflight_native_call_returns(tmp_path):
+    from doom_learning_v6.cpu_batch.backend import (_NativeTiming,CpuBatchLane,
+        MultiTrajectoryCpuExecutor,SharedCpuGraph)
+    brain=toy_brain(tmp_path);graph=SharedCpuGraph.from_brain(brain)
+    executor=MultiTrajectoryCpuExecutor(graph,[CpuBatchLane.from_brain(graph,brain)],1)
+    entered=threading.Event();release=threading.Event();closed=threading.Event()
+    def blocked_advance(handle,steps,timing_pointer):
+        entered.set();release.wait(5)
+        timing=C.cast(timing_pointer,C.POINTER(_NativeTiming)).contents
+        timing.lanes_advanced=1;timing.workers=1;timing.steps=steps
+        timing.generation=1;timing.pool_threads=1
+        return 0
+    executor._library.df_cpu_batch_advance=blocked_advance
+    def close():executor.close();closed.set()
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        advance=pool.submit(executor.advance,1)
+        assert entered.wait(1);closing=pool.submit(close)
+        try:assert not closed.wait(.05)
+        finally:release.set()
+        advance.result();closing.result()
+    assert executor.metadata()['closed'] is True

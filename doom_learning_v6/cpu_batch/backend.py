@@ -248,11 +248,12 @@ class MultiTrajectoryCpuExecutor:
         if not self._advance_lock.acquire(blocking=False):
             raise BackendError('Reentrant CPU batch advance is forbidden')
         try:
-            if self._closed:raise BackendError('CPU batch executor is closed')
-            for lane in self.lanes:lane.counts.fill(0)
-            timing=_NativeTiming()
-            status=self._library.df_cpu_batch_advance(self._handle,steps,C.byref(timing))
-            if status:self._raise_native(status)
+            with self._lifecycle_lock:
+                if self._closed:raise BackendError('CPU batch executor is closed')
+                for lane in self.lanes:lane.counts.fill(0)
+                timing=_NativeTiming()
+                status=self._library.df_cpu_batch_advance(self._handle,steps,C.byref(timing))
+                if status:self._raise_native(status)
             self.last_timing={'native_wall_seconds':timing.native_wall_seconds,
                 'lanes_advanced':timing.lanes_advanced,'workers':timing.workers,
                 'steps':timing.steps,'generation':timing.generation,
