@@ -12,7 +12,7 @@ import sys
 ROOT=Path(__file__).resolve().parents[2]
 SOURCE=Path(__file__).resolve().parent
 DEFAULT_OUTPUT=ROOT/'outputs/doom-learning/metal'
-ABI_VERSION=1
+ABI_VERSION=2
 
 
 class DeviceInfo(C.Structure):
@@ -73,7 +73,9 @@ def probe(output_dir=DEFAULT_OUTPUT):
     error=library.df_metal_last_error;error.restype=C.c_char_p
     info=DeviceInfo();status=function(C.byref(info))
     if status:raise RuntimeError(error().decode())
-    return {**record,'device':{'name':info.device_name.decode(),'registry_id':info.registry_id,
+    if info.abi_version!=ABI_VERSION:raise RuntimeError('Native Metal ABI version mismatch')
+    return {**record,'native_abi_version':int(info.abi_version),
+        'device':{'name':info.device_name.decode(),'registry_id':info.registry_id,
         'recommended_working_set':info.recommended_working_set,
         'has_unified_memory':bool(info.has_unified_memory),
         'supports_apple7':bool(info.supports_apple7),'supported':bool(info.supported)}}

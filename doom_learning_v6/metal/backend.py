@@ -34,7 +34,10 @@ class KCEvent(C.Structure):
 
 
 class Timing(C.Structure):
-    _fields_=[('host_seconds',C.c_double),('gpu_seconds',C.c_double)]
+    _fields_=[('host_seconds',C.c_double),('gpu_seconds',C.c_double),
+        ('encoder_count',C.c_uint32),('dispatch_count',C.c_uint32),
+        ('mark_grid_threads',C.c_uint32),('gather_grid_threads',C.c_uint32),
+        ('indirect_dispatch_count',C.c_uint32),('edge_bitmap_words',C.c_uint32)]
 
 
 def _pointer(array):return C.c_void_p(array.ctypes.data)
@@ -123,7 +126,12 @@ class MetalBackend:
             if self.brain.circuit['kc_mask'][neuron])
         if self.capture_spikes:self.spike_events.extend(sorted((neuron,tick) for tick,neuron in recorded))
         self.last_timing={'host_seconds':timing.host_seconds,'gpu_seconds':timing.gpu_seconds,
-            'backend_seconds':elapsed}
+            'backend_seconds':elapsed,'encoder_count':timing.encoder_count,
+            'dispatch_count':timing.dispatch_count,
+            'mark_grid_threads':timing.mark_grid_threads,
+            'gather_grid_threads':timing.gather_grid_threads,
+            'indirect_dispatch_count':timing.indirect_dispatch_count,
+            'edge_bitmap_words':timing.edge_bitmap_words}
         return elapsed
 
     def start_diagnostics(self):

@@ -1,0 +1,127 @@
+{
+  "schema": 1,
+  "experiment": "M4 Pro Metal dispatch and event-gather optimization study",
+  "date": "2026-09-11",
+  "environment": {
+    "device": "Apple M4 Pro",
+    "macos": "26.6.2",
+    "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+    "sdk": "26.5",
+    "architecture": "arm64",
+    "metal_language": "macos-metal2.4"
+  },
+  "structure": {
+    "release": "MaleCNS v1.0",
+    "neurons": 166700,
+    "edges": 25582938
+  },
+  "baseline": {
+    "cpu_median_seconds_per_40ms": 0.036214748997736024,
+    "metal_median_seconds_per_40ms": 0.17274724999879254,
+    "gpu_median_seconds_per_40ms": 0.1592638333349896,
+    "source": {
+      "repository_commit": "d9084e0ab6828be992bfb54de78e5075b390b4ad",
+      "report_path_at_commit": "outputs/doom-learning/metal-benchmark-m4pro/report.json",
+      "git_blob_oid": "018e66154c0a92211a75a96501139219ad877aae",
+      "report_sha256": "3ad6265af0bfdf8f0c021e4b7b7cdd264da122941c18192add6cfccc6addd681"
+    }
+  },
+  "event_work_diagnostic": {
+    "trace": ["black", "blue", "green", "white"],
+    "delivered_spikes": 20650,
+    "delivered_edges": 846035,
+    "affected_target_visits": 384937,
+    "incoming_edges_scanned": 51083839,
+    "scan_amplification": 60.38029,
+    "interpretation": "The target gather spent most active work testing incoming edges whose presynaptic neurons had no delivered spike."
+  },
+  "variants": [
+    {
+      "name": "single encoder with fused tick finalization",
+      "status": "superseded",
+      "dispatches_per_40ms": 1608,
+      "observed_metal_seconds_per_40ms": 0.17249396,
+      "observed_gpu_seconds_per_40ms": 0.15932529,
+      "measurement": "exploratory full-trace observation",
+      "evidence_level": "unverified laboratory note; raw samples and source patch were not retained",
+      "interpretation": "Removing 400 dispatches produced no meaningful full-graph improvement."
+    },
+    {
+      "name": "compact delayed-presynaptic and target queues with indirect mark and gather",
+      "status": "rejected",
+      "metal_median_seconds_per_40ms": 0.20954,
+      "gpu_median_seconds_per_40ms": 0.19608,
+      "measurement": "controlled benchmark",
+      "evidence_level": "preserved reports with source and binary hashes; source patch was not retained",
+      "commands": [
+        "OPENBLAS_NUM_THREADS=1 .venv-neural/bin/python -m doom_learning_v6.metal.validate --out /tmp/doomfly-metal-opt-validation-v2",
+        "OPENBLAS_NUM_THREADS=1 .venv-neural/bin/python -m doom_learning_v6.metal.benchmark --validation /tmp/doomfly-metal-opt-validation-v2/report.json --out /tmp/doomfly-metal-opt-benchmark-v2"
+      ],
+      "reports": {
+        "validation": {
+          "path": "outputs/doom-learning/metal-optimization-study-m4pro/compact-queues-validation.json",
+          "sha256": "6c2e79ff8917336291718c6e882c3eae1b1348a0e859da127d555cf4d1169153"
+        },
+        "benchmark": {
+          "path": "outputs/doom-learning/metal-optimization-study-m4pro/compact-queues-benchmark.json",
+          "sha256": "ed1ab9a0a6832ad8cf1981db0b4ecc8c745724a06dcd0cffb67a6ec6cf58d07f"
+        }
+      },
+      "interpretation": "Random target visitation lost incoming-CSR locality during dense activity."
+    },
+    {
+      "name": "indirect delayed-presynaptic queue with canonical target gather",
+      "status": "rejected",
+      "measurement": "frame-level checks",
+      "evidence_level": "unverified laboratory note; raw samples and source patch were not retained",
+      "interpretation": "The added queue and atomic work was slower; no formal median was retained."
+    },
+    {
+      "name": "one mark thread per delayed-spike bitmap word",
+      "status": "rejected",
+      "measurement": "frame-level checks",
+      "evidence_level": "unverified laboratory note; raw samples and source patch were not retained",
+      "interpretation": "The bitmap scan did not improve observed frame time."
+    },
+    {
+      "name": "one gather thread per target bitmap word",
+      "status": "rejected",
+      "approximate_green_frame_gpu_seconds": 0.228,
+      "measurement": "exploratory dense-frame observation",
+      "evidence_level": "unverified laboratory note; raw samples and source patch were not retained",
+      "interpretation": "Dense target processing regressed substantially."
+    }
+  ],
+  "retained_design": {
+    "name": "sparse incoming-edge bitmap with touched-word indirect clear",
+    "edge_bitmap_words": 799467,
+    "dispatches_per_40ms": 2008,
+    "indirect_dispatches_per_40ms": 400,
+    "cpu_median_seconds_per_40ms": 0.034542292003607145,
+    "metal_median_seconds_per_40ms": 0.0846234579985321,
+    "gpu_median_seconds_per_40ms": 0.07111904166595195,
+    "metal_improvement_over_baseline": 2.041363637040087,
+    "gpu_improvement_over_baseline": 2.23939791094284,
+    "cpu_to_metal_speedup": 0.4081881409786672,
+    "real_time_ratio": 0.4726821728402289,
+    "peak_rss_gib": 2.374481201171875,
+    "reports": {
+      "validation_40ms": {
+        "path": "outputs/doom-learning/metal-validation-m4pro/report.json",
+        "sha256": "ae01c691d93b01faceb0e92230d6a37e29f0d061b7fc70a69696ad19d3e06fe9"
+      },
+      "stress_control_80ms": {
+        "path": "outputs/doom-learning/metal-validation-m4pro/failed-80ms-trace.json",
+        "sha256": "3277b721239aace3426384f54fb4e2d4738490c0c7f3bcea840d3fea2212c81e"
+      },
+      "benchmark": {
+        "path": "outputs/doom-learning/metal-benchmark-m4pro/report.json",
+        "sha256": "b9cf3748dc4215b2b49958cc061aadbcab0137623e2529ca57a98ef2a1117045"
+      }
+    },
+    "validation_40ms_passed": true,
+    "stress_control_80ms_passed": false,
+    "long_training_gate_passed": false
+  },
+  "interpretation": "Performance and numerical parity evidence only. These results do not establish learning or biological validity."
+}

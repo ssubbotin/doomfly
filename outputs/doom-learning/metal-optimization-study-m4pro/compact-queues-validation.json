@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "experiment": "full-graph CPU/Metal offline parity",
-  "validation_horizon_ms": 80,
+  "validation_horizon_ms": 40,
   "validation_sources": {
     "doom_learning_v6/brain.py": "6fd7e06caf3e7611fc81a2334155c4b6a87d0e7ba0aacdf9ba0187ca9197739b",
     "doom_learning_v6/kernel.cpp": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
@@ -12,14 +12,14 @@
     "doom_learning/common.py": "79de9a34c3d53db399ce67b12df084ab000d6b66123b658e5c2bfb5c6d108d12",
     "doom_learning_v2/vision.py": "20279cdc14352b23fcbb76db2ee4bdebcc26394bccc04a1ad5fcedc5e3accdeb",
     "doom/engine.py": "5fc0ce73c05a49ff58af01729a9169018080bb5b913cedb2268116a95c04aeb3",
-    "doom_learning_v6/metal/api.h": "72bbdefa5b4fcc86f16586ae169165f372eb553cff12363138d472ed523def52",
-    "doom_learning_v6/metal/backend.mm": "1c0ad803221886d87ca587464f97f4f0cf807b976623c8077bb53edd137edcff",
-    "doom_learning_v6/metal/backend.py": "f360cdf610d48c9275e3687a7a1fed0744e60719ddb28e9563ab7c393b4871be",
-    "doom_learning_v6/metal/build.py": "e3961642f395ce6065b9bd89d27763b87c03b16e5f3484dcc02aeede0d8ccc0b",
+    "doom_learning_v6/metal/api.h": "451bdbf486a5e2c38f2395fa47c76deb26eafa4add2f906cffaff2842c9bac88",
+    "doom_learning_v6/metal/backend.mm": "a4b6177179d39eb431e80882ba41940516b8da926632012208dd1095def59598",
+    "doom_learning_v6/metal/backend.py": "fe3a1b8b12ce71074232f577069d8e6711204e5725899b1e7b4f3f22276c1fe8",
+    "doom_learning_v6/metal/build.py": "14a488646d10b3d2f36a741a7a0cfb5d06dc10bb8627677e6c21f7148df64259",
     "doom_learning_v6/metal/graph.py": "79286a9a37f606ace87218a1cb0ba6fb9bfc1a05526b46963c3564d146681f49",
-    "doom_learning_v6/metal/kernels.metal": "a4b2e2ce6e3c4858ac65eb4c307882c90635e8f2a652a2384e13cbe29e91de3f",
+    "doom_learning_v6/metal/kernels.metal": "6bb253e83a8a25684c50ad1bb6e9918dd6d6dddfe73900a8b50713987999fa71",
     "doom_learning_v6/metal/validate.py": "1dfa95bea4b90d74f96a387a8a7f8cfd546e82efb8844ff02589b43564fa3975",
-    "doom_learning_v6/metal/benchmark.py": "f51e0b0f654a4a682b5c46e71bd5da273fb35e4fa691b5b651d5e34cff9e51cd"
+    "doom_learning_v6/metal/benchmark.py": "eec938b7633c60464cf0b1fd10838e020d32963f63e722ee3a941312cf7054b7"
   },
   "identity": {
     "validation_sources": {
@@ -32,25 +32,25 @@
       "doom_learning/common.py": "79de9a34c3d53db399ce67b12df084ab000d6b66123b658e5c2bfb5c6d108d12",
       "doom_learning_v2/vision.py": "20279cdc14352b23fcbb76db2ee4bdebcc26394bccc04a1ad5fcedc5e3accdeb",
       "doom/engine.py": "5fc0ce73c05a49ff58af01729a9169018080bb5b913cedb2268116a95c04aeb3",
-      "doom_learning_v6/metal/api.h": "72bbdefa5b4fcc86f16586ae169165f372eb553cff12363138d472ed523def52",
-      "doom_learning_v6/metal/backend.mm": "1c0ad803221886d87ca587464f97f4f0cf807b976623c8077bb53edd137edcff",
-      "doom_learning_v6/metal/backend.py": "f360cdf610d48c9275e3687a7a1fed0744e60719ddb28e9563ab7c393b4871be",
-      "doom_learning_v6/metal/build.py": "e3961642f395ce6065b9bd89d27763b87c03b16e5f3484dcc02aeede0d8ccc0b",
+      "doom_learning_v6/metal/api.h": "451bdbf486a5e2c38f2395fa47c76deb26eafa4add2f906cffaff2842c9bac88",
+      "doom_learning_v6/metal/backend.mm": "a4b6177179d39eb431e80882ba41940516b8da926632012208dd1095def59598",
+      "doom_learning_v6/metal/backend.py": "fe3a1b8b12ce71074232f577069d8e6711204e5725899b1e7b4f3f22276c1fe8",
+      "doom_learning_v6/metal/build.py": "14a488646d10b3d2f36a741a7a0cfb5d06dc10bb8627677e6c21f7148df64259",
       "doom_learning_v6/metal/graph.py": "79286a9a37f606ace87218a1cb0ba6fb9bfc1a05526b46963c3564d146681f49",
-      "doom_learning_v6/metal/kernels.metal": "a4b2e2ce6e3c4858ac65eb4c307882c90635e8f2a652a2384e13cbe29e91de3f",
+      "doom_learning_v6/metal/kernels.metal": "6bb253e83a8a25684c50ad1bb6e9918dd6d6dddfe73900a8b50713987999fa71",
       "doom_learning_v6/metal/validate.py": "1dfa95bea4b90d74f96a387a8a7f8cfd546e82efb8844ff02589b43564fa3975",
-      "doom_learning_v6/metal/benchmark.py": "f51e0b0f654a4a682b5c46e71bd5da273fb35e4fa691b5b651d5e34cff9e51cd"
+      "doom_learning_v6/metal/benchmark.py": "eec938b7633c60464cf0b1fd10838e020d32963f63e722ee3a941312cf7054b7"
     },
     "graph_file_sha256": "346b8af85a11af13b8324e18669812c1924569e7d1adcb4e6f45cc461a2c344b",
     "metal_sources": {
-      "api.h": "72bbdefa5b4fcc86f16586ae169165f372eb553cff12363138d472ed523def52",
-      "backend.mm": "1c0ad803221886d87ca587464f97f4f0cf807b976623c8077bb53edd137edcff",
-      "kernels.metal": "a4b2e2ce6e3c4858ac65eb4c307882c90635e8f2a652a2384e13cbe29e91de3f"
+      "api.h": "451bdbf486a5e2c38f2395fa47c76deb26eafa4add2f906cffaff2842c9bac88",
+      "backend.mm": "a4b6177179d39eb431e80882ba41940516b8da926632012208dd1095def59598",
+      "kernels.metal": "6bb253e83a8a25684c50ad1bb6e9918dd6d6dddfe73900a8b50713987999fa71"
     },
     "metal_binaries": {
-      "air": "006e614b031dd8059e52f01d5fddae6c729e853ff71f804e2fa22ceeeaf8e41c",
-      "metallib": "50f04f01ddd63206dfbc35b9677b10ed99da36f7a9a5a09f0e643863dd5b90e9",
-      "library": "72f5e0bd5db3f9c732f6ef1a6b5a7c15efe2e87567166170e68c3d6a86bd0501"
+      "air": "2524135f40cce893efb67209fd6aca508ff2048261d61e569e849fd977bc4a78",
+      "metallib": "9210b63b3ed34688733883d9920d9350eb6e05ea43ea8d05a1bf2b81f9318f3b",
+      "library": "9d84b0917c42fcb235d12ec2319ec205236d9903f0829277a4820bc012060059"
     },
     "metal_environment": {
       "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
@@ -120,14 +120,10 @@
       "black",
       "blue",
       "green",
-      "white",
-      "left_blue",
-      "right_blue",
-      "vertical",
-      "horizontal"
+      "white"
     ],
     "duration_ms_per_frame": 10,
-    "frames_sha256": "27668b5d47328b76f9b1f47a3052b99b47342874de46c6bb4c5cd7541a4b825d"
+    "frames_sha256": "b5d352797d958b47ed2eafb48c7af34113d970f9e4e48808fbb15312ed5ea5e9"
   },
   "cpu": {
     "decisions": [
@@ -150,31 +146,11 @@
         "turn": 0.0,
         "forward": 6.888533196638214,
         "attack": false
-      },
-      {
-        "turn": 1.1419509835684842,
-        "forward": 13.846009148824345,
-        "attack": true
-      },
-      {
-        "turn": -0.10867100407275251,
-        "forward": 12.528387168324496,
-        "attack": false
-      },
-      {
-        "turn": -0.09832959074056476,
-        "forward": 11.336153497541584,
-        "attack": false
-      },
-      {
-        "turn": -0.08897229300222491,
-        "forward": 14.063879139736455,
-        "attack": true
       }
     ],
-    "state_sha256": "10cca923b4e30ff21887f94a84e1621234b535da9cab0cefbef70222cb28a219",
-    "event_count": 52209,
-    "total_counts_sha256": "625af2ca312741d0ff383a5b5807756e0468b3d3ed650beb72801525682e6409",
+    "state_sha256": "32efcd8e14bf7f6bf5b834c56d439c14b2ae9b2cdeb19ec5a16019df7bfe7ee6",
+    "event_count": 21326,
+    "total_counts_sha256": "89ec6db8cc45677533caf82db7f288bb68285525adf799f7e2204339a1363605",
     "scientific_outcomes": {
       "all_spikes_observed": true,
       "KC_spikes_observed": true,
@@ -184,11 +160,11 @@
       "finite_neural_state": true
     },
     "group_spikes": {
-      "all": 52209,
-      "KC": 4,
-      "DAN": 5,
-      "MBON": 5,
-      "fixed_readout": 11
+      "all": 21326,
+      "KC": 2,
+      "DAN": 2,
+      "MBON": 2,
+      "fixed_readout": 4
     },
     "bins": [
       {
@@ -214,33 +190,9 @@
         "stimulated_DAN": true,
         "spikes": 5524,
         "counts_sha256": "653256735945972f513ca35d1b632f55cfb126266e50852a231fbd5b13f46346"
-      },
-      {
-        "label": "left_blue",
-        "stimulated_DAN": false,
-        "spikes": 11180,
-        "counts_sha256": "e7b910dfb0bbf9737be0840cef1a0745a948a03bf944b81a13a35824acd99249"
-      },
-      {
-        "label": "right_blue",
-        "stimulated_DAN": true,
-        "spikes": 6911,
-        "counts_sha256": "f10d336f503f2eeb1cd102dacd420aecb36bce777940b6dfb92104c9ee2de360"
-      },
-      {
-        "label": "vertical",
-        "stimulated_DAN": false,
-        "spikes": 6472,
-        "counts_sha256": "1552e5680025d149199adabd3040d5e055dfa375d1e1dc0749438ebd3fd035cf"
-      },
-      {
-        "label": "horizontal",
-        "stimulated_DAN": false,
-        "spikes": 6320,
-        "counts_sha256": "13003db89502901d8b602a8dc6c19efe077b31101120635b8dc34ade7bb02262"
       }
     ],
-    "neural_wall_seconds": 0.09977045800405904,
+    "neural_wall_seconds": 0.034146751000662334,
     "backend": {
       "name": "cpu",
       "build": {
@@ -277,31 +229,11 @@
         "turn": 0.0,
         "forward": 6.888533196638214,
         "attack": false
-      },
-      {
-        "turn": 1.1419509835684842,
-        "forward": 13.846009148824345,
-        "attack": true
-      },
-      {
-        "turn": -0.10867100407275251,
-        "forward": 12.528387168324496,
-        "attack": false
-      },
-      {
-        "turn": -0.09832959074056476,
-        "forward": 11.336153497541584,
-        "attack": false
-      },
-      {
-        "turn": -0.08897229300222491,
-        "forward": 14.063879139736455,
-        "attack": true
       }
     ],
-    "state_sha256": "8fec98ef0d7636b7fd04e7a80a0349c658ef4b282adbbee2fd93452a6334a80e",
-    "event_count": 52236,
-    "total_counts_sha256": "f9c25bbd7ca544b10d08461cb91d5542d838ed8eb7ac0624034d1df961a2ca72",
+    "state_sha256": "59a2739ed22f68ba13811fe4d241e8a2a0a7e8f88a90ef94576385e69d0272e6",
+    "event_count": 21326,
+    "total_counts_sha256": "89ec6db8cc45677533caf82db7f288bb68285525adf799f7e2204339a1363605",
     "scientific_outcomes": {
       "all_spikes_observed": true,
       "KC_spikes_observed": true,
@@ -311,11 +243,11 @@
       "finite_neural_state": true
     },
     "group_spikes": {
-      "all": 52236,
-      "KC": 4,
-      "DAN": 5,
-      "MBON": 5,
-      "fixed_readout": 11
+      "all": 21326,
+      "KC": 2,
+      "DAN": 2,
+      "MBON": 2,
+      "fixed_readout": 4
     },
     "bins": [
       {
@@ -341,45 +273,21 @@
         "stimulated_DAN": true,
         "spikes": 5524,
         "counts_sha256": "653256735945972f513ca35d1b632f55cfb126266e50852a231fbd5b13f46346"
-      },
-      {
-        "label": "left_blue",
-        "stimulated_DAN": false,
-        "spikes": 11195,
-        "counts_sha256": "3458408f413df8be6054236b8924d42dff1ca1ccd9ebc322d192213ba4432c30"
-      },
-      {
-        "label": "right_blue",
-        "stimulated_DAN": true,
-        "spikes": 6903,
-        "counts_sha256": "750ca0da723042001db6f1444bd8f0474fa8738b1c74e99248a16fea184a06e9"
-      },
-      {
-        "label": "vertical",
-        "stimulated_DAN": false,
-        "spikes": 6481,
-        "counts_sha256": "7891dfbbefd1ac17c15eb6c638be26205b0d3f3713e734aeaa4a12be84f5acd2"
-      },
-      {
-        "label": "horizontal",
-        "stimulated_DAN": false,
-        "spikes": 6331,
-        "counts_sha256": "83da056eea86a6e8e5f859fda8c5189804b88d85ee1d910ba21eb441a142bc84"
       }
     ],
-    "neural_wall_seconds": 0.5111372909959755,
+    "neural_wall_seconds": 0.27410445699933916,
     "backend": {
       "schema": 1,
-      "abi_version": 2,
+      "abi_version": 3,
       "sources": {
-        "api.h": "72bbdefa5b4fcc86f16586ae169165f372eb553cff12363138d472ed523def52",
-        "backend.mm": "1c0ad803221886d87ca587464f97f4f0cf807b976623c8077bb53edd137edcff",
-        "kernels.metal": "a4b2e2ce6e3c4858ac65eb4c307882c90635e8f2a652a2384e13cbe29e91de3f"
+        "api.h": "451bdbf486a5e2c38f2395fa47c76deb26eafa4add2f906cffaff2842c9bac88",
+        "backend.mm": "a4b6177179d39eb431e80882ba41940516b8da926632012208dd1095def59598",
+        "kernels.metal": "6bb253e83a8a25684c50ad1bb6e9918dd6d6dddfe73900a8b50713987999fa71"
       },
       "binaries": {
-        "air": "006e614b031dd8059e52f01d5fddae6c729e853ff71f804e2fa22ceeeaf8e41c",
-        "metallib": "50f04f01ddd63206dfbc35b9677b10ed99da36f7a9a5a09f0e643863dd5b90e9",
-        "library": "72f5e0bd5db3f9c732f6ef1a6b5a7c15efe2e87567166170e68c3d6a86bd0501"
+        "air": "2524135f40cce893efb67209fd6aca508ff2048261d61e569e849fd977bc4a78",
+        "metallib": "9210b63b3ed34688733883d9920d9350eb6e05ea43ea8d05a1bf2b81f9318f3b",
+        "library": "9d84b0917c42fcb235d12ec2319ec205236d9903f0829277a4820bc012060059"
       },
       "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
       "sdk": "26.5",
@@ -416,31 +324,11 @@
         "turn": 0.0,
         "forward": 6.888533196638214,
         "attack": false
-      },
-      {
-        "turn": 1.1419509835684842,
-        "forward": 13.846009148824345,
-        "attack": true
-      },
-      {
-        "turn": -0.10867100407275251,
-        "forward": 12.528387168324496,
-        "attack": false
-      },
-      {
-        "turn": -0.09832959074056476,
-        "forward": 11.336153497541584,
-        "attack": false
-      },
-      {
-        "turn": -0.08897229300222491,
-        "forward": 14.063879139736455,
-        "attack": true
       }
     ],
-    "state_sha256": "8fec98ef0d7636b7fd04e7a80a0349c658ef4b282adbbee2fd93452a6334a80e",
-    "event_count": 52236,
-    "total_counts_sha256": "f9c25bbd7ca544b10d08461cb91d5542d838ed8eb7ac0624034d1df961a2ca72",
+    "state_sha256": "59a2739ed22f68ba13811fe4d241e8a2a0a7e8f88a90ef94576385e69d0272e6",
+    "event_count": 21326,
+    "total_counts_sha256": "89ec6db8cc45677533caf82db7f288bb68285525adf799f7e2204339a1363605",
     "scientific_outcomes": {
       "all_spikes_observed": true,
       "KC_spikes_observed": true,
@@ -450,11 +338,11 @@
       "finite_neural_state": true
     },
     "group_spikes": {
-      "all": 52236,
-      "KC": 4,
-      "DAN": 5,
-      "MBON": 5,
-      "fixed_readout": 11
+      "all": 21326,
+      "KC": 2,
+      "DAN": 2,
+      "MBON": 2,
+      "fixed_readout": 4
     },
     "bins": [
       {
@@ -480,45 +368,21 @@
         "stimulated_DAN": true,
         "spikes": 5524,
         "counts_sha256": "653256735945972f513ca35d1b632f55cfb126266e50852a231fbd5b13f46346"
-      },
-      {
-        "label": "left_blue",
-        "stimulated_DAN": false,
-        "spikes": 11195,
-        "counts_sha256": "3458408f413df8be6054236b8924d42dff1ca1ccd9ebc322d192213ba4432c30"
-      },
-      {
-        "label": "right_blue",
-        "stimulated_DAN": true,
-        "spikes": 6903,
-        "counts_sha256": "750ca0da723042001db6f1444bd8f0474fa8738b1c74e99248a16fea184a06e9"
-      },
-      {
-        "label": "vertical",
-        "stimulated_DAN": false,
-        "spikes": 6481,
-        "counts_sha256": "7891dfbbefd1ac17c15eb6c638be26205b0d3f3713e734aeaa4a12be84f5acd2"
-      },
-      {
-        "label": "horizontal",
-        "stimulated_DAN": false,
-        "spikes": 6331,
-        "counts_sha256": "83da056eea86a6e8e5f859fda8c5189804b88d85ee1d910ba21eb441a142bc84"
       }
     ],
-    "neural_wall_seconds": 0.4761921259923838,
+    "neural_wall_seconds": 0.2315227489962126,
     "backend": {
       "schema": 1,
-      "abi_version": 2,
+      "abi_version": 3,
       "sources": {
-        "api.h": "72bbdefa5b4fcc86f16586ae169165f372eb553cff12363138d472ed523def52",
-        "backend.mm": "1c0ad803221886d87ca587464f97f4f0cf807b976623c8077bb53edd137edcff",
-        "kernels.metal": "a4b2e2ce6e3c4858ac65eb4c307882c90635e8f2a652a2384e13cbe29e91de3f"
+        "api.h": "451bdbf486a5e2c38f2395fa47c76deb26eafa4add2f906cffaff2842c9bac88",
+        "backend.mm": "a4b6177179d39eb431e80882ba41940516b8da926632012208dd1095def59598",
+        "kernels.metal": "6bb253e83a8a25684c50ad1bb6e9918dd6d6dddfe73900a8b50713987999fa71"
       },
       "binaries": {
-        "air": "006e614b031dd8059e52f01d5fddae6c729e853ff71f804e2fa22ceeeaf8e41c",
-        "metallib": "50f04f01ddd63206dfbc35b9677b10ed99da36f7a9a5a09f0e643863dd5b90e9",
-        "library": "72f5e0bd5db3f9c732f6ef1a6b5a7c15efe2e87567166170e68c3d6a86bd0501"
+        "air": "2524135f40cce893efb67209fd6aca508ff2048261d61e569e849fd977bc4a78",
+        "metallib": "9210b63b3ed34688733883d9920d9350eb6e05ea43ea8d05a1bf2b81f9318f3b",
+        "library": "9d84b0917c42fcb235d12ec2319ec205236d9903f0829277a4820bc012060059"
       },
       "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
       "sdk": "26.5",
@@ -536,10 +400,10 @@
   },
   "comparison": {
     "spikes": {
-      "jaccard": 0.9421871803931049,
-      "total_spike_fraction": 0.0005168849069607167,
-      "rate_correlation": 0.9998536135120958,
-      "within_one_tick_fraction": 0.9879393521709167
+      "jaccard": 0.9973775405076333,
+      "total_spike_fraction": 0.0,
+      "rate_correlation": 1.0,
+      "within_one_tick_fraction": 1.0
     },
     "decoder_equal": true,
     "scientific_gates_equal": true,
@@ -550,18 +414,18 @@
     "metal_repeat_bitwise": true
   },
   "gates": {
-    "spike_jaccard": false,
+    "spike_jaccard": true,
     "total_spike_fraction": true,
     "rate_correlation": true,
-    "within_one_tick": false,
+    "within_one_tick": true,
     "decoder_equal": true,
     "scientific_gates_equal": true,
     "weights_within_rtol": true,
     "structural_integrity": true,
     "metal_repeat_bitwise": true,
-    "passed": false
+    "passed": true
   },
-  "passed": false,
+  "passed": true,
   "biologically_validated": false,
   "learning_demonstrated": false,
   "interpretation": "Numerical backend parity only. Passing does not validate modeled fly physiology, vision, learning, or game performance."

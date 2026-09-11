@@ -1,8 +1,9 @@
 import json
 
+import numpy as np
 import pytest
 
-from doom_learning_v6.metal.benchmark import gate,require_metal_validation
+from doom_learning_v6.metal.benchmark import _sample,gate,require_metal_validation
 from doom_learning_v6.survival import build_parser
 from doom_learning.common import provenance_sources
 
@@ -47,3 +48,26 @@ def test_provenance_source_discovery_recurses_for_native_metal_files(tmp_path):
     assert [p.relative_to(tmp_path).as_posix() for p in provenance_sources(tmp_path,['model'])]==[
         'model/brain.py','model/metal/api.h','model/metal/backend.mm',
         'model/metal/kernel.cpp','model/metal/kernels.metal']
+
+
+def test_sample_aggregates_metal_dispatch_work():
+    class Backend:
+        name='metal'
+        last_timing={}
+    class Brain:
+        backend=Backend()
+        circuit={'dan':np.array([0],dtype=np.int32)}
+        last_rule_seconds=.05
+        def rgb_step(self,*args,**kwargs):
+            self.backend.last_timing={'gpu_seconds':.1,'host_seconds':.2,
+                'encoder_count':1,'dispatch_count':502,
+                'mark_grid_threads':7,'gather_grid_threads':9,
+                'indirect_dispatch_count':100,'edge_bitmap_words':11}
+            return np.zeros(1,dtype=np.int32),.3
+    result=_sample(Brain(),[None]*4)
+    assert result['encoder_count']==4
+    assert result['dispatch_count']==2008
+    assert result['mark_grid_threads']==28
+    assert result['gather_grid_threads']==36
+    assert result['indirect_dispatch_count']==400
+    assert result['edge_bitmap_words']==11

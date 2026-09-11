@@ -32,6 +32,32 @@ def paired_brains(tmp_path):
     return MemoryBrain(path,backend='cpu',**kwargs),MemoryBrain(path,backend='metal',**kwargs)
 
 
+def cross_word_brains(tmp_path):
+    n=40
+    pre=np.arange(35,dtype=np.int32)
+    post=np.full(len(pre),n-1,dtype=np.int32)
+    weight=np.ones(len(pre),dtype=np.float32)
+    weight[31]=-0.75;weight[32]=1.25;weight[34]=-0.5
+    path=tmp_path/'cross-word-graph.npz'
+    np.savez(path,ptr=np.r_[0,np.cumsum(np.bincount(pre,minlength=n))].astype(np.int64),
+        post=post,weight=weight,ids=np.arange(n,dtype=np.int64),
+        retina=np.empty(0,dtype=np.int32),uv=np.empty((0,2),dtype=np.float32),
+        lamina=np.empty(0,dtype=np.int32),sugar=np.empty(0,dtype=np.int32),
+        superclass=np.array(['test']*n))
+    circuit={'edges':np.array([0],dtype=np.int64),'pre':np.array([0],dtype=np.int32),
+        'kc_mask':np.zeros(n,dtype=np.uint8),'dan_index':np.full(n,-1,dtype=np.int8),
+        'gain':np.empty((0,1),dtype=np.float32),'kc':np.empty(0,dtype=np.int32),
+        'mb':np.array([n-1]),'dan':np.empty(0,dtype=np.int32)}
+    kwargs={'eta':0.,'circuit':circuit,'modulation_mask':np.zeros(n,dtype=np.uint8)}
+    cpu=MemoryBrain(path,backend='cpu',**kwargs)
+    metal=MemoryBrain(path,backend='metal',**kwargs)
+    delayed=np.array([0,31,32,34],dtype=np.int32)
+    for brain in [cpu,metal]:
+        brain.queue[0,:len(delayed)]=delayed
+        brain.queue_count[0]=len(delayed)
+    return cpu,metal
+
+
 TRACE=[(([0],20.),10.),(None,10.),(([3],20.),10.),(([0,3],18.),20.)]
 
 
@@ -70,3 +96,93 @@ def test_diagnostic_capture_records_exact_all_neuron_spike_events(tmp_path):
     assert cpu.backend.spike_events
     assert metal.backend.spike_events==cpu.backend.spike_events
     assert any(neuron not in cpu.circuit['kc'] for neuron,_ in cpu.backend.spike_events)
+
+
+def test_metal_advance_uses_one_compute_encoder(tmp_path):
+    _,metal=paired_brains(tmp_path)
+    metal.step([],10,stimulation=([0],20),lamina_bias=0)
+    assert metal.backend.last_timing['encoder_count']==1
+
+
+def test_metal_uses_one_sparse_clear_dispatch_per_tick(tmp_path):
+    _,metal=paired_brains(tmp_path)
+    metal.step([],10,stimulation=([0],20),lamina_bias=0)
+    timing=metal.backend.last_timing
+    assert timing['dispatch_count']==502
+    assert timing['indirect_dispatch_count']==100
+
+
+def test_metal_reports_mark_and_gather_grid_sizes(tmp_path):
+    _,metal=paired_brains(tmp_path)
+    metal.step([],10,stimulation=([0],20),lamina_bias=0)
+    timing=metal.backend.last_timing
+    assert timing['mark_grid_threads']==100*metal.n
+    assert timing['gather_grid_threads']==100*metal.n
+
+
+def test_sparse_edge_bitmap_preserves_cross_word_delivery(tmp_path):
+    cpu,metal=cross_word_brains(tmp_path)
+    cpu.backend.advance(1);metal.backend.advance(1)
+    np.testing.assert_array_equal(metal.counts,cpu.counts)
+    for name in ['v','g','modulation','adaptation']:
+        np.testing.assert_array_equal(getattr(metal,name),getattr(cpu,name),err_msg=name)
+    assert metal.g[-1]==pytest.approx(1.0)
+    timing=metal.backend.last_timing
+    assert timing['edge_bitmap_words']==2
+    assert timing['indirect_dispatch_count']==1
+    assert timing['dispatch_count']==7
+
+
+def test_sparse_edge_bitmap_clears_words_between_ticks(tmp_path):
+    cpu,metal=cross_word_brains(tmp_path)
+    for brain in [cpu,metal]:
+        brain.queue[1,0]=33
+        brain.queue_count[1]=1
+    cpu.backend.advance(2);metal.backend.advance(2)
+    for name in ['v','g','modulation','adaptation']:
+        np.testing.assert_array_equal(getattr(metal,name),getattr(cpu,name),err_msg=name)
+    assert metal.backend.last_timing['indirect_dispatch_count']==2
+
+
+def test_sparse_edge_bitmap_supports_edgeless_graph(tmp_path):
+    n=2;path=tmp_path/'edgeless-graph.npz'
+    np.savez(path,ptr=np.zeros(n+1,dtype=np.int64),post=np.empty(0,dtype=np.int32),
+        weight=np.empty(0,dtype=np.float32),ids=np.arange(n,dtype=np.int64),
+        retina=np.empty(0,dtype=np.int32),uv=np.empty((0,2),dtype=np.float32),
+        lamina=np.empty(0,dtype=np.int32),sugar=np.empty(0,dtype=np.int32),
+        superclass=np.array(['test']*n))
+    circuit={'edges':np.empty(0,dtype=np.int64),'pre':np.empty(0,dtype=np.int32),
+        'kc_mask':np.zeros(n,dtype=np.uint8),'dan_index':np.full(n,-1,dtype=np.int8),
+        'gain':np.empty((0,0),dtype=np.float32),'kc':np.empty(0,dtype=np.int32),
+        'mb':np.empty(0,dtype=np.int32),'dan':np.empty(0,dtype=np.int32)}
+    kwargs={'eta':0.,'circuit':circuit,'modulation_mask':np.zeros(n,dtype=np.uint8)}
+    cpu=MemoryBrain(path,backend='cpu',**kwargs);metal=MemoryBrain(path,backend='metal',**kwargs)
+    for brain in [cpu,metal]:
+        brain.queue[0,0]=0;brain.queue_count[0]=1
+    cpu.backend.advance(2);metal.backend.advance(2)
+    for name in ['v','g','refractory','queue_count','last']:
+        np.testing.assert_array_equal(getattr(metal,name),getattr(cpu,name),err_msg=name)
+    assert metal.backend.last_timing['edge_bitmap_words']==0
+
+
+def test_sparse_edge_bitmap_masks_targets_sharing_a_word(tmp_path):
+    n=42;pre=np.arange(35,dtype=np.int32)
+    post=np.r_[np.full(10,40),np.full(25,41)].astype(np.int32)
+    weight=np.ones(len(pre),dtype=np.float32);weight[0]=2.;weight[10]=3.
+    path=tmp_path/'shared-word-graph.npz'
+    np.savez(path,ptr=np.r_[0,np.cumsum(np.bincount(pre,minlength=n))].astype(np.int64),
+        post=post,weight=weight,ids=np.arange(n,dtype=np.int64),
+        retina=np.empty(0,dtype=np.int32),uv=np.empty((0,2),dtype=np.float32),
+        lamina=np.empty(0,dtype=np.int32),sugar=np.empty(0,dtype=np.int32),
+        superclass=np.array(['test']*n))
+    circuit={'edges':np.empty(0,dtype=np.int64),'pre':np.empty(0,dtype=np.int32),
+        'kc_mask':np.zeros(n,dtype=np.uint8),'dan_index':np.full(n,-1,dtype=np.int8),
+        'gain':np.empty((0,0),dtype=np.float32),'kc':np.empty(0,dtype=np.int32),
+        'mb':np.array([40,41]),'dan':np.empty(0,dtype=np.int32)}
+    kwargs={'eta':0.,'circuit':circuit,'modulation_mask':np.zeros(n,dtype=np.uint8)}
+    cpu=MemoryBrain(path,backend='cpu',**kwargs);metal=MemoryBrain(path,backend='metal',**kwargs)
+    for brain in [cpu,metal]:
+        brain.queue[0,:2]=[0,10];brain.queue_count[0]=2
+    cpu.backend.advance(1);metal.backend.advance(1)
+    np.testing.assert_array_equal(metal.g,cpu.g)
+    np.testing.assert_array_equal(metal.g[-2:],[2.,3.])

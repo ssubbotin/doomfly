@@ -93,18 +93,29 @@ def _memory_status():
 def _sample(brain,frames):
     from .validate import TRACE
     started=time.perf_counter();neural=rule=gpu=command=0.
+    encoders=dispatches=mark_threads=gather_threads=indirect_dispatches=edge_bitmap_words=0
     for frame,(_,stimulated) in zip(frames,TRACE):
         stimulation=(brain.circuit['dan'],4.) if stimulated else None
         _,elapsed=brain.rgb_step(frame,10,learning=True,stimulation=stimulation)
         neural+=elapsed;rule+=brain.last_rule_seconds
         if brain.backend.name=='metal':
-            gpu+=brain.backend.last_timing['gpu_seconds'];command+=brain.backend.last_timing['host_seconds']
+            timing=brain.backend.last_timing
+            gpu+=timing['gpu_seconds'];command+=timing['host_seconds']
+            encoders+=timing['encoder_count'];dispatches+=timing['dispatch_count']
+            mark_threads+=timing['mark_grid_threads'];gather_threads+=timing['gather_grid_threads']
+            indirect_dispatches+=timing['indirect_dispatch_count']
+            edge_bitmap_words=max(edge_bitmap_words,timing['edge_bitmap_words'])
     wall=time.perf_counter()-started
     return {'wall_seconds':wall,'neural_seconds':neural,'gpu_seconds':gpu,
         'command_seconds':command,
         'synchronization_seconds':max(0.,neural-command) if brain.backend.name=='metal' else 0.,
         'kernel_seconds':gpu if brain.backend.name=='metal' else neural,
-        'plasticity_seconds':rule,'vision_and_python_seconds':max(0.,wall-neural-rule)}
+        'plasticity_seconds':rule,'vision_and_python_seconds':max(0.,wall-neural-rule),
+        'encoder_count':encoders,'dispatch_count':dispatches,
+        'mark_grid_threads':mark_threads,
+        'gather_grid_threads':gather_threads,
+        'indirect_dispatch_count':indirect_dispatches,
+        'edge_bitmap_words':edge_bitmap_words}
 
 
 def run(out,validation,repetitions=5):

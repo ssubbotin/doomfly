@@ -4,6 +4,8 @@ using namespace metal;
 struct Params {
   uint neurons;
   uint words;
+  uint edge_words;
+  uint clear_threadgroup_width;
   uint slot;
   uint future;
   long clock;
@@ -81,17 +83,31 @@ kernel void df_integrate(device float *v [[buffer(0)]],device float *g [[buffer(
 }
 
 kernel void df_mark_targets(device const long *out_ptr [[buffer(0)]],
-    device const int *out_post [[buffer(1)]],device atomic_uint *ring [[buffer(2)]],
-    device atomic_uint *touched [[buffer(3)]],constant Params &p [[buffer(4)]],
+    device const int *out_post [[buffer(1)]],device const int *edge_to_incoming [[buffer(2)]],
+    device atomic_uint *ring [[buffer(3)]],device atomic_uint *touched [[buffer(4)]],
+    device atomic_uint *active_edge_bits [[buffer(5)]],device uint *active_edge_words [[buffer(6)]],
+    device atomic_uint *active_word_count [[buffer(7)]],device atomic_uint *clear_dispatch [[buffer(8)]],
+    constant Params &p [[buffer(9)]],
     uint pre [[thread_position_in_grid]]) {
   if(pre>=p.neurons||!ring_contains(ring,p.words,p.slot,pre))return;
-  for(long edge=out_ptr[pre];edge<out_ptr[pre+1];edge++)
+  for(long edge=out_ptr[pre];edge<out_ptr[pre+1];edge++){
     atomic_store_explicit(&touched[out_post[edge]],1u,memory_order_relaxed);
+    uint position=(uint)edge_to_incoming[edge];
+    uint word=position>>5;
+    uint previous=atomic_fetch_or_explicit(&active_edge_bits[word],
+      1u<<(position&31),memory_order_relaxed);
+    if(previous==0){
+      uint queue_position=atomic_fetch_add_explicit(active_word_count,1u,memory_order_relaxed);
+      active_edge_words[queue_position]=word;
+      uint groups=queue_position/p.clear_threadgroup_width+1;
+      atomic_fetch_max_explicit(&clear_dispatch[0],groups,memory_order_relaxed);
+    }
+  }
 }
 
 kernel void df_gather_targets(device const long *in_ptr [[buffer(0)]],
     device const int *in_pre [[buffer(1)]],device const int *in_edge [[buffer(2)]],
-    device const float *weight [[buffer(3)]],device atomic_uint *ring [[buffer(4)]],
+    device const float *weight [[buffer(3)]],device atomic_uint *active_edge_bits [[buffer(4)]],
     device atomic_uint *touched [[buffer(5)]],device float *v [[buffer(6)]],
     device float *g [[buffer(7)]],device short *refractory [[buffer(8)]],
     device const float *drive [[buffer(9)]],device uchar *active [[buffer(10)]],
@@ -102,12 +118,23 @@ kernel void df_gather_targets(device const long *in_ptr [[buffer(0)]],
   if(target>=p.neurons||atomic_exchange_explicit(&touched[target],0u,memory_order_relaxed)==0)return;
   evolve(target,p.clock,drive[target],v,g,refractory,last,rest,adaptation,p.dt,p.adaptation_tau);
   float conductance=0.0f,modulatory=0.0f;bool has_fast=false,has_modulatory=false;
-  for(long position=in_ptr[target];position<in_ptr[target+1];position++){
-    int pre=in_pre[position];
-    if(!ring_contains(ring,p.words,p.slot,pre))continue;
-    float value=weight[in_edge[position]];
-    if(modulation_mask[pre]){modulatory+=fabs(value)/0.275f;has_modulatory=true;}
-    else if(refractory[target]==0){conductance+=value;has_fast=true;}
+  long start=in_ptr[target],end=in_ptr[target+1];
+  if(start<end){
+    uint first=(uint)start>>5,last_word=(uint)(end-1)>>5;
+    for(uint word=first;word<=last_word;word++){
+      uint bits=atomic_load_explicit(&active_edge_bits[word],memory_order_relaxed);
+      uint low=word==first?((uint)start&31):0;
+      uint high=word==last_word?(((uint)(end-1)&31)+1):32;
+      if(low>0)bits&=0xffffffffu<<low;
+      if(high<32)bits&=(1u<<high)-1;
+      while(bits!=0){
+        uint bit=ctz(bits);uint position=(word<<5)+bit;
+        int pre=in_pre[position];float value=weight[in_edge[position]];
+        if(modulation_mask[pre]){modulatory+=fabs(value)/0.275f;has_modulatory=true;}
+        else if(refractory[target]==0){conductance+=value;has_fast=true;}
+        bits&=bits-1;
+      }
+    }
   }
   if(has_modulatory){
     long delta=p.clock-modulation_last[target];
@@ -117,17 +144,31 @@ kernel void df_gather_targets(device const long *in_ptr [[buffer(0)]],
   if(has_fast){g[target]+=conductance;active[target]=1;}
 }
 
-kernel void df_clear_slot(device atomic_uint *ring [[buffer(0)]],
-    constant Params &p [[buffer(1)]],uint word [[thread_position_in_grid]]) {
-  if(word<p.words)atomic_store_explicit(&ring[p.slot*p.words+word],0u,memory_order_relaxed);
+kernel void df_clear_active_edge_words(device atomic_uint *active_edge_bits [[buffer(0)]],
+    device const uint *active_edge_words [[buffer(1)]],
+    device atomic_uint *active_word_count [[buffer(2)]],constant Params &p [[buffer(3)]],
+    uint position [[thread_position_in_grid]]) {
+  uint count=atomic_load_explicit(active_word_count,memory_order_relaxed);
+  if(position<count){
+    uint word=active_edge_words[position];
+    if(word<p.edge_words)atomic_store_explicit(&active_edge_bits[word],0u,memory_order_relaxed);
+  }
 }
 
-kernel void df_reset_future(device atomic_uint *ring [[buffer(0)]],
+kernel void df_finalize_tick(device atomic_uint *ring [[buffer(0)]],
     device float *v [[buffer(1)]],device float *g [[buffer(2)]],
     device short *refractory [[buffer(3)]],device const float *rest [[buffer(4)]],
-    constant Params &p [[buffer(5)]],uint i [[thread_position_in_grid]]) {
-  if(i>=p.neurons||!ring_contains(ring,p.words,p.future,i))return;
-  v[i]=rest[i];g[i]=0.0f;refractory[i]=(short)p.refractory_ticks;
+    device atomic_uint *active_word_count [[buffer(5)]],
+    device atomic_uint *clear_dispatch [[buffer(6)]],constant Params &p [[buffer(7)]],
+    uint i [[thread_position_in_grid]]) {
+  if(i<p.words)atomic_store_explicit(&ring[p.slot*p.words+i],0u,memory_order_relaxed);
+  if(i<p.neurons&&ring_contains(ring,p.words,p.future,i)){
+    v[i]=rest[i];g[i]=0.0f;refractory[i]=(short)p.refractory_ticks;
+  }
+  if(i==0){
+    atomic_store_explicit(active_word_count,0u,memory_order_relaxed);
+    atomic_store_explicit(&clear_dispatch[0],1u,memory_order_relaxed);
+  }
 }
 
 kernel void df_materialize(device float *v [[buffer(0)]],device float *g [[buffer(1)]],

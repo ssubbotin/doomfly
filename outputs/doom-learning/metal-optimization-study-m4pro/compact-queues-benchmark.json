@@ -1,0 +1,420 @@
+{
+  "schema": 1,
+  "experiment": "M4 Pro full-graph backend benchmark",
+  "validation_report_sha256": "6c2e79ff8917336291718c6e882c3eae1b1348a0e859da127d555cf4d1169153",
+  "validation_identity": {
+    "validation_sources": {
+      "doom_learning_v6/brain.py": "6fd7e06caf3e7611fc81a2334155c4b6a87d0e7ba0aacdf9ba0187ca9197739b",
+      "doom_learning_v6/kernel.cpp": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+      "doom_learning_v6/rule.py": "0df2ae1bf10b97a213064b3ac3934227539d08e51521a99cdb56fe7f5b44b725",
+      "doom_learning_v6/visual.py": "788c06afd646528b0f5a9d3a8daa6838278709a15f1a90159b2ed4f9e6531c88",
+      "doom_learning_v6/calibration.py": "c9006ef72436c74453209f896e4f1d9371179311e33fa1ae734ad52fc26408b9",
+      "doom_learning_v6/survival.py": "1c85e94e0a1fb9bc1f500c167a861ca91975a61e0716abce52eaea8801b7f568",
+      "doom_learning/common.py": "79de9a34c3d53db399ce67b12df084ab000d6b66123b658e5c2bfb5c6d108d12",
+      "doom_learning_v2/vision.py": "20279cdc14352b23fcbb76db2ee4bdebcc26394bccc04a1ad5fcedc5e3accdeb",
+      "doom/engine.py": "5fc0ce73c05a49ff58af01729a9169018080bb5b913cedb2268116a95c04aeb3",
+      "doom_learning_v6/metal/api.h": "451bdbf486a5e2c38f2395fa47c76deb26eafa4add2f906cffaff2842c9bac88",
+      "doom_learning_v6/metal/backend.mm": "a4b6177179d39eb431e80882ba41940516b8da926632012208dd1095def59598",
+      "doom_learning_v6/metal/backend.py": "fe3a1b8b12ce71074232f577069d8e6711204e5725899b1e7b4f3f22276c1fe8",
+      "doom_learning_v6/metal/build.py": "14a488646d10b3d2f36a741a7a0cfb5d06dc10bb8627677e6c21f7148df64259",
+      "doom_learning_v6/metal/graph.py": "79286a9a37f606ace87218a1cb0ba6fb9bfc1a05526b46963c3564d146681f49",
+      "doom_learning_v6/metal/kernels.metal": "6bb253e83a8a25684c50ad1bb6e9918dd6d6dddfe73900a8b50713987999fa71",
+      "doom_learning_v6/metal/validate.py": "1dfa95bea4b90d74f96a387a8a7f8cfd546e82efb8844ff02589b43564fa3975",
+      "doom_learning_v6/metal/benchmark.py": "eec938b7633c60464cf0b1fd10838e020d32963f63e722ee3a941312cf7054b7"
+    },
+    "graph_file_sha256": "346b8af85a11af13b8324e18669812c1924569e7d1adcb4e6f45cc461a2c344b",
+    "metal_sources": {
+      "api.h": "451bdbf486a5e2c38f2395fa47c76deb26eafa4add2f906cffaff2842c9bac88",
+      "backend.mm": "a4b6177179d39eb431e80882ba41940516b8da926632012208dd1095def59598",
+      "kernels.metal": "6bb253e83a8a25684c50ad1bb6e9918dd6d6dddfe73900a8b50713987999fa71"
+    },
+    "metal_binaries": {
+      "air": "2524135f40cce893efb67209fd6aca508ff2048261d61e569e849fd977bc4a78",
+      "metallib": "9210b63b3ed34688733883d9920d9350eb6e05ea43ea8d05a1bf2b81f9318f3b",
+      "library": "9d84b0917c42fcb235d12ec2319ec205236d9903f0829277a4820bc012060059"
+    },
+    "metal_environment": {
+      "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+      "sdk": "26.5",
+      "macos": "26.6.2",
+      "architecture": "arm64",
+      "metal_language": "macos-metal2.4"
+    },
+    "metal_device": {
+      "name": "Apple M4 Pro",
+      "recommended_working_set": 19069665280,
+      "has_unified_memory": true,
+      "supports_apple7": true,
+      "supported": true
+    },
+    "ids_sha256": "6b6b40c3bddf84b1281ef0b18db06927c2bf61c5f4cb32a4219ec9b7839dc2e5",
+    "out_ptr_sha256": "a29aa0296125a5daa972c12d17711360d01a1209cd9cd9d7ccb1f6959224bcaf",
+    "out_post_sha256": "4cc5e857d3481f433576f35ddb8d580cc33cf8e22b6651fa03e08cde5d956d90",
+    "original_weight_sha256": "d95171c2d59cfe3ebef2e5bd52be779b8f74754d718fc8941a93b8f2921c632b",
+    "plastic_edges_sha256": "550335ad546f5c3106e4988426197ad24d8556367c9285e2f4c8c33f37f3cc68",
+    "configuration_sha256": "9499403434ee781463272a83fcd88ee3df37acca3aeb220f436810b0028bfbd3"
+  },
+  "graph_file_sha256": "346b8af85a11af13b8324e18669812c1924569e7d1adcb4e6f45cc461a2c344b",
+  "repetitions": 5,
+  "cpu_samples": [
+    {
+      "wall_seconds": 0.03791891599757946,
+      "neural_seconds": 0.03533091799545218,
+      "gpu_seconds": 0.0,
+      "command_seconds": 0.0,
+      "synchronization_seconds": 0.0,
+      "kernel_seconds": 0.03533091799545218,
+      "plasticity_seconds": 0.0004272500045772176,
+      "vision_and_python_seconds": 0.002160747997550061,
+      "encoder_count": 0,
+      "dispatch_count": 0,
+      "indirect_dispatch_count": 0,
+      "delivered_spike_events": 0,
+      "gathered_target_events": 0
+    },
+    {
+      "wall_seconds": 0.03824212499966961,
+      "neural_seconds": 0.03554233300019405,
+      "gpu_seconds": 0.0,
+      "command_seconds": 0.0,
+      "synchronization_seconds": 0.0,
+      "kernel_seconds": 0.03554233300019405,
+      "plasticity_seconds": 0.0004211669984215405,
+      "vision_and_python_seconds": 0.0022786250010540243,
+      "encoder_count": 0,
+      "dispatch_count": 0,
+      "indirect_dispatch_count": 0,
+      "delivered_spike_events": 0,
+      "gathered_target_events": 0
+    },
+    {
+      "wall_seconds": 0.037952208000206156,
+      "neural_seconds": 0.03526883399899816,
+      "gpu_seconds": 0.0,
+      "command_seconds": 0.0,
+      "synchronization_seconds": 0.0,
+      "kernel_seconds": 0.03526883399899816,
+      "plasticity_seconds": 0.0004185010038781911,
+      "vision_and_python_seconds": 0.002264872997329803,
+      "encoder_count": 0,
+      "dispatch_count": 0,
+      "indirect_dispatch_count": 0,
+      "delivered_spike_events": 0,
+      "gathered_target_events": 0
+    },
+    {
+      "wall_seconds": 0.03799174999949173,
+      "neural_seconds": 0.035313958003825974,
+      "gpu_seconds": 0.0,
+      "command_seconds": 0.0,
+      "synchronization_seconds": 0.0,
+      "kernel_seconds": 0.035313958003825974,
+      "plasticity_seconds": 0.00042154100083280355,
+      "vision_and_python_seconds": 0.0022562509948329534,
+      "encoder_count": 0,
+      "dispatch_count": 0,
+      "indirect_dispatch_count": 0,
+      "delivered_spike_events": 0,
+      "gathered_target_events": 0
+    },
+    {
+      "wall_seconds": 0.038343959000485484,
+      "neural_seconds": 0.03568525000082445,
+      "gpu_seconds": 0.0,
+      "command_seconds": 0.0,
+      "synchronization_seconds": 0.0,
+      "kernel_seconds": 0.03568525000082445,
+      "plasticity_seconds": 0.00042891800330835395,
+      "vision_and_python_seconds": 0.0022297909963526763,
+      "encoder_count": 0,
+      "dispatch_count": 0,
+      "indirect_dispatch_count": 0,
+      "delivered_spike_events": 0,
+      "gathered_target_events": 0
+    }
+  ],
+  "metal_samples": [
+    {
+      "wall_seconds": 0.22544283300157986,
+      "neural_seconds": 0.20954079199873377,
+      "gpu_seconds": 0.19607679166801972,
+      "command_seconds": 0.199546876,
+      "synchronization_seconds": 0.009993915998733754,
+      "kernel_seconds": 0.19607679166801972,
+      "plasticity_seconds": 0.0005838329998368863,
+      "vision_and_python_seconds": 0.015318208003009204,
+      "encoder_count": 4,
+      "dispatch_count": 1608,
+      "indirect_dispatch_count": 800,
+      "delivered_spike_events": 20650,
+      "gathered_target_events": 384929
+    },
+    {
+      "wall_seconds": 0.22579816699726507,
+      "neural_seconds": 0.20988604099693475,
+      "gpu_seconds": 0.19655349999811733,
+      "command_seconds": 0.199992,
+      "synchronization_seconds": 0.00989404099693475,
+      "kernel_seconds": 0.19655349999811733,
+      "plasticity_seconds": 0.000546666000445839,
+      "vision_and_python_seconds": 0.015365459999884479,
+      "encoder_count": 4,
+      "dispatch_count": 1608,
+      "indirect_dispatch_count": 800,
+      "delivered_spike_events": 20650,
+      "gathered_target_events": 384929
+    },
+    {
+      "wall_seconds": 0.2250616249984887,
+      "neural_seconds": 0.20941666599537712,
+      "gpu_seconds": 0.19600012500450248,
+      "command_seconds": 0.199463749,
+      "synchronization_seconds": 0.00995291699537712,
+      "kernel_seconds": 0.19600012500450248,
+      "plasticity_seconds": 0.0005401249982242007,
+      "vision_and_python_seconds": 0.01510483400488738,
+      "encoder_count": 4,
+      "dispatch_count": 1608,
+      "indirect_dispatch_count": 800,
+      "delivered_spike_events": 20650,
+      "gathered_target_events": 384929
+    },
+    {
+      "wall_seconds": 0.2253471250005532,
+      "neural_seconds": 0.20969216600133223,
+      "gpu_seconds": 0.19624454166842042,
+      "command_seconds": 0.199636332,
+      "synchronization_seconds": 0.010055834001332226,
+      "kernel_seconds": 0.19624454166842042,
+      "plasticity_seconds": 0.0005448759948194493,
+      "vision_and_python_seconds": 0.015110083004401531,
+      "encoder_count": 4,
+      "dispatch_count": 1608,
+      "indirect_dispatch_count": 800,
+      "delivered_spike_events": 20650,
+      "gathered_target_events": 384929
+    },
+    {
+      "wall_seconds": 0.21944383300069603,
+      "neural_seconds": 0.20855391699660686,
+      "gpu_seconds": 0.19507658332804567,
+      "command_seconds": 0.198377751,
+      "synchronization_seconds": 0.010176165996606867,
+      "kernel_seconds": 0.19507658332804567,
+      "plasticity_seconds": 0.0004731250010081567,
+      "vision_and_python_seconds": 0.010416791003081016,
+      "encoder_count": 4,
+      "dispatch_count": 1608,
+      "indirect_dispatch_count": 800,
+      "delivered_spike_events": 20650,
+      "gathered_target_events": 384929
+    }
+  ],
+  "timing_summary": {
+    "cpu": {
+      "wall_seconds": {
+        "minimum": 0.03791891599757946,
+        "median": 0.03799174999949173,
+        "maximum": 0.038343959000485484
+      },
+      "neural_seconds": {
+        "minimum": 0.03526883399899816,
+        "median": 0.03533091799545218,
+        "maximum": 0.03568525000082445
+      },
+      "gpu_seconds": {
+        "minimum": 0.0,
+        "median": 0.0,
+        "maximum": 0.0
+      },
+      "command_seconds": {
+        "minimum": 0.0,
+        "median": 0.0,
+        "maximum": 0.0
+      },
+      "synchronization_seconds": {
+        "minimum": 0.0,
+        "median": 0.0,
+        "maximum": 0.0
+      },
+      "kernel_seconds": {
+        "minimum": 0.03526883399899816,
+        "median": 0.03533091799545218,
+        "maximum": 0.03568525000082445
+      },
+      "plasticity_seconds": {
+        "minimum": 0.0004185010038781911,
+        "median": 0.00042154100083280355,
+        "maximum": 0.00042891800330835395
+      },
+      "vision_and_python_seconds": {
+        "minimum": 0.002160747997550061,
+        "median": 0.0022562509948329534,
+        "maximum": 0.0022786250010540243
+      },
+      "encoder_count": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "dispatch_count": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "indirect_dispatch_count": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "delivered_spike_events": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      },
+      "gathered_target_events": {
+        "minimum": 0,
+        "median": 0,
+        "maximum": 0
+      }
+    },
+    "metal": {
+      "wall_seconds": {
+        "minimum": 0.21944383300069603,
+        "median": 0.2253471250005532,
+        "maximum": 0.22579816699726507
+      },
+      "neural_seconds": {
+        "minimum": 0.20855391699660686,
+        "median": 0.20954079199873377,
+        "maximum": 0.20988604099693475
+      },
+      "gpu_seconds": {
+        "minimum": 0.19507658332804567,
+        "median": 0.19607679166801972,
+        "maximum": 0.19655349999811733
+      },
+      "command_seconds": {
+        "minimum": 0.198377751,
+        "median": 0.199546876,
+        "maximum": 0.199992
+      },
+      "synchronization_seconds": {
+        "minimum": 0.00989404099693475,
+        "median": 0.009993915998733754,
+        "maximum": 0.010176165996606867
+      },
+      "kernel_seconds": {
+        "minimum": 0.19507658332804567,
+        "median": 0.19607679166801972,
+        "maximum": 0.19655349999811733
+      },
+      "plasticity_seconds": {
+        "minimum": 0.0004731250010081567,
+        "median": 0.0005448759948194493,
+        "maximum": 0.0005838329998368863
+      },
+      "vision_and_python_seconds": {
+        "minimum": 0.010416791003081016,
+        "median": 0.015110083004401531,
+        "maximum": 0.015365459999884479
+      },
+      "encoder_count": {
+        "minimum": 4,
+        "median": 4,
+        "maximum": 4
+      },
+      "dispatch_count": {
+        "minimum": 1608,
+        "median": 1608,
+        "maximum": 1608
+      },
+      "indirect_dispatch_count": {
+        "minimum": 800,
+        "median": 800,
+        "maximum": 800
+      },
+      "delivered_spike_events": {
+        "minimum": 20650,
+        "median": 20650,
+        "maximum": 20650
+      },
+      "gathered_target_events": {
+        "minimum": 384929,
+        "median": 384929,
+        "maximum": 384929
+      }
+    }
+  },
+  "construction_seconds": {
+    "cpu": 0.5637586670018209,
+    "metal": 0.5646602499982691
+  },
+  "metal_initialization": {
+    "total_seconds": 1.7468908750015544,
+    "build_probe_seconds": 0.0005130830031703226,
+    "graph_index_load_or_build_seconds": 1.7146894589968724,
+    "handle_create_and_upload_seconds": 0.03168833300151164
+  },
+  "memory": {
+    "before": {
+      "free_percent": 68,
+      "swap_used_mib": 0.0
+    },
+    "after": {
+      "free_percent": 66,
+      "swap_used_mib": 0.0
+    }
+  },
+  "system_load": {
+    "load_average": [
+      1.853515625,
+      2.09521484375,
+      2.4775390625
+    ],
+    "logical_cpus": 12
+  },
+  "metal": {
+    "schema": 1,
+    "abi_version": 3,
+    "sources": {
+      "api.h": "451bdbf486a5e2c38f2395fa47c76deb26eafa4add2f906cffaff2842c9bac88",
+      "backend.mm": "a4b6177179d39eb431e80882ba41940516b8da926632012208dd1095def59598",
+      "kernels.metal": "6bb253e83a8a25684c50ad1bb6e9918dd6d6dddfe73900a8b50713987999fa71"
+    },
+    "binaries": {
+      "air": "2524135f40cce893efb67209fd6aca508ff2048261d61e569e849fd977bc4a78",
+      "metallib": "9210b63b3ed34688733883d9920d9350eb6e05ea43ea8d05a1bf2b81f9318f3b",
+      "library": "9d84b0917c42fcb235d12ec2319ec205236d9903f0829277a4820bc012060059"
+    },
+    "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+    "sdk": "26.5",
+    "macos": "26.6.2",
+    "architecture": "arm64",
+    "metal_language": "macos-metal2.4",
+    "device": {
+      "name": "Apple M4 Pro",
+      "recommended_working_set": 19069665280,
+      "has_unified_memory": true,
+      "supports_apple7": true,
+      "supported": true
+    }
+  },
+  "gate": {
+    "cpu_median": 0.03533091799545218,
+    "metal_median": 0.20954079199873377,
+    "simulated_seconds": 0.04,
+    "peak_rss_gib": 2.3035736083984375,
+    "critical_memory_pressure": false,
+    "sustained_swap_growth": false,
+    "speedup": 0.16861116949326832,
+    "real_time_ratio": 0.19089361846184927,
+    "speed": false,
+    "memory": true,
+    "memory_pressure": true,
+    "swap": true,
+    "passed": false
+  },
+  "passed": false,
+  "interpretation": "Wall-clock viability only. Speed does not change sample efficiency or establish learning."
+}

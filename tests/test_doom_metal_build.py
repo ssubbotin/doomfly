@@ -19,3 +19,9 @@ def test_generated_metal_artifacts_are_ignored():
     for path in paths:
         result=subprocess.run(['git','check-ignore','-q',path],check=False)
         assert result.returncode==0,path
+
+
+def test_probe_confirms_native_abi_version():
+    if sys.platform!='darwin':pytest.skip('Metal probe requires macOS')
+    from doom_learning_v6.metal.build import ABI_VERSION,probe
+    assert probe()['native_abi_version']==ABI_VERSION

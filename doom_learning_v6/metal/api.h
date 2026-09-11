@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-#define DF_METAL_ABI_VERSION 1u
+#define DF_METAL_ABI_VERSION 2u
 
 typedef void *df_metal_handle;
 
@@ -67,6 +67,12 @@ typedef struct {
 typedef struct {
   double host_seconds;
   double gpu_seconds;
+  uint32_t encoder_count;
+  uint32_t dispatch_count;
+  uint32_t mark_grid_threads;
+  uint32_t gather_grid_threads;
+  uint32_t indirect_dispatch_count;
+  uint32_t edge_bitmap_words;
 } df_metal_timing;
 
 int df_metal_probe(df_metal_device_info *info);
