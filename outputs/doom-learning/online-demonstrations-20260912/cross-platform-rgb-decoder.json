@@ -1,0 +1,82 @@
+{
+  "kind": "cross_platform_video_decoder_diagnostic",
+  "source_commit": "ce8ed262c67d799be0b53ad8dec2b02111b82ecc",
+  "decoders": {
+    "linux": {
+      "ffmpeg": "8.0.1-3ubuntu2+esm3",
+      "architecture": "x86_64"
+    },
+    "training": {
+      "ffmpeg": "9.0.1",
+      "architecture": "arm64"
+    }
+  },
+  "complete_training_source_decode": [
+    {
+      "phase": "train",
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 0,
+        "video_sha256": "4fb2a7b08d2a3e91244073ff9b7dc0b848eefcb9e6235d8a357a0330af4f5efe",
+        "control_sha256": "fe6a070d684a8e72beb1e36a0cec30e1e4a6ab2409bfc039ba4460e39212c54a"
+      },
+      "frames": 982,
+      "rgb_sha256": "cb78d5080bad822486dffb9a5b60440c6d201a2596855f6d3c9fd5890ed163d7"
+    },
+    {
+      "phase": "eval",
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 1,
+        "video_sha256": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501",
+        "control_sha256": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+      },
+      "frames": 988,
+      "rgb_sha256": "c1af2c16140cb6cfe4d5c7406a39509db1d161eba8b96896300ee1e0cf4a7f0d"
+    }
+  ],
+  "first_frame_comparison": {
+    "linux_first_rgb_sha256": "66218475933eceaa3ee49d0f41d2fa007f867361d99eeebdc24b5da4d8d71afa",
+    "comparisons": [
+      {
+        "variant": "mini-first-frame.rgb",
+        "rgb_sha256": "fdd614f012812ef9e88d135b3dc490554e4ffe298e5900a245c460d7e4754b45",
+        "max_channel_difference": 2,
+        "mean_absolute_channel_difference": 0.676357421875,
+        "different_channel_values": 620842,
+        "channel_values": 921600,
+        "per_channel_max": [
+          1,
+          2,
+          1
+        ]
+      },
+      {
+        "variant": "mini-first-frame-no-cpuflags.rgb",
+        "rgb_sha256": "783b578f53c5f98b1aba07ae1dff024aaa709b58597f7ef0f302c02c4b0e8d34",
+        "max_channel_difference": 2,
+        "mean_absolute_channel_difference": 0.9243326822916667,
+        "different_channel_values": 748905,
+        "channel_values": 921600,
+        "per_channel_max": [
+          2,
+          2,
+          2
+        ]
+      }
+    ]
+  },
+  "first_frame_yuv420p_sha256_both": "8602eaf8374e58502f5beb3f00809ed14daacc371d8b0631607d878d86323f24",
+  "first_frame_scalar_rgb24_sha256_both": "783b578f53c5f98b1aba07ae1dff024aaa709b58597f7ef0f302c02c4b0e8d34",
+  "hypothesis_test": {
+    "change": "-cpuflags 0 diagnostic only, on both decoders",
+    "result": "First decoded YUV bytes match across platforms; scalar RGB bytes match; default RGB bytes differ. Localizes this tested discrepancy to CPU-optimized YUV-to-RGB conversion.",
+    "scope": "First frame only. Does not bound every later RGB frame or establish exact recovery of original source pixels."
+  },
+  "production_flags_changed": false,
+  "interpretation": "All cohort arms and teacher-free evaluation use one training-machine decoder and record exact frame hashes. Cross-machine default RGB equality is not established; original video colorimetry remains unresolved."
+}

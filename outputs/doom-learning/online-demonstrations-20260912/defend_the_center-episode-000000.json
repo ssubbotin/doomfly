@@ -1,0 +1,249 @@
+{
+  "kind": "offline_dataset_feasibility_spike",
+  "dataset": "Yunncheng/gamewam-vizdoom",
+  "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+  "inspected_collector_revision": "e3a3d29a1eef4bc1f51ec161652bcc158f908321",
+  "demonstrator": "Sample Factory APPO agent, not human",
+  "scenario": "defend_the_center",
+  "episode_index": 0,
+  "checks": {
+    "source_row_count": true,
+    "contiguous_frame_indices": true,
+    "single_episode": true,
+    "finite_action_and_timestamps": true,
+    "binary_and_continuous_action_ranges": true,
+    "timestamps_equal_float32_rounded_tick_times": true,
+    "four_tick_action_repeat": true,
+    "exact_video_pts_match_every_tick": true,
+    "complete_rgb_decode_without_errors": true,
+    "published_video_and_control_checksums": true,
+    "normalized_metadata_matches_pinned_source": true
+  },
+  "video": {
+    "codec_name": "h264",
+    "width": 640,
+    "height": 480,
+    "pix_fmt": "yuv420p",
+    "avg_frame_rate": "35/1",
+    "time_base": "1/17920",
+    "duration": "28.057143",
+    "nb_frames": "982",
+    "disposition": {
+      "default": 1,
+      "dub": 0,
+      "original": 0,
+      "comment": 0,
+      "lyrics": 0,
+      "karaoke": 0,
+      "forced": 0,
+      "hearing_impaired": 0,
+      "visual_impaired": 0,
+      "clean_effects": 0,
+      "attached_pic": 0,
+      "timed_thumbnails": 0,
+      "non_diegetic": 0,
+      "captions": 0,
+      "descriptions": 0,
+      "metadata": 0,
+      "dependent": 0,
+      "still_image": 0,
+      "multilayer": 0
+    },
+    "tags": {
+      "language": "und",
+      "handler_name": "VideoHandler",
+      "vendor_id": "[0][0][0][0]",
+      "encoder": "Lavc60.31.102 libx264"
+    }
+  },
+  "decoded_rgb_frames": 982,
+  "decoded_rgb_sha256": "b9d7dbd0c683c5b5c380bf7244b57fda8baae0dc764263d88c9658169c1cbc5e",
+  "raw_rgb_bytes_streamed_not_saved": 905011200,
+  "control_rows": 982,
+  "policy_decision_blocks": 246,
+  "first_timestamp_seconds": 0,
+  "last_timestamp_seconds": 28.02857208251953,
+  "maximum_timestamp_rounding_error_seconds": 9.264264804187405e-7,
+  "identical_adjacent_frame_count": 0,
+  "first_identical_pair_indices": [],
+  "minimum_mean_adjacent_pixel_difference": 0.001833767361111111,
+  "maximum_mean_adjacent_pixel_difference": 17.201101345486112,
+  "action_names": [
+    "shoot",
+    "move_forward",
+    "move_backward",
+    "strafe_left",
+    "strafe_right",
+    "speed",
+    "turn_left",
+    "turn_right",
+    "turn_delta"
+  ],
+  "nonzero_action_rows": {
+    "shoot": 292,
+    "move_forward": 0,
+    "move_backward": 0,
+    "strafe_left": 0,
+    "strafe_right": 0,
+    "speed": 0,
+    "turn_left": 618,
+    "turn_right": 268,
+    "turn_delta": 0
+  },
+  "turn_delta_minimum": 0,
+  "turn_delta_maximum": 0,
+  "rows_exceeding_doomfly_six_degree_turn_limit": 0,
+  "rows_with_unavailable_strafe_buttons": 0,
+  "rows_with_unavailable_speed_button": 0,
+  "rows_with_backward_action_outside_bci_decoder": 0,
+  "rows_requiring_binary_turn_calibration": 886,
+  "first_eight_actions": [
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ]
+  ],
+  "files": {
+    "SOURCE-README.md": {
+      "bytes": 6063,
+      "sha256": "0ede252d2b9eb0a48c2d52b64f3fd42f10ff8c671e96ca5d2ad8b43ae96b47d9"
+    },
+    "source-info.json": {
+      "bytes": 3029,
+      "sha256": "137cc17aba4a9785d1ed7238583d305c159fd23bb9eee821898e06ab33465e55"
+    },
+    "episode-metadata.json": {
+      "bytes": 733,
+      "sha256": "1238532b273a6fad872e8979d759874199009becf7616e8b3bad8226908b1b97"
+    },
+    "episode_000000.parquet": {
+      "bytes": 21213,
+      "sha256": "fe6a070d684a8e72beb1e36a0cec30e1e4a6ab2409bfc039ba4460e39212c54a"
+    },
+    "episode_000000.mp4": {
+      "bytes": 23638400,
+      "sha256": "4fb2a7b08d2a3e91244073ff9b7dc0b848eefcb9e6235d8a357a0330af4f5efe"
+    }
+  },
+  "alignment_evidence": {
+    "container_and_control_timestamps": "checked for every frame",
+    "frame_before_action": "inspected collector renders and stores frame/action before env.step",
+    "physical_action_semantics": "not verified by replaying this episode",
+    "collector_commit_used_for_original_collection": "not recorded in this episode metadata",
+    "pose_telemetry": "excluded from pixel checks and action compatibility calculations"
+  },
+  "training_started": false,
+  "weights_or_decoder_changed": false,
+  "native_action_conversion": "none; preserve all original action dimensions",
+  "limitations": [
+    "One episode only; no learning or biological validation.",
+    "Agent-generated data does not match the custom hazard arena.",
+    "Game-state columns remain observer-only and cannot select DOOMFLY actions.",
+    "Binary movement amplitude requires explicit engine-compatible calibration.",
+    "Native binary turn acceleration requires calibration before conversion to delta turns.",
+    "The BCI decoder couples forward motion and attack through DNpe017 activity.",
+    "Full video colorimetry is unspecified; RGB decoding is documented but cannot restore original uncompressed pixels.",
+    "Lossy codec noise means absence of byte-identical adjacent frames does not prove distinct simulator renders."
+  ],
+  "published_sha256": {
+    "episode_000000.parquet": "fe6a070d684a8e72beb1e36a0cec30e1e4a6ab2409bfc039ba4460e39212c54a",
+    "episode_000000.mp4": "4fb2a7b08d2a3e91244073ff9b7dc0b848eefcb9e6235d8a357a0330af4f5efe"
+  },
+  "diagnostic_sha256": "cba6f0291e8d03c7551f68da6fbb061e4a629c752855e1d9d07e0e804e04b940",
+  "software": {
+    "pyarrow": "25.0.1",
+    "numpy": "2.5.3",
+    "ffmpeg": "8.0.1-3ubuntu2+esm3"
+  },
+  "preserved_failed_check": {
+    "symptom": "ffprobe reported moov atom not found",
+    "cause": "validation was launched while curl still had an active download session",
+    "resolution": "waited for successful download completion, verified published SHA-256, and reran the unmodified full validator successfully",
+    "data_modified_or_repaired": false
+  },
+  "separate_local_turn_calibration": "calibration-report.json; does not reproduce the external episode"
+}

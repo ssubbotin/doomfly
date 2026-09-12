@@ -1,0 +1,242 @@
+{
+  "kind": "offline_dataset_feasibility_spike",
+  "dataset": "Yunncheng/gamewam-vizdoom",
+  "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+  "inspected_collector_revision": "e3a3d29a1eef4bc1f51ec161652bcc158f908321",
+  "demonstrator": "Sample Factory APPO agent, not human",
+  "scenario": "battle1",
+  "episode_index": 0,
+  "checks": {
+    "source_row_count": true,
+    "contiguous_frame_indices": true,
+    "single_episode": true,
+    "finite_action_and_timestamps": true,
+    "binary_and_continuous_action_ranges": true,
+    "timestamps_equal_float32_rounded_tick_times": true,
+    "four_tick_action_repeat": true,
+    "exact_video_pts_match_every_tick": true,
+    "complete_rgb_decode_without_errors": true,
+    "published_video_and_control_checksums": true,
+    "normalized_metadata_matches_pinned_source": true
+  },
+  "video": {
+    "codec_name": "h264",
+    "width": 640,
+    "height": 480,
+    "pix_fmt": "yuv420p",
+    "avg_frame_rate": "35/1",
+    "time_base": "1/17920",
+    "duration": "60.000000",
+    "nb_frames": "2100",
+    "disposition": {
+      "default": 1,
+      "dub": 0,
+      "original": 0,
+      "comment": 0,
+      "lyrics": 0,
+      "karaoke": 0,
+      "forced": 0,
+      "hearing_impaired": 0,
+      "visual_impaired": 0,
+      "clean_effects": 0,
+      "attached_pic": 0,
+      "timed_thumbnails": 0,
+      "non_diegetic": 0,
+      "captions": 0,
+      "descriptions": 0,
+      "metadata": 0,
+      "dependent": 0,
+      "still_image": 0,
+      "multilayer": 0
+    },
+    "tags": {
+      "language": "und",
+      "handler_name": "VideoHandler",
+      "vendor_id": "[0][0][0][0]",
+      "encoder": "Lavc60.31.102 libx264"
+    }
+  },
+  "decoded_rgb_frames": 2100,
+  "decoded_rgb_sha256": "70ca3efb4d6b09018c9ddf5338bc87f75becc0d6496f2a007cdba13f5df97394",
+  "raw_rgb_bytes_streamed_not_saved": 1935360000,
+  "control_rows": 2100,
+  "policy_decision_blocks": 525,
+  "first_timestamp_seconds": 0,
+  "last_timestamp_seconds": 59.97142791748047,
+  "maximum_timestamp_rounding_error_seconds": 0.000001852852960837481,
+  "identical_adjacent_frame_count": 0,
+  "first_identical_pair_indices": [],
+  "minimum_mean_adjacent_pixel_difference": 0.000361328125,
+  "maximum_mean_adjacent_pixel_difference": 33.54792643229167,
+  "action_names": [
+    "shoot",
+    "move_forward",
+    "move_backward",
+    "strafe_left",
+    "strafe_right",
+    "speed",
+    "turn_left",
+    "turn_right",
+    "turn_delta"
+  ],
+  "nonzero_action_rows": {
+    "shoot": 892,
+    "move_forward": 1580,
+    "move_backward": 96,
+    "strafe_left": 688,
+    "strafe_right": 476,
+    "speed": 1660,
+    "turn_left": 0,
+    "turn_right": 0,
+    "turn_delta": 1580
+  },
+  "turn_delta_minimum": -1,
+  "turn_delta_maximum": 1,
+  "rows_exceeding_doomfly_six_degree_turn_limit": 732,
+  "rows_with_unavailable_strafe_buttons": 1164,
+  "rows_with_unavailable_speed_button": 1660,
+  "rows_with_backward_action_outside_bci_decoder": 96,
+  "rows_requiring_binary_turn_calibration": 0,
+  "first_eight_actions": [
+    [
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0.800000011920929
+    ],
+    [
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0.800000011920929
+    ],
+    [
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0.800000011920929
+    ],
+    [
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0.800000011920929
+    ],
+    [
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      -1
+    ],
+    [
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      -1
+    ],
+    [
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      -1
+    ],
+    [
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      -1
+    ]
+  ],
+  "files": {
+    "SOURCE-README.md": {
+      "bytes": 6063,
+      "sha256": "0ede252d2b9eb0a48c2d52b64f3fd42f10ff8c671e96ca5d2ad8b43ae96b47d9"
+    },
+    "source-info.json": {
+      "bytes": 3029,
+      "sha256": "be2ca9ef8eab9922774196e8e80db2c58e5338e1a243d3c9232f8ee08472b561"
+    },
+    "episode-metadata.json": {
+      "bytes": 700,
+      "sha256": "f839f99640a1d27ba039e3ace65c158dcc5c9e77d6e815b76dd4815ec4ad3fa9"
+    },
+    "episode_000000.parquet": {
+      "bytes": 81011,
+      "sha256": "f30eee77e591e01f0217c07f422759f69f7d0bdf7c8263889f3d685c72f1c577"
+    },
+    "episode_000000.mp4": {
+      "bytes": 55920610,
+      "sha256": "99fd403bd5e23b97ea2af09ca4cfc7cc397d84254c52fb624b5a53bbca409f00"
+    }
+  },
+  "alignment_evidence": {
+    "container_and_control_timestamps": "checked for every frame",
+    "frame_before_action": "inspected collector renders and stores frame/action before env.step",
+    "physical_action_semantics": "not verified by replaying this episode",
+    "collector_commit_used_for_original_collection": "not recorded in this episode metadata",
+    "pose_telemetry": "excluded from pixel checks and action compatibility calculations"
+  },
+  "training_started": false,
+  "weights_or_decoder_changed": false,
+  "native_action_conversion": "none; preserve all original action dimensions",
+  "limitations": [
+    "One episode only; no learning or biological validation.",
+    "Agent-generated data does not match the custom hazard arena.",
+    "Game-state columns remain observer-only and cannot select DOOMFLY actions.",
+    "Binary movement amplitude requires explicit engine-compatible calibration.",
+    "Native binary turn acceleration requires calibration before conversion to delta turns.",
+    "The BCI decoder couples forward motion and attack through DNpe017 activity.",
+    "Full video colorimetry is unspecified; RGB decoding is documented but cannot restore original uncompressed pixels.",
+    "Lossy codec noise means absence of byte-identical adjacent frames does not prove distinct simulator renders."
+  ],
+  "published_sha256": {
+    "episode_000000.parquet": "f30eee77e591e01f0217c07f422759f69f7d0bdf7c8263889f3d685c72f1c577",
+    "episode_000000.mp4": "99fd403bd5e23b97ea2af09ca4cfc7cc397d84254c52fb624b5a53bbca409f00"
+  },
+  "diagnostic_sha256": "cba6f0291e8d03c7551f68da6fbb061e4a629c752855e1d9d07e0e804e04b940",
+  "software": {
+    "pyarrow": "25.0.1",
+    "numpy": "2.5.3",
+    "ffmpeg": "8.0.1-3ubuntu2+esm3"
+  }
+}

@@ -1,0 +1,217 @@
+{
+  "schema": 1,
+  "model": "adaptive-centered-v6",
+  "connectome": "MaleCNS v1.0",
+  "neurons": 166700,
+  "retained_edges": 25582938,
+  "plastic_slots": 4184,
+  "model_identity": {
+    "ids_sha256": "6b6b40c3bddf84b1281ef0b18db06927c2bf61c5f4cb32a4219ec9b7839dc2e5",
+    "out_ptr_sha256": "a29aa0296125a5daa972c12d17711360d01a1209cd9cd9d7ccb1f6959224bcaf",
+    "out_post_sha256": "4cc5e857d3481f433576f35ddb8d580cc33cf8e22b6651fa03e08cde5d956d90",
+    "original_weight_sha256": "d95171c2d59cfe3ebef2e5bd52be779b8f74754d718fc8941a93b8f2921c632b",
+    "plastic_edges_sha256": "550335ad546f5c3106e4988426197ad24d8556367c9285e2f4c8c33f37f3cc68",
+    "configuration_sha256": "9499403434ee781463272a83fcd88ee3df37acca3aeb220f436810b0028bfbd3"
+  },
+  "configuration": {
+    "initial_weight": "40a2e78d7299197d24ba03a24c94a8e1cd0eb45a653d69f001fc3acee2fdc779",
+    "modulation_mask": "914dcf25dae442aecbcf27565f7bc8be76ea8254e7fbc944f2efe6e2413e6d5a",
+    "rule": {
+      "trace_kc_seconds": 1.0,
+      "trace_dan_seconds": 1.0,
+      "memory_decay_seconds": 1800.0,
+      "weight_filter_seconds": 0.05,
+      "minimum_fraction": 0.1,
+      "maximum_fraction": 2.0,
+      "maximum_rate_bin_ms": 10.0,
+      "source": "https://doi.org/10.1038/s41586-024-07819-w",
+      "interpretation": "Centered rate-rule adaptation on existing individual edges, not an exact reproduction of the published nine-unit model. Equal trace constants, efficacy bounds, gain and 50 ms weight filter require calibration."
+    },
+    "rule_sha256": "0df2ae1bf10b97a213064b3ac3934227539d08e51521a99cdb56fe7f5b44b725",
+    "tonic": "9987b0e2557db3948dd617b9a70397a9ad7bf0367f8cf9e3e29af4d8d05f0420",
+    "dan_baseline_hz": "986c1936fd3d3ff90de54565be34655fda3e5157d9bd1ee7e032be868fb9a799",
+    "rest": "275bd935e4f1a56cbc2ca22b8f258f1cef511894f42f531e9a52476dd7b02946",
+    "adaptation_jump": 8.0,
+    "adaptation_tau": 200.0,
+    "retina": "5ec145156d998f582e5d8f08c4174e10f7f853d34745118adab8589f192d04b4",
+    "uv": "51f7dafd4355a06176418e22373ffcdf5bc066f75050da6dcbaaaccbad55a714",
+    "lamina": "22d6fa8ac7aa40700d09394aea1cf35226711d2efc78bc716882920ba180e47e",
+    "sugar": "89b057c7b57d5e783f608815b4219b17b54c812c3fa229bcb78b1cafa30d37a1",
+    "pre": "a58bac7b66de7bbc48f47c4c5d12db216cbfbeed4a2148020ac4638dde143acd",
+    "gain": "94a6bdd055ad6010d8e476c97eea5af1c240009c7068be0d82b4bfa07fdc5cfd",
+    "kc_mask": "43e6ed840af2d547a3ae5848155e639f6e2abf60d5b7caa83c4298a3fb64c617",
+    "dan_index": "2a62818a14eb7fb9a288eaf1dd4e93dec4e66de1428f12e844ca2ba5497823dd",
+    "r8": "27c803c738f86c0509cabc57269e265bac832d8b4477773688e59a14d671f0ff",
+    "r8_uv": "e567b93a289fa467ec1096295c4682dce0dfd4f7d92844159f7eb4a380e22719",
+    "r8_channel": "350fc24c7884470b78254805a557e57bf12b89b71ea8a32af2f4929e951555ae",
+    "corrected_edges": "64916a520f2d1e7daf30bfd027a67d53ceb0f8270097b17c0635572ce2db658d"
+  },
+  "execution": {
+    "backend": "cpu",
+    "backend_metadata": {
+      "name": "cpu",
+      "build": {
+        "model": "adaptive-centered-v6",
+        "source_sha256": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+        "binary_sha256": "ec66cfb2451c92b48aa34497fc834a15da8104e1c36ef9dffb10f0ab060d47f2",
+        "flags": [
+          "-O3",
+          "-std=c++17",
+          "-shared",
+          "-fPIC"
+        ]
+      }
+    },
+    "metal_validation_sha256": null,
+    "metal_validation_horizon_ms": null
+  },
+  "calibration": {
+    "MBON_current": 9.87,
+    "DAN_current": 11.3125,
+    "observed_MBON_hz": [
+      37,
+      37
+    ],
+    "observed_DAN_hz": [
+      23,
+      19
+    ],
+    "target_MBON_hz": 37.16625,
+    "target_MBON_sd": 9.06014,
+    "target_DAN_hz": 20.09,
+    "target_DAN_sd": 4.30193,
+    "evidence": "https://doi.org/10.1038/s41586-024-07819-w",
+    "source_data": "Figure 1, panels d/e, n=20 flies per type",
+    "limits": "A fitted background current is not identified pacemaker physiology. This only constrains baseline rates, not cue responses, burst statistics or learned behavior."
+  },
+  "training": [
+    {
+      "dataset": "Yunncheng/gamewam-vizdoom",
+      "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+      "scenario": "defend_the_center",
+      "episode_index": 0,
+      "video_sha256": "4fb2a7b08d2a3e91244073ff9b7dc0b848eefcb9e6235d8a357a0330af4f5efe",
+      "control_sha256": "fe6a070d684a8e72beb1e36a0cec30e1e4a6ab2409bfc039ba4460e39212c54a"
+    }
+  ],
+  "evaluation": [
+    {
+      "dataset": "Yunncheng/gamewam-vizdoom",
+      "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+      "scenario": "defend_the_center",
+      "episode_index": 1,
+      "video_sha256": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501",
+      "control_sha256": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+    }
+  ],
+  "epochs": 1,
+  "eta": 0.001,
+  "diagnostic_limit": 35,
+  "arms": [
+    "plastic",
+    "frozen",
+    "shifted"
+  ],
+  "readouts": [
+    {
+      "index": 306,
+      "id": "10331",
+      "type": "MN9",
+      "side": "L"
+    },
+    {
+      "index": 332,
+      "id": "10360",
+      "type": "DNa02",
+      "side": "R"
+    },
+    {
+      "index": 706,
+      "id": "10763",
+      "type": "MDN",
+      "side": "R"
+    },
+    {
+      "index": 725,
+      "id": "10783",
+      "type": "DNp09",
+      "side": "L"
+    },
+    {
+      "index": 1087,
+      "id": "11177",
+      "type": "DNp09",
+      "side": "R"
+    },
+    {
+      "index": 1196,
+      "id": "11288",
+      "type": "MDN",
+      "side": "L"
+    },
+    {
+      "index": 1240,
+      "id": "11332",
+      "type": "MDN",
+      "side": "R"
+    },
+    {
+      "index": 2194,
+      "id": "12348",
+      "type": "MDN",
+      "side": "L"
+    },
+    {
+      "index": 6367,
+      "id": "16949",
+      "type": "MN9",
+      "side": "R"
+    },
+    {
+      "index": 131957,
+      "id": "523769",
+      "type": "DNa02",
+      "side": "L"
+    },
+    {
+      "index": 48,
+      "id": "10059",
+      "type": "DNp20",
+      "side": "R"
+    },
+    {
+      "index": 146,
+      "id": "10162",
+      "type": "DNp20",
+      "side": "L"
+    },
+    {
+      "index": 489,
+      "id": "10527",
+      "type": "DNpe017",
+      "side": "L"
+    },
+    {
+      "index": 142493,
+      "id": "555871",
+      "type": "DNpe017",
+      "side": "R"
+    }
+  ],
+  "shift_offsets": [
+    491
+  ],
+  "teacher": "After decoding, min(abs(student-target)/6,1); next original frame gets 4*error at PPL101. First frame and all evaluations receive zero teacher current.",
+  "shift": "Circular positive np.roll turn targets only. Original RGB/raw controls unchanged; feedback dose can differ and is measured.",
+  "timing": {
+    "source_hz": 35,
+    "neural_dt_ms": 0.1,
+    "warmup_ms": 2000,
+    "retention_ms": 5000,
+    "frame_end_steps": "round((index+1)*10000/35)"
+  },
+  "evaluation_mode": "Teacher-free frozen efficacies, learned full checkpoint restored independently per episode; decoder and fast state reset.",
+  "retention_mode": "Unfrozen efficacies; no teacher or learning during five seconds dark, then frozen teacher-free evaluation.",
+  "target_calibration": "Local ViZDoom 1.3.0: 320 yaw units for held count below six, then 640; 360/65536 degrees per unit. Original collector engine provenance unresolved.",
+  "claim_gate": "Exploratory turn-only reinforcement. Physiological validation failed/pending. Changed weights and numeric controls establish no biological learning or held-out gameplay; hazard-arena transfer and scientific launch gates remain required."
+}

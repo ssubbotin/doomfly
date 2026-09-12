@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "experiment": "teacher-free transfer of the first offline cohort",
+  "connectome": "MaleCNS v1.0",
+  "neurons": 166700,
+  "retained_edges": 25582938,
+  "plastic_slots": 4184,
+  "source_commit": "fb57fd1c57960fe5297c3532cd2f939cc16d0685",
+  "source_results_sha256": "a74c19fdf9b559d17fa08c29ae0acf26f57eb6c570abe4fb13ed25988c2dde2d",
+  "model_identity": {
+    "ids_sha256": "6b6b40c3bddf84b1281ef0b18db06927c2bf61c5f4cb32a4219ec9b7839dc2e5",
+    "out_ptr_sha256": "a29aa0296125a5daa972c12d17711360d01a1209cd9cd9d7ccb1f6959224bcaf",
+    "out_post_sha256": "4cc5e857d3481f433576f35ddb8d580cc33cf8e22b6651fa03e08cde5d956d90",
+    "original_weight_sha256": "d95171c2d59cfe3ebef2e5bd52be779b8f74754d718fc8941a93b8f2921c632b",
+    "plastic_edges_sha256": "550335ad546f5c3106e4988426197ad24d8556367c9285e2f4c8c33f37f3cc68",
+    "configuration_sha256": "9499403434ee781463272a83fcd88ee3df37acca3aeb220f436810b0028bfbd3"
+  },
+  "execution": {
+    "backend": "cpu",
+    "backend_metadata": {
+      "name": "cpu",
+      "build": {
+        "model": "adaptive-centered-v6",
+        "source_sha256": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+        "binary_sha256": "ec66cfb2451c92b48aa34497fc834a15da8104e1c36ef9dffb10f0ab060d47f2",
+        "flags": [
+          "-O3",
+          "-std=c++17",
+          "-shared",
+          "-fPIC"
+        ]
+      }
+    },
+    "source_commit": "fb57fd1c57960fe5297c3532cd2f939cc16d0685",
+    "teacher_current": 0.0
+  },
+  "seeds": [
+    61031,
+    61032,
+    61033
+  ],
+  "seconds_limit": 12,
+  "warmup_ms": 2000,
+  "neural_dt_ms": 0.1,
+  "game_hz": 35,
+  "evaluation": "independently restored checkpoints; frozen efficacies; explicit zero reinforcement schedule",
+  "observer": "pose and health do not enter sensory mapping or fixed decoding",
+  "controls": "plastic/frozen/shifted on every seed; erased, five-second dark retention and black vision on seed 61031",
+  "claim": "exploratory transfer; capped survival is censored; no replicated learning or biological validation"
+}

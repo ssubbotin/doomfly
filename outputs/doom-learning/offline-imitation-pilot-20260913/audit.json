@@ -1,0 +1,170 @@
+{
+  "schema": 1,
+  "source_commit": "fb57fd1c57960fe5297c3532cd2f939cc16d0685",
+  "complete": true,
+  "episodes": [
+    {
+      "arm": "plastic",
+      "phase": "training",
+      "frames": 982,
+      "brain_steps": 280571,
+      "causal_teacher_verified": true,
+      "teacher_dose_current_ms": 61728.89048282337
+    },
+    {
+      "arm": "plastic",
+      "phase": "held_out",
+      "frames": 988,
+      "brain_steps": 282286,
+      "causal_teacher_verified": true,
+      "teacher_dose_current_ms": 0
+    },
+    {
+      "arm": "plastic",
+      "phase": "retention_5s",
+      "frames": 988,
+      "brain_steps": 282286,
+      "causal_teacher_verified": true,
+      "teacher_dose_current_ms": 0
+    },
+    {
+      "arm": "plastic",
+      "phase": "memory_erased",
+      "frames": 988,
+      "brain_steps": 282286,
+      "causal_teacher_verified": true,
+      "teacher_dose_current_ms": 0
+    },
+    {
+      "arm": "frozen",
+      "phase": "training",
+      "frames": 982,
+      "brain_steps": 280571,
+      "causal_teacher_verified": true,
+      "teacher_dose_current_ms": 61483.10648808615
+    },
+    {
+      "arm": "frozen",
+      "phase": "held_out",
+      "frames": 988,
+      "brain_steps": 282286,
+      "causal_teacher_verified": true,
+      "teacher_dose_current_ms": 0
+    },
+    {
+      "arm": "shifted",
+      "phase": "training",
+      "frames": 982,
+      "brain_steps": 280571,
+      "causal_teacher_verified": true,
+      "teacher_dose_current_ms": 61561.42248358532
+    },
+    {
+      "arm": "shifted",
+      "phase": "held_out",
+      "frames": 988,
+      "brain_steps": 282286,
+      "causal_teacher_verified": true,
+      "teacher_dose_current_ms": 0
+    }
+  ],
+  "total_rgb_frames": 7886,
+  "total_brain_steps_excluding_warmup_retention": 2253143,
+  "invariants_equal": true,
+  "original_rgb_raw_controls_identical_across_arms": true,
+  "erased_and_frozen_actions_spikes_memory_identical": true,
+  "training_labels_shifted_only": true,
+  "all_evaluations_teacher_free_frozen_efficacies": true,
+  "score_rows": [
+    {
+      "arm": "plastic",
+      "phase": "training",
+      "mae_degrees": 3.314242069281998,
+      "balanced_direction_recall": 0.3489127984672109,
+      "changed_edges": 2022,
+      "brain_seconds": 28.057100000000002,
+      "wall_seconds_including_warmup": 116.98636229099793,
+      "kernel_seconds_excluding_warmup": 111.49979400294251,
+      "warmup_wall_seconds": 2.3217755000005127
+    },
+    {
+      "arm": "plastic",
+      "phase": "held_out",
+      "mae_degrees": 3.2548214043022727,
+      "balanced_direction_recall": 0.3149157284795583,
+      "changed_edges": 2022,
+      "brain_seconds": 28.2286,
+      "wall_seconds_including_warmup": 118.61386287499772,
+      "kernel_seconds_excluding_warmup": 113.29489864311472,
+      "warmup_wall_seconds": 2.375526042000274
+    },
+    {
+      "arm": "plastic",
+      "phase": "retention_5s",
+      "mae_degrees": 3.296179434397111,
+      "balanced_direction_recall": 0.3141666253368381,
+      "changed_edges": 2022,
+      "brain_seconds": 28.2286,
+      "wall_seconds_including_warmup": 122.41123774999869,
+      "kernel_seconds_excluding_warmup": 117.0249220951373,
+      "warmup_wall_seconds": 2.415394791001745
+    },
+    {
+      "arm": "plastic",
+      "phase": "memory_erased",
+      "mae_degrees": 3.1355094716673344,
+      "balanced_direction_recall": 0.36595083403594036,
+      "changed_edges": 0,
+      "brain_seconds": 28.2286,
+      "wall_seconds_including_warmup": 123.09791879199474,
+      "kernel_seconds_excluding_warmup": 117.69227609137306,
+      "warmup_wall_seconds": 2.4194358749955427
+    },
+    {
+      "arm": "frozen",
+      "phase": "training",
+      "mae_degrees": 3.3071384215391983,
+      "balanced_direction_recall": 0.35181243861598155,
+      "changed_edges": 0,
+      "brain_seconds": 28.057100000000002,
+      "wall_seconds_including_warmup": 120.53778541600332,
+      "kernel_seconds_excluding_warmup": 115.11319007801649,
+      "warmup_wall_seconds": 2.4304723750028643
+    },
+    {
+      "arm": "frozen",
+      "phase": "held_out",
+      "mae_degrees": 3.1355094716673344,
+      "balanced_direction_recall": 0.36595083403594036,
+      "changed_edges": 0,
+      "brain_seconds": 28.2286,
+      "wall_seconds_including_warmup": 123.86570741699688,
+      "kernel_seconds_excluding_warmup": 118.4180515927219,
+      "warmup_wall_seconds": 2.436072416996467
+    },
+    {
+      "arm": "shifted",
+      "phase": "training",
+      "mae_degrees": 3.3031497888523003,
+      "balanced_direction_recall": 0.33816757635769373,
+      "changed_edges": 1979,
+      "brain_seconds": 28.057100000000002,
+      "wall_seconds_including_warmup": 121.74514854200243,
+      "kernel_seconds_excluding_warmup": 116.02375145535188,
+      "warmup_wall_seconds": 2.4663175419991603
+    },
+    {
+      "arm": "shifted",
+      "phase": "held_out",
+      "mae_degrees": 3.3388633578997378,
+      "balanced_direction_recall": 0.3223044685810643,
+      "changed_edges": 1979,
+      "brain_seconds": 28.2286,
+      "wall_seconds_including_warmup": 121.29305720900447,
+      "kernel_seconds_excluding_warmup": 115.84153086703736,
+      "warmup_wall_seconds": 2.4492206669965526
+    }
+  ],
+  "learning_demonstrated": false,
+  "announcement_ready": false
+}

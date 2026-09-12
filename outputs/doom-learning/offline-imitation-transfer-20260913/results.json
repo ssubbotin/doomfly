@@ -1,0 +1,820 @@
+{
+  "complete": true,
+  "protocol": {
+    "schema": 1,
+    "experiment": "teacher-free transfer of the first offline cohort",
+    "connectome": "MaleCNS v1.0",
+    "neurons": 166700,
+    "retained_edges": 25582938,
+    "plastic_slots": 4184,
+    "source_commit": "fb57fd1c57960fe5297c3532cd2f939cc16d0685",
+    "source_results_sha256": "a74c19fdf9b559d17fa08c29ae0acf26f57eb6c570abe4fb13ed25988c2dde2d",
+    "model_identity": {
+      "ids_sha256": "6b6b40c3bddf84b1281ef0b18db06927c2bf61c5f4cb32a4219ec9b7839dc2e5",
+      "out_ptr_sha256": "a29aa0296125a5daa972c12d17711360d01a1209cd9cd9d7ccb1f6959224bcaf",
+      "out_post_sha256": "4cc5e857d3481f433576f35ddb8d580cc33cf8e22b6651fa03e08cde5d956d90",
+      "original_weight_sha256": "d95171c2d59cfe3ebef2e5bd52be779b8f74754d718fc8941a93b8f2921c632b",
+      "plastic_edges_sha256": "550335ad546f5c3106e4988426197ad24d8556367c9285e2f4c8c33f37f3cc68",
+      "configuration_sha256": "9499403434ee781463272a83fcd88ee3df37acca3aeb220f436810b0028bfbd3"
+    },
+    "execution": {
+      "backend": "cpu",
+      "backend_metadata": {
+        "name": "cpu",
+        "build": {
+          "model": "adaptive-centered-v6",
+          "source_sha256": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+          "binary_sha256": "ec66cfb2451c92b48aa34497fc834a15da8104e1c36ef9dffb10f0ab060d47f2",
+          "flags": [
+            "-O3",
+            "-std=c++17",
+            "-shared",
+            "-fPIC"
+          ]
+        }
+      },
+      "source_commit": "fb57fd1c57960fe5297c3532cd2f939cc16d0685",
+      "teacher_current": 0.0
+    },
+    "seeds": [
+      61031,
+      61032,
+      61033
+    ],
+    "seconds_limit": 12,
+    "warmup_ms": 2000,
+    "neural_dt_ms": 0.1,
+    "game_hz": 35,
+    "evaluation": "independently restored checkpoints; frozen efficacies; explicit zero reinforcement schedule",
+    "observer": "pose and health do not enter sensory mapping or fixed decoding",
+    "controls": "plastic/frozen/shifted on every seed; erased, five-second dark retention and black vision on seed 61031",
+    "claim": "exploratory transfer; capped survival is censored; no replicated learning or biological validation"
+  },
+  "episodes": [
+    {
+      "seed": 61031,
+      "seconds_limit": 12,
+      "learning_enabled": false,
+      "weights_frozen": true,
+      "execution": {
+        "backend": "cpu",
+        "backend_metadata": {
+          "name": "cpu",
+          "build": {
+            "model": "adaptive-centered-v6",
+            "source_sha256": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+            "binary_sha256": "ec66cfb2451c92b48aa34497fc834a15da8104e1c36ef9dffb10f0ab060d47f2",
+            "flags": [
+              "-O3",
+              "-std=c++17",
+              "-shared",
+              "-fPIC"
+            ]
+          }
+        },
+        "source_commit": "fb57fd1c57960fe5297c3532cd2f939cc16d0685",
+        "teacher_current": 0.0
+      },
+      "vision": true,
+      "game_tics": 128,
+      "brain_seconds": 3.6571000000000002,
+      "survival_seconds": 3.657142857142857,
+      "dead": true,
+      "right_censored": false,
+      "end_health": 0.0,
+      "damage_total": 80.0,
+      "US_tics": 0,
+      "US_ms": 0.0,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 2022,
+        "mean_efficacy": 1.039561152458191,
+        "minimum_efficacy": 0.6401081085205078,
+        "sha256": "15f1c24a152f0a14aec62c10b91c8c25ee4593f1ad16eec351f070c74015a736",
+        "model": "adaptive-centered-v6"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 2022,
+        "mean_efficacy": 1.039561152458191,
+        "minimum_efficacy": 0.6401081085205078,
+        "sha256": "15f1c24a152f0a14aec62c10b91c8c25ee4593f1ad16eec351f070c74015a736",
+        "model": "adaptive-centered-v6"
+      },
+      "timing": {
+        "wall_seconds": 17.271772792002594,
+        "neural_backend_seconds": 16.033339113986585,
+        "kernel_seconds": 16.033339113986585,
+        "brain_seconds_including_warmup": 5.6571,
+        "brain_to_wall_ratio": 0.32753441514813264
+      },
+      "arm": "plastic",
+      "phase": "held_out",
+      "invariants_unchanged": true
+    },
+    {
+      "seed": 61032,
+      "seconds_limit": 12,
+      "learning_enabled": false,
+      "weights_frozen": true,
+      "execution": {
+        "backend": "cpu",
+        "backend_metadata": {
+          "name": "cpu",
+          "build": {
+            "model": "adaptive-centered-v6",
+            "source_sha256": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+            "binary_sha256": "ec66cfb2451c92b48aa34497fc834a15da8104e1c36ef9dffb10f0ab060d47f2",
+            "flags": [
+              "-O3",
+              "-std=c++17",
+              "-shared",
+              "-fPIC"
+            ]
+          }
+        },
+        "source_commit": "fb57fd1c57960fe5297c3532cd2f939cc16d0685",
+        "teacher_current": 0.0
+      },
+      "vision": true,
+      "game_tics": 128,
+      "brain_seconds": 3.6571000000000002,
+      "survival_seconds": 3.657142857142857,
+      "dead": true,
+      "right_censored": false,
+      "end_health": 0.0,
+      "damage_total": 80.0,
+      "US_tics": 0,
+      "US_ms": 0.0,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 2022,
+        "mean_efficacy": 1.039561152458191,
+        "minimum_efficacy": 0.6401081085205078,
+        "sha256": "15f1c24a152f0a14aec62c10b91c8c25ee4593f1ad16eec351f070c74015a736",
+        "model": "adaptive-centered-v6"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 2022,
+        "mean_efficacy": 1.039561152458191,
+        "minimum_efficacy": 0.6401081085205078,
+        "sha256": "15f1c24a152f0a14aec62c10b91c8c25ee4593f1ad16eec351f070c74015a736",
+        "model": "adaptive-centered-v6"
+      },
+      "timing": {
+        "wall_seconds": 18.002625624998473,
+        "neural_backend_seconds": 16.871717748130322,
+        "kernel_seconds": 16.871717748130322,
+        "brain_seconds_including_warmup": 5.6571,
+        "brain_to_wall_ratio": 0.3142374961208182
+      },
+      "arm": "plastic",
+      "phase": "held_out",
+      "invariants_unchanged": true
+    },
+    {
+      "seed": 61033,
+      "seconds_limit": 12,
+      "learning_enabled": false,
+      "weights_frozen": true,
+      "execution": {
+        "backend": "cpu",
+        "backend_metadata": {
+          "name": "cpu",
+          "build": {
+            "model": "adaptive-centered-v6",
+            "source_sha256": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+            "binary_sha256": "ec66cfb2451c92b48aa34497fc834a15da8104e1c36ef9dffb10f0ab060d47f2",
+            "flags": [
+              "-O3",
+              "-std=c++17",
+              "-shared",
+              "-fPIC"
+            ]
+          }
+        },
+        "source_commit": "fb57fd1c57960fe5297c3532cd2f939cc16d0685",
+        "teacher_current": 0.0
+      },
+      "vision": true,
+      "game_tics": 420,
+      "brain_seconds": 12.0,
+      "survival_seconds": 12.0,
+      "dead": false,
+      "right_censored": true,
+      "end_health": 60.0,
+      "damage_total": 20.0,
+      "US_tics": 0,
+      "US_ms": 0.0,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 2022,
+        "mean_efficacy": 1.039561152458191,
+        "minimum_efficacy": 0.6401081085205078,
+        "sha256": "15f1c24a152f0a14aec62c10b91c8c25ee4593f1ad16eec351f070c74015a736",
+        "model": "adaptive-centered-v6"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 2022,
+        "mean_efficacy": 1.039561152458191,
+        "minimum_efficacy": 0.6401081085205078,
+        "sha256": "15f1c24a152f0a14aec62c10b91c8c25ee4593f1ad16eec351f070c74015a736",
+        "model": "adaptive-centered-v6"
+      },
+      "timing": {
+        "wall_seconds": 50.46941729100217,
+        "neural_backend_seconds": 46.96177945609816,
+        "kernel_seconds": 46.96177945609816,
+        "brain_seconds_including_warmup": 14.0,
+        "brain_to_wall_ratio": 0.27739571311626693
+      },
+      "arm": "plastic",
+      "phase": "held_out",
+      "invariants_unchanged": true
+    },
+    {
+      "seed": 61031,
+      "seconds_limit": 12,
+      "learning_enabled": false,
+      "weights_frozen": true,
+      "execution": {
+        "backend": "cpu",
+        "backend_metadata": {
+          "name": "cpu",
+          "build": {
+            "model": "adaptive-centered-v6",
+            "source_sha256": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+            "binary_sha256": "ec66cfb2451c92b48aa34497fc834a15da8104e1c36ef9dffb10f0ab060d47f2",
+            "flags": [
+              "-O3",
+              "-std=c++17",
+              "-shared",
+              "-fPIC"
+            ]
+          }
+        },
+        "source_commit": "fb57fd1c57960fe5297c3532cd2f939cc16d0685",
+        "teacher_current": 0.0
+      },
+      "vision": true,
+      "game_tics": 128,
+      "brain_seconds": 3.6571000000000002,
+      "survival_seconds": 3.657142857142857,
+      "dead": true,
+      "right_censored": false,
+      "end_health": 0.0,
+      "damage_total": 80.0,
+      "US_tics": 0,
+      "US_ms": 0.0,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 0,
+        "mean_efficacy": 1.0,
+        "minimum_efficacy": 1.0,
+        "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+        "model": "adaptive-centered-v6"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 0,
+        "mean_efficacy": 1.0,
+        "minimum_efficacy": 1.0,
+        "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+        "model": "adaptive-centered-v6"
+      },
+      "timing": {
+        "wall_seconds": 17.385277708002832,
+        "neural_backend_seconds": 16.203308443902642,
+        "kernel_seconds": 16.203308443902642,
+        "brain_seconds_including_warmup": 5.6571,
+        "brain_to_wall_ratio": 0.32539601006177254
+      },
+      "arm": "frozen",
+      "phase": "held_out",
+      "invariants_unchanged": true
+    },
+    {
+      "seed": 61032,
+      "seconds_limit": 12,
+      "learning_enabled": false,
+      "weights_frozen": true,
+      "execution": {
+        "backend": "cpu",
+        "backend_metadata": {
+          "name": "cpu",
+          "build": {
+            "model": "adaptive-centered-v6",
+            "source_sha256": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+            "binary_sha256": "ec66cfb2451c92b48aa34497fc834a15da8104e1c36ef9dffb10f0ab060d47f2",
+            "flags": [
+              "-O3",
+              "-std=c++17",
+              "-shared",
+              "-fPIC"
+            ]
+          }
+        },
+        "source_commit": "fb57fd1c57960fe5297c3532cd2f939cc16d0685",
+        "teacher_current": 0.0
+      },
+      "vision": true,
+      "game_tics": 384,
+      "brain_seconds": 10.971400000000001,
+      "survival_seconds": 10.971428571428572,
+      "dead": true,
+      "right_censored": false,
+      "end_health": 0.0,
+      "damage_total": 80.0,
+      "US_tics": 0,
+      "US_ms": 0.0,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 0,
+        "mean_efficacy": 1.0,
+        "minimum_efficacy": 1.0,
+        "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+        "model": "adaptive-centered-v6"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 0,
+        "mean_efficacy": 1.0,
+        "minimum_efficacy": 1.0,
+        "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+        "model": "adaptive-centered-v6"
+      },
+      "timing": {
+        "wall_seconds": 47.89217466699483,
+        "neural_backend_seconds": 44.894050125010835,
+        "kernel_seconds": 44.894050125010835,
+        "brain_seconds_including_warmup": 12.971400000000001,
+        "brain_to_wall_ratio": 0.27084591773485106
+      },
+      "arm": "frozen",
+      "phase": "held_out",
+      "invariants_unchanged": true
+    },
+    {
+      "seed": 61033,
+      "seconds_limit": 12,
+      "learning_enabled": false,
+      "weights_frozen": true,
+      "execution": {
+        "backend": "cpu",
+        "backend_metadata": {
+          "name": "cpu",
+          "build": {
+            "model": "adaptive-centered-v6",
+            "source_sha256": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+            "binary_sha256": "ec66cfb2451c92b48aa34497fc834a15da8104e1c36ef9dffb10f0ab060d47f2",
+            "flags": [
+              "-O3",
+              "-std=c++17",
+              "-shared",
+              "-fPIC"
+            ]
+          }
+        },
+        "source_commit": "fb57fd1c57960fe5297c3532cd2f939cc16d0685",
+        "teacher_current": 0.0
+      },
+      "vision": true,
+      "game_tics": 128,
+      "brain_seconds": 3.6571000000000002,
+      "survival_seconds": 3.657142857142857,
+      "dead": true,
+      "right_censored": false,
+      "end_health": 0.0,
+      "damage_total": 80.0,
+      "US_tics": 0,
+      "US_ms": 0.0,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 0,
+        "mean_efficacy": 1.0,
+        "minimum_efficacy": 1.0,
+        "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+        "model": "adaptive-centered-v6"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 0,
+        "mean_efficacy": 1.0,
+        "minimum_efficacy": 1.0,
+        "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+        "model": "adaptive-centered-v6"
+      },
+      "timing": {
+        "wall_seconds": 17.640544499998214,
+        "neural_backend_seconds": 16.452232716968865,
+        "kernel_seconds": 16.452232716968865,
+        "brain_seconds_including_warmup": 5.6571,
+        "brain_to_wall_ratio": 0.3206873801429753
+      },
+      "arm": "frozen",
+      "phase": "held_out",
+      "invariants_unchanged": true
+    },
+    {
+      "seed": 61031,
+      "seconds_limit": 12,
+      "learning_enabled": false,
+      "weights_frozen": true,
+      "execution": {
+        "backend": "cpu",
+        "backend_metadata": {
+          "name": "cpu",
+          "build": {
+            "model": "adaptive-centered-v6",
+            "source_sha256": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+            "binary_sha256": "ec66cfb2451c92b48aa34497fc834a15da8104e1c36ef9dffb10f0ab060d47f2",
+            "flags": [
+              "-O3",
+              "-std=c++17",
+              "-shared",
+              "-fPIC"
+            ]
+          }
+        },
+        "source_commit": "fb57fd1c57960fe5297c3532cd2f939cc16d0685",
+        "teacher_current": 0.0
+      },
+      "vision": true,
+      "game_tics": 128,
+      "brain_seconds": 3.6571000000000002,
+      "survival_seconds": 3.657142857142857,
+      "dead": true,
+      "right_censored": false,
+      "end_health": 0.0,
+      "damage_total": 80.0,
+      "US_tics": 0,
+      "US_ms": 0.0,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 1979,
+        "mean_efficacy": 1.0428742170333862,
+        "minimum_efficacy": 0.6408639550209045,
+        "sha256": "c0329ded72bd475778beeca7182ba76e2ae0daec6a76c62f4533b199b105567e",
+        "model": "adaptive-centered-v6"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 1979,
+        "mean_efficacy": 1.0428742170333862,
+        "minimum_efficacy": 0.6408639550209045,
+        "sha256": "c0329ded72bd475778beeca7182ba76e2ae0daec6a76c62f4533b199b105567e",
+        "model": "adaptive-centered-v6"
+      },
+      "timing": {
+        "wall_seconds": 17.373930125002516,
+        "neural_backend_seconds": 16.204357120055647,
+        "kernel_seconds": 16.204357120055647,
+        "brain_seconds_including_warmup": 5.6571,
+        "brain_to_wall_ratio": 0.3256085387300463
+      },
+      "arm": "shifted",
+      "phase": "held_out",
+      "invariants_unchanged": true
+    },
+    {
+      "seed": 61032,
+      "seconds_limit": 12,
+      "learning_enabled": false,
+      "weights_frozen": true,
+      "execution": {
+        "backend": "cpu",
+        "backend_metadata": {
+          "name": "cpu",
+          "build": {
+            "model": "adaptive-centered-v6",
+            "source_sha256": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+            "binary_sha256": "ec66cfb2451c92b48aa34497fc834a15da8104e1c36ef9dffb10f0ab060d47f2",
+            "flags": [
+              "-O3",
+              "-std=c++17",
+              "-shared",
+              "-fPIC"
+            ]
+          }
+        },
+        "source_commit": "fb57fd1c57960fe5297c3532cd2f939cc16d0685",
+        "teacher_current": 0.0
+      },
+      "vision": true,
+      "game_tics": 224,
+      "brain_seconds": 6.4,
+      "survival_seconds": 6.4,
+      "dead": true,
+      "right_censored": false,
+      "end_health": 0.0,
+      "damage_total": 80.0,
+      "US_tics": 0,
+      "US_ms": 0.0,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 1979,
+        "mean_efficacy": 1.0428742170333862,
+        "minimum_efficacy": 0.6408639550209045,
+        "sha256": "c0329ded72bd475778beeca7182ba76e2ae0daec6a76c62f4533b199b105567e",
+        "model": "adaptive-centered-v6"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 1979,
+        "mean_efficacy": 1.0428742170333862,
+        "minimum_efficacy": 0.6408639550209045,
+        "sha256": "c0329ded72bd475778beeca7182ba76e2ae0daec6a76c62f4533b199b105567e",
+        "model": "adaptive-centered-v6"
+      },
+      "timing": {
+        "wall_seconds": 30.98064529200201,
+        "neural_backend_seconds": 29.065734111034544,
+        "kernel_seconds": 29.065734111034544,
+        "brain_seconds_including_warmup": 8.4,
+        "brain_to_wall_ratio": 0.27113702509510196
+      },
+      "arm": "shifted",
+      "phase": "held_out",
+      "invariants_unchanged": true
+    },
+    {
+      "seed": 61033,
+      "seconds_limit": 12,
+      "learning_enabled": false,
+      "weights_frozen": true,
+      "execution": {
+        "backend": "cpu",
+        "backend_metadata": {
+          "name": "cpu",
+          "build": {
+            "model": "adaptive-centered-v6",
+            "source_sha256": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+            "binary_sha256": "ec66cfb2451c92b48aa34497fc834a15da8104e1c36ef9dffb10f0ab060d47f2",
+            "flags": [
+              "-O3",
+              "-std=c++17",
+              "-shared",
+              "-fPIC"
+            ]
+          }
+        },
+        "source_commit": "fb57fd1c57960fe5297c3532cd2f939cc16d0685",
+        "teacher_current": 0.0
+      },
+      "vision": true,
+      "game_tics": 224,
+      "brain_seconds": 6.4,
+      "survival_seconds": 6.4,
+      "dead": true,
+      "right_censored": false,
+      "end_health": 0.0,
+      "damage_total": 80.0,
+      "US_tics": 0,
+      "US_ms": 0.0,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 1979,
+        "mean_efficacy": 1.0428742170333862,
+        "minimum_efficacy": 0.6408639550209045,
+        "sha256": "c0329ded72bd475778beeca7182ba76e2ae0daec6a76c62f4533b199b105567e",
+        "model": "adaptive-centered-v6"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 1979,
+        "mean_efficacy": 1.0428742170333862,
+        "minimum_efficacy": 0.6408639550209045,
+        "sha256": "c0329ded72bd475778beeca7182ba76e2ae0daec6a76c62f4533b199b105567e",
+        "model": "adaptive-centered-v6"
+      },
+      "timing": {
+        "wall_seconds": 16.86312241700216,
+        "neural_backend_seconds": 14.92118802011828,
+        "kernel_seconds": 14.92118802011828,
+        "brain_seconds_including_warmup": 8.4,
+        "brain_to_wall_ratio": 0.49812838881669635
+      },
+      "arm": "shifted",
+      "phase": "held_out",
+      "invariants_unchanged": true
+    },
+    {
+      "seed": 61031,
+      "seconds_limit": 12,
+      "learning_enabled": false,
+      "weights_frozen": true,
+      "execution": {
+        "backend": "cpu",
+        "backend_metadata": {
+          "name": "cpu",
+          "build": {
+            "model": "adaptive-centered-v6",
+            "source_sha256": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+            "binary_sha256": "ec66cfb2451c92b48aa34497fc834a15da8104e1c36ef9dffb10f0ab060d47f2",
+            "flags": [
+              "-O3",
+              "-std=c++17",
+              "-shared",
+              "-fPIC"
+            ]
+          }
+        },
+        "source_commit": "fb57fd1c57960fe5297c3532cd2f939cc16d0685",
+        "teacher_current": 0.0
+      },
+      "vision": true,
+      "game_tics": 128,
+      "brain_seconds": 3.6571000000000002,
+      "survival_seconds": 3.657142857142857,
+      "dead": true,
+      "right_censored": false,
+      "end_health": 0.0,
+      "damage_total": 80.0,
+      "US_tics": 0,
+      "US_ms": 0.0,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 0,
+        "mean_efficacy": 1.0,
+        "minimum_efficacy": 1.0,
+        "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+        "model": "adaptive-centered-v6"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 0,
+        "mean_efficacy": 1.0,
+        "minimum_efficacy": 1.0,
+        "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+        "model": "adaptive-centered-v6"
+      },
+      "timing": {
+        "wall_seconds": 17.417606000002706,
+        "neural_backend_seconds": 16.238261400059855,
+        "kernel_seconds": 16.238261400059855,
+        "brain_seconds_including_warmup": 5.6571,
+        "brain_to_wall_ratio": 0.3247920523635177
+      },
+      "arm": "plastic",
+      "phase": "memory_erased",
+      "invariants_unchanged": true
+    },
+    {
+      "seed": 61031,
+      "seconds_limit": 12,
+      "learning_enabled": false,
+      "weights_frozen": true,
+      "execution": {
+        "backend": "cpu",
+        "backend_metadata": {
+          "name": "cpu",
+          "build": {
+            "model": "adaptive-centered-v6",
+            "source_sha256": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+            "binary_sha256": "ec66cfb2451c92b48aa34497fc834a15da8104e1c36ef9dffb10f0ab060d47f2",
+            "flags": [
+              "-O3",
+              "-std=c++17",
+              "-shared",
+              "-fPIC"
+            ]
+          }
+        },
+        "source_commit": "fb57fd1c57960fe5297c3532cd2f939cc16d0685",
+        "teacher_current": 0.0
+      },
+      "vision": true,
+      "game_tics": 128,
+      "brain_seconds": 3.6571000000000002,
+      "survival_seconds": 3.657142857142857,
+      "dead": true,
+      "right_censored": false,
+      "end_health": 0.0,
+      "damage_total": 80.0,
+      "US_tics": 0,
+      "US_ms": 0.0,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 2022,
+        "mean_efficacy": 1.042134404182434,
+        "minimum_efficacy": 0.6411064267158508,
+        "sha256": "d5d4b6648ef82427dba55ec49e6fa5f7cd1f7cae620c780c6dc3bc2a8d9c2cfd",
+        "model": "adaptive-centered-v6"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 2022,
+        "mean_efficacy": 1.042134404182434,
+        "minimum_efficacy": 0.6411064267158508,
+        "sha256": "d5d4b6648ef82427dba55ec49e6fa5f7cd1f7cae620c780c6dc3bc2a8d9c2cfd",
+        "model": "adaptive-centered-v6"
+      },
+      "timing": {
+        "wall_seconds": 17.37762312499399,
+        "neural_backend_seconds": 16.24249375602085,
+        "kernel_seconds": 16.24249375602085,
+        "brain_seconds_including_warmup": 5.6571,
+        "brain_to_wall_ratio": 0.3255393421361218
+      },
+      "arm": "plastic",
+      "phase": "retention_5s",
+      "invariants_unchanged": true,
+      "retention": {
+        "before": {
+          "plastic_edges": 4184,
+          "changed_edges": 2022,
+          "mean_efficacy": 1.039561152458191,
+          "minimum_efficacy": 0.6401081085205078,
+          "sha256": "15f1c24a152f0a14aec62c10b91c8c25ee4593f1ad16eec351f070c74015a736",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "aea83055e45943b2d380311c77abe3a56d2ccb8050371b3d23020e00b83c222b",
+          "memory_w_sha256": "e800d64e83637a1ad7ded751ab1f8eb58d6c8c12285ca256bf88d1586d91e65b",
+          "rate_kc_sha256": "94885548c68e070a17c7cd119d58dea1634f66943ebb2b817b5437f428aca06a",
+          "rate_dan_sha256": "aec1f0630467d31ad396e3d81e9f6de571b9da985ad61faab0a27217326337b4"
+        },
+        "after": {
+          "plastic_edges": 4184,
+          "changed_edges": 2022,
+          "mean_efficacy": 1.042134404182434,
+          "minimum_efficacy": 0.6411064267158508,
+          "sha256": "d5d4b6648ef82427dba55ec49e6fa5f7cd1f7cae620c780c6dc3bc2a8d9c2cfd",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "a9b2f89454ac085cc77abadca548d99dac77fc1050083001e878c52bccf0b99a",
+          "memory_w_sha256": "0de129723811b08a0bb2b3eb8c59028f27d9a8f9bf28ee59cde1b166feb2d204",
+          "rate_kc_sha256": "8a8d1052f576a9002cd3a577086067ae2f7d39af4710b79dd50aa3d3e345c4a6",
+          "rate_dan_sha256": "10a56ab023be0d8bb543ca27e8c21befa26366b8e5b411099eeff4f74fa0edb5"
+        },
+        "brain_steps": 50000,
+        "wall_seconds": 20.815443999999843,
+        "kernel_seconds": 20.441755259991623,
+        "teacher_current": 0.0,
+        "learning": false
+      }
+    },
+    {
+      "seed": 61031,
+      "seconds_limit": 12,
+      "learning_enabled": false,
+      "weights_frozen": true,
+      "execution": {
+        "backend": "cpu",
+        "backend_metadata": {
+          "name": "cpu",
+          "build": {
+            "model": "adaptive-centered-v6",
+            "source_sha256": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+            "binary_sha256": "ec66cfb2451c92b48aa34497fc834a15da8104e1c36ef9dffb10f0ab060d47f2",
+            "flags": [
+              "-O3",
+              "-std=c++17",
+              "-shared",
+              "-fPIC"
+            ]
+          }
+        },
+        "source_commit": "fb57fd1c57960fe5297c3532cd2f939cc16d0685",
+        "teacher_current": 0.0
+      },
+      "vision": false,
+      "game_tics": 128,
+      "brain_seconds": 3.6571000000000002,
+      "survival_seconds": 3.657142857142857,
+      "dead": true,
+      "right_censored": false,
+      "end_health": 0.0,
+      "damage_total": 80.0,
+      "US_tics": 0,
+      "US_ms": 0.0,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 2022,
+        "mean_efficacy": 1.039561152458191,
+        "minimum_efficacy": 0.6401081085205078,
+        "sha256": "15f1c24a152f0a14aec62c10b91c8c25ee4593f1ad16eec351f070c74015a736",
+        "model": "adaptive-centered-v6"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 2022,
+        "mean_efficacy": 1.039561152458191,
+        "minimum_efficacy": 0.6401081085205078,
+        "sha256": "15f1c24a152f0a14aec62c10b91c8c25ee4593f1ad16eec351f070c74015a736",
+        "model": "adaptive-centered-v6"
+      },
+      "timing": {
+        "wall_seconds": 7.765775416002725,
+        "neural_backend_seconds": 6.743964869128831,
+        "kernel_seconds": 6.743964869128831,
+        "brain_seconds_including_warmup": 5.6571,
+        "brain_to_wall_ratio": 0.7284655680799841
+      },
+      "arm": "plastic",
+      "phase": "vision_black",
+      "invariants_unchanged": true
+    }
+  ],
+  "learning_demonstrated": false,
+  "announcement_ready": false
+}
