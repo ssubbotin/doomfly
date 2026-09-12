@@ -55,9 +55,34 @@ Metal phases take 8.88–9.20 wall seconds versus CPU 4.84–5.12, including two
 seconds of dark brain warmup. RGB neural execution takes 4.24–4.55 wall seconds
 per brain second. This is a correctness improvement, with no measured speedup.
 
-The complete original Metal cohort runs separately at fixed `e9e19c1`, with
-the matching 80 ms identity guard and all controls. It remains exploratory;
-whole-episode parity and useful learning require their own evidence. Next local
-work isolates incoming conductance association, followed by separately measured
-ordering/modulatory settlement. Logs, complete traces, snapshots and checkpoints
-remain ignored. No public service, launch status or unrelated workload changed.
+## Complete original cohort
+
+The fixed-source `e9e19c1` cohort finished all eight phases, 7,886 original RGB
+frames and 225.3143 seconds of brain time. The unchanged 80 ms report served
+only as a short numerical identity guard. [Results](../../outputs/doom-learning/metal-arithmetic-pilot-20260913/results.json)
+and the [causal comparison audit](../../outputs/doom-learning/metal-arithmetic-pilot-20260913/audit-comparison.json)
+retain every control. Original pixels/actions/timing, next-frame teacher
+causality, frozen teacher-free evaluations, graph/nonplastic invariants and
+exact within-Metal erased/frozen repetition all pass.
+
+Held-out turn MAE is 3.203 degrees after training, versus frozen 3.153 and
+shifted-teacher 3.226; balanced direction recall is 0.3391, 0.3259 and 0.3106,
+respectively. Five-second dark retention gives MAE 3.143/recall 0.3374; erasure
+exactly restores frozen results. Training changes 1,953 plastic slots, shifted
+training 1,985. Accuracy measures disagree about improvement, and the pair is
+one training/held-out episode from a stationary shooting scenario. This does
+not establish useful learning or hazard-arena transfer.
+
+Complete CPU/Metal trajectory equivalence fails: first real-control differences
+occur at frame 42 during plastic training, 39 in learned evaluation, 29 in
+frozen/erased evaluation and 33 after retention. These measured late failures
+supersede whole-episode inference from the previously exact short prefixes.
+
+Eight phase walls sum to 1,516.26 seconds, versus CPU 968.55, with another
+33.64 seconds for five-second dark retention. Metal RGB neural execution
+consumes approximately 6.2–6.6 wall seconds per brain second, without speedup.
+Eight portable files and eight ignored traces were independently checked against
+target SHA256/bytes; execution's source identities match the retained code.
+Next work isolates incoming carry, then separately measures ordering/modulatory
+settlement. Complete traces, snapshots, checkpoints and raw logs stay ignored.
+No public service, launch status or unrelated workload changed.

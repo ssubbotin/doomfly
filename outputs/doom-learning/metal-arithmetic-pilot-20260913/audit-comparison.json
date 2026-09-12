@@ -1,0 +1,1434 @@
+{
+  "schema": 1,
+  "complete": true,
+  "source_backend_cpu": "fb57fd1c57960fe5297c3532cd2f939cc16d0685",
+  "source_backend_metal": "e9e19c17a40d67dbfbeeb09caa366b57475f4e8f",
+  "frames": 7886,
+  "brain_steps": 2253143,
+  "model_identity_equal": true,
+  "configuration_equal": true,
+  "invariants_unchanged": true,
+  "erased_frozen_exact": true,
+  "teacher_free_frozen_evaluations": true,
+  "phases": [
+    {
+      "path": "frozen/eval-0/episode.json",
+      "frames": 988,
+      "equal_fields": {
+        "DAN_spikes": 77,
+        "KC_spikes": 34,
+        "MBON_spikes": 196,
+        "action": 27,
+        "brain_seconds": 988,
+        "brain_steps": 988,
+        "frame_sha256": 988,
+        "index": 988,
+        "memory": 27,
+        "neural_steps": 988,
+        "raw_action": 988,
+        "spikes_sha256": 26,
+        "target_turn": 988,
+        "teacher_current": 988,
+        "teacher_dose_current_ms": 988,
+        "teacher_error": 32,
+        "teacher_index": 988,
+        "timestamp": 988
+      },
+      "fixed_controls_equal": 29,
+      "first_fixed_control_divergence": {
+        "index": 29,
+        "cpu": {
+          "turn": 1.1346261067388705,
+          "forward": 4.340462472430066,
+          "attack": false
+        },
+        "metal": {
+          "turn": -0.9536749095189597,
+          "forward": 4.340462472430066,
+          "attack": false
+        }
+      },
+      "cpu_wall_seconds": 123.86570741699688,
+      "metal_wall_seconds": 191.15258504200028,
+      "metal_kernel_seconds": 183.99193673804257,
+      "brain_seconds": 28.2286,
+      "cpu_score": {
+        "mae_degrees": 3.1355094716673344,
+        "direction_support": {
+          "left": 624,
+          "idle": 176,
+          "right": 188
+        },
+        "direction_recall": {
+          "left": 0.23397435897435898,
+          "idle": 0.03409090909090909,
+          "right": 0.8297872340425532
+        },
+        "balanced_direction_recall": 0.36595083403594036,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -2.709664410425101,
+            "mae_degrees": 2.168082318669172,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 1.0,
+              "idle": 0.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 2.709664410425101,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 1.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "right": {
+            "turn_degrees": 2.709664410425101,
+            "mae_degrees": 4.41124241146798,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 0.0,
+              "right": 1.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "metal_score": {
+        "mae_degrees": 3.153095521525519,
+        "direction_support": {
+          "left": 624,
+          "idle": 176,
+          "right": 188
+        },
+        "direction_recall": {
+          "left": 0.2419871794871795,
+          "idle": 0.028409090909090908,
+          "right": 0.7074468085106383
+        },
+        "balanced_direction_recall": 0.3259476929689696,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -2.709664410425101,
+            "mae_degrees": 2.168082318669172,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 1.0,
+              "idle": 0.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 2.709664410425101,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 1.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "right": {
+            "turn_degrees": 2.709664410425101,
+            "mae_degrees": 4.41124241146798,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 0.0,
+              "right": 1.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "cpu_changed_slots": 0,
+      "metal_changed_slots": 0,
+      "teacher_causality_exact": true,
+      "original_pixels_controls_timing_exact": true,
+      "teacher_dose_current_ms": 0.0,
+      "trace_artifact": {
+        "bytes": 4199940,
+        "sha256": "3440450fbb6df32c9b2465a62cea0839d2f02435f24392f3530e2826417acdd4"
+      }
+    },
+    {
+      "path": "frozen/train-0-0/episode.json",
+      "frames": 982,
+      "equal_fields": {
+        "DAN_spikes": 106,
+        "KC_spikes": 47,
+        "MBON_spikes": 223,
+        "action": 45,
+        "brain_seconds": 982,
+        "brain_steps": 982,
+        "frame_sha256": 982,
+        "index": 982,
+        "memory": 44,
+        "neural_steps": 982,
+        "raw_action": 982,
+        "spikes_sha256": 43,
+        "target_turn": 982,
+        "teacher_current": 49,
+        "teacher_dose_current_ms": 49,
+        "teacher_error": 48,
+        "teacher_index": 982,
+        "timestamp": 982
+      },
+      "fixed_controls_equal": 47,
+      "first_fixed_control_divergence": {
+        "index": 47,
+        "cpu": {
+          "turn": 0.7271017174489768,
+          "forward": 0.4963836039582217,
+          "attack": false
+        },
+        "metal": {
+          "turn": -1.3611992988088535,
+          "forward": 3.9768852977212727,
+          "attack": true
+        }
+      },
+      "cpu_wall_seconds": 120.53778541600332,
+      "metal_wall_seconds": 190.9672793330028,
+      "metal_kernel_seconds": 183.8724118850805,
+      "brain_seconds": 28.057100000000002,
+      "cpu_score": {
+        "mae_degrees": 3.3071384215391983,
+        "direction_support": {
+          "left": 618,
+          "idle": 96,
+          "right": 268
+        },
+        "direction_recall": {
+          "left": 0.24433656957928804,
+          "idle": 0.03125,
+          "right": 0.7798507462686567
+        },
+        "balanced_direction_recall": 0.35181243861598155,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -3.014415733197556,
+            "mae_degrees": 2.372920369606066,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 1.0,
+              "idle": 0.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 3.014415733197556,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 1.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "right": {
+            "turn_degrees": 3.014415733197556,
+            "mae_degrees": 4.470503754443526,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 0.0,
+              "right": 1.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "metal_score": {
+        "mae_degrees": 3.318367753044691,
+        "direction_support": {
+          "left": 618,
+          "idle": 96,
+          "right": 268
+        },
+        "direction_recall": {
+          "left": 0.2669902912621359,
+          "idle": 0.08333333333333333,
+          "right": 0.6716417910447762
+        },
+        "balanced_direction_recall": 0.34065513854674845,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -3.014415733197556,
+            "mae_degrees": 2.372920369606066,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 1.0,
+              "idle": 0.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 3.014415733197556,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 1.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "right": {
+            "turn_degrees": 3.014415733197556,
+            "mae_degrees": 4.470503754443526,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 0.0,
+              "right": 1.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "cpu_changed_slots": 0,
+      "metal_changed_slots": 0,
+      "teacher_causality_exact": true,
+      "original_pixels_controls_timing_exact": true,
+      "teacher_dose_current_ms": 61941.046885138036,
+      "trace_artifact": {
+        "bytes": 4200874,
+        "sha256": "9fb91d87a1ad63487c2675687a569f94bb72e71b871ca30fe2a221ce23e1086a"
+      }
+    },
+    {
+      "path": "plastic/erased-0/episode.json",
+      "frames": 988,
+      "equal_fields": {
+        "DAN_spikes": 77,
+        "KC_spikes": 34,
+        "MBON_spikes": 196,
+        "action": 27,
+        "brain_seconds": 988,
+        "brain_steps": 988,
+        "frame_sha256": 988,
+        "index": 988,
+        "memory": 27,
+        "neural_steps": 988,
+        "raw_action": 988,
+        "spikes_sha256": 26,
+        "target_turn": 988,
+        "teacher_current": 988,
+        "teacher_dose_current_ms": 988,
+        "teacher_error": 32,
+        "teacher_index": 988,
+        "timestamp": 988
+      },
+      "fixed_controls_equal": 29,
+      "first_fixed_control_divergence": {
+        "index": 29,
+        "cpu": {
+          "turn": 1.1346261067388705,
+          "forward": 4.340462472430066,
+          "attack": false
+        },
+        "metal": {
+          "turn": -0.9536749095189597,
+          "forward": 4.340462472430066,
+          "attack": false
+        }
+      },
+      "cpu_wall_seconds": 123.09791879199474,
+      "metal_wall_seconds": 191.12522687499586,
+      "metal_kernel_seconds": 183.94682610511518,
+      "brain_seconds": 28.2286,
+      "cpu_score": {
+        "mae_degrees": 3.1355094716673344,
+        "direction_support": {
+          "left": 624,
+          "idle": 176,
+          "right": 188
+        },
+        "direction_recall": {
+          "left": 0.23397435897435898,
+          "idle": 0.03409090909090909,
+          "right": 0.8297872340425532
+        },
+        "balanced_direction_recall": 0.36595083403594036,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -2.709664410425101,
+            "mae_degrees": 2.168082318669172,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 1.0,
+              "idle": 0.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 2.709664410425101,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 1.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "right": {
+            "turn_degrees": 2.709664410425101,
+            "mae_degrees": 4.41124241146798,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 0.0,
+              "right": 1.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "metal_score": {
+        "mae_degrees": 3.153095521525519,
+        "direction_support": {
+          "left": 624,
+          "idle": 176,
+          "right": 188
+        },
+        "direction_recall": {
+          "left": 0.2419871794871795,
+          "idle": 0.028409090909090908,
+          "right": 0.7074468085106383
+        },
+        "balanced_direction_recall": 0.3259476929689696,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -2.709664410425101,
+            "mae_degrees": 2.168082318669172,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 1.0,
+              "idle": 0.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 2.709664410425101,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 1.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "right": {
+            "turn_degrees": 2.709664410425101,
+            "mae_degrees": 4.41124241146798,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 0.0,
+              "right": 1.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "cpu_changed_slots": 0,
+      "metal_changed_slots": 0,
+      "teacher_causality_exact": true,
+      "original_pixels_controls_timing_exact": true,
+      "teacher_dose_current_ms": 0.0,
+      "trace_artifact": {
+        "bytes": 4199928,
+        "sha256": "060bb8cfe68a304ad52dd7564ae42e0cb37e2b59653ba046dbdd8cf0677bccfb"
+      }
+    },
+    {
+      "path": "plastic/eval-0/episode.json",
+      "frames": 988,
+      "equal_fields": {
+        "DAN_spikes": 92,
+        "KC_spikes": 39,
+        "MBON_spikes": 190,
+        "action": 39,
+        "brain_seconds": 988,
+        "brain_steps": 988,
+        "frame_sha256": 988,
+        "index": 988,
+        "memory": 0,
+        "neural_steps": 988,
+        "raw_action": 988,
+        "spikes_sha256": 36,
+        "target_turn": 988,
+        "teacher_current": 988,
+        "teacher_dose_current_ms": 988,
+        "teacher_error": 41,
+        "teacher_index": 988,
+        "timestamp": 988
+      },
+      "fixed_controls_equal": 39,
+      "first_fixed_control_divergence": {
+        "index": 39,
+        "cpu": {
+          "turn": -0.5736021605370013,
+          "forward": 6.035322931119211,
+          "attack": false
+        },
+        "metal": {
+          "turn": -1.617255520200417,
+          "forward": 6.035322931119211,
+          "attack": false
+        }
+      },
+      "cpu_wall_seconds": 118.61386287499772,
+      "metal_wall_seconds": 190.80901716700464,
+      "metal_kernel_seconds": 183.67254598403088,
+      "brain_seconds": 28.2286,
+      "cpu_score": {
+        "mae_degrees": 3.2548214043022727,
+        "direction_support": {
+          "left": 624,
+          "idle": 176,
+          "right": 188
+        },
+        "direction_recall": {
+          "left": 0.23717948717948717,
+          "idle": 0.08522727272727272,
+          "right": 0.6223404255319149
+        },
+        "balanced_direction_recall": 0.3149157284795583,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -2.709664410425101,
+            "mae_degrees": 2.168082318669172,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 1.0,
+              "idle": 0.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 2.709664410425101,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 1.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "right": {
+            "turn_degrees": 2.709664410425101,
+            "mae_degrees": 4.41124241146798,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 0.0,
+              "right": 1.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "metal_score": {
+        "mae_degrees": 3.2029875211602943,
+        "direction_support": {
+          "left": 624,
+          "idle": 176,
+          "right": 188
+        },
+        "direction_recall": {
+          "left": 0.2644230769230769,
+          "idle": 0.045454545454545456,
+          "right": 0.7074468085106383
+        },
+        "balanced_direction_recall": 0.33910814362942027,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -2.709664410425101,
+            "mae_degrees": 2.168082318669172,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 1.0,
+              "idle": 0.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 2.709664410425101,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 1.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "right": {
+            "turn_degrees": 2.709664410425101,
+            "mae_degrees": 4.41124241146798,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 0.0,
+              "right": 1.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "cpu_changed_slots": 2022,
+      "metal_changed_slots": 1953,
+      "teacher_causality_exact": true,
+      "original_pixels_controls_timing_exact": true,
+      "teacher_dose_current_ms": 0.0,
+      "trace_artifact": {
+        "bytes": 4231256,
+        "sha256": "6750a383d296b80a56a7e17519b4400423126cafc7b27940e51f28abb0bd6843"
+      }
+    },
+    {
+      "path": "plastic/retention-0/episode.json",
+      "frames": 988,
+      "equal_fields": {
+        "DAN_spikes": 92,
+        "KC_spikes": 38,
+        "MBON_spikes": 171,
+        "action": 32,
+        "brain_seconds": 988,
+        "brain_steps": 988,
+        "frame_sha256": 988,
+        "index": 988,
+        "memory": 0,
+        "neural_steps": 988,
+        "raw_action": 988,
+        "spikes_sha256": 28,
+        "target_turn": 988,
+        "teacher_current": 988,
+        "teacher_dose_current_ms": 988,
+        "teacher_error": 34,
+        "teacher_index": 988,
+        "timestamp": 988
+      },
+      "fixed_controls_equal": 33,
+      "first_fixed_control_divergence": {
+        "index": 33,
+        "cpu": {
+          "turn": 1.9348981743124913,
+          "forward": 9.795097960856394,
+          "attack": true
+        },
+        "metal": {
+          "turn": 0.8907476661835761,
+          "forward": 9.795097960856394,
+          "attack": true
+        }
+      },
+      "cpu_wall_seconds": 122.41123774999869,
+      "metal_wall_seconds": 181.85965333299828,
+      "metal_kernel_seconds": 174.74020815181575,
+      "brain_seconds": 28.2286,
+      "cpu_score": {
+        "mae_degrees": 3.296179434397111,
+        "direction_support": {
+          "left": 624,
+          "idle": 176,
+          "right": 188
+        },
+        "direction_recall": {
+          "left": 0.21474358974358973,
+          "idle": 0.06818181818181818,
+          "right": 0.6595744680851063
+        },
+        "balanced_direction_recall": 0.3141666253368381,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -2.709664410425101,
+            "mae_degrees": 2.168082318669172,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 1.0,
+              "idle": 0.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 2.709664410425101,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 1.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "right": {
+            "turn_degrees": 2.709664410425101,
+            "mae_degrees": 4.41124241146798,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 0.0,
+              "right": 1.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "metal_score": {
+        "mae_degrees": 3.142525792501338,
+        "direction_support": {
+          "left": 624,
+          "idle": 176,
+          "right": 188
+        },
+        "direction_recall": {
+          "left": 0.3108974358974359,
+          "idle": 0.06818181818181818,
+          "right": 0.6329787234042553
+        },
+        "balanced_direction_recall": 0.3373526591611698,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -2.709664410425101,
+            "mae_degrees": 2.168082318669172,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 1.0,
+              "idle": 0.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 2.709664410425101,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 1.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "right": {
+            "turn_degrees": 2.709664410425101,
+            "mae_degrees": 4.41124241146798,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 0.0,
+              "right": 1.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "cpu_changed_slots": 2022,
+      "metal_changed_slots": 1953,
+      "teacher_causality_exact": true,
+      "original_pixels_controls_timing_exact": true,
+      "teacher_dose_current_ms": 0.0,
+      "trace_artifact": {
+        "bytes": 4232409,
+        "sha256": "42ff1d100689c81aa1de40b3675543ba34812cf21c21e565f092a2e0ffea3996"
+      }
+    },
+    {
+      "path": "plastic/train-0-0/episode.json",
+      "frames": 982,
+      "equal_fields": {
+        "DAN_spikes": 117,
+        "KC_spikes": 43,
+        "MBON_spikes": 179,
+        "action": 42,
+        "brain_seconds": 982,
+        "brain_steps": 982,
+        "frame_sha256": 982,
+        "index": 982,
+        "memory": 41,
+        "neural_steps": 982,
+        "raw_action": 982,
+        "spikes_sha256": 41,
+        "target_turn": 982,
+        "teacher_current": 45,
+        "teacher_dose_current_ms": 45,
+        "teacher_error": 44,
+        "teacher_index": 982,
+        "timestamp": 982
+      },
+      "fixed_controls_equal": 42,
+      "first_fixed_control_divergence": {
+        "index": 42,
+        "cpu": {
+          "turn": 1.1915776577082144,
+          "forward": 0.2828806956572259,
+          "attack": false
+        },
+        "metal": {
+          "turn": 2.2352310173716297,
+          "forward": 0.2828806956572259,
+          "attack": false
+        }
+      },
+      "cpu_wall_seconds": 116.98636229099793,
+      "metal_wall_seconds": 190.57489129200258,
+      "metal_kernel_seconds": 182.6450607358347,
+      "brain_seconds": 28.057100000000002,
+      "cpu_score": {
+        "mae_degrees": 3.314242069281998,
+        "direction_support": {
+          "left": 618,
+          "idle": 96,
+          "right": 268
+        },
+        "direction_recall": {
+          "left": 0.2961165048543689,
+          "idle": 0.041666666666666664,
+          "right": 0.7089552238805971
+        },
+        "balanced_direction_recall": 0.3489127984672109,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -3.014415733197556,
+            "mae_degrees": 2.372920369606066,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 1.0,
+              "idle": 0.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 3.014415733197556,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 1.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "right": {
+            "turn_degrees": 3.014415733197556,
+            "mae_degrees": 4.470503754443526,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 0.0,
+              "right": 1.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "metal_score": {
+        "mae_degrees": 3.417838675920911,
+        "direction_support": {
+          "left": 618,
+          "idle": 96,
+          "right": 268
+        },
+        "direction_recall": {
+          "left": 0.22815533980582525,
+          "idle": 0.125,
+          "right": 0.6753731343283582
+        },
+        "balanced_direction_recall": 0.34284282471139454,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -3.014415733197556,
+            "mae_degrees": 2.372920369606066,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 1.0,
+              "idle": 0.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 3.014415733197556,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 1.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "right": {
+            "turn_degrees": 3.014415733197556,
+            "mae_degrees": 4.470503754443526,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 0.0,
+              "right": 1.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "cpu_changed_slots": 2022,
+      "metal_changed_slots": 1953,
+      "teacher_causality_exact": true,
+      "original_pixels_controls_timing_exact": true,
+      "teacher_dose_current_ms": 63446.976354264,
+      "trace_artifact": {
+        "bytes": 4232305,
+        "sha256": "b57c0d6ad7fad05d020cb1ceb87e1337e15f89f0684465beab646d5ee73f60fa"
+      }
+    },
+    {
+      "path": "shifted/eval-0/episode.json",
+      "frames": 988,
+      "equal_fields": {
+        "DAN_spikes": 166,
+        "KC_spikes": 41,
+        "MBON_spikes": 119,
+        "action": 39,
+        "brain_seconds": 988,
+        "brain_steps": 988,
+        "frame_sha256": 988,
+        "index": 988,
+        "memory": 0,
+        "neural_steps": 988,
+        "raw_action": 988,
+        "spikes_sha256": 38,
+        "target_turn": 988,
+        "teacher_current": 988,
+        "teacher_dose_current_ms": 988,
+        "teacher_error": 41,
+        "teacher_index": 988,
+        "timestamp": 988
+      },
+      "fixed_controls_equal": 40,
+      "first_fixed_control_divergence": {
+        "index": 40,
+        "cpu": {
+          "turn": -0.43135700103221974,
+          "forward": 4.538648873622283,
+          "attack": false
+        },
+        "metal": {
+          "turn": -2.5196580172900505,
+          "forward": 4.538648873622283,
+          "attack": false
+        }
+      },
+      "cpu_wall_seconds": 121.29305720900447,
+      "metal_wall_seconds": 190.0182003749942,
+      "metal_kernel_seconds": 182.85360064991983,
+      "brain_seconds": 28.2286,
+      "cpu_score": {
+        "mae_degrees": 3.3388633578997378,
+        "direction_support": {
+          "left": 624,
+          "idle": 176,
+          "right": 188
+        },
+        "direction_recall": {
+          "left": 0.20192307692307693,
+          "idle": 0.06818181818181818,
+          "right": 0.6968085106382979
+        },
+        "balanced_direction_recall": 0.3223044685810643,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -2.709664410425101,
+            "mae_degrees": 2.168082318669172,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 1.0,
+              "idle": 0.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 2.709664410425101,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 1.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "right": {
+            "turn_degrees": 2.709664410425101,
+            "mae_degrees": 4.41124241146798,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 0.0,
+              "right": 1.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "metal_score": {
+        "mae_degrees": 3.2260289527005,
+        "direction_support": {
+          "left": 624,
+          "idle": 176,
+          "right": 188
+        },
+        "direction_recall": {
+          "left": 0.22115384615384615,
+          "idle": 0.05113636363636364,
+          "right": 0.6595744680851063
+        },
+        "balanced_direction_recall": 0.31062155929177204,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -2.709664410425101,
+            "mae_degrees": 2.168082318669172,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 1.0,
+              "idle": 0.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 2.709664410425101,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 1.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "right": {
+            "turn_degrees": 2.709664410425101,
+            "mae_degrees": 4.41124241146798,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 0.0,
+              "right": 1.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "cpu_changed_slots": 1979,
+      "metal_changed_slots": 1985,
+      "teacher_causality_exact": true,
+      "original_pixels_controls_timing_exact": true,
+      "teacher_dose_current_ms": 0.0,
+      "trace_artifact": {
+        "bytes": 4232062,
+        "sha256": "4c7766285f65f12f14c8c21a4b636ede328af681bee59c94f8e83c507e0463fd"
+      }
+    },
+    {
+      "path": "shifted/train-0-0/episode.json",
+      "frames": 982,
+      "equal_fields": {
+        "DAN_spikes": 143,
+        "KC_spikes": 44,
+        "MBON_spikes": 121,
+        "action": 38,
+        "brain_seconds": 982,
+        "brain_steps": 982,
+        "frame_sha256": 982,
+        "index": 982,
+        "memory": 38,
+        "neural_steps": 982,
+        "raw_action": 982,
+        "spikes_sha256": 37,
+        "target_turn": 982,
+        "teacher_current": 42,
+        "teacher_dose_current_ms": 42,
+        "teacher_error": 41,
+        "teacher_index": 982,
+        "timestamp": 982
+      },
+      "fixed_controls_equal": 38,
+      "first_fixed_control_divergence": {
+        "index": 38,
+        "cpu": {
+          "turn": -0.7542467200845934,
+          "forward": 0.3315359273506296,
+          "attack": false
+        },
+        "metal": {
+          "turn": 0.2894066395788215,
+          "forward": 0.3315359273506296,
+          "attack": false
+        }
+      },
+      "cpu_wall_seconds": 121.74514854200243,
+      "metal_wall_seconds": 189.74880333400506,
+      "metal_kernel_seconds": 181.82310309011518,
+      "brain_seconds": 28.057100000000002,
+      "cpu_score": {
+        "mae_degrees": 3.3031497888523003,
+        "direction_support": {
+          "left": 618,
+          "idle": 96,
+          "right": 268
+        },
+        "direction_recall": {
+          "left": 0.2669902912621359,
+          "idle": 0.08333333333333333,
+          "right": 0.664179104477612
+        },
+        "balanced_direction_recall": 0.33816757635769373,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -3.014415733197556,
+            "mae_degrees": 2.372920369606066,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 1.0,
+              "idle": 0.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 3.014415733197556,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 1.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "right": {
+            "turn_degrees": 3.014415733197556,
+            "mae_degrees": 4.470503754443526,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 0.0,
+              "right": 1.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "metal_score": {
+        "mae_degrees": 3.334137177733751,
+        "direction_support": {
+          "left": 618,
+          "idle": 96,
+          "right": 268
+        },
+        "direction_recall": {
+          "left": 0.2912621359223301,
+          "idle": 0.0625,
+          "right": 0.6343283582089553
+        },
+        "balanced_direction_recall": 0.3293634980437618,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -3.014415733197556,
+            "mae_degrees": 2.372920369606066,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 1.0,
+              "idle": 0.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 3.014415733197556,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 1.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "right": {
+            "turn_degrees": 3.014415733197556,
+            "mae_degrees": 4.470503754443526,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 0.0,
+              "right": 1.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "cpu_changed_slots": 1979,
+      "metal_changed_slots": 1985,
+      "teacher_causality_exact": true,
+      "original_pixels_controls_timing_exact": true,
+      "teacher_dose_current_ms": 62000.60542063416,
+      "trace_artifact": {
+        "bytes": 4234064,
+        "sha256": "d9311129674d642aa47913052b08682b7082c28e1f4346bc20ee0042defd205b"
+      }
+    }
+  ],
+  "learning_demonstrated": false,
+  "announcement_ready": false,
+  "scope": "Complete original-frame exploratory cohort; synthetic 80 ms guard is not whole-episode equivalence or physiological validation."
+}
