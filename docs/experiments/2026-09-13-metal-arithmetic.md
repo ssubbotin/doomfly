@@ -31,7 +31,8 @@ permits subnormal flushing. [Metal specification, sections 8.1/8.5](https://deve
 The documented fixture-local ruling retains bit-exact composite checks through
 43 bins, and voltage/adaptation/discrete fields through 200 bins. Only finite,
 nonzero CPU subnormal conductance versus Metal zero is accepted afterward;
-eight literal controls reject wider exceptions. Production arithmetic and every
+one positive and seven negative literal controls constrain this exception.
+Production arithmetic and every
 full-graph gate remain unchanged. At final fixture source `e9e19c1`, Linux
 passes 313 tests (61 Apple skips); actual M4 passes 371 (three platform skips).
 Both retain 50 baseline dependency deprecations. Independent task review approves
