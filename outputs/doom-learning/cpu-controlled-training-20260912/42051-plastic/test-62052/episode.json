@@ -1,0 +1,5472 @@
+{
+  "seed": 62052,
+  "seconds_limit": 30.0,
+  "learning_enabled": false,
+  "weights_frozen": true,
+  "execution": {
+    "backend": "cpu",
+    "backend_metadata": {
+      "name": "cpu",
+      "build": {
+        "model": "adaptive-centered-v6",
+        "source_sha256": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+        "binary_sha256": "48641b2f171dee4d1f3e7e43e46049390bc63cbf040152db5ec30fc0b71bc743",
+        "flags": [
+          "-O3",
+          "-std=c++17",
+          "-shared",
+          "-fPIC"
+        ]
+      }
+    },
+    "metal_validation_sha256": null,
+    "metal_validation_horizon_ms": null
+  },
+  "vision": true,
+  "game_tics": 128,
+  "brain_seconds": 3.6571000000000002,
+  "survival_seconds": 3.657142857142857,
+  "dead": true,
+  "right_censored": false,
+  "end_health": 0.0,
+  "damage_total": 80.0,
+  "US_tics": 0,
+  "US_ms": 0.0,
+  "before": {
+    "plastic_edges": 4184,
+    "changed_edges": 1885,
+    "mean_efficacy": 1.0100672245025635,
+    "minimum_efficacy": 0.3989255726337433,
+    "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+    "model": "adaptive-centered-v6"
+  },
+  "after": {
+    "plastic_edges": 4184,
+    "changed_edges": 1885,
+    "mean_efficacy": 1.0100672245025635,
+    "minimum_efficacy": 0.3989255726337433,
+    "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+    "model": "adaptive-centered-v6"
+  },
+  "assets": {
+    "task": "blue-floor-survival-v1",
+    "seed": 62052,
+    "hazard_left": true,
+    "spawn": [
+      -161.59825184675682,
+      72.25570534861504,
+      83
+    ],
+    "damage": 20,
+    "damage_interval_tics": 32,
+    "textures": {
+      "hazard": {
+        "palette_index": 200,
+        "actual_srgb": [
+          0,
+          0,
+          255
+        ]
+      },
+      "safe": {
+        "palette_index": 101,
+        "actual_srgb": [
+          99,
+          99,
+          99
+        ]
+      }
+    },
+    "wad_sha256": "41c1436e7751a8427f3b024572153849d18244962f8da8591cc48cd592f904a6",
+    "iwad_sha256": "a8772e088847032510d97ba2312406a6998f21cbab44d4ff10696faa9c0ecd4b",
+    "engine": "1.3.0",
+    "engine_hz": 35,
+    "source": "https://github.com/ZDoom/gzdoom/blob/master/specs/udmf_zdoom.txt",
+    "limits": "Engine hazard, not a biological environment. A 60-second cap is censored survival, not an escape or learning claim."
+  },
+  "timing": {
+    "wall_seconds": 13.424601167000219,
+    "neural_backend_seconds": 12.294436969972594,
+    "kernel_seconds": 12.294436969972594,
+    "brain_seconds_including_warmup": 5.6571,
+    "brain_to_wall_ratio": 0.42139799384923565
+  },
+  "trace": [
+    {
+      "tick": 1,
+      "seconds": 0.02857142857142857,
+      "brain_steps": 286,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 50,
+      "position": [
+        -161.58526611328125,
+        72.34852600097656
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        1,
+        1
+      ],
+      "MBON_spikes": [
+        1,
+        1
+      ],
+      "action": {
+        "turn": 1.0436533596634152,
+        "forward": 3.478844532211385,
+        "attack": true
+      },
+      "frame_sha256": "854737430e796b0ea0314305b4c0ac7056e08889ee200c98c10daad758442689",
+      "sensory_sha256": "854737430e796b0ea0314305b4c0ac7056e08889ee200c98c10daad758442689",
+      "spikes_sha256": "1e167f810d70cc86263535fd533c3a94e73e7ec2a0634c94d053cf6e0837a9b1",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 2,
+      "seconds": 0.05714285714285714,
+      "brain_steps": 571,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 50,
+      "position": [
+        -161.54483032226562,
+        72.61790466308594
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1,
+      "DAN_spikes": [
+        1,
+        0
+      ],
+      "MBON_spikes": [
+        1,
+        1
+      ],
+      "action": {
+        "turn": 0.7848422030352017,
+        "forward": 6.096642370547056,
+        "attack": true
+      },
+      "frame_sha256": "9a10da80e2c72e824ab9e41c1c75a8ab80bd84d8d904ece318133000bf3a4eb4",
+      "sensory_sha256": "9a10da80e2c72e824ab9e41c1c75a8ab80bd84d8d904ece318133000bf3a4eb4",
+      "spikes_sha256": "212cdc5dc07a073529cbc06dc8fa975a5bd887f005364b2c31ffd4eb83641ea0",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 3,
+      "seconds": 0.08571428571428572,
+      "brain_steps": 857,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 50,
+      "position": [
+        -161.44606018066406,
+        73.20004272460938
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1,
+      "DAN_spikes": [
+        1,
+        2
+      ],
+      "MBON_spikes": [
+        1,
+        1
+      ],
+      "action": {
+        "turn": 1.6332759662211582,
+        "forward": 11.537868560212576,
+        "attack": true
+      },
+      "frame_sha256": "ae85361795eaac8278eeeca006baa2d6102c8166d85cc6b1893cca01cb051247",
+      "sensory_sha256": "ae85361795eaac8278eeeca006baa2d6102c8166d85cc6b1893cca01cb051247",
+      "spikes_sha256": "86495336529427b7834790135fbb3356ef76df5c2abe1a3be9da5c79d537ae84",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 4,
+      "seconds": 0.11428571428571428,
+      "brain_steps": 1143,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 50,
+      "position": [
+        -161.23670959472656,
+        74.30902099609375
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        3,
+        3
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 1.2270191749464854,
+        "forward": 19.104502913630785,
+        "attack": true
+      },
+      "frame_sha256": "76849a507e3d96e41e46931bbcd8c8aba0cfd20bba0e53e0e07b224116d772e2",
+      "sensory_sha256": "76849a507e3d96e41e46931bbcd8c8aba0cfd20bba0e53e0e07b224116d772e2",
+      "spikes_sha256": "7a4c04076864bc261db34a7e4b356ba587eac78b85ce9a384aa4c2fe74398567",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 5,
+      "seconds": 0.14285714285714285,
+      "brain_steps": 1429,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 50,
+      "position": [
+        -160.9110107421875,
+        75.92393493652344
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1,
+      "DAN_spikes": [
+        2,
+        2
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 0.9218136351872864,
+        "forward": 20.0,
+        "attack": true
+      },
+      "frame_sha256": "819897147d19a44d12ae49b6594dea2245ce97b76b3c88ff9b102b1b81816750",
+      "sensory_sha256": "819897147d19a44d12ae49b6594dea2245ce97b76b3c88ff9b102b1b81816750",
+      "spikes_sha256": "91d242bdbea030a509fd627a7cc8743a48fa69e234978b4a3c292162082bbb5d",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 6,
+      "seconds": 0.17142857142857143,
+      "brain_steps": 1714,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 50,
+      "position": [
+        -160.4689483642578,
+        77.96260070800781
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        2,
+        2
+      ],
+      "MBON_spikes": [
+        1,
+        0
+      ],
+      "action": {
+        "turn": 1.7373675016157222,
+        "forward": 19.506066756548293,
+        "attack": true
+      },
+      "frame_sha256": "e11f40df2d80e26b19ae06bb4b95f4ce099b603b55f9eba81ec64c88eca70579",
+      "sensory_sha256": "e11f40df2d80e26b19ae06bb4b95f4ce099b603b55f9eba81ec64c88eca70579",
+      "spikes_sha256": "86dd51e7d33b9d7465f314f8b20878bbfb37d3d3301c2fae3a3f3224a3956db6",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 7,
+      "seconds": 0.2,
+      "brain_steps": 2000,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 50,
+      "position": [
+        -159.9002685546875,
+        80.41197204589844
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1,
+      "DAN_spikes": [
+        2,
+        1
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 1.3052192541249334,
+        "forward": 20.0,
+        "attack": true
+      },
+      "frame_sha256": "a6fbe05503bbfb425b7acbd0ead76d5065edc7ff0cd4c251b1edf94ff788f5da",
+      "sensory_sha256": "a6fbe05503bbfb425b7acbd0ead76d5065edc7ff0cd4c251b1edf94ff788f5da",
+      "spikes_sha256": "6b0b8a9ccf8fa3019dc61de1a98a5029dc07a1a27cc73f931e24f07740383bee",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 8,
+      "seconds": 0.22857142857142856,
+      "brain_steps": 2286,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 50,
+      "position": [
+        -159.23353576660156,
+        83.10812377929688
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        1,
+        1
+      ],
+      "MBON_spikes": [
+        1,
+        1
+      ],
+      "action": {
+        "turn": 2.0242157909015566,
+        "forward": 16.236188341016156,
+        "attack": false
+      },
+      "frame_sha256": "175bb3f9b9ed6094f5f8017f795b8deb51a9b411654bb8359edb451128bd721a",
+      "sensory_sha256": "175bb3f9b9ed6094f5f8017f795b8deb51a9b411654bb8359edb451128bd721a",
+      "spikes_sha256": "a524f358285675e9ed468bf66ce0844d43f9e2cbb97ee445a4f9d2a2bdd58f2c",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 9,
+      "seconds": 0.2571428571428571,
+      "brain_steps": 2571,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 50,
+      "position": [
+        -158.43446350097656,
+        86.11219787597656
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        2,
+        2
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 1.5222391285763532,
+        "forward": 19.17084845578442,
+        "attack": true
+      },
+      "frame_sha256": "b99e2c978d3c7c085a173aff604aa636b904d639c5ba339af1c3ca97418a6d8e",
+      "sensory_sha256": "b99e2c978d3c7c085a173aff604aa636b904d639c5ba339af1c3ca97418a6d8e",
+      "spikes_sha256": "6c8bde270f580599c0fc5ce7d601f9b4ce4879c30060b5fd765bbb5d7a97a8df",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 10,
+      "seconds": 0.2857142857142857,
+      "brain_steps": 2857,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 50,
+      "position": [
+        -157.47247314453125,
+        89.41239929199219
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        1,
+        2
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 3.2309080691578096,
+        "forward": 20.0,
+        "attack": true
+      },
+      "frame_sha256": "3038c988d477ff6c46b921a6b4dbb6940625d1a1eb76bb7c0a42139993ce4e7f",
+      "sensory_sha256": "3038c988d477ff6c46b921a6b4dbb6940625d1a1eb76bb7c0a42139993ce4e7f",
+      "spikes_sha256": "87c87a9243a24d905f8c04c60c57917be7b0df64694e4f010d33829e0a293d47",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 11,
+      "seconds": 0.3142857142857143,
+      "brain_steps": 3143,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 50,
+      "position": [
+        -156.33868408203125,
+        92.97041320800781
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1,
+      "DAN_spikes": [
+        3,
+        4
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 2.4272604479193975,
+        "forward": 20.0,
+        "attack": true
+      },
+      "frame_sha256": "2c6423058f011d0a4484377a611d39cc35a05ecfa61bf8eda80ba384475827b2",
+      "sensory_sha256": "2c6423058f011d0a4484377a611d39cc35a05ecfa61bf8eda80ba384475827b2",
+      "spikes_sha256": "f8d9e563e531e0e8b1596510fe3b472f5045bb6bf1115c1bd3e48f71d2636455",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 12,
+      "seconds": 0.34285714285714286,
+      "brain_steps": 3429,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 50,
+      "position": [
+        -155.0730743408203,
+        96.6695556640625
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        1,
+        0
+      ],
+      "MBON_spikes": [
+        1,
+        1
+      ],
+      "action": {
+        "turn": 1.8235100336883372,
+        "forward": 17.282557352138223,
+        "attack": false
+      },
+      "frame_sha256": "5a4eea792c04969a0bcd4d22610d7c1138f2916b14317124afded60ecb6c0cfa",
+      "sensory_sha256": "5a4eea792c04969a0bcd4d22610d7c1138f2916b14317124afded60ecb6c0cfa",
+      "spikes_sha256": "cb02bd135385442518da4f715d76d344ffcc38656886a3e9f3a3c34d4ec20533",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 13,
+      "seconds": 0.37142857142857144,
+      "brain_steps": 3714,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 50,
+      "position": [
+        -153.73829650878906,
+        100.3463134765625
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        1,
+        0
+      ],
+      "action": {
+        "turn": 3.459606554485879,
+        "forward": 12.99672947990019,
+        "attack": false
+      },
+      "frame_sha256": "a500787a75f20ce6c97cbee05caaae85e35dce8bb21b32626ef9f91d3f36e976",
+      "sensory_sha256": "a500787a75f20ce6c97cbee05caaae85e35dce8bb21b32626ef9f91d3f36e976",
+      "spikes_sha256": "b2ad8e6b4c060e1047481b49a0ee7ddf0d2c41db2786239b5dac1aabab757bba",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 14,
+      "seconds": 0.4,
+      "brain_steps": 4000,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 50,
+      "position": [
+        -152.3155517578125,
+        104.02406311035156
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1,
+      "DAN_spikes": [
+        1,
+        1
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 1.5554197106066396,
+        "forward": 13.242801520035213,
+        "attack": true
+      },
+      "frame_sha256": "8b14926bbadaca3ef835706080acde2c86d32a596c39d80c02e34ea08c47fb7f",
+      "sensory_sha256": "8b14926bbadaca3ef835706080acde2c86d32a596c39d80c02e34ea08c47fb7f",
+      "spikes_sha256": "ab59f27345766440baff2271d552b7fa1a4d30affb439ff55ec8c226a0822ee4",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 15,
+      "seconds": 0.42857142857142855,
+      "brain_steps": 4286,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 50,
+      "position": [
+        -150.79998779296875,
+        107.69425964355469
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1,
+      "DAN_spikes": [
+        2,
+        2
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 2.212182040349108,
+        "forward": 13.427666244618436,
+        "attack": true
+      },
+      "frame_sha256": "7962fbe4c683fce2ced32b2addd0667a22545da60b4a8e8b66d9b25372ae335c",
+      "sensory_sha256": "7962fbe4c683fce2ced32b2addd0667a22545da60b4a8e8b66d9b25372ae335c",
+      "spikes_sha256": "25936b357a0e3c57606ba4ef1fe94b18310409a866c7b36ff54ed4c67a4baba0",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 16,
+      "seconds": 0.45714285714285713,
+      "brain_steps": 4571,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 50,
+      "position": [
+        -149.24501037597656,
+        111.27461242675781
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        1,
+        2
+      ],
+      "MBON_spikes": [
+        1,
+        0
+      ],
+      "action": {
+        "turn": 1.6635924274918648,
+        "forward": 10.09779641819628,
+        "attack": false
+      },
+      "frame_sha256": "0d3346f43c25747336666fdd51536953528921a64857c88d1b77f72b01ccb337",
+      "sensory_sha256": "0d3346f43c25747336666fdd51536953528921a64857c88d1b77f72b01ccb337",
+      "spikes_sha256": "5dcab8ec99d09f0f668a3d9a118757876cdc3fab85a2662ded0716f892b05591",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 17,
+      "seconds": 0.4857142857142857,
+      "brain_steps": 4857,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 50,
+      "position": [
+        -147.58694458007812,
+        114.87890625
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        3,
+        3
+      ],
+      "MBON_spikes": [
+        1,
+        1
+      ],
+      "action": {
+        "turn": -0.8375119203798624,
+        "forward": 14.543786016856002,
+        "attack": true
+      },
+      "frame_sha256": "e0f9ae6122422421350f48db46af5fcac18371dd863d503d44a1957ea599a131",
+      "sensory_sha256": "e0f9ae6122422421350f48db46af5fcac18371dd863d503d44a1957ea599a131",
+      "spikes_sha256": "45c2750051f3c430261b2c491cfdf9ae9a07efee98e9aa144f15cde7061753f5",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 18,
+      "seconds": 0.5142857142857142,
+      "brain_steps": 5143,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 49,
+      "position": [
+        -145.90011596679688,
+        118.39756774902344
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1,
+      "DAN_spikes": [
+        2,
+        3
+      ],
+      "MBON_spikes": [
+        1,
+        0
+      ],
+      "action": {
+        "turn": 1.4581153231355555,
+        "forward": 10.926202728794983,
+        "attack": false
+      },
+      "frame_sha256": "9f1ffeb956c7dd0297b5e79e6684e64ae21ed1a577053627e83e4fc1f4c7bd61",
+      "sensory_sha256": "9f1ffeb956c7dd0297b5e79e6684e64ae21ed1a577053627e83e4fc1f4c7bd61",
+      "spikes_sha256": "2494bcf85b5f04a9541ea3f864fdeaeaca9e6162ea565c680db6caec682e4ff7",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 19,
+      "seconds": 0.5428571428571428,
+      "brain_steps": 5429,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 49,
+      "position": [
+        -144.16351318359375,
+        121.85990905761719
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1,
+      "DAN_spikes": [
+        1,
+        1
+      ],
+      "MBON_spikes": [
+        1,
+        0
+      ],
+      "action": {
+        "turn": 1.095427532011056,
+        "forward": 11.687292176611908,
+        "attack": true
+      },
+      "frame_sha256": "e5936e050ebf03ac8e39fa8c7b24b7daba4af99854f4fa87c74ac41b14940b4f",
+      "sensory_sha256": "e5936e050ebf03ac8e39fa8c7b24b7daba4af99854f4fa87c74ac41b14940b4f",
+      "spikes_sha256": "688e0bb98873f7bb9c11fa43deb269068985bc94398150c09c5ea929494c5548",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 20,
+      "seconds": 0.5714285714285714,
+      "brain_steps": 5714,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 49,
+      "position": [
+        -142.43927001953125,
+        125.19717407226562
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        2,
+        2
+      ],
+      "MBON_spikes": [
+        1,
+        0
+      ],
+      "action": {
+        "turn": -0.2203733894826992,
+        "forward": 8.789010311207559,
+        "attack": false
+      },
+      "frame_sha256": "79a7f69296f6ccda4e166746e3ffbb7e3e6e9c11f8dd199f86ef1ef6617f2771",
+      "sensory_sha256": "79a7f69296f6ccda4e166746e3ffbb7e3e6e9c11f8dd199f86ef1ef6617f2771",
+      "spikes_sha256": "23d3e0d3cc94825a7d8a9d3a6a8e009cd69dccbce1bf5473d92fe2dbdcbff5ac",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 21,
+      "seconds": 0.6,
+      "brain_steps": 6000,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 49,
+      "position": [
+        -140.68499755859375,
+        128.46820068359375
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        1,
+        1
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 0.8780950705955607,
+        "forward": 10.08169941019333,
+        "attack": true
+      },
+      "frame_sha256": "a2f6f3cffb1a0eedfeb125c6cb923ca65e0d6ad1775e105ee5f08fdc3854abf3",
+      "sensory_sha256": "a2f6f3cffb1a0eedfeb125c6cb923ca65e0d6ad1775e105ee5f08fdc3854abf3",
+      "spikes_sha256": "76a9c23ee0e86eae41424181bf1eaccb654b496e97d6f1ed19a6c38548ad471f",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 22,
+      "seconds": 0.6285714285714286,
+      "brain_steps": 6286,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 49,
+      "position": [
+        -138.95591735839844,
+        131.60110473632812
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1,
+      "DAN_spikes": [
+        3,
+        3
+      ],
+      "MBON_spikes": [
+        1,
+        0
+      ],
+      "action": {
+        "turn": 1.7033333594491018,
+        "forward": 7.574003872092018,
+        "attack": false
+      },
+      "frame_sha256": "91268c9518dc15446f389c462770a9ee850e7763312ac5ffcde24bc225ec7845",
+      "sensory_sha256": "91268c9518dc15446f389c462770a9ee850e7763312ac5ffcde24bc225ec7845",
+      "spikes_sha256": "68bc3a4a151f0f39742a66bf6a7fff7ba6ea1630085b37f53fa5929707d16382",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 23,
+      "seconds": 0.6571428571428571,
+      "brain_steps": 6571,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 49,
+      "position": [
+        -137.28680419921875,
+        134.55844116210938
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        2,
+        2
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 1.2809309661634452,
+        "forward": 5.695758874083396,
+        "attack": false
+      },
+      "frame_sha256": "69559a48c74efbcc72109bd8b5a3212dc2ed5fe38a9cef8e8563caf287037669",
+      "sensory_sha256": "69559a48c74efbcc72109bd8b5a3212dc2ed5fe38a9cef8e8563caf287037669",
+      "spikes_sha256": "fbbc0fad1781a584196aea1a8dee197e13d40a7ce9abfa2fc8f40a6e305065af",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 24,
+      "seconds": 0.6857142857142857,
+      "brain_steps": 6857,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 49,
+      "position": [
+        -135.62841796875,
+        137.40150451660156
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1,
+      "DAN_spikes": [
+        2,
+        2
+      ],
+      "MBON_spikes": [
+        1,
+        0
+      ],
+      "action": {
+        "turn": 0.962315548487322,
+        "forward": 7.757855243757968,
+        "attack": true
+      },
+      "frame_sha256": "8c65b2d21de50c0a551c857d87fda41cf027d1894f7bca3d6ffc2b8ea137cd78",
+      "sensory_sha256": "8c65b2d21de50c0a551c857d87fda41cf027d1894f7bca3d6ffc2b8ea137cd78",
+      "spikes_sha256": "9f2126010b3698c41d0f86f708ab444a74e3bab811a4fa104a3010b916a076f5",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 25,
+      "seconds": 0.7142857142857143,
+      "brain_steps": 7143,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 49,
+      "position": [
+        -133.9353790283203,
+        140.1851043701172
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        1,
+        2
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 0.7229516963229484,
+        "forward": 9.307031156774263,
+        "attack": true
+      },
+      "frame_sha256": "5267ab4964d447bd2cc88dea9ad9b16a965e211eb0d8928e1488aeae454e3051",
+      "sensory_sha256": "5267ab4964d447bd2cc88dea9ad9b16a965e211eb0d8928e1488aeae454e3051",
+      "spikes_sha256": "d8f953428ab26e4cf497ae951702a3d750d9bb4701f019eb1476b230eb317cf6",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 26,
+      "seconds": 0.7428571428571429,
+      "brain_steps": 7429,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 49,
+      "position": [
+        -132.13479614257812,
+        143.01431274414062
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1,
+      "DAN_spikes": [
+        1,
+        2
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": -1.5441801367440127,
+        "forward": 13.949713637960173,
+        "attack": true
+      },
+      "frame_sha256": "0751a9b55055ee4a8db3401368bee7cd3ade4bac602d3759d7daae3b9af515a6",
+      "sensory_sha256": "0751a9b55055ee4a8db3401368bee7cd3ade4bac602d3759d7daae3b9af515a6",
+      "spikes_sha256": "71437ba60ca78880c5c34f1e6ac60cc070c8a1ac2244455da858aa6eab66ae66",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 27,
+      "seconds": 0.7714285714285715,
+      "brain_steps": 7714,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 49,
+      "position": [
+        -130.24290466308594,
+        145.89012145996094
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1,
+      "DAN_spikes": [
+        0,
+        1
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": -1.161245474068351,
+        "forward": 13.97088519318259,
+        "attack": true
+      },
+      "frame_sha256": "ba2579642793a5ee911ab37592484685d62ea2cb84bd239e095762f31f215964",
+      "sensory_sha256": "ba2579642793a5ee911ab37592484685d62ea2cb84bd239e095762f31f215964",
+      "spikes_sha256": "eec1f5afa572bad29da929200a4f62fd521125500d4b5daa2d211fc0c6993cf0",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 28,
+      "seconds": 0.8,
+      "brain_steps": 8000,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 49,
+      "position": [
+        -128.3275604248047,
+        148.73558044433594
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        0,
+        1
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 0.17125304705834393,
+        "forward": 10.495803757323971,
+        "attack": false
+      },
+      "frame_sha256": "4efc355b894b399f927c902ba2d94886f5ba489fefb4a711191f637ea1e61992",
+      "sensory_sha256": "4efc355b894b399f927c902ba2d94886f5ba489fefb4a711191f637ea1e61992",
+      "spikes_sha256": "759d88de2d8ab8577224e6f5bda19f5ad4ed47b61a396295767856c2fabb275e",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 29,
+      "seconds": 0.8285714285714286,
+      "brain_steps": 8286,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 49,
+      "position": [
+        -126.45082092285156,
+        151.48143005371094
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 0.1286560121219267,
+        "forward": 7.885104987192363,
+        "attack": false
+      },
+      "frame_sha256": "d446978c2e0ebefa1b74aee9290f96eb3fd964ee047d3584953ec5ca65786a28",
+      "sensory_sha256": "d446978c2e0ebefa1b74aee9290f96eb3fd964ee047d3584953ec5ca65786a28",
+      "spikes_sha256": "3d7361c2e503111a5f49f14214157362273f2186c47a39ed14c2b65b7823c240",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 30,
+      "seconds": 0.8571428571428571,
+      "brain_steps": 8571,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 49,
+      "position": [
+        -124.56846618652344,
+        154.1844940185547
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 0.09675115501957592,
+        "forward": 9.41021304093656,
+        "attack": true
+      },
+      "frame_sha256": "93423db909aa6c5e1e8996d5fb7e5ae1bb76d33758b127080926d5e4b7493b6a",
+      "sensory_sha256": "93423db909aa6c5e1e8996d5fb7e5ae1bb76d33758b127080926d5e4b7493b6a",
+      "spikes_sha256": "1fc7e77b1fdb68f00a792c7f5e255de78642b34a5f1c9b416aea68af8eb2c41c",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 31,
+      "seconds": 0.8857142857142857,
+      "brain_steps": 8857,
+      "finished": false,
+      "dead": false,
+      "health": 80.0,
+      "kills": 0,
+      "ammo": 49,
+      "position": [
+        -122.72125244140625,
+        156.80096435546875
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 0.07268552581588948,
+        "forward": 7.069541265751501,
+        "attack": false
+      },
+      "frame_sha256": "e551e1842738327c0a9ec7eb6f4d9a33c5cf4362cef9f74ec0c9fb09a290c610",
+      "sensory_sha256": "e551e1842738327c0a9ec7eb6f4d9a33c5cf4362cef9f74ec0c9fb09a290c610",
+      "spikes_sha256": "af299f892e71fa3f661473c51f5a55a58452894160b3764d39238af21e4f4b79",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 32,
+      "seconds": 0.9142857142857143,
+      "brain_steps": 9143,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 49,
+      "position": [
+        -120.94186401367188,
+        159.28741455078125
+      ],
+      "damage": 20.0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        0,
+        1
+      ],
+      "MBON_spikes": [
+        1,
+        0
+      ],
+      "action": {
+        "turn": 2.14191263759275,
+        "forward": 5.311082064852933,
+        "attack": false
+      },
+      "frame_sha256": "2e59b4e0b6ca0d780321ac2c410443d307bb023c9799c00ea2876e4e92ba6f48",
+      "sensory_sha256": "2e59b4e0b6ca0d780321ac2c410443d307bb023c9799c00ea2876e4e92ba6f48",
+      "spikes_sha256": "fdf08c8512365de9d052aa7bd2a5c1765688acc6f443872936612dce3bc9cef8",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 33,
+      "seconds": 0.9428571428571428,
+      "brain_steps": 9429,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 49,
+      "position": [
+        -119.11627197265625,
+        161.7692108154297
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1,
+      "DAN_spikes": [
+        2,
+        3
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 0.5654855315842087,
+        "forward": 10.947706469972772,
+        "attack": true
+      },
+      "frame_sha256": "8a0d34f7f3fab46ca88ba23675616b9892f8df78d915f4593d6faf030433e00d",
+      "sensory_sha256": "8a0d34f7f3fab46ca88ba23675616b9892f8df78d915f4593d6faf030433e00d",
+      "spikes_sha256": "3534b76c52d06f623556d8c2b63a9793b3d84332362c366b4f77a9b6e6137633",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 34,
+      "seconds": 0.9714285714285714,
+      "brain_steps": 9714,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 49,
+      "position": [
+        -117.2901611328125,
+        164.1999053955078
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        1,
+        1
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 0.4252531803626982,
+        "forward": 8.232831317524054,
+        "attack": false
+      },
+      "frame_sha256": "afe6e593f05cf4e7e674c274cab918001b79c455c110b46f23b75a02fa644218",
+      "sensory_sha256": "afe6e593f05cf4e7e674c274cab918001b79c455c110b46f23b75a02fa644218",
+      "spikes_sha256": "07458d0bfb2cc526628411b87a42ef426294d33fa4f9680c6817f2e01d8204d9",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 35,
+      "seconds": 1.0,
+      "brain_steps": 10000,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 49,
+      "position": [
+        -115.5032958984375,
+        166.53579711914062
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 1.3631301763824288,
+        "forward": 6.185018392252569,
+        "attack": false
+      },
+      "frame_sha256": "36ea6cd497310f2e10819a02f20c72372f563dc1d7f793df8d8fec729c64e976",
+      "sensory_sha256": "36ea6cd497310f2e10819a02f20c72372f563dc1d7f793df8d8fec729c64e976",
+      "spikes_sha256": "2f13efa3c716bd7086e76765a00106a7aae727495c6932796226ca1552019b7b",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 36,
+      "seconds": 1.0285714285714285,
+      "brain_steps": 10286,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 49,
+      "position": [
+        -113.70475769042969,
+        168.82687377929688
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 1.0240687421852037,
+        "forward": 8.125417629254654,
+        "attack": true
+      },
+      "frame_sha256": "2d9a95e54d998555877d56276d8d206745bea8698b21be593e1d6eff926e6f24",
+      "sensory_sha256": "2d9a95e54d998555877d56276d8d206745bea8698b21be593e1d6eff926e6f24",
+      "spikes_sha256": "452b07a251effd4c0be35d28a132703007a741c80dd050b814fa86c584237615",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 37,
+      "seconds": 1.0571428571428572,
+      "brain_steps": 10571,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 48,
+      "position": [
+        -111.8671875,
+        171.09266662597656
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1,
+      "DAN_spikes": [
+        0,
+        1
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 1.8142647996551093,
+        "forward": 9.590931573260553,
+        "attack": true
+      },
+      "frame_sha256": "379c3f5096b6c46f8ce7b97a9311236cf8e76604418b6b0da50b9e0011265f5c",
+      "sensory_sha256": "379c3f5096b6c46f8ce7b97a9311236cf8e76604418b6b0da50b9e0011265f5c",
+      "spikes_sha256": "cf99bba6390dc457fad40b344de6829ed9b2fba328d7a93771c497f2414ff9e7",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 38,
+      "seconds": 1.0857142857142856,
+      "brain_steps": 10857,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 48,
+      "position": [
+        -110.03694152832031,
+        173.28953552246094
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 1.3629893194092506,
+        "forward": 7.205308343095307,
+        "attack": false
+      },
+      "frame_sha256": "38e32bae67ef5fbfd0a699f7329e9b9b821790c6495712592fe697922f7cebbb",
+      "sensory_sha256": "38e32bae67ef5fbfd0a699f7329e9b9b821790c6495712592fe697922f7cebbb",
+      "spikes_sha256": "a0bf9515520399bf671af4632d3df05373174c8a6ebcd70170bc817383532206",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 39,
+      "seconds": 1.1142857142857143,
+      "brain_steps": 11143,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 48,
+      "position": [
+        -108.2586669921875,
+        175.38084411621094
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 1.0239629216070592,
+        "forward": 5.413078794537704,
+        "attack": false
+      },
+      "frame_sha256": "f3d449db33cc90ce70a19cd2138373fb41a9dfcf72a6b11143a3a24b17161287",
+      "sensory_sha256": "f3d449db33cc90ce70a19cd2138373fb41a9dfcf72a6b11143a3a24b17161287",
+      "spikes_sha256": "a70798c8a41a23b99a063b69d3c56c51bd3caee15fe11aed50046de811a7cb29",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 40,
+      "seconds": 1.1428571428571428,
+      "brain_steps": 11429,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 48,
+      "position": [
+        -106.54893493652344,
+        177.35336303710938
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1,
+      "DAN_spikes": [
+        0,
+        1
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 1.8129184227825506,
+        "forward": 4.066643735511011,
+        "attack": false
+      },
+      "frame_sha256": "8931ecfb81c03b21625d68e4f46b24497cbf5659693a5b54b937b7b2b64c7b5b",
+      "sensory_sha256": "8931ecfb81c03b21625d68e4f46b24497cbf5659693a5b54b937b7b2b64c7b5b",
+      "spikes_sha256": "1937d04488e7fdde6e9391a4e44f244dd100213127ac80cb1367e8a26e54acd3",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 41,
+      "seconds": 1.1714285714285715,
+      "brain_steps": 11714,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 48,
+      "position": [
+        -104.85151672363281,
+        179.25595092773438
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 0.3191899877217764,
+        "forward": 6.538675750105952,
+        "attack": true
+      },
+      "frame_sha256": "6d815e9ea01cdc049642a44740ae1b177cc25853dc0486877fb2abbb6930464f",
+      "sensory_sha256": "6d815e9ea01cdc049642a44740ae1b177cc25853dc0486877fb2abbb6930464f",
+      "spikes_sha256": "13511c3f5652ee004d9f39e330b4e676dc97d7253e9a19d56d6179274b65972c",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 42,
+      "seconds": 1.2,
+      "brain_steps": 12000,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 48,
+      "position": [
+        -103.212890625,
+        181.0546112060547
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        1,
+        0
+      ],
+      "action": {
+        "turn": 1.2834488648233318,
+        "forward": 4.912262648853066,
+        "attack": false
+      },
+      "frame_sha256": "b381b9ffab29bc390bfa3de8f49cdc7ce68ccbe992a967412ec4bbbadf22f6f1",
+      "sensory_sha256": "b381b9ffab29bc390bfa3de8f49cdc7ce68ccbe992a967412ec4bbbadf22f6f1",
+      "spikes_sha256": "f62a20e3bbe5351f469663ede129033663b1cb7def32beee72ff39c909ef4740",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 43,
+      "seconds": 1.2285714285714286,
+      "brain_steps": 12286,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 48,
+      "position": [
+        -101.65170288085938,
+        182.7392120361328
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        0,
+        1
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 0.9642071516212378,
+        "forward": 3.6903992877955334,
+        "attack": false
+      },
+      "frame_sha256": "1373f4adfc4140116c74d9a44f4a52bd5f4fb783edf72dd28c2267015f4ed448",
+      "sensory_sha256": "1373f4adfc4140116c74d9a44f4a52bd5f4fb783edf72dd28c2267015f4ed448",
+      "spikes_sha256": "45107fbd18eb55d7a577ae5f7f46116555321978ebbd47bf9472cd938721e10c",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 44,
+      "seconds": 1.2571428571428571,
+      "brain_steps": 12571,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 48,
+      "position": [
+        -100.18565368652344,
+        184.30162048339844
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        1,
+        1
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 0.7250975221358607,
+        "forward": 2.775232868552339,
+        "attack": false
+      },
+      "frame_sha256": "2cf638c8be40f48c8806775c7da401c984990f5bb8e4a9c5c32290dbb0d06854",
+      "sensory_sha256": "2cf638c8be40f48c8806775c7da401c984990f5bb8e4a9c5c32290dbb0d06854",
+      "spikes_sha256": "0ec3d152f4fd39fbb31c43c754ac8138f795a5e2d2fe7094121a3a75fca30de8",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 45,
+      "seconds": 1.2857142857142858,
+      "brain_steps": 12857,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 48,
+      "position": [
+        -98.62786865234375,
+        185.88035583496094
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1,
+      "DAN_spikes": [
+        0,
+        2
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": -0.49891469836702385,
+        "forward": 9.04261776911318,
+        "attack": true
+      },
+      "frame_sha256": "b498df2ece98b000552e8c7370c160f7dc26c8790539acbc4a32d592f4f570ee",
+      "sensory_sha256": "b498df2ece98b000552e8c7370c160f7dc26c8790539acbc4a32d592f4f570ee",
+      "spikes_sha256": "fe439f21aaeacf78512039800dd1cf17b324d09a67ee9fce2925e5f7c672d337",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 46,
+      "seconds": 1.3142857142857143,
+      "brain_steps": 13143,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 48,
+      "position": [
+        -97.06410217285156,
+        187.42066955566406
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": -0.3748159614295619,
+        "forward": 6.7933806802317624,
+        "attack": false
+      },
+      "frame_sha256": "e08f8469aa0972753961c99dbc6fe5375af4659761dd7477972ecd2e4e50e11f",
+      "sensory_sha256": "e08f8469aa0972753961c99dbc6fe5375af4659761dd7477972ecd2e4e50e11f",
+      "spikes_sha256": "f22c54caeef2825ceff55e0d761f10010e7e03780e188495a478933b03e2dce7",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 47,
+      "seconds": 1.3428571428571427,
+      "brain_steps": 13429,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 48,
+      "position": [
+        -95.51905822753906,
+        188.90623474121094
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 0.7620681399811955,
+        "forward": 5.10361294095395,
+        "attack": false
+      },
+      "frame_sha256": "c0fd3fb1ac74ba834333e71faa88d0dee4041cdd7ab60d9f253d3365bb6afc5a",
+      "sensory_sha256": "c0fd3fb1ac74ba834333e71faa88d0dee4041cdd7ab60d9f253d3365bb6afc5a",
+      "spikes_sha256": "b4b75628ac4210161c88c57e4afce7be0b141eb2b4c1856e16997bd095b42ef9",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 48,
+      "seconds": 1.3714285714285714,
+      "brain_steps": 13714,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 48,
+      "position": [
+        -93.94090270996094,
+        190.3795623779297
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": -0.47106440410039735,
+        "forward": 7.3184913738892865,
+        "attack": true
+      },
+      "frame_sha256": "90877fe0664e2e62787dfb41aecedf8e88f5e9dc9d9f71fffb06b243f5f229dc",
+      "sensory_sha256": "90877fe0664e2e62787dfb41aecedf8e88f5e9dc9d9f71fffb06b243f5f229dc",
+      "spikes_sha256": "e4f50b4033287dfbb835be39dba158db81daa5d10d95eddc5640ce55410376e5",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 49,
+      "seconds": 1.4,
+      "brain_steps": 14000,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 48,
+      "position": [
+        -92.38249206542969,
+        191.80392456054688
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 2,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 0.6897602831594893,
+        "forward": 5.498108974332785,
+        "attack": false
+      },
+      "frame_sha256": "66e6526022b3b1e85c12157bb3c5c679d045eacdffa8ec174f779a5fc26d9328",
+      "sensory_sha256": "66e6526022b3b1e85c12157bb3c5c679d045eacdffa8ec174f779a5fc26d9328",
+      "spikes_sha256": "c68f6600d94e6391ee5b817e3ea6fb9eae3bc940ec27bdd36a027b6c8ef96f0e",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 50,
+      "seconds": 1.4285714285714286,
+      "brain_steps": 14286,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 48,
+      "position": [
+        -90.78953552246094,
+        193.21792602539062
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 0.5181911147026631,
+        "forward": 7.609368263029683,
+        "attack": true
+      },
+      "frame_sha256": "98fe238ef16165475fcb2836fd257111ed0a59eb39dca51d30fc2ff678c46de8",
+      "sensory_sha256": "98fe238ef16165475fcb2836fd257111ed0a59eb39dca51d30fc2ff678c46de8",
+      "spikes_sha256": "5be93a94dbcbee31cb5d6836c680358e9af155e6fec11597f23a1562a6628752",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 51,
+      "seconds": 1.457142857142857,
+      "brain_steps": 14571,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 48,
+      "position": [
+        -89.21476745605469,
+        194.5841522216797
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 1.4338376128469679,
+        "forward": 5.7223534001638425,
+        "attack": false
+      },
+      "frame_sha256": "50db814e5516a0d191a61ba6a13f4ed86c8e79cb3eae1fef1add41ab7312ed18",
+      "sensory_sha256": "50db814e5516a0d191a61ba6a13f4ed86c8e79cb3eae1fef1add41ab7312ed18",
+      "spikes_sha256": "f140cc55436cff64d19ca994f1bf76a3994bb24a7ea2d886d1c907fa63886ccf",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 52,
+      "seconds": 1.4857142857142858,
+      "brain_steps": 14857,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 48,
+      "position": [
+        -87.60177612304688,
+        195.9374542236328
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 2,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 1.0771885958704515,
+        "forward": 7.7778347169910305,
+        "attack": true
+      },
+      "frame_sha256": "9d6fc5afa607365e5e86b2d1976a4f0ff089fc1ed6bbb79e7c4787b2bc65d165",
+      "sensory_sha256": "9d6fc5afa607365e5e86b2d1976a4f0ff089fc1ed6bbb79e7c4787b2bc65d165",
+      "spikes_sha256": "7947cba5470b994fa1c1b86d54a8f034c2687be7b9560b15ffdbe65aa12b8bd7",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 53,
+      "seconds": 1.5142857142857142,
+      "brain_steps": 15143,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 48,
+      "position": [
+        -86.007568359375,
+        197.2466583251953
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": -0.23440183726162728,
+        "forward": 5.843196455889189,
+        "attack": false
+      },
+      "frame_sha256": "c70a7e0f4229f7fc633932262e331fbd8bdfb7ce7e6fd4fd07c3e7fe6c5c5e3a",
+      "sensory_sha256": "c70a7e0f4229f7fc633932262e331fbd8bdfb7ce7e6fd4fd07c3e7fe6c5c5e3a",
+      "spikes_sha256": "76e7ac40472c4d3bed674f0b800236843b7e27cf089669ab953abbd49d708f60",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 54,
+      "seconds": 1.542857142857143,
+      "brain_steps": 15429,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 48,
+      "position": [
+        -84.45590209960938,
+        198.49778747558594
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 0.867556022219489,
+        "forward": 4.389775054942886,
+        "attack": false
+      },
+      "frame_sha256": "169306ecd8bf1d6b4e88a978e9801ba4507556545b8d2db6a108f03f92b79132",
+      "sensory_sha256": "169306ecd8bf1d6b4e88a978e9801ba4507556545b8d2db6a108f03f92b79132",
+      "spikes_sha256": "092f274e5960e6ba063312cfa5781a7566114ce71cbe06944473ef7401bed2d1",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 55,
+      "seconds": 1.5714285714285714,
+      "brain_steps": 15714,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 48,
+      "position": [
+        -82.96986389160156,
+        199.6806640625
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": -0.3917360129992363,
+        "forward": 3.3011734145727014,
+        "attack": false
+      },
+      "frame_sha256": "d7e5a8fa72896f0697f51dfe5cb3d80350a476eb5f7fce6bd5c71558b2192d6a",
+      "sensory_sha256": "d7e5a8fa72896f0697f51dfe5cb3d80350a476eb5f7fce6bd5c71558b2192d6a",
+      "spikes_sha256": "9f739aa8368970ff98dcef30c3760628a9440595980e237d6c567d38ae2bd968",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 56,
+      "seconds": 1.6,
+      "brain_steps": 16000,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -81.57009887695312,
+        200.78562927246094
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 2,
+      "DAN_spikes": [
+        0,
+        1
+      ],
+      "MBON_spikes": [
+        1,
+        0
+      ],
+      "action": {
+        "turn": -0.2942966218864096,
+        "forward": 2.4800481751262016,
+        "attack": false
+      },
+      "frame_sha256": "f56361b65247a1a3cdb3dea45cf6f23a56d72cd2091b8ce7bbff3e55d01cfea0",
+      "sensory_sha256": "f56361b65247a1a3cdb3dea45cf6f23a56d72cd2091b8ce7bbff3e55d01cfea0",
+      "spikes_sha256": "6b40ba7b944081e8089c609f4ceb1837f02e8544b3f7b668a84efd5d7124c0f6",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 57,
+      "seconds": 1.6285714285714286,
+      "brain_steps": 16286,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -80.27481079101562,
+        201.8031005859375
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        0,
+        1
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 0.8225593096406996,
+        "forward": 1.8631674797196114,
+        "attack": false
+      },
+      "frame_sha256": "0fff6bbc90278e4426029182cb8673387e4329eb39e1c4181b7cd5fac55be121",
+      "sensory_sha256": "0fff6bbc90278e4426029182cb8673387e4329eb39e1c4181b7cd5fac55be121",
+      "spikes_sha256": "76b359d272d6bec5eb91b86a0ec79e99e3bdc44e6ec0cb63958665625b71887a",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 58,
+      "seconds": 1.6571428571428573,
+      "brain_steps": 16571,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -78.99440002441406,
+        202.79042053222656
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": -0.42557418225599886,
+        "forward": 4.881630196696518,
+        "attack": true
+      },
+      "frame_sha256": "6b88ec229410395658002cb22c8ea92449eb1b421cc81a5cc8ad49196a1b54f8",
+      "sensory_sha256": "6b88ec229410395658002cb22c8ea92449eb1b421cc81a5cc8ad49196a1b54f8",
+      "spikes_sha256": "9d7c2f0d34144da333588eea26055fb80f7f02a5dfaa895bfcad1902224d7fda",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 59,
+      "seconds": 1.6857142857142857,
+      "brain_steps": 16857,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -77.64816284179688,
+        203.8003387451172
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": -0.3197179734410983,
+        "forward": 7.146230803866922,
+        "attack": true
+      },
+      "frame_sha256": "ddb8111830db46d96439d70bec4fae488855a3ce27db9d5bb86449097a1d0c1a",
+      "sensory_sha256": "ddb8111830db46d96439d70bec4fae488855a3ce27db9d5bb86449097a1d0c1a",
+      "spikes_sha256": "3ff14b30e470bad45d1730f62b233aa2f17eff4da765feeef87ba4c584978f41",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 60,
+      "seconds": 1.7142857142857142,
+      "brain_steps": 17143,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -76.21632385253906,
+        204.84817504882812
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": -0.24019216109259672,
+        "forward": 8.847540580084667,
+        "attack": true
+      },
+      "frame_sha256": "8367463dcf58d672bce984c16696e21beb00935bfcfe6a931b94948a7040258a",
+      "sensory_sha256": "8367463dcf58d672bce984c16696e21beb00935bfcfe6a931b94948a7040258a",
+      "spikes_sha256": "e3a330f89c7e5b9e243835735deb560d4003e2d2326d4261389d64ae1aaa4e6c",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 61,
+      "seconds": 1.7428571428571429,
+      "brain_steps": 17429,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -74.76017761230469,
+        205.89772033691406
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": -0.1804473912723597,
+        "forward": 6.646826480890637,
+        "attack": false
+      },
+      "frame_sha256": "9e926958040dd7b0bf3f4fd71785ded6dd11e2aed2133e4541a8855ff90717cc",
+      "sensory_sha256": "9e926958040dd7b0bf3f4fd71785ded6dd11e2aed2133e4541a8855ff90717cc",
+      "spikes_sha256": "650c1813540181b1fbbad663a68c99111a8fe0f097dd97865d24b88b7d810fa5",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 62,
+      "seconds": 1.7714285714285714,
+      "brain_steps": 17714,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -73.22944641113281,
+        206.98260498046875
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": -0.1356990103915615,
+        "forward": 8.479009953380347,
+        "attack": true
+      },
+      "frame_sha256": "af5d8e000940526e2c1b99c1452a7d7c764180a48c5e4e0e4c18c10d75923ed3",
+      "sensory_sha256": "af5d8e000940526e2c1b99c1452a7d7c764180a48c5e4e0e4c18c10d75923ed3",
+      "spikes_sha256": "c1e9b55b3646b209fbce01790cda22d43b80e408cfe956c0429fceb90fbb3c7c",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 63,
+      "seconds": 1.8,
+      "brain_steps": 18000,
+      "finished": false,
+      "dead": false,
+      "health": 60.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -71.6077880859375,
+        208.12094116210938
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": -1.1455989531915838,
+        "forward": 9.84880773042759,
+        "attack": true
+      },
+      "frame_sha256": "926500176ecba1667a0546b88d184ccd496f0539add4ab0edefcb0042beb79bd",
+      "sensory_sha256": "926500176ecba1667a0546b88d184ccd496f0539add4ab0edefcb0042beb79bd",
+      "spikes_sha256": "12d3797baeb86a6112fa60e807e51e85f5e34b6f2a9a455273248f79822f0ee4",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 64,
+      "seconds": 1.8285714285714285,
+      "brain_steps": 18286,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -69.95545959472656,
+        209.27267456054688
+      ],
+      "damage": 20.0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 2,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 0.18300769326269148,
+        "forward": 7.399041059518945,
+        "attack": false
+      },
+      "frame_sha256": "5177bab669a43ead2f9cd48aa2d4b357df7d278c08f796fd2ca1252b566e2780",
+      "sensory_sha256": "5177bab669a43ead2f9cd48aa2d4b357df7d278c08f796fd2ca1252b566e2780",
+      "spikes_sha256": "3d2fbfd9fd4cb811c4ff94ac9cc9f8bad6e1cf6dfe48655b59e99a891ea64724",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 65,
+      "seconds": 1.8571428571428572,
+      "brain_steps": 18571,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -68.32733154296875,
+        210.40191650390625
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 0.1376243939836533,
+        "forward": 5.5641843450526345,
+        "attack": false
+      },
+      "frame_sha256": "ad21cfaeeeb2b94c8efd968e48e9ff8f9b053140d874c9673d2bdd34ee59cc99",
+      "sensory_sha256": "ad21cfaeeeb2b94c8efd968e48e9ff8f9b053140d874c9673d2bdd34ee59cc99",
+      "spikes_sha256": "277961a51485a25b6ca35777ebbe127cc82ae1b2964c3c8925b09e2b39ea8804",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 66,
+      "seconds": 1.8857142857142857,
+      "brain_steps": 18857,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -66.74594116210938,
+        211.4915771484375
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 1.1470454219056798,
+        "forward": 4.180163686674953,
+        "attack": false
+      },
+      "frame_sha256": "d3261c1b0e039db8ae1286f14f159c80b2f899e0f82aa8d268be890c7c586e3b",
+      "sensory_sha256": "d3261c1b0e039db8ae1286f14f159c80b2f899e0f82aa8d268be890c7c586e3b",
+      "spikes_sha256": "b14a6e3c184b3d715900ec9c9dc34b1588c93ffec5f77cc2019b91df9bd2895f",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 67,
+      "seconds": 1.9142857142857144,
+      "brain_steps": 19143,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -65.05166625976562,
+        212.65048217773438
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 0,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": -1.22557437505607,
+        "forward": 10.098089770760373,
+        "attack": true
+      },
+      "frame_sha256": "b0aff9114db6a62bf5fc237fb59b42960b8db89a974c5e9a2dc18eafe14e9ff4",
+      "sensory_sha256": "b0aff9114db6a62bf5fc237fb59b42960b8db89a974c5e9a2dc18eafe14e9ff4",
+      "spikes_sha256": "46debd55becdf2483e84c9251cde0d6df176a35859087347b3609539d1dce218",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 68,
+      "seconds": 1.9428571428571428,
+      "brain_steps": 19429,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -63.145721435546875,
+        213.93307495117188
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 2,
+      "DAN_spikes": [
+        0,
+        0
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 1.1665785082847362,
+        "forward": 14.544006401670698,
+        "attack": true
+      },
+      "frame_sha256": "fb03753ad0a5539a2bf01921a87bfcab5bfa8f5d7d999151297f6aaeacb90198",
+      "sensory_sha256": "fb03753ad0a5539a2bf01921a87bfcab5bfa8f5d7d999151297f6aaeacb90198",
+      "spikes_sha256": "3369f833d1767fc50d94a3ca3b492554384025916938f656c383a320340a11e5",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 69,
+      "seconds": 1.9714285714285715,
+      "brain_steps": 19714,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -61.14848327636719,
+        215.25254821777344
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 414,
+      "DAN_spikes": [
+        2,
+        3
+      ],
+      "MBON_spikes": [
+        0,
+        3
+      ],
+      "action": {
+        "turn": 1.9214341751416788,
+        "forward": 10.937300128968717,
+        "attack": false
+      },
+      "frame_sha256": "e1487b479f6ba3a5a34743ff967c6c672792cf4d2419d7ff7beb67a6cf1e55cf",
+      "sensory_sha256": "e1487b479f6ba3a5a34743ff967c6c672792cf4d2419d7ff7beb67a6cf1e55cf",
+      "spikes_sha256": "c291ca56466a318e4d1931b9754c0c7c9f7259b7787c7eba3fb633050f726e08",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 70,
+      "seconds": 2.0,
+      "brain_steps": 20000,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -59.12165832519531,
+        216.57254028320312
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 1008,
+      "DAN_spikes": [
+        6,
+        5
+      ],
+      "MBON_spikes": [
+        5,
+        6
+      ],
+      "action": {
+        "turn": 0.3998483051232691,
+        "forward": 8.216784706285251,
+        "attack": false
+      },
+      "frame_sha256": "df6010bc3801c8d971e3cb77ba9e38ff8275940973040d2063d8c734f85d2ef1",
+      "sensory_sha256": "df6010bc3801c8d971e3cb77ba9e38ff8275940973040d2063d8c734f85d2ef1",
+      "spikes_sha256": "6cd5df5065edf4b2075868ef66e16e7c899d21d25d269a7ada99e4d9be92d02d",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 71,
+      "seconds": 2.0285714285714285,
+      "brain_steps": 20286,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -57.12171936035156,
+        217.86105346679688
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 525,
+      "DAN_spikes": [
+        4,
+        5
+      ],
+      "MBON_spikes": [
+        3,
+        4
+      ],
+      "action": {
+        "turn": 0.30039108368883544,
+        "forward": 6.172963173116225,
+        "attack": false
+      },
+      "frame_sha256": "1351d31590fa5e9df89a38a23705fe51b63a1fdc993b7edd36a30c14417ca188",
+      "sensory_sha256": "1351d31590fa5e9df89a38a23705fe51b63a1fdc993b7edd36a30c14417ca188",
+      "spikes_sha256": "5cf0388e268cecf9a3a03de2d1de655c9cdc7356ed5ac9c634c29fee7956c464",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 72,
+      "seconds": 2.057142857142857,
+      "brain_steps": 20571,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -55.201385498046875,
+        219.09178161621094
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 404,
+      "DAN_spikes": [
+        4,
+        4
+      ],
+      "MBON_spikes": [
+        3,
+        3
+      ],
+      "action": {
+        "turn": -0.8182521313244645,
+        "forward": 4.642156297572008,
+        "attack": false
+      },
+      "frame_sha256": "083fee15135221bb025fdd8551a908174b6a200df6313e215203e66d29c04836",
+      "sensory_sha256": "083fee15135221bb025fdd8551a908174b6a200df6313e215203e66d29c04836",
+      "spikes_sha256": "4906fa72cf136e8e7a2f46a11bdcb882df8b3540bebc4f107308627193021e1c",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 73,
+      "seconds": 2.085714285714286,
+      "brain_steps": 20857,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -53.381591796875,
+        220.25672912597656
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 220,
+      "DAN_spikes": [
+        4,
+        3
+      ],
+      "MBON_spikes": [
+        1,
+        1
+      ],
+      "action": {
+        "turn": -1.6583755963463476,
+        "forward": 3.487478483748258,
+        "attack": false
+      },
+      "frame_sha256": "634cc505809d2bd1be71a4198a5d4f37ee7fdd23c69c4453ef8279167f5caded",
+      "sensory_sha256": "634cc505809d2bd1be71a4198a5d4f37ee7fdd23c69c4453ef8279167f5caded",
+      "spikes_sha256": "ecd5c771b04e27ea088d9d9f4446b8a3b2286d92e9f9538fd350f44e31d4140e",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 74,
+      "seconds": 2.1142857142857143,
+      "brain_steps": 21143,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -51.68016052246094,
+        221.34669494628906
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 231,
+      "DAN_spikes": [
+        3,
+        3
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": -1.2458755887336348,
+        "forward": 2.6200122087591957,
+        "attack": false
+      },
+      "frame_sha256": "82b44de8e98ff4da23d5ca2317e5b91c13642e712495efa5e7efcebf115f21f0",
+      "sensory_sha256": "82b44de8e98ff4da23d5ca2317e5b91c13642e712495efa5e7efcebf115f21f0",
+      "spikes_sha256": "5714ce41b7fb93664803dd8636ea1b65a98fad93c31d409cba2d6119f0b93b6d",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 75,
+      "seconds": 2.142857142857143,
+      "brain_steps": 21429,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -50.112396240234375,
+        222.3520050048828
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 171,
+      "DAN_spikes": [
+        3,
+        2
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": -0.9359797539363972,
+        "forward": 1.9683172257652126,
+        "attack": false
+      },
+      "frame_sha256": "235ea0c91f1a5057c2c5edc9b01c6d30092b3e3bcac2d05ea2097c7d6e81ac55",
+      "sensory_sha256": "235ea0c91f1a5057c2c5edc9b01c6d30092b3e3bcac2d05ea2097c7d6e81ac55",
+      "spikes_sha256": "5207f26a418c626c1552d64628e67c77701fc1cebd9d94e5dffc55adb9b415c7",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 76,
+      "seconds": 2.1714285714285713,
+      "brain_steps": 21714,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -48.66566467285156,
+        223.2804412841797
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 310,
+      "DAN_spikes": [
+        5,
+        2
+      ],
+      "MBON_spikes": [
+        0,
+        2
+      ],
+      "action": {
+        "turn": 0.34028039141439675,
+        "forward": 1.4802026107978223,
+        "attack": false
+      },
+      "frame_sha256": "4ebc0bf396ac665b923aefa48760d9d204f1e393f120b15d9f349d6950610a35",
+      "sensory_sha256": "4ebc0bf396ac665b923aefa48760d9d204f1e393f120b15d9f349d6950610a35",
+      "spikes_sha256": "89d1d18f9aeb950bcc6811e4062ad533824a65e3677728c146add99cd7784f5c",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 77,
+      "seconds": 2.2,
+      "brain_steps": 22000,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -47.328857421875,
+        224.13955688476562
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 268,
+      "DAN_spikes": [
+        4,
+        4
+      ],
+      "MBON_spikes": [
+        0,
+        2
+      ],
+      "action": {
+        "turn": -0.7880134226540048,
+        "forward": 1.1120208855193823,
+        "attack": false
+      },
+      "frame_sha256": "1da985a662648b79f08e0bfdc57702af1358aab90b9f29cfc7cbdcdc3a3c5d61",
+      "sensory_sha256": "1da985a662648b79f08e0bfdc57702af1358aab90b9f29cfc7cbdcdc3a3c5d61",
+      "spikes_sha256": "dd4aa2d2acc611dac57edc1ea2e92be63b547f7840fc9f3437a764444fbcaedf",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 78,
+      "seconds": 2.2285714285714286,
+      "brain_steps": 22286,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -46.11738586425781,
+        224.91812133789062
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 198,
+      "DAN_spikes": [
+        2,
+        3
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 0.45164833435910823,
+        "forward": 0.8354197194428639,
+        "attack": false
+      },
+      "frame_sha256": "744df8e00f07116be9847e245f671624b00bd848a1ac3b7327182200992f0b13",
+      "sensory_sha256": "744df8e00f07116be9847e245f671624b00bd848a1ac3b7327182200992f0b13",
+      "spikes_sha256": "9e0ab7e742f91052c9029f357c6c14aa3219efbe552fbacf65630bec5373372b",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 79,
+      "seconds": 2.257142857142857,
+      "brain_steps": 22571,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -45.019500732421875,
+        225.62368774414062
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 282,
+      "DAN_spikes": [
+        3,
+        3
+      ],
+      "MBON_spikes": [
+        0,
+        2
+      ],
+      "action": {
+        "turn": 0.33964598537765595,
+        "forward": 0.628247537360533,
+        "attack": false
+      },
+      "frame_sha256": "c911e4fc67b3d24dd1f6ded1c1989d08bdb711715b626f25fdef99a5e30f7ce4",
+      "sensory_sha256": "c911e4fc67b3d24dd1f6ded1c1989d08bdb711715b626f25fdef99a5e30f7ce4",
+      "spikes_sha256": "c2e97c9c0654c598cbfdd41dd03e22008e46da6e328d445c6667f59d0e8a552f",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 80,
+      "seconds": 2.2857142857142856,
+      "brain_steps": 22857,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -44.02455139160156,
+        226.2631072998047
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 336,
+      "DAN_spikes": [
+        3,
+        4
+      ],
+      "MBON_spikes": [
+        1,
+        2
+      ],
+      "action": {
+        "turn": -0.7884900281927398,
+        "forward": 0.471978888379663,
+        "attack": false
+      },
+      "frame_sha256": "02c45b62e739a75a2816a116136caf47a9df6dae05ba5bbec360442d6536f773",
+      "sensory_sha256": "02c45b62e739a75a2816a116136caf47a9df6dae05ba5bbec360442d6536f773",
+      "spikes_sha256": "a77b9d8827064628f3068127859c6e44e3e72a0d6d706b5925cfe5ef7c2671f8",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 81,
+      "seconds": 2.3142857142857145,
+      "brain_steps": 23143,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -43.12287902832031,
+        226.8425750732422
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 279,
+      "DAN_spikes": [
+        4,
+        4
+      ],
+      "MBON_spikes": [
+        3,
+        1
+      ],
+      "action": {
+        "turn": 0.4512902784353042,
+        "forward": 0.354580094355809,
+        "attack": false
+      },
+      "frame_sha256": "af73fa83576f08228b6a436384eaf66d6b33ea8d13494750b6227e70f6058515",
+      "sensory_sha256": "af73fa83576f08228b6a436384eaf66d6b33ea8d13494750b6227e70f6058515",
+      "spikes_sha256": "e4e8b7b19fc5f5e622f893a62317849b2f69854e1fe8d9236ec6335092196947",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 82,
+      "seconds": 2.342857142857143,
+      "brain_steps": 23429,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -42.30574035644531,
+        227.36770629882812
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 203,
+      "DAN_spikes": [
+        3,
+        2
+      ],
+      "MBON_spikes": [
+        0,
+        2
+      ],
+      "action": {
+        "turn": 0.33903751512870456,
+        "forward": 0.2663827692484388,
+        "attack": false
+      },
+      "frame_sha256": "b00c8fe08164a7323bebf65fc23d8780545b125581d831edf928c516c3b86942",
+      "sensory_sha256": "b00c8fe08164a7323bebf65fc23d8780545b125581d831edf928c516c3b86942",
+      "spikes_sha256": "4c3d7c1ce7c114104f013549879f451181570f5fa1e568925dd5f972b15bede2",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 83,
+      "seconds": 2.3714285714285714,
+      "brain_steps": 23714,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -41.565216064453125,
+        227.84359741210938
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 246,
+      "DAN_spikes": [
+        2,
+        2
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 0.25496104412580933,
+        "forward": 0.20032363957989682,
+        "attack": false
+      },
+      "frame_sha256": "c4397a355ce52d0bb71793645ed1f635d80125ca0821ce3b19b4609599c6f133",
+      "sensory_sha256": "c4397a355ce52d0bb71793645ed1f635d80125ca0821ce3b19b4609599c6f133",
+      "spikes_sha256": "f690cacb093db3932f7f1747356c09b3bb454d1b9b322728ecb591f2be6cbab3",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 84,
+      "seconds": 2.4,
+      "brain_steps": 24000,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -40.89411926269531,
+        228.27487182617188
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 239,
+      "DAN_spikes": [
+        3,
+        3
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 1.2351960606379204,
+        "forward": 0.15049566150679444,
+        "attack": false
+      },
+      "frame_sha256": "0b7bd83cf8402fbc0ed80b4a893731426ac38dff979b477ee7fbd8b2b3b13288",
+      "sensory_sha256": "0b7bd83cf8402fbc0ed80b4a893731426ac38dff979b477ee7fbd8b2b3b13288",
+      "spikes_sha256": "ed1f305999f99ab3375bb19d69b0dde00125f0241c30818970cb28991b12866f",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 85,
+      "seconds": 2.4285714285714284,
+      "brain_steps": 24286,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -40.28594970703125,
+        228.66571044921875
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 377,
+      "DAN_spikes": [
+        3,
+        4
+      ],
+      "MBON_spikes": [
+        2,
+        2
+      ],
+      "action": {
+        "turn": -0.1156967359412829,
+        "forward": 0.11306176435225149,
+        "attack": false
+      },
+      "frame_sha256": "def69f12f4731c273823cafaa78911e98864c3be2c426b6141fbec6f91e6ab4a",
+      "sensory_sha256": "def69f12f4731c273823cafaa78911e98864c3be2c426b6141fbec6f91e6ab4a",
+      "spikes_sha256": "f10eff2f9987ff4577c5762792f290215ce7959cec595160f1ff44429448f796",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 86,
+      "seconds": 2.4571428571428573,
+      "brain_steps": 24571,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -39.73480224609375,
+        229.0198974609375
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 356,
+      "DAN_spikes": [
+        4,
+        3
+      ],
+      "MBON_spikes": [
+        0,
+        5
+      ],
+      "action": {
+        "turn": 2.0012954216517596,
+        "forward": 0.08502405841139216,
+        "attack": false
+      },
+      "frame_sha256": "9d67c5e3eff13ed6f2480a7be05263016e1344893507dc020ee73983c1b05720",
+      "sensory_sha256": "9d67c5e3eff13ed6f2480a7be05263016e1344893507dc020ee73983c1b05720",
+      "spikes_sha256": "1b02e56dd74837eb1dea098ddcabf58cf529fad5c3a5e260190037efaec00ed2",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 87,
+      "seconds": 2.4857142857142858,
+      "brain_steps": 24857,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -39.23533630371094,
+        229.3408660888672
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 304,
+      "DAN_spikes": [
+        4,
+        3
+      ],
+      "MBON_spikes": [
+        0,
+        2
+      ],
+      "action": {
+        "turn": -0.5838082855742024,
+        "forward": 0.06387539654056332,
+        "attack": false
+      },
+      "frame_sha256": "de8943f4fc890441c271eb27a10fe319d1991968a39d04815021365548ac454a",
+      "sensory_sha256": "de8943f4fc890441c271eb27a10fe319d1991968a39d04815021365548ac454a",
+      "spikes_sha256": "b6c958c69b029d9849e527bf5c0dec051ccb79364a4df0daa2e0abe225ee6635",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 88,
+      "seconds": 2.5142857142857142,
+      "brain_steps": 25143,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -38.78269958496094,
+        229.63172912597656
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 248,
+      "DAN_spikes": [
+        3,
+        2
+      ],
+      "MBON_spikes": [
+        0,
+        3
+      ],
+      "action": {
+        "turn": 1.6487133794948883,
+        "forward": 0.04798719749970827,
+        "attack": false
+      },
+      "frame_sha256": "b5cc8b49d7d35d2b55ad88bc0a9e3fc020b0d5eae2fd2fd286ff29554fe32604",
+      "sensory_sha256": "b5cc8b49d7d35d2b55ad88bc0a9e3fc020b0d5eae2fd2fd286ff29554fe32604",
+      "spikes_sha256": "1b3503d3a68e48f5ba8ef89d8ba4610f0dde6b0a0f088f0b89f86415087f3d9b",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 89,
+      "seconds": 2.5428571428571427,
+      "brain_steps": 25429,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -38.37249755859375,
+        229.8953094482422
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 240,
+      "DAN_spikes": [
+        2,
+        4
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": -0.84868999290087,
+        "forward": 0.0360509875255907,
+        "attack": false
+      },
+      "frame_sha256": "69fa97b0655bbeb17b2bd3bf81004510fca8afdf3a5a7ba544c8f6378feb725c",
+      "sensory_sha256": "69fa97b0655bbeb17b2bd3bf81004510fca8afdf3a5a7ba544c8f6378feb725c",
+      "spikes_sha256": "e9a9e10380ea1265d5b47c8df93aab2f88389d662f551ef22ffb3caade64338a",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 90,
+      "seconds": 2.5714285714285716,
+      "brain_steps": 25714,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -38.000762939453125,
+        230.13417053222656
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 160,
+      "DAN_spikes": [
+        2,
+        3
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 0.4059235359692457,
+        "forward": 0.027110856501534455,
+        "attack": false
+      },
+      "frame_sha256": "3887adef2b2ea31623533f0b4940e11104da0dbe2cf435344f81c242a12d052c",
+      "sensory_sha256": "3887adef2b2ea31623533f0b4940e11104da0dbe2cf435344f81c242a12d052c",
+      "spikes_sha256": "c0778eb6ecaa25bfc5eabacb6bef52782ea7976d92dcc3e011adf1c1adf60f71",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 91,
+      "seconds": 2.6,
+      "brain_steps": 26000,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -37.66387939453125,
+        230.3506317138672
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 270,
+      "DAN_spikes": [
+        3,
+        2
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 0.3049551775066646,
+        "forward": 0.02036737297590342,
+        "attack": false
+      },
+      "frame_sha256": "cfa475316a5babebc4a38969324daba46da697a06f6ae85c2baab0a6f5f438ce",
+      "sensory_sha256": "cfa475316a5babebc4a38969324daba46da697a06f6ae85c2baab0a6f5f438ce",
+      "spikes_sha256": "0e40685027b1db67e532371d531df0e7fe5af7dc1af988dc407eb3d9c43b7985",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 92,
+      "seconds": 2.6285714285714286,
+      "brain_steps": 26286,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -37.35858154296875,
+        230.5467987060547
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 155,
+      "DAN_spikes": [
+        4,
+        2
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 0.22910142440020365,
+        "forward": 0.015301245901843114,
+        "attack": false
+      },
+      "frame_sha256": "4fb2edacaf4d6e438901cbc1fdee193f771c404306c8531fe5b6b83684862b1d",
+      "sensory_sha256": "4fb2edacaf4d6e438901cbc1fdee193f771c404306c8531fe5b6b83684862b1d",
+      "spikes_sha256": "109933fcef8fe5bd38e6c8a842dd39810717f4b2a8fc080f71fe4d0289807b83",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 93,
+      "seconds": 2.657142857142857,
+      "brain_steps": 26571,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -37.0819091796875,
+        230.7245635986328
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 193,
+      "DAN_spikes": [
+        3,
+        2
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 2.2605885530916576,
+        "forward": 0.01150675502703206,
+        "attack": false
+      },
+      "frame_sha256": "1ccac857ecc1b1edaf0773583c1c0ca86d55436334b95419f0ac5c1b16b49f1d",
+      "sensory_sha256": "1ccac857ecc1b1edaf0773583c1c0ca86d55436334b95419f0ac5c1b16b49f1d",
+      "spikes_sha256": "0efcb2a5c9307a672484fc7cc5701ecac1ca7c512fd1b56a81cb5f4baaed563c",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 94,
+      "seconds": 2.6857142857142855,
+      "brain_steps": 26857,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -36.8311767578125,
+        230.88565063476562
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 331,
+      "DAN_spikes": [
+        3,
+        3
+      ],
+      "MBON_spikes": [
+        1,
+        2
+      ],
+      "action": {
+        "turn": 1.6982956699752247,
+        "forward": 0.008644594882668086,
+        "attack": false
+      },
+      "frame_sha256": "c3fd59d60259a4717db37adeb17aef6d3cc32672cf756608f2a8215475cd146d",
+      "sensory_sha256": "c3fd59d60259a4717db37adeb17aef6d3cc32672cf756608f2a8215475cd146d",
+      "spikes_sha256": "57c9352006adf843fbb30c662db3dcc77343e467eb71f3e5be1c3bee8077a237",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 95,
+      "seconds": 2.7142857142857144,
+      "brain_steps": 27143,
+      "finished": false,
+      "dead": false,
+      "health": 40.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -36.60395812988281,
+        231.03163146972656
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 401,
+      "DAN_spikes": [
+        4,
+        2
+      ],
+      "MBON_spikes": [
+        0,
+        5
+      ],
+      "action": {
+        "turn": 2.3195194073402723,
+        "forward": 0.006494360965354291,
+        "attack": false
+      },
+      "frame_sha256": "4a0d4b49bd151057744b6a8fadc51b546ff3d753323b1c48c15b38339ea537b4",
+      "sensory_sha256": "4a0d4b49bd151057744b6a8fadc51b546ff3d753323b1c48c15b38339ea537b4",
+      "spikes_sha256": "e8fe8d34d92ee9bfcc8f3ae46db644e2ac5f1974f367d66a533f112253475ec7",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 96,
+      "seconds": 2.742857142857143,
+      "brain_steps": 27429,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -36.39805603027344,
+        231.16392517089844
+      ],
+      "damage": 20.0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 158,
+      "DAN_spikes": [
+        2,
+        2
+      ],
+      "MBON_spikes": [
+        0,
+        2
+      ],
+      "action": {
+        "turn": 2.786221577361438,
+        "forward": 0.004878970607735409,
+        "attack": false
+      },
+      "frame_sha256": "ca211eaebdd75d805792a8535a19a52952706151900e32d545ad555ca578c394",
+      "sensory_sha256": "ca211eaebdd75d805792a8535a19a52952706151900e32d545ad555ca578c394",
+      "spikes_sha256": "69200aa87b8f40936cb0bb71dcdf63ef624c69d4fcf24e3098c34cfe150db36c",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 97,
+      "seconds": 2.7714285714285714,
+      "brain_steps": 27714,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -36.21147155761719,
+        231.2838134765625
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 184,
+      "DAN_spikes": [
+        3,
+        3
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 2.095278341868036,
+        "forward": 0.0036690554434223284,
+        "attack": false
+      },
+      "frame_sha256": "31cf4e0e6efd0f6c0dd3c53debbd9b2d333179d5cd35e66183cf2b825a342da3",
+      "sensory_sha256": "31cf4e0e6efd0f6c0dd3c53debbd9b2d333179d5cd35e66183cf2b825a342da3",
+      "spikes_sha256": "2cc66ee5b055ed1200934da25669d046e835484be83776dfb741a0eb18efd96a",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 98,
+      "seconds": 2.8,
+      "brain_steps": 28000,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -36.042388916015625,
+        231.3924560546875
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 248,
+      "DAN_spikes": [
+        3,
+        2
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 2.61775764791205,
+        "forward": 0.0027564241904796203,
+        "attack": false
+      },
+      "frame_sha256": "05aea546d68a6273738fd7f0aeff17243c4f6c0de99a664a2292a7f7ea9d7d4f",
+      "sensory_sha256": "05aea546d68a6273738fd7f0aeff17243c4f6c0de99a664a2292a7f7ea9d7d4f",
+      "spikes_sha256": "30c202c43f596ce61961cbd89a2cbef8735a18065231841ec8bec85439c6f278",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 99,
+      "seconds": 2.8285714285714287,
+      "brain_steps": 28286,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -35.88916015625,
+        231.49090576171875
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 244,
+      "DAN_spikes": [
+        3,
+        3
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 1.966623458485374,
+        "forward": 0.0020707984479989973,
+        "attack": false
+      },
+      "frame_sha256": "d6dd4ca733ce7b1ada5547213622603528592bc37112830a3447215f8df77de2",
+      "sensory_sha256": "d6dd4ca733ce7b1ada5547213622603528592bc37112830a3447215f8df77de2",
+      "spikes_sha256": "f4b77292637d47a96c7dbd7ca11d36984a9f9c6149916d811eb9733eab136f66",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 100,
+      "seconds": 2.857142857142857,
+      "brain_steps": 28571,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -35.65943908691406,
+        231.6031036376953
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 289,
+      "DAN_spikes": [
+        3,
+        2
+      ],
+      "MBON_spikes": [
+        1,
+        1
+      ],
+      "action": {
+        "turn": -0.6093721425979461,
+        "forward": 3.482058963713768,
+        "attack": true
+      },
+      "frame_sha256": "8424b5cadc47af4ad04e8da0da79f66368beb282969097b3abad64a13cc4f093",
+      "sensory_sha256": "8424b5cadc47af4ad04e8da0da79f66368beb282969097b3abad64a13cc4f093",
+      "spikes_sha256": "ceb085b99e62500496711c1a162f7af73c44b486563dd75d8002adc4063d2525",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 101,
+      "seconds": 2.8857142857142857,
+      "brain_steps": 28857,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -35.39082336425781,
+        231.72059631347656
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 211,
+      "DAN_spikes": [
+        4,
+        4
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": -0.457798509933292,
+        "forward": 2.615940725960909,
+        "attack": false
+      },
+      "frame_sha256": "cd6e56223e805a7e9b99ac98c59b6e7ec54ddff34c9da5dd09782301b7e7dea7",
+      "sensory_sha256": "cd6e56223e805a7e9b99ac98c59b6e7ec54ddff34c9da5dd09782301b7e7dea7",
+      "spikes_sha256": "61c7f55ba5d47a7f9451d6a6c8391e4d5ae4738c2a6f4f7e0b6ffaa449ac7673",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 102,
+      "seconds": 2.914285714285714,
+      "brain_steps": 29143,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -35.11723327636719,
+        231.83514404296875
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 155,
+      "DAN_spikes": [
+        2,
+        2
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": -0.3439269061490717,
+        "forward": 1.9652584729473883,
+        "attack": false
+      },
+      "frame_sha256": "1aa491d1b4cc4cffdfe8b211fed7174ae74f20aeda5093cb32e568af5ba1c3fc",
+      "sensory_sha256": "1aa491d1b4cc4cffdfe8b211fed7174ae74f20aeda5093cb32e568af5ba1c3fc",
+      "spikes_sha256": "b82c97e4a55b52aa2bb2713f82bea5d38415a569b128890cee7b79ba87dc1efb",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 103,
+      "seconds": 2.942857142857143,
+      "brain_steps": 29429,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 47,
+      "position": [
+        -34.839019775390625,
+        231.94662475585938
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 319,
+      "DAN_spikes": [
+        3,
+        4
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 0.7852739324553454,
+        "forward": 1.4764252213982374,
+        "attack": false
+      },
+      "frame_sha256": "bee26c815adce770041ea80524b23d020cd844857d7bab7c9e331e87f7a24608",
+      "sensory_sha256": "bee26c815adce770041ea80524b23d020cd844857d7bab7c9e331e87f7a24608",
+      "spikes_sha256": "91f033fc9b7139ab56035443f2a00760788de29da2678a3f2bf51f197d53c724",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 104,
+      "seconds": 2.9714285714285715,
+      "brain_steps": 29714,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 46,
+      "position": [
+        -34.55668640136719,
+        232.05555725097656
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 366,
+      "DAN_spikes": [
+        4,
+        3
+      ],
+      "MBON_spikes": [
+        1,
+        4
+      ],
+      "action": {
+        "turn": -0.45361331737705934,
+        "forward": 1.1102928119281248,
+        "attack": false
+      },
+      "frame_sha256": "337bf571e093fcf2a8becf2fdfc665fa4b8a7cfa6be02f11e31ef09e7ca63740",
+      "sensory_sha256": "337bf571e093fcf2a8becf2fdfc665fa4b8a7cfa6be02f11e31ef09e7ca63740",
+      "spikes_sha256": "b1fb3e863686857f1f197b3bcc6fc50bd64392d6d6484d628ab334ec589b4a29",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 105,
+      "seconds": 3.0,
+      "brain_steps": 30000,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 46,
+      "position": [
+        -34.30082702636719,
+        232.15426635742188
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 354,
+      "DAN_spikes": [
+        4,
+        3
+      ],
+      "MBON_spikes": [
+        0,
+        3
+      ],
+      "action": {
+        "turn": -0.34078272744103455,
+        "forward": 0.8341214823561471,
+        "attack": false
+      },
+      "frame_sha256": "2748dc139f3a3c305e3406b78e48f55ae1c090acad040cc4536cc2d6d3c84096",
+      "sensory_sha256": "2748dc139f3a3c305e3406b78e48f55ae1c090acad040cc4536cc2d6d3c84096",
+      "spikes_sha256": "2d1ac650386cb6eff1f2f52df352cb4ba4420d875bfd003328903c0590592eb4",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 106,
+      "seconds": 3.0285714285714285,
+      "brain_steps": 30286,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 46,
+      "position": [
+        -34.06895446777344,
+        232.24371337890625
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 247,
+      "DAN_spikes": [
+        3,
+        3
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 0.7876360363765486,
+        "forward": 0.6266442868523734,
+        "attack": false
+      },
+      "frame_sha256": "9edb4a3123106741ca13e01ef2dfee54668cafada86012b0bf08a0af35a45e77",
+      "sensory_sha256": "9edb4a3123106741ca13e01ef2dfee54668cafada86012b0bf08a0af35a45e77",
+      "spikes_sha256": "e5df8531f3efc32f14bdc5e4ad9f39d05822c38f0eca7c8a0eff7d9db48b5059",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 107,
+      "seconds": 3.057142857142857,
+      "brain_steps": 30571,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 46,
+      "position": [
+        -33.85882568359375,
+        232.32476806640625
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 179,
+      "DAN_spikes": [
+        3,
+        3
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 1.6364640346997,
+        "forward": 0.4712454361007889,
+        "attack": false
+      },
+      "frame_sha256": "7b631baf2910e0e6f79f49400c8b28cfa1c3cbc118be6142778a4f77b83948f6",
+      "sensory_sha256": "7b631baf2910e0e6f79f49400c8b28cfa1c3cbc118be6142778a4f77b83948f6",
+      "spikes_sha256": "3d1e7ef66b4d4bc2d2d51d464117fdcbb8b9257109a18783dbf41f373283f4aa",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 108,
+      "seconds": 3.085714285714286,
+      "brain_steps": 30857,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 46,
+      "position": [
+        -33.66841125488281,
+        232.39822387695312
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 241,
+      "DAN_spikes": [
+        3,
+        3
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 0.1857608919480768,
+        "forward": 0.3540290790781098,
+        "attack": false
+      },
+      "frame_sha256": "299a23f91ce9e2560f670d2fdbf2c91070fc856f1b6f152d142e0f638647e305",
+      "sensory_sha256": "299a23f91ce9e2560f670d2fdbf2c91070fc856f1b6f152d142e0f638647e305",
+      "spikes_sha256": "610afe648019868d51d52441cf984b8b8ab7150f54414e9d7199cd4b5193f34c",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 109,
+      "seconds": 3.1142857142857143,
+      "brain_steps": 31143,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 46,
+      "position": [
+        -33.495849609375,
+        232.46478271484375
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 253,
+      "DAN_spikes": [
+        2,
+        2
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 1.1832085732889535,
+        "forward": 0.2659688120694878,
+        "attack": false
+      },
+      "frame_sha256": "003d49045035df1e6ea198b88a92edc6c51c440cf80dd6822d53bfbaff134969",
+      "sensory_sha256": "003d49045035df1e6ea198b88a92edc6c51c440cf80dd6822d53bfbaff134969",
+      "spikes_sha256": "3f56f572d39bf5667114bafb1fd84b14a5d3a16603c862b49b2b209914bce696",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 110,
+      "seconds": 3.142857142857143,
+      "brain_steps": 31429,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 46,
+      "position": [
+        -33.3394775390625,
+        232.5251007080078
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 222,
+      "DAN_spikes": [
+        4,
+        4
+      ],
+      "MBON_spikes": [
+        0,
+        2
+      ],
+      "action": {
+        "turn": 0.8889003679798425,
+        "forward": 0.1998124255156091,
+        "attack": false
+      },
+      "frame_sha256": "0d651f236a9ecefaaa74e4dc78136479a01b1b35b6f64e328e0f4967e142ce9f",
+      "sensory_sha256": "0d651f236a9ecefaaa74e4dc78136479a01b1b35b6f64e328e0f4967e142ce9f",
+      "spikes_sha256": "42864e63d2b1879fc1f2581da1bd9da49b46e8b118423c2c1e4e94a85aa0b176",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 111,
+      "seconds": 3.1714285714285713,
+      "brain_steps": 31714,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 46,
+      "position": [
+        -33.19776916503906,
+        232.5797576904297
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 193,
+      "DAN_spikes": [
+        3,
+        3
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 1.7126162555195017,
+        "forward": 0.15026179217786795,
+        "attack": false
+      },
+      "frame_sha256": "81df437a56099ed6a3d08cd649a642dfcf1e96fab6f23376d92d1d0a91644b62",
+      "sensory_sha256": "81df437a56099ed6a3d08cd649a642dfcf1e96fab6f23376d92d1d0a91644b62",
+      "spikes_sha256": "343cfc6a9c6def726249aacfd495b109ac7ba04c5183ec2c7643fe10dfe42e66",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 112,
+      "seconds": 3.2,
+      "brain_steps": 32000,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 46,
+      "position": [
+        -33.06935119628906,
+        232.62928771972656
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 214,
+      "DAN_spikes": [
+        2,
+        1
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 2.3302779278981567,
+        "forward": 0.11288606706841242,
+        "attack": false
+      },
+      "frame_sha256": "0de41592a3f221d0058a19b55b34d979dbb2c2b132c78f1b244f915c369f6356",
+      "sensory_sha256": "0de41592a3f221d0058a19b55b34d979dbb2c2b132c78f1b244f915c369f6356",
+      "spikes_sha256": "1434935b2dcb398116cb1da51c9e5bd2568e66c956741753e8a33fd9cb2721e6",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 113,
+      "seconds": 3.2285714285714286,
+      "brain_steps": 32286,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 46,
+      "position": [
+        -32.952972412109375,
+        232.67416381835938
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 299,
+      "DAN_spikes": [
+        4,
+        4
+      ],
+      "MBON_spikes": [
+        0,
+        2
+      ],
+      "action": {
+        "turn": 0.7069973323326431,
+        "forward": 0.08480708204977115,
+        "attack": false
+      },
+      "frame_sha256": "c1ea085ae8e78b37e3bb6c4a73478bd7923d246192f8c2744c86f9b95c9c0259",
+      "sensory_sha256": "c1ea085ae8e78b37e3bb6c4a73478bd7923d246192f8c2744c86f9b95c9c0259",
+      "spikes_sha256": "0a702fd3f59d6bb52e9d28aaff078a7743b7df6b1c0aec613b6fd0de433f053f",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 114,
+      "seconds": 3.257142857142857,
+      "brain_steps": 32571,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 46,
+      "position": [
+        -32.84751892089844,
+        232.71482849121094
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 248,
+      "DAN_spikes": [
+        3,
+        3
+      ],
+      "MBON_spikes": [
+        1,
+        1
+      ],
+      "action": {
+        "turn": 2.619973087937756,
+        "forward": 0.06377613456866135,
+        "attack": false
+      },
+      "frame_sha256": "c05442e9420fc89f5c09823805e1ffaa42a7810f69aa4637bd316234e1259511",
+      "sensory_sha256": "c05442e9420fc89f5c09823805e1ffaa42a7810f69aa4637bd316234e1259511",
+      "spikes_sha256": "4e7d9797bae0a869d0481e12d104599281403c9927018c7a811c32c49ccf3cce",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 115,
+      "seconds": 3.2857142857142856,
+      "brain_steps": 32857,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 46,
+      "position": [
+        -32.751953125,
+        232.75167846679688
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 225,
+      "DAN_spikes": [
+        4,
+        3
+      ],
+      "MBON_spikes": [
+        2,
+        0
+      ],
+      "action": {
+        "turn": 0.9246344760911444,
+        "forward": 0.047912625691033155,
+        "attack": false
+      },
+      "frame_sha256": "a3abc723049f51174dd95500cf6e22eadd1857b45d946d631b3dc28b89a553a3",
+      "sensory_sha256": "a3abc723049f51174dd95500cf6e22eadd1857b45d946d631b3dc28b89a553a3",
+      "spikes_sha256": "c1840f4452f3de8a4a626159ed499373d51af58b2a468766ea5d165094eaad4e",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 116,
+      "seconds": 3.3142857142857145,
+      "brain_steps": 33143,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 46,
+      "position": [
+        -32.66535949707031,
+        232.78506469726562
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 251,
+      "DAN_spikes": [
+        2,
+        4
+      ],
+      "MBON_spikes": [
+        0,
+        2
+      ],
+      "action": {
+        "turn": 2.7819500346297423,
+        "forward": 0.03599496451352954,
+        "attack": false
+      },
+      "frame_sha256": "67df3756f01accebd069b7b05a3313fb246a8b1ec491e2529fb7a15bcb92800c",
+      "sensory_sha256": "67df3756f01accebd069b7b05a3313fb246a8b1ec491e2529fb7a15bcb92800c",
+      "spikes_sha256": "7c9eeca255d33869ce2c67f78f2ce6d32860e643bc3d63b332a8f20123d031cc",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 117,
+      "seconds": 3.342857142857143,
+      "brain_steps": 33429,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 46,
+      "position": [
+        -32.58689880371094,
+        232.8153076171875
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 244,
+      "DAN_spikes": [
+        4,
+        2
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 2.08997506044947,
+        "forward": 0.027041671201349534,
+        "attack": false
+      },
+      "frame_sha256": "7b4e40a1fe96e691f3a58e5e48c98baf2c16450ccce78809b06352108eb69c48",
+      "sensory_sha256": "7b4e40a1fe96e691f3a58e5e48c98baf2c16450ccce78809b06352108eb69c48",
+      "spikes_sha256": "ce3cf8aa00743c8445d35f04e9717c4d913b5b06c4234e0f34f014dce1b1c87d",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 118,
+      "seconds": 3.3714285714285714,
+      "brain_steps": 33714,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 46,
+      "position": [
+        -32.51580810546875,
+        232.84271240234375
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 285,
+      "DAN_spikes": [
+        4,
+        4
+      ],
+      "MBON_spikes": [
+        1,
+        0
+      ],
+      "action": {
+        "turn": 2.6158415447589296,
+        "forward": 0.020335722204032795,
+        "attack": false
+      },
+      "frame_sha256": "a8f4d12be193d89b85406dd7464621beb4350ad77980c57af01162202e0b760d",
+      "sensory_sha256": "a8f4d12be193d89b85406dd7464621beb4350ad77980c57af01162202e0b760d",
+      "spikes_sha256": "dd7f4c74d40cf845e50eaaa95edfe0cbb96e69c36aed530a7adb0bf22aff5583",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 119,
+      "seconds": 3.4,
+      "brain_steps": 34000,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 46,
+      "position": [
+        -32.451385498046875,
+        232.86753845214844
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 130,
+      "DAN_spikes": [
+        2,
+        1
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 3.0088373214815523,
+        "forward": 0.015277467860170852,
+        "attack": false
+      },
+      "frame_sha256": "f1de9b8c73e938f9170cb69e61b925b5eafb2c3fe9bef53098a97355aa7a22eb",
+      "sensory_sha256": "f1de9b8c73e938f9170cb69e61b925b5eafb2c3fe9bef53098a97355aa7a22eb",
+      "spikes_sha256": "457d40bec0dff01e80ef65a555ee97f477387715260592af1795d03b3228c11e",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 120,
+      "seconds": 3.4285714285714284,
+      "brain_steps": 34286,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 46,
+      "position": [
+        -32.39300537109375,
+        232.89002990722656
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 495,
+      "DAN_spikes": [
+        4,
+        3
+      ],
+      "MBON_spikes": [
+        0,
+        4
+      ],
+      "action": {
+        "turn": 3.3040803567582677,
+        "forward": 0.011477390469676428,
+        "attack": false
+      },
+      "frame_sha256": "78d1ec565a66da515fdd0b38f1c2096b330d870c8055aab9438e9b66a06cd444",
+      "sensory_sha256": "78d1ec565a66da515fdd0b38f1c2096b330d870c8055aab9438e9b66a06cd444",
+      "spikes_sha256": "43c4fc195cf4f8a2da31082792880a22dc89b9783838bea73858d6eafa09672f",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 121,
+      "seconds": 3.4571428571428573,
+      "brain_steps": 34571,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 46,
+      "position": [
+        -32.39300537109375,
+        232.89002990722656
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 131,
+      "DAN_spikes": [
+        2,
+        3
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 3.5288660338278035,
+        "forward": 0.00863116123558611,
+        "attack": false
+      },
+      "frame_sha256": "614c4ae0d087f4d3a9a94877963f2c179cbafd76fd89059e244861df5752163a",
+      "sensory_sha256": "614c4ae0d087f4d3a9a94877963f2c179cbafd76fd89059e244861df5752163a",
+      "spikes_sha256": "94abab2b4bd7e2ba5a32fa89e05e53762021a334ed23df3312233861dff1a753",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 122,
+      "seconds": 3.4857142857142858,
+      "brain_steps": 34857,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 46,
+      "position": [
+        -32.39300537109375,
+        232.89002990722656
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 196,
+      "DAN_spikes": [
+        3,
+        3
+      ],
+      "MBON_spikes": [
+        0,
+        0
+      ],
+      "action": {
+        "turn": 1.6074517682361733,
+        "forward": 0.006484268768505778,
+        "attack": false
+      },
+      "frame_sha256": "be69162342cda7c66504def585b046f3b8d112dd709a7c1137ac6c53e8782814",
+      "sensory_sha256": "be69162342cda7c66504def585b046f3b8d112dd709a7c1137ac6c53e8782814",
+      "spikes_sha256": "6b9a9ef0388bab61037eda2450f051fa3bb61728feefccf4fb2f8e8684a7b856",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 123,
+      "seconds": 3.5142857142857142,
+      "brain_steps": 35143,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 46,
+      "position": [
+        -32.39300537109375,
+        232.89002990722656
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 295,
+      "DAN_spikes": [
+        3,
+        3
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 2.2512717800769706,
+        "forward": 0.004871388717530344,
+        "attack": false
+      },
+      "frame_sha256": "a45db466c8fc6710ad63c1c0fa2f1b890fdf6e02a3cd8835b785c113e7641053",
+      "sensory_sha256": "a45db466c8fc6710ad63c1c0fa2f1b890fdf6e02a3cd8835b785c113e7641053",
+      "spikes_sha256": "9439d047c1b9b4a1fcc4e32bff1639597ca8eb3881967db179539f2d6777ed08",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 124,
+      "seconds": 3.5428571428571427,
+      "brain_steps": 35429,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 46,
+      "position": [
+        -32.39300537109375,
+        232.89002990722656
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 322,
+      "DAN_spikes": [
+        3,
+        4
+      ],
+      "MBON_spikes": [
+        1,
+        1
+      ],
+      "action": {
+        "turn": 2.734949686371443,
+        "forward": 0.003659692231225992,
+        "attack": false
+      },
+      "frame_sha256": "f47d7013626e03bb8cbaf61d291652a9e9ef4d47c43b58c70d3f322023624224",
+      "sensory_sha256": "f47d7013626e03bb8cbaf61d291652a9e9ef4d47c43b58c70d3f322023624224",
+      "spikes_sha256": "cba4a59dc5b94a33864d460e6d1eb3d4e59f3ac15e3ae8688eb2f13886f886e0",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 125,
+      "seconds": 3.5714285714285716,
+      "brain_steps": 35714,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 46,
+      "position": [
+        -32.39300537109375,
+        232.89002990722656
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 286,
+      "DAN_spikes": [
+        3,
+        1
+      ],
+      "MBON_spikes": [
+        1,
+        0
+      ],
+      "action": {
+        "turn": 2.0567211489976507,
+        "forward": 0.0027521407243038523,
+        "attack": false
+      },
+      "frame_sha256": "ec116a55f9f02771c2b88fcc776c227c77388db6d3ac0dc120d518b3f4cea159",
+      "sensory_sha256": "ec116a55f9f02771c2b88fcc776c227c77388db6d3ac0dc120d518b3f4cea159",
+      "spikes_sha256": "1de6df5f22f327b8e9b8043bc2c070fb4dd91989c41ad80a16976696d01946d7",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 126,
+      "seconds": 3.6,
+      "brain_steps": 36000,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 46,
+      "position": [
+        -32.39300537109375,
+        232.89002990722656
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 222,
+      "DAN_spikes": [
+        3,
+        4
+      ],
+      "MBON_spikes": [
+        2,
+        0
+      ],
+      "action": {
+        "turn": 2.5887910703326753,
+        "forward": 0.0020675804399944695,
+        "attack": false
+      },
+      "frame_sha256": "25547a5ec816e564bf21e81fbdb897baa425bd2c1735915637dfde83b52abd7d",
+      "sensory_sha256": "25547a5ec816e564bf21e81fbdb897baa425bd2c1735915637dfde83b52abd7d",
+      "spikes_sha256": "211a3efce2b8c79310dc3839a3b54fb6294af330a480004940975a7886b57439",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 127,
+      "seconds": 3.6285714285714286,
+      "brain_steps": 36286,
+      "finished": false,
+      "dead": false,
+      "health": 20.0,
+      "kills": 0,
+      "ammo": 46,
+      "position": [
+        -32.39300537109375,
+        232.89002990722656
+      ],
+      "damage": 0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 226,
+      "DAN_spikes": [
+        4,
+        2
+      ],
+      "MBON_spikes": [
+        0,
+        1
+      ],
+      "action": {
+        "turn": 1.944861951638065,
+        "forward": 0.0015532958900308586,
+        "attack": false
+      },
+      "frame_sha256": "e78a99c19e42e09909d69958ddb26342196f11bb9269de55b94713e1fa3a637f",
+      "sensory_sha256": "e78a99c19e42e09909d69958ddb26342196f11bb9269de55b94713e1fa3a637f",
+      "spikes_sha256": "a5d9cd3f76722e0640c36830941ecb06f51271f7bb697a65bdc7d643efabc207",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    },
+    {
+      "tick": 128,
+      "seconds": 3.657142857142857,
+      "brain_steps": 36571,
+      "finished": true,
+      "dead": true,
+      "health": 0.0,
+      "kills": 0,
+      "ammo": 46,
+      "position": [
+        -32.39300537109375,
+        232.89002990722656
+      ],
+      "damage": 20.0,
+      "US_active": false,
+      "US_steps": 0,
+      "KC_spikes": 315,
+      "DAN_spikes": [
+        4,
+        4
+      ],
+      "MBON_spikes": [
+        0,
+        3
+      ],
+      "action": {
+        "turn": 1.4625639103152386,
+        "forward": 0.001168100650478918,
+        "attack": false
+      },
+      "frame_sha256": "38f76b6da19f282a05d4768b56c8f7929bddd8bff5051e4068fc56d49f7c25f1",
+      "sensory_sha256": "38f76b6da19f282a05d4768b56c8f7929bddd8bff5051e4068fc56d49f7c25f1",
+      "spikes_sha256": "bf8f7caa188270185cdbca3225a4cf0cd50d04144f9ea11f9fbfcf35a3cc792c",
+      "memory": {
+        "plastic_edges": 4184,
+        "changed_edges": 1885,
+        "mean_efficacy": 1.0100672245025635,
+        "minimum_efficacy": 0.3989255726337433,
+        "sha256": "9102567ed8877590826412e9e3b66ee8792d544b3813a06c52b8d8421ce67068",
+        "model": "adaptive-centered-v6"
+      }
+    }
+  ]
+}

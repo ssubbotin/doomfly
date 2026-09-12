@@ -1,0 +1,46 @@
+{
+  "model": "adaptive-centered-v6",
+  "status": "exploratory; physiological validation failed/pending",
+  "execution": {
+    "backend": "cpu",
+    "backend_metadata": {
+      "name": "cpu",
+      "build": {
+        "model": "adaptive-centered-v6",
+        "source_sha256": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+        "binary_sha256": "48641b2f171dee4d1f3e7e43e46049390bc63cbf040152db5ec30fc0b71bc743",
+        "flags": [
+          "-O3",
+          "-std=c++17",
+          "-shared",
+          "-fPIC"
+        ]
+      }
+    },
+    "metal_validation_sha256": null,
+    "metal_validation_horizon_ms": null
+  },
+  "training_seeds": [
+    42051,
+    42052,
+    42053
+  ],
+  "heldout_seeds": [
+    62051,
+    62052,
+    62053
+  ],
+  "episode_seconds": 30.0,
+  "training_episodes": 2,
+  "eta": 0.001,
+  "arms": [
+    "plastic",
+    "frozen",
+    "shuffled"
+  ],
+  "reinforcement": "Observed damage schedules 200 ms +4 mV-equivalent PPL101 stimulation from the next tic. No game state reaches the fixed decoder.",
+  "test": "Weights frozen and imposed reinforcement off. Same held-out maps in every arm. Memory erasure and black sensory input tested separately.",
+  "shuffling": "Circularly shift donor exposure; record actual delivered duration and mark mismatches, including early recipient deaths.",
+  "fast_mode": "No UI or pacing. Every 35 Hz game frame and every 0.1 ms neural step retained. Two seconds dark equilibration per episode.",
+  "claim_gate": "Requires independently validated physiology/conditioning and held-out survival benefit across independent replicas, frozen and timing-shuffled controls, retention and erasure. This exploratory runner cannot certify the claim."
+}

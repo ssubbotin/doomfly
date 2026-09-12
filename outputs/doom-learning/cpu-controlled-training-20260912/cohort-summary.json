@@ -1,0 +1,125 @@
+{
+  "schema": 1,
+  "experiment": "controlled adaptive-centered-v6 CPU cohort",
+  "training_source_commit": "2dd86b5a63d0a3ca88595ae1a1ecad4ad261c5fc",
+  "analysis_source_commit": "8dbf9c705d63fe9a404ac79fa284192e26f1c00d",
+  "analysis_source_sha256": "09b6da5f99eea6944373071767040cecefdc1f9c24ebb2ff61134a699c476f8c",
+  "complete": true,
+  "episodes": 54,
+  "game_tics": 8160,
+  "censored_episodes": 0,
+  "replicates": [
+    {
+      "training_replicate": 42051,
+      "plastic": {
+        "mean_observed_seconds": 3.657142857142857,
+        "changed_edges_after_training": 1885
+      },
+      "frozen": {
+        "mean_observed_seconds": 3.657142857142857,
+        "changed_edges_after_training": 0
+      },
+      "shuffled": {
+        "mean_observed_seconds": 3.657142857142857,
+        "changed_edges_after_training": 1897
+      }
+    },
+    {
+      "training_replicate": 42052,
+      "plastic": {
+        "mean_observed_seconds": 3.657142857142857,
+        "changed_edges_after_training": 1934
+      },
+      "frozen": {
+        "mean_observed_seconds": 3.657142857142857,
+        "changed_edges_after_training": 0
+      },
+      "shuffled": {
+        "mean_observed_seconds": 3.657142857142857,
+        "changed_edges_after_training": 1897
+      }
+    },
+    {
+      "training_replicate": 42053,
+      "plastic": {
+        "mean_observed_seconds": 5.485714285714285,
+        "changed_edges_after_training": 1947
+      },
+      "frozen": {
+        "mean_observed_seconds": 3.657142857142857,
+        "changed_edges_after_training": 0
+      },
+      "shuffled": {
+        "mean_observed_seconds": 3.657142857142857,
+        "changed_edges_after_training": 2031
+      }
+    }
+  ],
+  "sampling_unit": "training replicate, not game frames or biological animals",
+  "timing": {
+    "episode_awake_seconds": 1042.0137337500128,
+    "native_awake_seconds": 966.7352782464659,
+    "native_fraction_of_episode_awake_time": 0.9277567530394885,
+    "brain_seconds_including_episode_warmup": 341.14080000000035,
+    "brain_seconds_per_episode_awake_second": 0.3273860880626768,
+    "episode_timers_exclude_system_suspend": true,
+    "episode_timers_exclude_construction_and_standalone_retention": true,
+    "process_launch_utc": "2026-09-12T09:13:59.007+00:00",
+    "process_launch_source": "live-process sample Launch Time",
+    "results_written_utc": "2026-09-12T09:44:47.557Z",
+    "whole_process_elapsed_seconds": 1848.5507156848907,
+    "brain_seconds_per_whole_process_elapsed_second": 0.18454500442180574,
+    "whole_process_elapsed_scope": "includes model construction, standalone retention, system suspend and normal reporting; results write precedes process exit"
+  },
+  "sleep_intervention": {
+    "initial_assertion": "caffeinate -i",
+    "attached_assertion": "caffeinate -s -w <training-pid>",
+    "attached_utc": "2026-09-12T09:39:37+00:00",
+    "scope": "existing training process only; no permanent power-setting change",
+    "before_probe": {
+      "realtime_seconds": 99.11930990219116,
+      "monotonic_seconds": 30.01573129100143
+    },
+    "after_probe": {
+      "realtime_seconds": 55.001999855041504,
+      "monotonic_seconds": 55.001542165999126
+    },
+    "training_and_assertion_processes_exited": true,
+    "PreventSystemSleep_after_job": 0
+  },
+  "technical_integrity_passed": true,
+  "survival_learning_demonstrated": false,
+  "biologically_validated": false,
+  "announcement_ready": false,
+  "limitations": [
+    "Eight of nine held-out comparisons showed no benefit.",
+    "The only beneficial held-out start was not the predeclared black/retention/erasure test start.",
+    "Physiological recovery and conditioning validation remain failed or pending.",
+    "Original suspend-excluding timers are retained without relabeling or editing raw episode evidence."
+  ],
+  "files": {
+    "protocol.json": {
+      "sha256": "c36d5c226b686a51dfcf8a8aa5300f859c10174db978a1dcce5d5b7af9479478",
+      "bytes": 1715
+    },
+    "provenance.json": {
+      "sha256": "9035e5c4c4e5c13af7ae31ac3a5729ff4d92e1fdc288f11089e76e8a721f3aab",
+      "bytes": 7971
+    },
+    "results.json": {
+      "sha256": "d53c038f733b62d4ca9eb23602e6802c0186ae0da51db43cfc768d60ac723edf",
+      "bytes": 108090
+    },
+    "analysis.json": {
+      "sha256": "324b50423eb1d642c633cb7c0ecd2f470094db2091798ddbc98bdfcb6032b7a7",
+      "bytes": 4844
+    }
+  },
+  "transferred_training_evidence": {
+    "files": 177,
+    "bytes": 10845364,
+    "manifest_sha256": "e7cf9cc33e76af52e4dfe7f413734986936c51769cbd3780217bbf62d8e0a7dd",
+    "results_mtime": 1789206287.5577157,
+    "verification": "all 177 JSON/learned-efficacy files matched by canonical path/byte/SHA-256 manifest; game assets and source snapshots excluded"
+  }
+}

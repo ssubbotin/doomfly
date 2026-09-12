@@ -1,0 +1,61 @@
+{
+  "status": "complete",
+  "summary": {
+    "seed": 43053,
+    "seconds_limit": 30.0,
+    "learning_enabled": true,
+    "weights_frozen": false,
+    "execution": {
+      "backend": "cpu",
+      "backend_metadata": {
+        "name": "cpu",
+        "build": {
+          "model": "adaptive-centered-v6",
+          "source_sha256": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+          "binary_sha256": "48641b2f171dee4d1f3e7e43e46049390bc63cbf040152db5ec30fc0b71bc743",
+          "flags": [
+            "-O3",
+            "-std=c++17",
+            "-shared",
+            "-fPIC"
+          ]
+        }
+      },
+      "metal_validation_sha256": null,
+      "metal_validation_horizon_ms": null
+    },
+    "vision": true,
+    "game_tics": 672,
+    "brain_seconds": 19.2,
+    "survival_seconds": 19.2,
+    "dead": true,
+    "right_censored": false,
+    "end_health": 0.0,
+    "damage_total": 80.0,
+    "US_tics": 24,
+    "US_ms": 600.0,
+    "before": {
+      "plastic_edges": 4184,
+      "changed_edges": 1867,
+      "mean_efficacy": 1.0703140497207642,
+      "minimum_efficacy": 0.400602251291275,
+      "sha256": "cd620275ff1381a68ca228b349ae4c4e17ea8f4269ec53a93167d6434100a4d4",
+      "model": "adaptive-centered-v6"
+    },
+    "after": {
+      "plastic_edges": 4184,
+      "changed_edges": 2031,
+      "mean_efficacy": 0.9563575387001038,
+      "minimum_efficacy": 0.10538391768932343,
+      "sha256": "8e0ac24e6cca0f59cd4e53ed4f98c31e70503c0496abdccd3650018910afce99",
+      "model": "adaptive-centered-v6"
+    },
+    "timing": {
+      "wall_seconds": 87.02418075000242,
+      "neural_backend_seconds": 81.3560508451119,
+      "kernel_seconds": 81.3560508451119,
+      "brain_seconds_including_warmup": 21.2,
+      "brain_to_wall_ratio": 0.24361045191453193
+    }
+  }
+}

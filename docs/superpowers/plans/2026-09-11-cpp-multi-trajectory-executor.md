@@ -471,7 +471,7 @@ passed. The separately recorded M4 Pro suite passed 222 tests with three skips.
 These checks establish the executor's tested numerical behavior, not learned
 survival or biological validity.
 
-The first complete training cohort uses the serial CPU reference under
+The completed 54-episode training cohort used the serial CPU reference under
 `docs/experiments/2026-09-12-controlled-cpu-training.md`. Connecting independent
 RGB, reinforcement, plasticity, and episode/reset schedules to the shared-graph
 executor remains the next architectural milestone.
