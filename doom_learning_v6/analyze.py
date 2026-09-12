@@ -35,8 +35,11 @@ def analyze(folder):
                 row[mode]={'seconds':e['survival_seconds'],'censored':e['right_censored']}
             row['observed_plastic_minus_frozen']=row['plastic']['seconds']-row['frozen']['seconds'];controls.append(row)
     report={'technical_checks':checks,'all_technical_checks_pass':all(checks.values()),'erasure_identity':identity,'held_out':controls,
+        'sampling':{'training_replicates':len(r['protocol']['training_seeds']),
+            'held_out_starts':len(r['protocol']['heldout_seeds']),
+            'uncertainty_unit':'training replicate','game_frames_are_independent_samples':False},
         'announcement_ready':False,'survival_learning_demonstrated':False,
-        'reason':'Failed upstream physiological/conditioning validation. One training replica, descriptive pilot only; observed/censored durations do not justify a general learning claim.',
+        'reason':'Failed upstream physiological/conditioning validation. Exploratory controlled cohort; observed/censored durations do not justify a general learning claim.',
         'timing_scope':'Episode timing includes each two-second warmup; excludes model construction and standalone five-second retention interval.'}
     save_json(p/'analysis.json',report);print(json.dumps(report,indent=2))
     if not all(checks.values()):raise AssertionError('Pilot technical integrity check failed; inspect preserved report')
