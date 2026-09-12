@@ -1,0 +1,1256 @@
+{
+  "complete": true,
+  "protocol": {
+    "schema": 1,
+    "model": "adaptive-centered-v6",
+    "connectome": "MaleCNS v1.0",
+    "neurons": 166700,
+    "retained_edges": 25582938,
+    "plastic_slots": 4184,
+    "model_identity": {
+      "ids_sha256": "6b6b40c3bddf84b1281ef0b18db06927c2bf61c5f4cb32a4219ec9b7839dc2e5",
+      "out_ptr_sha256": "a29aa0296125a5daa972c12d17711360d01a1209cd9cd9d7ccb1f6959224bcaf",
+      "out_post_sha256": "4cc5e857d3481f433576f35ddb8d580cc33cf8e22b6651fa03e08cde5d956d90",
+      "original_weight_sha256": "d95171c2d59cfe3ebef2e5bd52be779b8f74754d718fc8941a93b8f2921c632b",
+      "plastic_edges_sha256": "550335ad546f5c3106e4988426197ad24d8556367c9285e2f4c8c33f37f3cc68",
+      "configuration_sha256": "9499403434ee781463272a83fcd88ee3df37acca3aeb220f436810b0028bfbd3"
+    },
+    "configuration": {
+      "initial_weight": "40a2e78d7299197d24ba03a24c94a8e1cd0eb45a653d69f001fc3acee2fdc779",
+      "modulation_mask": "914dcf25dae442aecbcf27565f7bc8be76ea8254e7fbc944f2efe6e2413e6d5a",
+      "rule": {
+        "trace_kc_seconds": 1.0,
+        "trace_dan_seconds": 1.0,
+        "memory_decay_seconds": 1800.0,
+        "weight_filter_seconds": 0.05,
+        "minimum_fraction": 0.1,
+        "maximum_fraction": 2.0,
+        "maximum_rate_bin_ms": 10.0,
+        "source": "https://doi.org/10.1038/s41586-024-07819-w",
+        "interpretation": "Centered rate-rule adaptation on existing individual edges, not an exact reproduction of the published nine-unit model. Equal trace constants, efficacy bounds, gain and 50 ms weight filter require calibration."
+      },
+      "rule_sha256": "0df2ae1bf10b97a213064b3ac3934227539d08e51521a99cdb56fe7f5b44b725",
+      "tonic": "9987b0e2557db3948dd617b9a70397a9ad7bf0367f8cf9e3e29af4d8d05f0420",
+      "dan_baseline_hz": "986c1936fd3d3ff90de54565be34655fda3e5157d9bd1ee7e032be868fb9a799",
+      "rest": "275bd935e4f1a56cbc2ca22b8f258f1cef511894f42f531e9a52476dd7b02946",
+      "adaptation_jump": 8.0,
+      "adaptation_tau": 200.0,
+      "retina": "5ec145156d998f582e5d8f08c4174e10f7f853d34745118adab8589f192d04b4",
+      "uv": "51f7dafd4355a06176418e22373ffcdf5bc066f75050da6dcbaaaccbad55a714",
+      "lamina": "22d6fa8ac7aa40700d09394aea1cf35226711d2efc78bc716882920ba180e47e",
+      "sugar": "89b057c7b57d5e783f608815b4219b17b54c812c3fa229bcb78b1cafa30d37a1",
+      "pre": "a58bac7b66de7bbc48f47c4c5d12db216cbfbeed4a2148020ac4638dde143acd",
+      "gain": "94a6bdd055ad6010d8e476c97eea5af1c240009c7068be0d82b4bfa07fdc5cfd",
+      "kc_mask": "43e6ed840af2d547a3ae5848155e639f6e2abf60d5b7caa83c4298a3fb64c617",
+      "dan_index": "2a62818a14eb7fb9a288eaf1dd4e93dec4e66de1428f12e844ca2ba5497823dd",
+      "r8": "27c803c738f86c0509cabc57269e265bac832d8b4477773688e59a14d671f0ff",
+      "r8_uv": "e567b93a289fa467ec1096295c4682dce0dfd4f7d92844159f7eb4a380e22719",
+      "r8_channel": "350fc24c7884470b78254805a557e57bf12b89b71ea8a32af2f4929e951555ae",
+      "corrected_edges": "64916a520f2d1e7daf30bfd027a67d53ceb0f8270097b17c0635572ce2db658d"
+    },
+    "execution": {
+      "backend": "metal",
+      "backend_metadata": {
+        "schema": 2,
+        "abi_version": 5,
+        "sources": {
+          "api.h": "b847deea0effd85435b438a505abd0783f2d67b5dae1148ac81cda0a652ebbd2",
+          "backend.mm": "f5f825be083ddb060e36c84184acd1fa07fecbcecebc353a155268d5e414b9de",
+          "kernels.metal": "9daea7ee70af0ad31a7a2396eb9f357f7abc097f4cdab16cd53e9e0de8923914",
+          "decay_tables.h": "85702606729011f942be2174e4ba074d1ca90066f586d6980025458862570065"
+        },
+        "binaries": {
+          "air": "9bc2cfeecbbe832378d748e03baf126e2e1672cd137107f881b73c773e99daa2",
+          "metallib": "ffacca0549990039cc2c0201c4e100a4f127b10301cd7fedb1042d9dfcfa73ab",
+          "library": "1d96f5235c3900fabef6596cb6bef3cae162d20879c8ceace910a08a6861c29a"
+        },
+        "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+        "sdk": "26.5",
+        "macos": "26.6.2",
+        "architecture": "arm64",
+        "metal_language": "macos-metal2.4",
+        "build_configuration": {
+          "abi_version": 5,
+          "builder_sha256": "69af01512cf917fd7f506b8e617e5151c6962b7724edc20906e514718fc1f4d2",
+          "metal_compile_flags": [
+            "-std=macos-metal2.4",
+            "-fno-fast-math",
+            "-ffp-contract=off"
+          ],
+          "library_compile_flags": [
+            "-O3",
+            "-std=c++17",
+            "-dynamiclib",
+            "-fobjc-arc",
+            "-arch",
+            "arm64",
+            "-mmacosx-version-min=13.0"
+          ]
+        },
+        "device": {
+          "name": "Apple M4 Pro",
+          "recommended_working_set": 19069665280,
+          "has_unified_memory": true,
+          "supports_apple7": true,
+          "supported": true
+        }
+      },
+      "metal_validation_sha256": "491b3a6c95fb8e9e7822fee0e5cbe5b7505351419d2ba6c3bafdb26d38988524",
+      "metal_validation_horizon_ms": 80
+    },
+    "calibration": {
+      "MBON_current": 9.87,
+      "DAN_current": 11.3125,
+      "observed_MBON_hz": [
+        37,
+        37
+      ],
+      "observed_DAN_hz": [
+        23,
+        19
+      ],
+      "target_MBON_hz": 37.16625,
+      "target_MBON_sd": 9.06014,
+      "target_DAN_hz": 20.09,
+      "target_DAN_sd": 4.30193,
+      "evidence": "https://doi.org/10.1038/s41586-024-07819-w",
+      "source_data": "Figure 1, panels d/e, n=20 flies per type",
+      "limits": "A fitted background current is not identified pacemaker physiology. This only constrains baseline rates, not cue responses, burst statistics or learned behavior."
+    },
+    "training": [
+      {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 0,
+        "video_sha256": "4fb2a7b08d2a3e91244073ff9b7dc0b848eefcb9e6235d8a357a0330af4f5efe",
+        "control_sha256": "fe6a070d684a8e72beb1e36a0cec30e1e4a6ab2409bfc039ba4460e39212c54a"
+      }
+    ],
+    "evaluation": [
+      {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 1,
+        "video_sha256": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501",
+        "control_sha256": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+      }
+    ],
+    "epochs": 1,
+    "eta": 0.001,
+    "diagnostic_limit": null,
+    "arms": [
+      "plastic",
+      "frozen",
+      "shifted"
+    ],
+    "readouts": [
+      {
+        "index": 306,
+        "id": "10331",
+        "type": "MN9",
+        "side": "L"
+      },
+      {
+        "index": 332,
+        "id": "10360",
+        "type": "DNa02",
+        "side": "R"
+      },
+      {
+        "index": 706,
+        "id": "10763",
+        "type": "MDN",
+        "side": "R"
+      },
+      {
+        "index": 725,
+        "id": "10783",
+        "type": "DNp09",
+        "side": "L"
+      },
+      {
+        "index": 1087,
+        "id": "11177",
+        "type": "DNp09",
+        "side": "R"
+      },
+      {
+        "index": 1196,
+        "id": "11288",
+        "type": "MDN",
+        "side": "L"
+      },
+      {
+        "index": 1240,
+        "id": "11332",
+        "type": "MDN",
+        "side": "R"
+      },
+      {
+        "index": 2194,
+        "id": "12348",
+        "type": "MDN",
+        "side": "L"
+      },
+      {
+        "index": 6367,
+        "id": "16949",
+        "type": "MN9",
+        "side": "R"
+      },
+      {
+        "index": 131957,
+        "id": "523769",
+        "type": "DNa02",
+        "side": "L"
+      },
+      {
+        "index": 48,
+        "id": "10059",
+        "type": "DNp20",
+        "side": "R"
+      },
+      {
+        "index": 146,
+        "id": "10162",
+        "type": "DNp20",
+        "side": "L"
+      },
+      {
+        "index": 489,
+        "id": "10527",
+        "type": "DNpe017",
+        "side": "L"
+      },
+      {
+        "index": 142493,
+        "id": "555871",
+        "type": "DNpe017",
+        "side": "R"
+      }
+    ],
+    "shift_offsets": [
+      491
+    ],
+    "teacher": "After decoding, min(abs(student-target)/6,1); next original frame gets 4*error at PPL101. First frame and all evaluations receive zero teacher current.",
+    "shift": "Circular positive np.roll turn targets only. Original RGB/raw controls unchanged; feedback dose can differ and is measured.",
+    "timing": {
+      "source_hz": 35,
+      "neural_dt_ms": 0.1,
+      "warmup_ms": 2000,
+      "retention_ms": 5000,
+      "frame_end_steps": "round((index+1)*10000/35)"
+    },
+    "evaluation_mode": "Teacher-free frozen efficacies, learned full checkpoint restored independently per episode; decoder and fast state reset.",
+    "retention_mode": "Unfrozen efficacies; no teacher or learning during five seconds dark, then frozen teacher-free evaluation.",
+    "target_calibration": "Local ViZDoom 1.3.0: 320 yaw units for held count below six, then 640; 360/65536 degrees per unit. Original collector engine provenance unresolved.",
+    "claim_gate": "Exploratory turn-only reinforcement. Physiological validation failed/pending. Changed weights and numeric controls establish no biological learning or held-out gameplay; hazard-arena transfer and scientific launch gates remain required."
+  },
+  "episodes": [
+    {
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 0,
+        "video_sha256": "4fb2a7b08d2a3e91244073ff9b7dc0b848eefcb9e6235d8a357a0330af4f5efe",
+        "control_sha256": "fe6a070d684a8e72beb1e36a0cec30e1e4a6ab2409bfc039ba4460e39212c54a"
+      },
+      "training": true,
+      "weights_frozen": false,
+      "target_shift": 0,
+      "source_frame_count": 982,
+      "diagnostic_limit": null,
+      "frames": 982,
+      "complete": true,
+      "brain_steps": 280571,
+      "brain_seconds": 28.057100000000002,
+      "recorded_seconds": 28.057142857142857,
+      "wall_seconds": 190.57489129200258,
+      "kernel_seconds": 182.6450607358347,
+      "warmup": {
+        "requested_ms": 2000,
+        "brain_steps": 20000,
+        "brain_seconds": 2.0,
+        "wall_seconds": 4.560544082996785,
+        "kernel_seconds": 4.388398348943156
+      },
+      "teacher_dose_current_ms": 63446.976354264,
+      "pending_teacher_current": 4.0,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 0,
+        "mean_efficacy": 1.0,
+        "minimum_efficacy": 1.0,
+        "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 1953,
+        "mean_efficacy": 0.9321745038032532,
+        "minimum_efficacy": 0.45040401816368103,
+        "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+        "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+        "rate_kc_sha256": "016f8c049d4c3556d34f68760396954c5c9eaae6055d8deda234df3e5227d920",
+        "rate_dan_sha256": "c7e7911ad89b3b683f53be50122b60ea2ae1d514dfa83c5975a488a71d700045"
+      },
+      "score": {
+        "mae_degrees": 3.417838675920911,
+        "direction_support": {
+          "left": 618,
+          "idle": 96,
+          "right": 268
+        },
+        "direction_recall": {
+          "left": 0.22815533980582525,
+          "idle": 0.125,
+          "right": 0.6753731343283582
+        },
+        "balanced_direction_recall": 0.34284282471139454,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -3.014415733197556,
+            "mae_degrees": 2.372920369606066,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 1.0,
+              "idle": 0.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 3.014415733197556,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 1.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "right": {
+            "turn_degrees": 3.014415733197556,
+            "mae_degrees": 4.470503754443526,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 0.0,
+              "right": 1.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "arm": "plastic",
+      "phase": "training",
+      "invariants_unchanged": true
+    },
+    {
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 1,
+        "video_sha256": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501",
+        "control_sha256": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+      },
+      "training": false,
+      "weights_frozen": true,
+      "target_shift": 0,
+      "source_frame_count": 988,
+      "diagnostic_limit": null,
+      "frames": 988,
+      "complete": true,
+      "brain_steps": 282286,
+      "brain_seconds": 28.2286,
+      "recorded_seconds": 28.228571428571428,
+      "wall_seconds": 190.80901716700464,
+      "kernel_seconds": 183.67254598403088,
+      "warmup": {
+        "requested_ms": 2000,
+        "brain_steps": 20000,
+        "brain_seconds": 2.0,
+        "wall_seconds": 4.499392749996332,
+        "kernel_seconds": 4.379892950011708
+      },
+      "teacher_dose_current_ms": 0.0,
+      "pending_teacher_current": 0.0,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 1953,
+        "mean_efficacy": 0.9321745038032532,
+        "minimum_efficacy": 0.45040401816368103,
+        "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+        "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+        "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 1953,
+        "mean_efficacy": 0.9321745038032532,
+        "minimum_efficacy": 0.45040401816368103,
+        "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+        "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+        "rate_kc_sha256": "7232519aa1ab54cffe5a845ff493c4a1c3f9bcc57bdd0b002cf1e3508d4b7b91",
+        "rate_dan_sha256": "f3fa0ca35405925dea13353208bb68db564557713338e167219b2309ccaae452"
+      },
+      "score": {
+        "mae_degrees": 3.2029875211602943,
+        "direction_support": {
+          "left": 624,
+          "idle": 176,
+          "right": 188
+        },
+        "direction_recall": {
+          "left": 0.2644230769230769,
+          "idle": 0.045454545454545456,
+          "right": 0.7074468085106383
+        },
+        "balanced_direction_recall": 0.33910814362942027,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -2.709664410425101,
+            "mae_degrees": 2.168082318669172,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 1.0,
+              "idle": 0.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 2.709664410425101,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 1.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "right": {
+            "turn_degrees": 2.709664410425101,
+            "mae_degrees": 4.41124241146798,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 0.0,
+              "right": 1.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "arm": "plastic",
+      "phase": "held_out",
+      "invariants_unchanged": true
+    },
+    {
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 1,
+        "video_sha256": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501",
+        "control_sha256": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+      },
+      "training": false,
+      "weights_frozen": true,
+      "target_shift": 0,
+      "source_frame_count": 988,
+      "diagnostic_limit": null,
+      "frames": 988,
+      "complete": true,
+      "brain_steps": 282286,
+      "brain_seconds": 28.2286,
+      "recorded_seconds": 28.228571428571428,
+      "wall_seconds": 181.85965333299828,
+      "kernel_seconds": 174.74020815181575,
+      "warmup": {
+        "requested_ms": 2000,
+        "brain_steps": 20000,
+        "brain_seconds": 2.0,
+        "wall_seconds": 4.485897291000583,
+        "kernel_seconds": 4.366996489072335
+      },
+      "teacher_dose_current_ms": 0.0,
+      "pending_teacher_current": 0.0,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 1953,
+        "mean_efficacy": 0.9326412677764893,
+        "minimum_efficacy": 0.4348071217536926,
+        "sha256": "0202933ac1a15eb9f0430431f620cd848690be38a9d3c2e4630e6ff52227127b",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "9ec372f0336f65a2d442b18f8f81d48400179aa1a9b658c2830c9ff3dbe9c8b3",
+        "memory_w_sha256": "ef71aa4f97b518a4e573b2a47b7a7cc2b59067020591ff4ce22645e1a3fda5e8",
+        "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 1953,
+        "mean_efficacy": 0.9326412677764893,
+        "minimum_efficacy": 0.4348071217536926,
+        "sha256": "0202933ac1a15eb9f0430431f620cd848690be38a9d3c2e4630e6ff52227127b",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "9ec372f0336f65a2d442b18f8f81d48400179aa1a9b658c2830c9ff3dbe9c8b3",
+        "memory_w_sha256": "ef71aa4f97b518a4e573b2a47b7a7cc2b59067020591ff4ce22645e1a3fda5e8",
+        "rate_kc_sha256": "7147d190c3e6172a4d86dd8f96e91153eee532092ee583b5a8bbd5e8cf985ab4",
+        "rate_dan_sha256": "8bc20b4925e6e0b1b95ed1068f84e009a83ab248016ad25d6664fea9fc5ebb1a"
+      },
+      "score": {
+        "mae_degrees": 3.142525792501338,
+        "direction_support": {
+          "left": 624,
+          "idle": 176,
+          "right": 188
+        },
+        "direction_recall": {
+          "left": 0.3108974358974359,
+          "idle": 0.06818181818181818,
+          "right": 0.6329787234042553
+        },
+        "balanced_direction_recall": 0.3373526591611698,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -2.709664410425101,
+            "mae_degrees": 2.168082318669172,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 1.0,
+              "idle": 0.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 2.709664410425101,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 1.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "right": {
+            "turn_degrees": 2.709664410425101,
+            "mae_degrees": 4.41124241146798,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 0.0,
+              "right": 1.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "arm": "plastic",
+      "phase": "retention_5s",
+      "invariants_unchanged": true,
+      "retention": {
+        "brain_steps": 50000,
+        "brain_seconds": 5.0,
+        "wall_seconds": 33.64015104200371,
+        "kernel_seconds": 33.22962179908791,
+        "weights_frozen": false,
+        "learning": false,
+        "teacher_current": 0.0,
+        "before": {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "016f8c049d4c3556d34f68760396954c5c9eaae6055d8deda234df3e5227d920",
+          "rate_dan_sha256": "c7e7911ad89b3b683f53be50122b60ea2ae1d514dfa83c5975a488a71d700045"
+        },
+        "after": {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9326412677764893,
+          "minimum_efficacy": 0.4348071217536926,
+          "sha256": "0202933ac1a15eb9f0430431f620cd848690be38a9d3c2e4630e6ff52227127b",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "9ec372f0336f65a2d442b18f8f81d48400179aa1a9b658c2830c9ff3dbe9c8b3",
+          "memory_w_sha256": "ef71aa4f97b518a4e573b2a47b7a7cc2b59067020591ff4ce22645e1a3fda5e8",
+          "rate_kc_sha256": "ae8bdc0c2cb983fe416b9d17d2bc45454c93de86a7b747199488930753b25537",
+          "rate_dan_sha256": "c6a69b29d4343df1c3a1c699085bed6264cb3c69d25aaccbe77e040925cfaabd"
+        }
+      }
+    },
+    {
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 1,
+        "video_sha256": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501",
+        "control_sha256": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+      },
+      "training": false,
+      "weights_frozen": true,
+      "target_shift": 0,
+      "source_frame_count": 988,
+      "diagnostic_limit": null,
+      "frames": 988,
+      "complete": true,
+      "brain_steps": 282286,
+      "brain_seconds": 28.2286,
+      "recorded_seconds": 28.228571428571428,
+      "wall_seconds": 191.12522687499586,
+      "kernel_seconds": 183.94682610511518,
+      "warmup": {
+        "requested_ms": 2000,
+        "brain_steps": 20000,
+        "brain_seconds": 2.0,
+        "wall_seconds": 4.507477708997612,
+        "kernel_seconds": 4.387827323938836
+      },
+      "teacher_dose_current_ms": 0.0,
+      "pending_teacher_current": 0.0,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 0,
+        "mean_efficacy": 1.0,
+        "minimum_efficacy": 1.0,
+        "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 0,
+        "mean_efficacy": 1.0,
+        "minimum_efficacy": 1.0,
+        "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_kc_sha256": "ab060078ba6b671441972d1fd1f5d27fe66ab6a4bcf82c67ba690aad2153a593",
+        "rate_dan_sha256": "dbce010483d8c6b665756df830071245222d15901ef589b1e9e118ed5313f9ad"
+      },
+      "score": {
+        "mae_degrees": 3.153095521525519,
+        "direction_support": {
+          "left": 624,
+          "idle": 176,
+          "right": 188
+        },
+        "direction_recall": {
+          "left": 0.2419871794871795,
+          "idle": 0.028409090909090908,
+          "right": 0.7074468085106383
+        },
+        "balanced_direction_recall": 0.3259476929689696,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -2.709664410425101,
+            "mae_degrees": 2.168082318669172,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 1.0,
+              "idle": 0.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 2.709664410425101,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 1.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "right": {
+            "turn_degrees": 2.709664410425101,
+            "mae_degrees": 4.41124241146798,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 0.0,
+              "right": 1.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "arm": "plastic",
+      "phase": "memory_erased",
+      "invariants_unchanged": true
+    },
+    {
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 0,
+        "video_sha256": "4fb2a7b08d2a3e91244073ff9b7dc0b848eefcb9e6235d8a357a0330af4f5efe",
+        "control_sha256": "fe6a070d684a8e72beb1e36a0cec30e1e4a6ab2409bfc039ba4460e39212c54a"
+      },
+      "training": true,
+      "weights_frozen": true,
+      "target_shift": 0,
+      "source_frame_count": 982,
+      "diagnostic_limit": null,
+      "frames": 982,
+      "complete": true,
+      "brain_steps": 280571,
+      "brain_seconds": 28.057100000000002,
+      "recorded_seconds": 28.057142857142857,
+      "wall_seconds": 190.9672793330028,
+      "kernel_seconds": 183.8724118850805,
+      "warmup": {
+        "requested_ms": 2000,
+        "brain_steps": 20000,
+        "brain_seconds": 2.0,
+        "wall_seconds": 4.502310834002856,
+        "kernel_seconds": 4.383642123015306
+      },
+      "teacher_dose_current_ms": 61941.046885138036,
+      "pending_teacher_current": 1.840869940215751,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 0,
+        "mean_efficacy": 1.0,
+        "minimum_efficacy": 1.0,
+        "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 0,
+        "mean_efficacy": 1.0,
+        "minimum_efficacy": 1.0,
+        "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_kc_sha256": "866e6bf658d575de8687036365177401d003dd1a9dc64554d24dabe9cc2552d9",
+        "rate_dan_sha256": "a387e10b5cb7f2792051016ff5cf1f9d008622a827a66ef13eabfdafcd18907b"
+      },
+      "score": {
+        "mae_degrees": 3.318367753044691,
+        "direction_support": {
+          "left": 618,
+          "idle": 96,
+          "right": 268
+        },
+        "direction_recall": {
+          "left": 0.2669902912621359,
+          "idle": 0.08333333333333333,
+          "right": 0.6716417910447762
+        },
+        "balanced_direction_recall": 0.34065513854674845,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -3.014415733197556,
+            "mae_degrees": 2.372920369606066,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 1.0,
+              "idle": 0.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 3.014415733197556,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 1.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "right": {
+            "turn_degrees": 3.014415733197556,
+            "mae_degrees": 4.470503754443526,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 0.0,
+              "right": 1.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "arm": "frozen",
+      "phase": "training",
+      "invariants_unchanged": true
+    },
+    {
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 1,
+        "video_sha256": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501",
+        "control_sha256": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+      },
+      "training": false,
+      "weights_frozen": true,
+      "target_shift": 0,
+      "source_frame_count": 988,
+      "diagnostic_limit": null,
+      "frames": 988,
+      "complete": true,
+      "brain_steps": 282286,
+      "brain_seconds": 28.2286,
+      "recorded_seconds": 28.228571428571428,
+      "wall_seconds": 191.15258504200028,
+      "kernel_seconds": 183.99193673804257,
+      "warmup": {
+        "requested_ms": 2000,
+        "brain_steps": 20000,
+        "brain_seconds": 2.0,
+        "wall_seconds": 4.4928934999989,
+        "kernel_seconds": 4.379514508953434
+      },
+      "teacher_dose_current_ms": 0.0,
+      "pending_teacher_current": 0.0,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 0,
+        "mean_efficacy": 1.0,
+        "minimum_efficacy": 1.0,
+        "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 0,
+        "mean_efficacy": 1.0,
+        "minimum_efficacy": 1.0,
+        "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_kc_sha256": "ab060078ba6b671441972d1fd1f5d27fe66ab6a4bcf82c67ba690aad2153a593",
+        "rate_dan_sha256": "dbce010483d8c6b665756df830071245222d15901ef589b1e9e118ed5313f9ad"
+      },
+      "score": {
+        "mae_degrees": 3.153095521525519,
+        "direction_support": {
+          "left": 624,
+          "idle": 176,
+          "right": 188
+        },
+        "direction_recall": {
+          "left": 0.2419871794871795,
+          "idle": 0.028409090909090908,
+          "right": 0.7074468085106383
+        },
+        "balanced_direction_recall": 0.3259476929689696,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -2.709664410425101,
+            "mae_degrees": 2.168082318669172,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 1.0,
+              "idle": 0.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 2.709664410425101,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 1.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "right": {
+            "turn_degrees": 2.709664410425101,
+            "mae_degrees": 4.41124241146798,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 0.0,
+              "right": 1.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "arm": "frozen",
+      "phase": "held_out",
+      "invariants_unchanged": true
+    },
+    {
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 0,
+        "video_sha256": "4fb2a7b08d2a3e91244073ff9b7dc0b848eefcb9e6235d8a357a0330af4f5efe",
+        "control_sha256": "fe6a070d684a8e72beb1e36a0cec30e1e4a6ab2409bfc039ba4460e39212c54a"
+      },
+      "training": true,
+      "weights_frozen": false,
+      "target_shift": 491,
+      "source_frame_count": 982,
+      "diagnostic_limit": null,
+      "frames": 982,
+      "complete": true,
+      "brain_steps": 280571,
+      "brain_seconds": 28.057100000000002,
+      "recorded_seconds": 28.057142857142857,
+      "wall_seconds": 189.74880333400506,
+      "kernel_seconds": 181.82310309011518,
+      "warmup": {
+        "requested_ms": 2000,
+        "brain_steps": 20000,
+        "brain_seconds": 2.0,
+        "wall_seconds": 4.547858999998425,
+        "kernel_seconds": 4.3872611230181064
+      },
+      "teacher_dose_current_ms": 62000.60542063416,
+      "pending_teacher_current": 2.1187440406018556,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 0,
+        "mean_efficacy": 1.0,
+        "minimum_efficacy": 1.0,
+        "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 1985,
+        "mean_efficacy": 1.0446590185165405,
+        "minimum_efficacy": 0.6401413083076477,
+        "sha256": "221ae562dddad0449c314527f67a5524e7653d1bcdc61dce093d454eab4e733a",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "e0042eb7987efad5cfe0886096547901985b4f9e423139ef308c745649aed426",
+        "memory_w_sha256": "a728a5693ef9b218f6d2e94a6fefae07a97ebce5a888bf5f0c7b18aa48d5070b",
+        "rate_kc_sha256": "839c349e71e058c58313a67b8f68d7464ac44efa61325b21a02fc70021f36b79",
+        "rate_dan_sha256": "ae117635ad5ec907ecdd260949750fc5b157c502f5959f4ba73702412cb2b661"
+      },
+      "score": {
+        "mae_degrees": 3.334137177733751,
+        "direction_support": {
+          "left": 618,
+          "idle": 96,
+          "right": 268
+        },
+        "direction_recall": {
+          "left": 0.2912621359223301,
+          "idle": 0.0625,
+          "right": 0.6343283582089553
+        },
+        "balanced_direction_recall": 0.3293634980437618,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -3.014415733197556,
+            "mae_degrees": 2.372920369606066,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 1.0,
+              "idle": 0.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 3.014415733197556,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 1.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "right": {
+            "turn_degrees": 3.014415733197556,
+            "mae_degrees": 4.470503754443526,
+            "direction_support": {
+              "left": 618,
+              "idle": 96,
+              "right": 268
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 0.0,
+              "right": 1.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "arm": "shifted",
+      "phase": "training",
+      "invariants_unchanged": true
+    },
+    {
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 1,
+        "video_sha256": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501",
+        "control_sha256": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+      },
+      "training": false,
+      "weights_frozen": true,
+      "target_shift": 0,
+      "source_frame_count": 988,
+      "diagnostic_limit": null,
+      "frames": 988,
+      "complete": true,
+      "brain_steps": 282286,
+      "brain_seconds": 28.2286,
+      "recorded_seconds": 28.228571428571428,
+      "wall_seconds": 190.0182003749942,
+      "kernel_seconds": 182.85360064991983,
+      "warmup": {
+        "requested_ms": 2000,
+        "brain_steps": 20000,
+        "brain_seconds": 2.0,
+        "wall_seconds": 4.503460792002443,
+        "kernel_seconds": 4.383860105976055
+      },
+      "teacher_dose_current_ms": 0.0,
+      "pending_teacher_current": 0.0,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 1985,
+        "mean_efficacy": 1.0446590185165405,
+        "minimum_efficacy": 0.6401413083076477,
+        "sha256": "221ae562dddad0449c314527f67a5524e7653d1bcdc61dce093d454eab4e733a",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "e0042eb7987efad5cfe0886096547901985b4f9e423139ef308c745649aed426",
+        "memory_w_sha256": "a728a5693ef9b218f6d2e94a6fefae07a97ebce5a888bf5f0c7b18aa48d5070b",
+        "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 1985,
+        "mean_efficacy": 1.0446590185165405,
+        "minimum_efficacy": 0.6401413083076477,
+        "sha256": "221ae562dddad0449c314527f67a5524e7653d1bcdc61dce093d454eab4e733a",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "e0042eb7987efad5cfe0886096547901985b4f9e423139ef308c745649aed426",
+        "memory_w_sha256": "a728a5693ef9b218f6d2e94a6fefae07a97ebce5a888bf5f0c7b18aa48d5070b",
+        "rate_kc_sha256": "c6d67fbd0d75e0fb0f3dcf2cf44f0abab7f4ff8f954d1db8b99b972e0ec93e37",
+        "rate_dan_sha256": "67fc04c6bcb912cbbe892cde9c915640bc468cebf67153afda7807f5cf690c09"
+      },
+      "score": {
+        "mae_degrees": 3.2260289527005,
+        "direction_support": {
+          "left": 624,
+          "idle": 176,
+          "right": 188
+        },
+        "direction_recall": {
+          "left": 0.22115384615384615,
+          "idle": 0.05113636363636364,
+          "right": 0.6595744680851063
+        },
+        "balanced_direction_recall": 0.31062155929177204,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -2.709664410425101,
+            "mae_degrees": 2.168082318669172,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 1.0,
+              "idle": 0.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 2.709664410425101,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 1.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "right": {
+            "turn_degrees": 2.709664410425101,
+            "mae_degrees": 4.41124241146798,
+            "direction_support": {
+              "left": 624,
+              "idle": 176,
+              "right": 188
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 0.0,
+              "right": 1.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "arm": "shifted",
+      "phase": "held_out",
+      "invariants_unchanged": true
+    }
+  ],
+  "learning_demonstrated": false,
+  "announcement_ready": false
+}
