@@ -36,10 +36,13 @@ schema in the spec. Select original action/timing columns only.
 
 ```python
 def test_binary_turn_acceleration_keeps_history_on_direction_change():
-    data = checked_episode_fixture(turns=[-1, -1, -1, -1, -1, -1, 1, 0, 1])
+    data = checked_episode_fixture(turns=[-1] * 8 + [1] * 4 + [0] * 4 + [1] * 4)
     np.testing.assert_array_equal(data.turn_targets(), [
         -1.7578125, -1.7578125, -1.7578125, -1.7578125, -1.7578125,
-        -3.515625, 3.515625, 0.0, 1.7578125,
+        -3.515625, -3.515625, -3.515625,
+        3.515625, 3.515625, 3.515625, 3.515625,
+        0.0, 0.0, 0.0, 0.0,
+        1.7578125, 1.7578125, 1.7578125, 1.7578125,
     ])
 ```
 
