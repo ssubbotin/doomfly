@@ -13,6 +13,9 @@ The runner writes its protocol and source snapshot before its first episode.
 The CPU reference is selected explicitly. The validated shared-graph C++
 executor is present in this release, but this cohort uses the existing serial
 runner. Metal's preserved 80 ms parity failure remains unresolved.
+The later numerical investigation is recorded in
+`docs/experiments/2026-09-12-metal-first-divergence.md`; it changes no training
+source or cohort outcome.
 
 ## Fixed Protocol
 

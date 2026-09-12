@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "shared_identity": {
+    "report": "report.json",
+    "report_sha256": "9054c2e22ce5e0e41a117d32b11937c6e28ea9995f3f5f99c7e6af2c489d385c",
+    "source_sha256": "f7e28117fd6a92f41d81d33bf5ce98ffb0ebcc59e27b877a0d43b64f2fb46ed0"
+  },
+  "experiment": "Metal compiler math-mode dry run",
+  "compiler_toolchain": "32023.883",
+  "sdk": "26.5",
+  "metal_language": "macos-metal2.4",
+  "source_changed": false,
+  "dry_runs": [
+    {
+      "variant": "default",
+      "driver_arguments": [
+        "xcrun",
+        "-sdk",
+        "macosx",
+        "metal",
+        "-###",
+        "-std=macos-metal2.4",
+        "-c",
+        "doom_learning_v6/metal/kernels.metal",
+        "-o",
+        "/dev/null"
+      ],
+      "math_frontend_flags": [
+        "-fapprox-func",
+        "-menable-unsafe-fp-math",
+        "-mreassociate",
+        "-freciprocal-math",
+        "-ffp-contract=fast",
+        "-ffast-math",
+        "-ffinite-math-only",
+        "-fmetal-math-fp32-functions=fast"
+      ],
+      "compiled": false
+    },
+    {
+      "variant": "strict",
+      "driver_arguments": [
+        "xcrun",
+        "-sdk",
+        "macosx",
+        "metal",
+        "-###",
+        "-std=macos-metal2.4",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-c",
+        "doom_learning_v6/metal/kernels.metal",
+        "-o",
+        "/dev/null"
+      ],
+      "math_frontend_flags": [
+        "-ffp-contract=off",
+        "-fmetal-math-fp32-functions=precise"
+      ],
+      "compiled": false
+    }
+  ]
+}

@@ -1,0 +1,1378 @@
+{
+  "schema": 1,
+  "experiment": "unchanged full-graph Metal parity first-divergence diagnostic",
+  "source_identity": {
+    "doom_learning_v6/brain.py": "53fd800304dca4b48f89b5f8df17bb8a826a63f361a5b59c2d0c2367f20d5487",
+    "doom_learning_v6/kernel.cpp": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+    "doom_learning_v6/rule.py": "0df2ae1bf10b97a213064b3ac3934227539d08e51521a99cdb56fe7f5b44b725",
+    "doom_learning_v6/visual.py": "788c06afd646528b0f5a9d3a8daa6838278709a15f1a90159b2ed4f9e6531c88",
+    "doom_learning_v6/calibration.py": "c9006ef72436c74453209f896e4f1d9371179311e33fa1ae734ad52fc26408b9",
+    "doom_learning_v6/survival.py": "1c85e94e0a1fb9bc1f500c167a861ca91975a61e0716abce52eaea8801b7f568",
+    "doom_learning/common.py": "79de9a34c3d53db399ce67b12df084ab000d6b66123b658e5c2bfb5c6d108d12",
+    "doom_learning_v2/vision.py": "20279cdc14352b23fcbb76db2ee4bdebcc26394bccc04a1ad5fcedc5e3accdeb",
+    "doom/engine.py": "5fc0ce73c05a49ff58af01729a9169018080bb5b913cedb2268116a95c04aeb3",
+    "doom_learning_v6/metal/api.h": "35329eef027c9867db0c7c3d6e6b853c7b108553ffeb10ab3fde0fed72c955f7",
+    "doom_learning_v6/metal/backend.mm": "e0e1939b7f0b5d7d406fbd233463d27c9d66fc4f4c38f7330f2bc5fa1e526e8a",
+    "doom_learning_v6/metal/backend.py": "9797b8bcd1e8a49ffb6e6133ff42dd42c7abfcdfa762ac96da9f00e2b41f71e7",
+    "doom_learning_v6/metal/build.py": "262f1534641b3e7327629aeb28a5ffe590a77f8d3702cc9d3d82c9697feef945",
+    "doom_learning_v6/metal/graph.py": "79286a9a37f606ace87218a1cb0ba6fb9bfc1a05526b46963c3564d146681f49",
+    "doom_learning_v6/metal/kernels.metal": "f7e28117fd6a92f41d81d33bf5ce98ffb0ebcc59e27b877a0d43b64f2fb46ed0",
+    "doom_learning_v6/metal/validate.py": "bece43c588c30d46f63584272cdd0a5b95e2508fa005188c843fd96690126734",
+    "doom_learning_v6/metal/benchmark.py": "4165153658310ea7da07b727904e917544ee96e26801e3ef7c79b0d7240c5fa2"
+  },
+  "graph_sha256": "346b8af85a11af13b8324e18669812c1924569e7d1adcb4e6f45cc461a2c344b",
+  "cpu_backend": {
+    "name": "cpu",
+    "build": {
+      "model": "adaptive-centered-v6",
+      "source_sha256": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+      "binary_sha256": "48641b2f171dee4d1f3e7e43e46049390bc63cbf040152db5ec30fc0b71bc743",
+      "flags": [
+        "-O3",
+        "-std=c++17",
+        "-shared",
+        "-fPIC"
+      ]
+    }
+  },
+  "metal_backend": {
+    "schema": 1,
+    "abi_version": 3,
+    "sources": {
+      "api.h": "35329eef027c9867db0c7c3d6e6b853c7b108553ffeb10ab3fde0fed72c955f7",
+      "backend.mm": "e0e1939b7f0b5d7d406fbd233463d27c9d66fc4f4c38f7330f2bc5fa1e526e8a",
+      "kernels.metal": "f7e28117fd6a92f41d81d33bf5ce98ffb0ebcc59e27b877a0d43b64f2fb46ed0"
+    },
+    "binaries": {
+      "air": "725a9ecb02b4d1167033480e1bdb76d1a9e3870cce7d7a86e52219620b576cec",
+      "metallib": "62a1f686823a2669fd2cebd000f4f918672bd41465d0b5872d7b7abf24f7ab65",
+      "library": "af2455aad62097a4178895cef4cd65e8a32f1db098d1b3729728f3addfaf4049"
+    },
+    "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+    "sdk": "26.5",
+    "macos": "26.6.2",
+    "architecture": "arm64",
+    "metal_language": "macos-metal2.4",
+    "device": {
+      "name": "Apple M4 Pro",
+      "recommended_working_set": 19069665280,
+      "has_unified_memory": true,
+      "supports_apple7": true,
+      "supported": true
+    }
+  },
+  "configuration_equal": true,
+  "elapsed_realtime_seconds": 3.7597858905792236,
+  "input_bin_ms": 10,
+  "brain_step_ms": 0.1,
+  "brain_horizon_ms": 80,
+  "all_neurons_retained": 166700,
+  "all_edges_retained": 25582938,
+  "plastic_slots": 4184,
+  "capture_all_spikes": true,
+  "materialization": "download-only observation after each original 10ms bin; no added integration, drive changes or rule updates",
+  "cpu_spikes": 52209,
+  "metal_spikes": 52236,
+  "spike_metrics": {
+    "jaccard": 0.9421871803931049,
+    "total_spike_fraction": 0.0005168849069607167,
+    "rate_correlation": 0.9998536135120958,
+    "within_one_tick_fraction": 0.9879393521709167
+  },
+  "plastic_weights_equal": true,
+  "first_spike_difference_tick": 178,
+  "bins": [
+    {
+      "label": "black",
+      "cpu_spikes": 0,
+      "metal_spikes": 0,
+      "counts_equal": true,
+      "decoder_equal": true,
+      "symmetric_event_difference": 0,
+      "first_difference_tick": null,
+      "first_difference_examples": [],
+      "state": {
+        "v": {
+          "different_entries": 7118,
+          "max_abs_error": 0.000274658203125,
+          "largest_examples": [
+            {
+              "neuron": 40805,
+              "cpu": -47.278480529785156,
+              "metal": -47.27820587158203
+            },
+            {
+              "neuron": 7792,
+              "cpu": -47.278480529785156,
+              "metal": -47.27820587158203
+            },
+            {
+              "neuron": 137435,
+              "cpu": -47.278480529785156,
+              "metal": -47.27820587158203
+            }
+          ]
+        },
+        "g": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "modulation": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "adaptation": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "drive": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "previous_drive": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "refractory": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "active_flag": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "last": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "modulation_last": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        }
+      }
+    },
+    {
+      "label": "blue",
+      "cpu_spikes": 10973,
+      "metal_spikes": 10973,
+      "counts_equal": true,
+      "decoder_equal": true,
+      "symmetric_event_difference": 40,
+      "first_difference_tick": 178,
+      "first_difference_examples": [
+        {
+          "neuron": 9250,
+          "tick": 178,
+          "only": "metal"
+        },
+        {
+          "neuron": 10365,
+          "tick": 178,
+          "only": "metal"
+        },
+        {
+          "neuron": 14950,
+          "tick": 178,
+          "only": "metal"
+        },
+        {
+          "neuron": 18737,
+          "tick": 178,
+          "only": "metal"
+        },
+        {
+          "neuron": 18754,
+          "tick": 178,
+          "only": "metal"
+        },
+        {
+          "neuron": 19132,
+          "tick": 178,
+          "only": "metal"
+        }
+      ],
+      "state": {
+        "v": {
+          "different_entries": 8427,
+          "max_abs_error": 0.2682304382324219,
+          "largest_examples": [
+            {
+              "neuron": 75410,
+              "cpu": -52.08956527709961,
+              "metal": -51.82133483886719
+            },
+            {
+              "neuron": 84531,
+              "cpu": -52.068111419677734,
+              "metal": -51.82133483886719
+            },
+            {
+              "neuron": 77349,
+              "cpu": -52.038604736328125,
+              "metal": -51.82133483886719
+            }
+          ]
+        },
+        "g": {
+          "different_entries": 50878,
+          "max_abs_error": 26.421709060668945,
+          "largest_examples": [
+            {
+              "neuron": 75410,
+              "cpu": -26.421709060668945,
+              "metal": 0
+            },
+            {
+              "neuron": 84531,
+              "cpu": -24.30797576904297,
+              "metal": 0
+            },
+            {
+              "neuron": 77349,
+              "cpu": -21.40158462524414,
+              "metal": 0
+            }
+          ]
+        },
+        "modulation": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "adaptation": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "drive": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "previous_drive": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "refractory": {
+          "different_entries": 20,
+          "max_abs_error": 1,
+          "largest_examples": [
+            {
+              "neuron": 11806,
+              "cpu": 10,
+              "metal": 9
+            },
+            {
+              "neuron": 26262,
+              "cpu": 2,
+              "metal": 1
+            },
+            {
+              "neuron": 138305,
+              "cpu": 2,
+              "metal": 1
+            }
+          ]
+        },
+        "active_flag": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "last": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "modulation_last": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        }
+      }
+    },
+    {
+      "label": "green",
+      "cpu_spikes": 4829,
+      "metal_spikes": 4829,
+      "counts_equal": true,
+      "decoder_equal": true,
+      "symmetric_event_difference": 0,
+      "first_difference_tick": null,
+      "first_difference_examples": [],
+      "state": {
+        "v": {
+          "different_entries": 25410,
+          "max_abs_error": 4.312904357910156,
+          "largest_examples": [
+            {
+              "neuron": 75410,
+              "cpu": -53.1190071105957,
+              "metal": -48.80610275268555
+            },
+            {
+              "neuron": 84531,
+              "cpu": -52.60258483886719,
+              "metal": -48.63469696044922
+            },
+            {
+              "neuron": 88384,
+              "cpu": -52.389869689941406,
+              "metal": -48.89636993408203
+            }
+          ]
+        },
+        "g": {
+          "different_entries": 65800,
+          "max_abs_error": 3.575803518295288,
+          "largest_examples": [
+            {
+              "neuron": 75410,
+              "cpu": -5.590538024902344,
+              "metal": -2.0147345066070557
+            },
+            {
+              "neuron": 84531,
+              "cpu": -5.0776238441467285,
+              "metal": -1.787886619567871
+            },
+            {
+              "neuron": 88384,
+              "cpu": -5.2849273681640625,
+              "metal": -2.388524293899536
+            }
+          ]
+        },
+        "modulation": {
+          "different_entries": 4,
+          "max_abs_error": 0.000003814697265625,
+          "largest_examples": [
+            {
+              "neuron": 125062,
+              "cpu": 34,
+              "metal": 33.999996185302734
+            },
+            {
+              "neuron": 35,
+              "cpu": 43,
+              "metal": 42.999996185302734
+            },
+            {
+              "neuron": 1058,
+              "cpu": 31,
+              "metal": 30.999998092651367
+            }
+          ]
+        },
+        "adaptation": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "drive": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "previous_drive": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "refractory": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "active_flag": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "last": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "modulation_last": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        }
+      }
+    },
+    {
+      "label": "white",
+      "cpu_spikes": 5524,
+      "metal_spikes": 5524,
+      "counts_equal": true,
+      "decoder_equal": true,
+      "symmetric_event_difference": 16,
+      "first_difference_tick": 380,
+      "first_difference_examples": [
+        {
+          "neuron": 25788,
+          "tick": 380,
+          "only": "metal"
+        },
+        {
+          "neuron": 130163,
+          "tick": 380,
+          "only": "metal"
+        },
+        {
+          "neuron": 25788,
+          "tick": 381,
+          "only": "cpu"
+        },
+        {
+          "neuron": 130163,
+          "tick": 381,
+          "only": "cpu"
+        },
+        {
+          "neuron": 93523,
+          "tick": 389,
+          "only": "metal"
+        },
+        {
+          "neuron": 117319,
+          "tick": 389,
+          "only": "metal"
+        }
+      ],
+      "state": {
+        "v": {
+          "different_entries": 27059,
+          "max_abs_error": 3.177806854248047,
+          "largest_examples": [
+            {
+              "neuron": 75410,
+              "cpu": -48.83527755737305,
+              "metal": -45.657470703125
+            },
+            {
+              "neuron": 84531,
+              "cpu": -48.441490173339844,
+              "metal": -45.51784896850586
+            },
+            {
+              "neuron": 88384,
+              "cpu": -48.417640686035156,
+              "metal": -45.84353256225586
+            }
+          ]
+        },
+        "g": {
+          "different_entries": 69636,
+          "max_abs_error": 0.4839341938495636,
+          "largest_examples": [
+            {
+              "neuron": 75410,
+              "cpu": -0.7565974593162537,
+              "metal": -0.27266326546669006
+            },
+            {
+              "neuron": 84531,
+              "cpu": -0.6871820092201233,
+              "metal": -0.24196277558803558
+            },
+            {
+              "neuron": 134298,
+              "cpu": -21.030057907104492,
+              "metal": -20.627098083496094
+            }
+          ]
+        },
+        "modulation": {
+          "different_entries": 4,
+          "max_abs_error": 0.000003814697265625,
+          "largest_examples": [
+            {
+              "neuron": 125062,
+              "cpu": 34,
+              "metal": 33.999996185302734
+            },
+            {
+              "neuron": 35,
+              "cpu": 43,
+              "metal": 42.999996185302734
+            },
+            {
+              "neuron": 1058,
+              "cpu": 31,
+              "metal": 30.999998092651367
+            }
+          ]
+        },
+        "adaptation": {
+          "different_entries": 2,
+          "max_abs_error": 0.000002384185791015625,
+          "largest_examples": [
+            {
+              "neuron": 10679,
+              "cpu": 7.8848347663879395,
+              "metal": 7.884832382202148
+            },
+            {
+              "neuron": 7784,
+              "cpu": 7.829834938049316,
+              "metal": 7.829833507537842
+            },
+            {
+              "neuron": 166699,
+              "cpu": 0,
+              "metal": 0
+            }
+          ]
+        },
+        "drive": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "previous_drive": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "refractory": {
+          "different_entries": 8,
+          "max_abs_error": 1,
+          "largest_examples": [
+            {
+              "neuron": 93523,
+              "cpu": 13,
+              "metal": 12
+            },
+            {
+              "neuron": 118670,
+              "cpu": 13,
+              "metal": 12
+            },
+            {
+              "neuron": 115283,
+              "cpu": 16,
+              "metal": 15
+            }
+          ]
+        },
+        "active_flag": {
+          "different_entries": 29,
+          "max_abs_error": 1,
+          "largest_examples": [
+            {
+              "neuron": 134298,
+              "cpu": 1,
+              "metal": 0
+            },
+            {
+              "neuron": 132416,
+              "cpu": 1,
+              "metal": 0
+            },
+            {
+              "neuron": 63846,
+              "cpu": 1,
+              "metal": 0
+            }
+          ]
+        },
+        "last": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "modulation_last": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        }
+      }
+    },
+    {
+      "label": "left_blue",
+      "cpu_spikes": 11180,
+      "metal_spikes": 11195,
+      "counts_equal": false,
+      "decoder_equal": true,
+      "symmetric_event_difference": 251,
+      "first_difference_tick": 405,
+      "first_difference_examples": [
+        {
+          "neuron": 113663,
+          "tick": 405,
+          "only": "metal"
+        },
+        {
+          "neuron": 113663,
+          "tick": 406,
+          "only": "cpu"
+        },
+        {
+          "neuron": 139728,
+          "tick": 407,
+          "only": "metal"
+        },
+        {
+          "neuron": 139728,
+          "tick": 408,
+          "only": "cpu"
+        },
+        {
+          "neuron": 57443,
+          "tick": 409,
+          "only": "metal"
+        },
+        {
+          "neuron": 69562,
+          "tick": 409,
+          "only": "metal"
+        }
+      ],
+      "state": {
+        "v": {
+          "different_entries": 34466,
+          "max_abs_error": 6.97015380859375,
+          "largest_examples": [
+            {
+              "neuron": 16026,
+              "cpu": -45.02984619140625,
+              "metal": -52
+            },
+            {
+              "neuron": 138587,
+              "cpu": -45.986656188964844,
+              "metal": -50.828582763671875
+            },
+            {
+              "neuron": 99605,
+              "cpu": -47.39277267456055,
+              "metal": -52.21998977661133
+            }
+          ]
+        },
+        "g": {
+          "different_entries": 69623,
+          "max_abs_error": 38.31147623062134,
+          "largest_examples": [
+            {
+              "neuron": 34158,
+              "cpu": -2.889315128326416,
+              "metal": 35.42216110229492
+            },
+            {
+              "neuron": 35033,
+              "cpu": -11.781508445739746,
+              "metal": 24.533113479614258
+            },
+            {
+              "neuron": 27119,
+              "cpu": -1.6998132467269897,
+              "metal": 21.291711807250977
+            }
+          ]
+        },
+        "modulation": {
+          "different_entries": 4,
+          "max_abs_error": 0.000003814697265625,
+          "largest_examples": [
+            {
+              "neuron": 125062,
+              "cpu": 34,
+              "metal": 33.999996185302734
+            },
+            {
+              "neuron": 35,
+              "cpu": 43,
+              "metal": 42.999996185302734
+            },
+            {
+              "neuron": 1058,
+              "cpu": 31,
+              "metal": 30.999998092651367
+            }
+          ]
+        },
+        "adaptation": {
+          "different_entries": 2,
+          "max_abs_error": 0.0000019073486328125,
+          "largest_examples": [
+            {
+              "neuron": 10679,
+              "cpu": 7.50027322769165,
+              "metal": 7.500271320343018
+            },
+            {
+              "neuron": 7784,
+              "cpu": 7.447956085205078,
+              "metal": 7.4479546546936035
+            },
+            {
+              "neuron": 166699,
+              "cpu": 0,
+              "metal": 0
+            }
+          ]
+        },
+        "drive": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "previous_drive": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "refractory": {
+          "different_entries": 25,
+          "max_abs_error": 21,
+          "largest_examples": [
+            {
+              "neuron": 74579,
+              "cpu": 0,
+              "metal": 21
+            },
+            {
+              "neuron": 235,
+              "cpu": 10,
+              "metal": 7
+            },
+            {
+              "neuron": 16026,
+              "cpu": 0,
+              "metal": 2
+            }
+          ]
+        },
+        "active_flag": {
+          "different_entries": 2900,
+          "max_abs_error": 1,
+          "largest_examples": [
+            {
+              "neuron": 57294,
+              "cpu": 1,
+              "metal": 0
+            },
+            {
+              "neuron": 77898,
+              "cpu": 0,
+              "metal": 1
+            },
+            {
+              "neuron": 47192,
+              "cpu": 0,
+              "metal": 1
+            }
+          ]
+        },
+        "last": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "modulation_last": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        }
+      }
+    },
+    {
+      "label": "right_blue",
+      "cpu_spikes": 6911,
+      "metal_spikes": 6903,
+      "counts_equal": false,
+      "decoder_equal": true,
+      "symmetric_event_difference": 526,
+      "first_difference_tick": 500,
+      "first_difference_examples": [
+        {
+          "neuron": 67156,
+          "tick": 500,
+          "only": "metal"
+        },
+        {
+          "neuron": 67156,
+          "tick": 501,
+          "only": "cpu"
+        },
+        {
+          "neuron": 126820,
+          "tick": 501,
+          "only": "metal"
+        },
+        {
+          "neuron": 126820,
+          "tick": 502,
+          "only": "cpu"
+        },
+        {
+          "neuron": 130393,
+          "tick": 502,
+          "only": "cpu"
+        },
+        {
+          "neuron": 130393,
+          "tick": 503,
+          "only": "metal"
+        }
+      ],
+      "state": {
+        "v": {
+          "different_entries": 51579,
+          "max_abs_error": 6.999988555908203,
+          "largest_examples": [
+            {
+              "neuron": 56904,
+              "cpu": -45.0000114440918,
+              "metal": -52
+            },
+            {
+              "neuron": 136473,
+              "cpu": -45.01480484008789,
+              "metal": -52
+            },
+            {
+              "neuron": 47299,
+              "cpu": -45.103004455566406,
+              "metal": -52
+            }
+          ]
+        },
+        "g": {
+          "different_entries": 92003,
+          "max_abs_error": 50.32500207424164,
+          "largest_examples": [
+            {
+              "neuron": 1752,
+              "cpu": 0.3620694875717163,
+              "metal": -49.96293258666992
+            },
+            {
+              "neuron": 1996,
+              "cpu": 1.8337526321411133,
+              "metal": -45.863704681396484
+            },
+            {
+              "neuron": 1994,
+              "cpu": 1.0488651990890503,
+              "metal": -45.1511344909668
+            }
+          ]
+        },
+        "modulation": {
+          "different_entries": 1203,
+          "max_abs_error": 0.00006103515625,
+          "largest_examples": [
+            {
+              "neuron": 502,
+              "cpu": 986.9053955078125,
+              "metal": 986.9053344726562
+            },
+            {
+              "neuron": 1509,
+              "cpu": 268.58770751953125,
+              "metal": 268.5876770019531
+            },
+            {
+              "neuron": 904,
+              "cpu": 418.3569030761719,
+              "metal": 418.35687255859375
+            }
+          ]
+        },
+        "adaptation": {
+          "different_entries": 2,
+          "max_abs_error": 0.000002384185791015625,
+          "largest_examples": [
+            {
+              "neuron": 10679,
+              "cpu": 7.134462833404541,
+              "metal": 7.13446044921875
+            },
+            {
+              "neuron": 7784,
+              "cpu": 7.084697723388672,
+              "metal": 7.084695339202881
+            },
+            {
+              "neuron": 166699,
+              "cpu": 0,
+              "metal": 0
+            }
+          ]
+        },
+        "drive": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "previous_drive": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "refractory": {
+          "different_entries": 47,
+          "max_abs_error": 22,
+          "largest_examples": [
+            {
+              "neuron": 136473,
+              "cpu": 0,
+              "metal": 22
+            },
+            {
+              "neuron": 56904,
+              "cpu": 0,
+              "metal": 22
+            },
+            {
+              "neuron": 3928,
+              "cpu": 20,
+              "metal": 0
+            }
+          ]
+        },
+        "active_flag": {
+          "different_entries": 992,
+          "max_abs_error": 1,
+          "largest_examples": [
+            {
+              "neuron": 14089,
+              "cpu": 1,
+              "metal": 0
+            },
+            {
+              "neuron": 95737,
+              "cpu": 0,
+              "metal": 1
+            },
+            {
+              "neuron": 138354,
+              "cpu": 0,
+              "metal": 1
+            }
+          ]
+        },
+        "last": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "modulation_last": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        }
+      }
+    },
+    {
+      "label": "vertical",
+      "cpu_spikes": 6472,
+      "metal_spikes": 6481,
+      "counts_equal": false,
+      "decoder_equal": true,
+      "symmetric_event_difference": 735,
+      "first_difference_tick": 600,
+      "first_difference_examples": [
+        {
+          "neuron": 56904,
+          "tick": 600,
+          "only": "cpu"
+        },
+        {
+          "neuron": 136473,
+          "tick": 600,
+          "only": "cpu"
+        },
+        {
+          "neuron": 25348,
+          "tick": 601,
+          "only": "cpu"
+        },
+        {
+          "neuron": 142756,
+          "tick": 601,
+          "only": "metal"
+        },
+        {
+          "neuron": 1748,
+          "tick": 602,
+          "only": "metal"
+        },
+        {
+          "neuron": 25348,
+          "tick": 602,
+          "only": "metal"
+        }
+      ],
+      "state": {
+        "v": {
+          "different_entries": 67234,
+          "max_abs_error": 6.998630523681641,
+          "largest_examples": [
+            {
+              "neuron": 141624,
+              "cpu": -45.00136947631836,
+              "metal": -52
+            },
+            {
+              "neuron": 48252,
+              "cpu": -45.00138854980469,
+              "metal": -52
+            },
+            {
+              "neuron": 82733,
+              "cpu": -45.00221252441406,
+              "metal": -52
+            }
+          ]
+        },
+        "g": {
+          "different_entries": 117577,
+          "max_abs_error": 117.82584381103516,
+          "largest_examples": [
+            {
+              "neuron": 4989,
+              "cpu": 0,
+              "metal": 117.82584381103516
+            },
+            {
+              "neuron": 7130,
+              "cpu": 63.657020568847656,
+              "metal": 0
+            },
+            {
+              "neuron": 5582,
+              "cpu": 0,
+              "metal": 57.88265609741211
+            }
+          ]
+        },
+        "modulation": {
+          "different_entries": 2252,
+          "max_abs_error": 0.00006103515625,
+          "largest_examples": [
+            {
+              "neuron": 502,
+              "cpu": 986.9053955078125,
+              "metal": 986.9053344726562
+            },
+            {
+              "neuron": 904,
+              "cpu": 418.3569030761719,
+              "metal": 418.35687255859375
+            },
+            {
+              "neuron": 1509,
+              "cpu": 268.58770751953125,
+              "metal": 268.5876770019531
+            }
+          ]
+        },
+        "adaptation": {
+          "different_entries": 2,
+          "max_abs_error": 0.027799606323242188,
+          "largest_examples": [
+            {
+              "neuron": 10679,
+              "cpu": 14.7426118850708,
+              "metal": 14.714812278747559
+            },
+            {
+              "neuron": 7784,
+              "cpu": 14.483329772949219,
+              "metal": 14.483325004577637
+            },
+            {
+              "neuron": 166699,
+              "cpu": 0,
+              "metal": 0
+            }
+          ]
+        },
+        "drive": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "previous_drive": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "refractory": {
+          "different_entries": 183,
+          "max_abs_error": 22,
+          "largest_examples": [
+            {
+              "neuron": 7130,
+              "cpu": 0,
+              "metal": 22
+            },
+            {
+              "neuron": 85463,
+              "cpu": 22,
+              "metal": 0
+            },
+            {
+              "neuron": 49623,
+              "cpu": 0,
+              "metal": 22
+            }
+          ]
+        },
+        "active_flag": {
+          "different_entries": 2563,
+          "max_abs_error": 1,
+          "largest_examples": [
+            {
+              "neuron": 16802,
+              "cpu": 0,
+              "metal": 1
+            },
+            {
+              "neuron": 66193,
+              "cpu": 0,
+              "metal": 1
+            },
+            {
+              "neuron": 131590,
+              "cpu": 0,
+              "metal": 1
+            }
+          ]
+        },
+        "last": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "modulation_last": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        }
+      }
+    },
+    {
+      "label": "horizontal",
+      "cpu_spikes": 6320,
+      "metal_spikes": 6331,
+      "counts_equal": false,
+      "decoder_equal": true,
+      "symmetric_event_difference": 1541,
+      "first_difference_tick": 700,
+      "first_difference_examples": [
+        {
+          "neuron": 3588,
+          "tick": 700,
+          "only": "metal"
+        },
+        {
+          "neuron": 5582,
+          "tick": 700,
+          "only": "metal"
+        },
+        {
+          "neuron": 7130,
+          "tick": 700,
+          "only": "cpu"
+        },
+        {
+          "neuron": 27810,
+          "tick": 700,
+          "only": "metal"
+        },
+        {
+          "neuron": 48252,
+          "tick": 700,
+          "only": "cpu"
+        },
+        {
+          "neuron": 49623,
+          "tick": 700,
+          "only": "cpu"
+        }
+      ],
+      "state": {
+        "v": {
+          "different_entries": 85281,
+          "max_abs_error": 6.999961853027344,
+          "largest_examples": [
+            {
+              "neuron": 42928,
+              "cpu": -45.000038146972656,
+              "metal": -52
+            },
+            {
+              "neuron": 55201,
+              "cpu": -52,
+              "metal": -45.00154113769531
+            },
+            {
+              "neuron": 47571,
+              "cpu": -45.00531005859375,
+              "metal": -52
+            }
+          ]
+        },
+        "g": {
+          "different_entries": 126430,
+          "max_abs_error": 124.63241052627563,
+          "largest_examples": [
+            {
+              "neuron": 823,
+              "cpu": 119.65772247314453,
+              "metal": -4.9746880531311035
+            },
+            {
+              "neuron": 126848,
+              "cpu": 52.202701568603516,
+              "metal": -11.789307594299316
+            },
+            {
+              "neuron": 23422,
+              "cpu": 51.60963439941406,
+              "metal": -3.1359732151031494
+            }
+          ]
+        },
+        "modulation": {
+          "different_entries": 6760,
+          "max_abs_error": 1.0462646484375,
+          "largest_examples": [
+            {
+              "neuron": 502,
+              "cpu": 1046.8677978515625,
+              "metal": 1047.9140625
+            },
+            {
+              "neuron": 815,
+              "cpu": 309.28533935546875,
+              "metal": 309.59375
+            },
+            {
+              "neuron": 458,
+              "cpu": 283.37774658203125,
+              "metal": 283.6512145996094
+            }
+          ]
+        },
+        "adaptation": {
+          "different_entries": 2,
+          "max_abs_error": 0.026445388793945312,
+          "largest_examples": [
+            {
+              "neuron": 10679,
+              "cpu": 14.023588180541992,
+              "metal": 13.997142791748047
+            },
+            {
+              "neuron": 7784,
+              "cpu": 13.776927947998047,
+              "metal": 13.776923179626465
+            },
+            {
+              "neuron": 166699,
+              "cpu": 0,
+              "metal": 0
+            }
+          ]
+        },
+        "drive": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "previous_drive": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "refractory": {
+          "different_entries": 168,
+          "max_abs_error": 22,
+          "largest_examples": [
+            {
+              "neuron": 131950,
+              "cpu": 22,
+              "metal": 0
+            },
+            {
+              "neuron": 90961,
+              "cpu": 0,
+              "metal": 22
+            },
+            {
+              "neuron": 55201,
+              "cpu": 22,
+              "metal": 0
+            }
+          ]
+        },
+        "active_flag": {
+          "different_entries": 5276,
+          "max_abs_error": 1,
+          "largest_examples": [
+            {
+              "neuron": 61243,
+              "cpu": 1,
+              "metal": 0
+            },
+            {
+              "neuron": 26240,
+              "cpu": 1,
+              "metal": 0
+            },
+            {
+              "neuron": 4867,
+              "cpu": 1,
+              "metal": 0
+            }
+          ]
+        },
+        "last": {
+          "different_entries": 0,
+          "max_abs_error": 0,
+          "largest_examples": []
+        },
+        "modulation_last": {
+          "different_entries": 1270,
+          "max_abs_error": 1,
+          "largest_examples": [
+            {
+              "neuron": 1041,
+              "cpu": 784,
+              "metal": 783
+            },
+            {
+              "neuron": 142768,
+              "cpu": 784,
+              "metal": 783
+            },
+            {
+              "neuron": 53252,
+              "cpu": 784,
+              "metal": 783
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "learning_demonstrated": false,
+  "biologically_validated": false
+}

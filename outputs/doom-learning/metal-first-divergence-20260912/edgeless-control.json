@@ -1,0 +1,278 @@
+{
+  "schema": 1,
+  "shared_identity": {
+    "report": "report.json",
+    "report_sha256": "9054c2e22ce5e0e41a117d32b11937c6e28ea9995f3f5f99c7e6af2c489d385c",
+    "verification": "Existing cached source/artifact hashes reverified after the executed controls; no runtime source or build changes."
+  },
+  "backend_artifact_identity": {
+    "cpu_binary_sha256": "48641b2f171dee4d1f3e7e43e46049390bc63cbf040152db5ec30fc0b71bc743",
+    "metal_binaries": {
+      "air": "725a9ecb02b4d1167033480e1bdb76d1a9e3870cce7d7a86e52219620b576cec",
+      "metallib": "62a1f686823a2669fd2cebd000f4f918672bd41465d0b5872d7b7abf24f7ab65",
+      "library": "af2455aad62097a4178895cef4cd65e8a32f1db098d1b3729728f3addfaf4049"
+    },
+    "metal_sources": {
+      "api.h": "35329eef027c9867db0c7c3d6e6b853c7b108553ffeb10ab3fde0fed72c955f7",
+      "backend.mm": "e0e1939b7f0b5d7d406fbd233463d27c9d66fc4f4c38f7330f2bc5fa1e526e8a",
+      "kernels.metal": "f7e28117fd6a92f41d81d33bf5ce98ffb0ebcc59e27b877a0d43b64f2fb46ed0"
+    },
+    "edgeless_graph_sha256": "40562286558ed8cb123f27460958459a607c4d88ac31fa3e81114dbbf1b750a7"
+  },
+  "experiment": "synthetic one-neuron edgeless CPU/Metal arithmetic isolation",
+  "graph_neurons": 1,
+  "graph_edges": 0,
+  "neuronal_dt_ms": 0.1,
+  "model_source_changes": false,
+  "interpretation": "Numerical control only; independent of and not a replacement for the retained MaleCNS graph. No plasticity, game state, synaptic arrival or event-order effects.",
+  "probes": [
+    {
+      "probe": "driven",
+      "steps": 1,
+      "initial_v": -52,
+      "initial_g": 0,
+      "initial_drive": 12,
+      "initial_adaptation": 0,
+      "cpu": {
+        "v": -51.94015121459961,
+        "g": 0,
+        "adaptation": 0,
+        "drive": 12,
+        "previous_drive": 12,
+        "counts": 0,
+        "last": 0,
+        "refractory": 0,
+        "active_flag": 1
+      },
+      "metal": {
+        "v": -51.940147399902344,
+        "g": 0,
+        "adaptation": 0,
+        "drive": 12,
+        "previous_drive": 12,
+        "counts": 0,
+        "last": 0,
+        "refractory": 0,
+        "active_flag": 1
+      },
+      "v_abs_error": 0.000003814697265625
+    },
+    {
+      "probe": "driven",
+      "steps": 100,
+      "initial_v": -52,
+      "initial_g": 0,
+      "initial_drive": 12,
+      "initial_adaptation": 0,
+      "cpu": {
+        "v": -47.278480529785156,
+        "g": 0,
+        "adaptation": 0,
+        "drive": 12,
+        "previous_drive": 12,
+        "counts": 0,
+        "last": 99,
+        "refractory": 0,
+        "active_flag": 1
+      },
+      "metal": {
+        "v": -47.27820587158203,
+        "g": 0,
+        "adaptation": 0,
+        "drive": 12,
+        "previous_drive": 12,
+        "counts": 0,
+        "last": 99,
+        "refractory": 0,
+        "active_flag": 1
+      },
+      "v_abs_error": 0.000274658203125
+    },
+    {
+      "probe": "passive",
+      "steps": 1,
+      "initial_v": -60,
+      "initial_g": 0,
+      "initial_drive": 0,
+      "initial_adaptation": 0,
+      "cpu": {
+        "v": -59.96009826660156,
+        "g": 0,
+        "adaptation": 0,
+        "drive": 0,
+        "previous_drive": 0,
+        "counts": 0,
+        "last": 0,
+        "refractory": 0,
+        "active_flag": 0
+      },
+      "metal": {
+        "v": -59.96009826660156,
+        "g": 0,
+        "adaptation": 0,
+        "drive": 0,
+        "previous_drive": 0,
+        "counts": 0,
+        "last": 0,
+        "refractory": 0,
+        "active_flag": 0
+      },
+      "v_abs_error": 0
+    },
+    {
+      "probe": "passive",
+      "steps": 100,
+      "initial_v": -60,
+      "initial_g": 0,
+      "initial_drive": 0,
+      "initial_adaptation": 0,
+      "cpu": {
+        "v": -56.85224533081055,
+        "g": 0,
+        "adaptation": 0,
+        "drive": 0,
+        "previous_drive": 0,
+        "counts": 0,
+        "last": 99,
+        "refractory": 0,
+        "active_flag": 0
+      },
+      "metal": {
+        "v": -56.85224533081055,
+        "g": 0,
+        "adaptation": 0,
+        "drive": 0,
+        "previous_drive": 0,
+        "counts": 0,
+        "last": 99,
+        "refractory": 0,
+        "active_flag": 0
+      },
+      "v_abs_error": 0
+    },
+    {
+      "probe": "conductance",
+      "steps": 1,
+      "initial_v": -52,
+      "initial_g": 1.25,
+      "initial_drive": 0,
+      "initial_adaptation": 0,
+      "cpu": {
+        "v": -51.99382781982422,
+        "g": 1.2252483367919922,
+        "adaptation": 0,
+        "drive": 0,
+        "previous_drive": 0,
+        "counts": 0,
+        "last": 0,
+        "refractory": 0,
+        "active_flag": 0
+      },
+      "metal": {
+        "v": -51.99382781982422,
+        "g": 1.2252483367919922,
+        "adaptation": 0,
+        "drive": 0,
+        "previous_drive": 0,
+        "counts": 0,
+        "last": 0,
+        "refractory": 0,
+        "active_flag": 0
+      },
+      "v_abs_error": 0
+    },
+    {
+      "probe": "conductance",
+      "steps": 100,
+      "initial_v": -52,
+      "initial_g": 1.25,
+      "initial_drive": 0,
+      "initial_adaptation": 0,
+      "cpu": {
+        "v": -51.80366897583008,
+        "g": 0.16916906833648682,
+        "adaptation": 0,
+        "drive": 0,
+        "previous_drive": 0,
+        "counts": 0,
+        "last": 99,
+        "refractory": 0,
+        "active_flag": 0
+      },
+      "metal": {
+        "v": -51.80366897583008,
+        "g": 0.1691690981388092,
+        "adaptation": 0,
+        "drive": 0,
+        "previous_drive": 0,
+        "counts": 0,
+        "last": 99,
+        "refractory": 0,
+        "active_flag": 0
+      },
+      "v_abs_error": 0
+    },
+    {
+      "probe": "adaptation",
+      "steps": 1,
+      "initial_v": -52,
+      "initial_g": 0,
+      "initial_drive": 0,
+      "initial_adaptation": 3.25,
+      "cpu": {
+        "v": -52.016204833984375,
+        "g": 0,
+        "adaptation": 3.248375415802002,
+        "drive": 0,
+        "previous_drive": 0,
+        "counts": 0,
+        "last": 0,
+        "refractory": 0,
+        "active_flag": 0
+      },
+      "metal": {
+        "v": -52.016204833984375,
+        "g": 0,
+        "adaptation": 3.248375415802002,
+        "drive": 0,
+        "previous_drive": 0,
+        "counts": 0,
+        "last": 0,
+        "refractory": 0,
+        "active_flag": 0
+      },
+      "v_abs_error": 0
+    },
+    {
+      "probe": "adaptation",
+      "steps": 100,
+      "initial_v": -52,
+      "initial_g": 0,
+      "initial_drive": 0,
+      "initial_adaptation": 3.25,
+      "cpu": {
+        "v": -53.24474334716797,
+        "g": 0,
+        "adaptation": 3.0914957523345947,
+        "drive": 0,
+        "previous_drive": 0,
+        "counts": 0,
+        "last": 99,
+        "refractory": 0,
+        "active_flag": 0
+      },
+      "metal": {
+        "v": -53.24474334716797,
+        "g": 0,
+        "adaptation": 3.0914955139160156,
+        "drive": 0,
+        "previous_drive": 0,
+        "counts": 0,
+        "last": 99,
+        "refractory": 0,
+        "active_flag": 0
+      },
+      "v_abs_error": 0
+    }
+  ]
+}
