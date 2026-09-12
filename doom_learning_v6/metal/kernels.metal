@@ -119,7 +119,7 @@ kernel void df_gather_finalize(device const long *in_ptr [[buffer(0)]],
   if(target>=p.neurons)return;
   if(atomic_exchange_explicit(&touched[target],0u,memory_order_relaxed)!=0){
     evolve(target,p.clock,drive[target],v,g,refractory,last,rest,adaptation,decay,p.dt,p.adaptation_tau);
-    float conductance=0.0f,modulatory=0.0f;bool has_fast=false,has_modulatory=false;
+    float conductance=g[target],modulatory=0.0f;bool has_fast=false,has_modulatory=false;
     long start=in_ptr[target],end=in_ptr[target+1];
     if(start<end){
       uint first=(uint)start>>5,last_word=(uint)(end-1)>>5;
@@ -145,7 +145,7 @@ kernel void df_gather_finalize(device const long *in_ptr [[buffer(0)]],
       modulation[target]*=exp(-p.dt*delta/100.0f);
       modulation[target]+=modulatory;modulation_last[target]=p.clock;
     }
-    if(has_fast){g[target]+=conductance;active[target]=1;}
+    if(has_fast){g[target]=conductance;active[target]=1;}
   }
   if(target<p.words)
     atomic_store_explicit(&ring[p.slot*p.words+target],0u,memory_order_relaxed);
