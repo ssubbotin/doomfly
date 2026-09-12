@@ -30,11 +30,12 @@ def test_empty_spike_and_zero_rate_inputs_are_finite():
 
 @pytest.mark.parametrize('consumer',['validation','benchmark'])
 def test_portable_identity_keeps_math_configuration(consumer):
+    from doom_learning_v6.metal.build import ABI_VERSION
     from doom_learning_v6.metal.validate import _portable_metal_metadata
     from doom_learning_v6.metal.benchmark import portable_backend_metadata
     configuration={'metal_compile_flags':['-std=macos-metal2.4',
-        '-fno-fast-math','-ffp-contract=off'],'abi_version':3}
-    metadata={'name':'metal','schema':2,'abi_version':3,'sources':{},'binaries':{},
+        '-fno-fast-math','-ffp-contract=off'],'abi_version':ABI_VERSION}
+    metadata={'name':'metal','schema':2,'abi_version':ABI_VERSION,'sources':{},'binaries':{},
         'compiler':'Apple clang','sdk':'26.0','macos':'26.6.2','architecture':'arm64',
         'metal_language':'macos-metal2.4','build_configuration':configuration,
         'device':{'name':'Apple M4 Pro','registry_id':123},

@@ -32,18 +32,20 @@ inline bool ring_contains(device atomic_uint *ring,uint words,uint slot,uint neu
 
 inline void evolve(uint i,long now,float current,device float *v,device float *g,
     device short *refractory,device long *last,device const float *rest,
-    device float *adaptation,float dt,float adaptation_tau) {
+    device float *adaptation,device const float *decay,float dt,float adaptation_tau) {
   long d=now-last[i];if(d<=0)return;
   int frozen=refractory[i]>0?refractory[i]-1:0;
   int skip=min((int)d,frozen);
-  if(skip>0&&adaptation[i]>0.0f)adaptation[i]*=exp(-dt*skip/adaptation_tau);
+  if(skip>0&&adaptation[i]>0.0f)
+    adaptation[i]*=skip<1024?decay[2048+skip]:exp(-dt*skip/adaptation_tau);
   refractory[i]=d>=refractory[i]?0:refractory[i]-(short)d;d-=skip;
   if(d>0){
-    float a=exp(-dt*d/20.0f),b=exp(-dt*d/5.0f);
+    float a=d<1024?decay[d]:exp(-dt*d/20.0f);
+    float b=d<1024?decay[1024+d]:exp(-dt*d/5.0f);
     v[i]=rest[i]+(v[i]-rest[i])*a+current*(1.0f-a)+g[i]*(a-b)/3.0f;
     g[i]*=b;
     if(adaptation[i]>0.0f){
-      float c=exp(-dt*d/adaptation_tau);
+      float c=d<1024?decay[2048+d]:exp(-dt*d/adaptation_tau);
       v[i]-=adaptation[i]*adaptation_tau/(adaptation_tau-20.0f)*(c-a);
       adaptation[i]*=c;
     }
@@ -55,10 +57,11 @@ kernel void df_drive_change(device float *v [[buffer(0)]],device float *g [[buff
     device short *refractory [[buffer(2)]],device const float *drive [[buffer(3)]],
     device float *previous [[buffer(4)]],device uchar *active [[buffer(5)]],
     device long *last [[buffer(6)]],device const float *rest [[buffer(7)]],
-    device float *adaptation [[buffer(8)]],constant Params &p [[buffer(9)]],
+    device float *adaptation [[buffer(8)]],device const float *decay [[buffer(9)]],
+    constant Params &p [[buffer(10)]],
     uint i [[thread_position_in_grid]]) {
   if(i>=p.neurons||drive[i]==previous[i])return;
-  evolve(i,p.clock-1,previous[i],v,g,refractory,last,rest,adaptation,p.dt,p.adaptation_tau);
+  evolve(i,p.clock-1,previous[i],v,g,refractory,last,rest,adaptation,decay,p.dt,p.adaptation_tau);
   previous[i]=drive[i];active[i]=1;
 }
 
@@ -71,11 +74,11 @@ kernel void df_integrate_mark(device float *v [[buffer(0)]],device float *g [[bu
     device atomic_uint *event_count [[buffer(12)]],device const long *out_ptr [[buffer(13)]],
     device const int *out_post [[buffer(14)]],device const int *edge_to_incoming [[buffer(15)]],
     device atomic_uint *touched [[buffer(16)]],device atomic_uint *active_edge_bits [[buffer(17)]],
-    constant Params &p [[buffer(18)]],
+    device const float *decay [[buffer(18)]],constant Params &p [[buffer(19)]],
     uint i [[thread_position_in_grid]]) {
   if(i>=p.neurons)return;
   if(active[i]!=0){
-    evolve(i,p.clock,drive[i],v,g,refractory,last,rest,adaptation,p.dt,p.adaptation_tau);
+    evolve(i,p.clock,drive[i],v,g,refractory,last,rest,adaptation,decay,p.dt,p.adaptation_tau);
     if(refractory[i]==0&&v[i]>-45.0f){
       atomic_fetch_or_explicit(&ring[p.future*p.words+(i>>5)],1u<<(i&31),memory_order_relaxed);
       counts[i]++;
@@ -107,11 +110,12 @@ kernel void df_gather_finalize(device const long *in_ptr [[buffer(0)]],
     device long *last [[buffer(11)]],device float *modulation [[buffer(12)]],
     device long *modulation_last [[buffer(13)]],device const uchar *modulation_mask [[buffer(14)]],
     device const float *rest [[buffer(15)]],device float *adaptation [[buffer(16)]],
-    device atomic_uint *ring [[buffer(17)]],constant Params &p [[buffer(18)]],
+    device atomic_uint *ring [[buffer(17)]],device const float *decay [[buffer(18)]],
+    constant Params &p [[buffer(19)]],
     uint target [[thread_position_in_grid]]) {
   if(target>=p.neurons)return;
   if(atomic_exchange_explicit(&touched[target],0u,memory_order_relaxed)!=0){
-    evolve(target,p.clock,drive[target],v,g,refractory,last,rest,adaptation,p.dt,p.adaptation_tau);
+    evolve(target,p.clock,drive[target],v,g,refractory,last,rest,adaptation,decay,p.dt,p.adaptation_tau);
     float conductance=0.0f,modulatory=0.0f;bool has_fast=false,has_modulatory=false;
     long start=in_ptr[target],end=in_ptr[target+1];
     if(start<end){
@@ -150,7 +154,8 @@ kernel void df_gather_finalize(device const long *in_ptr [[buffer(0)]],
 kernel void df_materialize(device float *v [[buffer(0)]],device float *g [[buffer(1)]],
     device short *refractory [[buffer(2)]],device const float *drive [[buffer(3)]],
     device long *last [[buffer(4)]],device const float *rest [[buffer(5)]],
-    device float *adaptation [[buffer(6)]],constant Params &p [[buffer(7)]],
+    device float *adaptation [[buffer(6)]],device const float *decay [[buffer(7)]],
+    constant Params &p [[buffer(8)]],
     uint i [[thread_position_in_grid]]) {
-  if(i<p.neurons)evolve(i,p.clock,drive[i],v,g,refractory,last,rest,adaptation,p.dt,p.adaptation_tau);
+  if(i<p.neurons)evolve(i,p.clock,drive[i],v,g,refractory,last,rest,adaptation,decay,p.dt,p.adaptation_tau);
 }

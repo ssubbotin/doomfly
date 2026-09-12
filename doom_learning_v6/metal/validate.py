@@ -102,7 +102,8 @@ def source_identity():
     names=['doom_learning_v6/brain.py','doom_learning_v6/kernel.cpp','doom_learning_v6/rule.py',
         'doom_learning_v6/visual.py','doom_learning_v6/calibration.py','doom_learning_v6/survival.py',
         'doom_learning/common.py','doom_learning_v2/vision.py','doom/engine.py',
-        'doom_learning_v6/metal/api.h','doom_learning_v6/metal/backend.mm',
+        'doom_learning_v6/metal/api.h','doom_learning_v6/metal/decay_tables.h',
+        'doom_learning_v6/metal/backend.mm',
         'doom_learning_v6/metal/backend.py','doom_learning_v6/metal/build.py',
         'doom_learning_v6/metal/graph.py','doom_learning_v6/metal/kernels.metal',
         'doom_learning_v6/metal/validate.py','doom_learning_v6/metal/benchmark.py']

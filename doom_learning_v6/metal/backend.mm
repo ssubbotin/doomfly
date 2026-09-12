@@ -2,6 +2,7 @@
 #import <Metal/Metal.h>
 
 #include "api.h"
+#include "decay_tables.h"
 
 #include <algorithm>
 #include <chrono>
@@ -32,6 +33,7 @@ struct Backend {
   __strong id<MTLBuffer> weight,v,g,refractory,drive,previous_drive,counts,active_flag,last;
   __strong id<MTLBuffer> modulation,modulation_last,rest,adaptation,ring,touched;
   __strong id<MTLBuffer> kc_events,event_count;
+  __strong id<MTLBuffer> decay_tables;
   __strong id<MTLBuffer> weight_update_ids,weight_update_values;
   __strong id<MTLComputePipelineState> drive_pipeline,integrate_mark_pipeline;
   __strong id<MTLComputePipelineState> gather_finalize_pipeline;
@@ -194,6 +196,9 @@ extern "C" int df_metal_create(const df_metal_graph *graph,const char *metallib_
     backend->edge_words=int32_t((graph->edges+31)/32);
     backend->dt=graph->dt_ms;backend->adaptation_jump=graph->adaptation_jump_mv;
     backend->adaptation_tau=graph->adaptation_tau_ms;
+    const auto decay_tables=doomfly::metal::make_decay_tables(backend->dt,backend->adaptation_tau);
+    backend->decay_tables=make_buffer(backend->device,decay_tables.data(),
+      decay_tables.size()*sizeof(float));
     const size_t n=graph->neurons,e=graph->edges;
     backend->out_ptr=make_buffer(backend->device,graph->out_ptr,(n+1)*sizeof(int64_t));
     backend->out_post=make_buffer(backend->device,graph->out_post,e*sizeof(int32_t));
@@ -234,7 +239,8 @@ extern "C" int df_metal_create(const df_metal_graph *graph,const char *metallib_
       backend->weight,backend->v,backend->g,backend->refractory,backend->drive,
       backend->previous_drive,backend->counts,backend->active_flag,backend->last,
       backend->modulation,backend->modulation_last,backend->rest,backend->adaptation,
-      backend->ring,backend->touched,backend->kc_events,backend->event_count};
+      backend->ring,backend->touched,backend->kc_events,backend->event_count,
+      backend->decay_tables};
     for(id<MTLBuffer> buffer:required)if(buffer==nil){
       delete backend;return fail("Metal shared buffer allocation failed");
     }
@@ -395,7 +401,7 @@ extern "C" int df_metal_advance(df_metal_handle handle,int32_t steps,
       b->adaptation_jump,b->adaptation_tau,int32_t(std::lround(2.2f/b->dt)),kernel_capacity,
       b->capture_all_spikes?1u:0u};
     encode(encoder,b->drive_pipeline,{b->v,b->g,b->refractory,b->drive,b->previous_drive,
-      b->active_flag,b->last,b->rest,b->adaptation},p,b->neurons,dispatch_count);
+      b->active_flag,b->last,b->rest,b->adaptation,b->decay_tables},p,b->neurons,dispatch_count);
     const int32_t delay=std::lround(1.8f/b->dt);
     for(int32_t step=0;step<steps;step++){
       p.clock=b->cursor+step;p.slot=uint32_t(p.clock%b->slots);
@@ -403,16 +409,16 @@ extern "C" int df_metal_advance(df_metal_handle handle,int32_t steps,
       encode(encoder,b->integrate_mark_pipeline,{b->v,b->g,b->refractory,b->drive,
         b->active_flag,b->last,b->rest,b->adaptation,b->ring,b->counts,b->kc_mask,
         b->kc_events,b->event_count,b->out_ptr,b->out_post,b->edge_to_incoming,
-        b->touched,b->active_edge_bits},p,b->neurons,dispatch_count);
+        b->touched,b->active_edge_bits,b->decay_tables},p,b->neurons,dispatch_count);
       encode(encoder,b->gather_finalize_pipeline,{b->in_ptr,b->in_pre,b->in_edge,b->weight,
         b->active_edge_bits,
         b->touched,b->v,b->g,b->refractory,b->drive,b->active_flag,b->last,b->modulation,
-        b->modulation_last,b->modulation_mask,b->rest,b->adaptation,b->ring},
+        b->modulation_last,b->modulation_mask,b->rest,b->adaptation,b->ring,b->decay_tables},
         p,b->neurons,dispatch_count);
     }
     p.clock=b->cursor+steps-1;
     encode(encoder,b->materialize_pipeline,{b->v,b->g,b->refractory,b->drive,b->last,
-      b->rest,b->adaptation},p,b->neurons,dispatch_count);
+      b->rest,b->adaptation,b->decay_tables},p,b->neurons,dispatch_count);
     [encoder endEncoding];
     timing->encode_seconds=std::chrono::duration<double>(
       std::chrono::steady_clock::now()-encode_started).count();

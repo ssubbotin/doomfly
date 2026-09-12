@@ -12,7 +12,7 @@ import sys
 ROOT=Path(__file__).resolve().parents[2]
 SOURCE=Path(__file__).resolve().parent
 DEFAULT_OUTPUT=ROOT/'outputs/doom-learning/metal'
-ABI_VERSION=3
+ABI_VERSION=4
 METAL_COMPILE_FLAGS=('-std=macos-metal2.4','-fno-fast-math','-ffp-contract=off')
 LIBRARY_COMPILE_FLAGS=('-O3','-std=c++17','-dynamiclib','-fobjc-arc','-arch','arm64',
     '-mmacosx-version-min=13.0')
@@ -40,7 +40,7 @@ def build(output_dir=DEFAULT_OUTPUT):
     if sys.platform!='darwin' or platform.machine()!='arm64':
         raise RuntimeError('Metal backend requires arm64 macOS')
     output=Path(output_dir);output.mkdir(parents=True,exist_ok=True)
-    sources={name:_digest(SOURCE/name) for name in ['api.h','backend.mm','kernels.metal']}
+    sources={name:_digest(SOURCE/name) for name in ['api.h','backend.mm','kernels.metal','decay_tables.h']}
     configuration={'abi_version':ABI_VERSION,'builder_sha256':_digest(__file__),
         'metal_compile_flags':list(METAL_COMPILE_FLAGS),
         'library_compile_flags':list(LIBRARY_COMPILE_FLAGS)}

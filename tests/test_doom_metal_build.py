@@ -1,5 +1,7 @@
 import json
+import hashlib
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 
@@ -46,6 +48,29 @@ def test_matching_build_reuses_verified_artifacts(metal_toolchain,tmp_path):
     assert len(compiled)==3
 
 
+def test_build_identity_includes_host_coefficients(metal_toolchain,tmp_path):
+    module,_=metal_toolchain
+    record=module.build(tmp_path)
+    assert 'decay_tables.h' in record['sources']
+    assert record['sources']['decay_tables.h']==hashlib.sha256(
+        (module.SOURCE/'decay_tables.h').read_bytes()).hexdigest()
+
+
+def test_changed_host_coefficients_cannot_reuse_cache(metal_toolchain,tmp_path,monkeypatch):
+    module,compiled=metal_toolchain
+    source=tmp_path/'source';source.mkdir()
+    for name in ['api.h','backend.mm','kernels.metal','decay_tables.h','build.py']:
+        shutil.copyfile(module.SOURCE/name,source/name)
+    monkeypatch.setattr(module,'SOURCE',source)
+    monkeypatch.setattr(module,'__file__',str(source/'build.py'))
+    output=tmp_path/'output';module.build(output)
+    header=source/'decay_tables.h'
+    header.write_bytes(header.read_bytes()+b'\n// Cache invalidation fixture.\n')
+    changed=module.build(output)
+    assert len(compiled)==6
+    assert changed['sources']['decay_tables.h']==hashlib.sha256(header.read_bytes()).hexdigest()
+
+
 @pytest.mark.parametrize('legacy_configuration',[None,{
     'metal_compile_flags':['-std=macos-metal2.4','-ffast-math']}])
 def test_old_math_configuration_cannot_reuse_cache(metal_toolchain,tmp_path,legacy_configuration):
@@ -62,7 +87,7 @@ def test_old_math_configuration_cannot_reuse_cache(metal_toolchain,tmp_path,lega
 
 
 @pytest.mark.parametrize('field,value',[
-    ('abi_version',99),('builder_sha256','0'*64),('library_compile_flags',['-O0'])])
+    ('abi_version',3),('abi_version',99),('builder_sha256','0'*64),('library_compile_flags',['-O0'])])
 def test_changed_build_identity_cannot_reuse_cache(metal_toolchain,tmp_path,field,value):
     module,compiled=metal_toolchain
     original=module.build(tmp_path)
