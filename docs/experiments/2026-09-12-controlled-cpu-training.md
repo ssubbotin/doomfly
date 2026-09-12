@@ -56,3 +56,26 @@ one-time construction. The next acceleration milestone is a persistent
 multi-trajectory training scheduler sharing the immutable graph while retaining
 the same sensory, reinforcement, learning, and decoding boundaries. Further
 training scale is judged against controls; weight changes alone are insufficient.
+
+## Interim Observations
+
+The first replica (`42051`) completed all 18 planned episodes. Its three unseen
+evaluation starts each survived 128 game tics (3.657 seconds) in every arm.
+None reached the safe sector. After two training episodes, plastic weights
+changed on 1,885 connections, shuffled weights on 1,897, and frozen weights on
+zero. Both shuffled training episodes delivered the donor's exact 600 ms dose.
+Memory erasure restored the complete first-start frozen input, spike, action,
+health, position, and neural-clock trace. This replica shows weight-dependent
+movement differences without an observed survival benefit.
+
+Replica `42052` initially survived 352 tics (10.057 seconds) during training,
+entered the safe sector for 231 observed tics, then returned to the hazard and
+died. Its three learned-weight held-out evaluations each died at 128 tics.
+These are partial-cohort observations; remaining controls and replicas must
+finish before a cohort comparison is reported.
+
+A one-second live-process stack sample found 628 of 669 main-thread samples
+inside the native `memory_advance` path. This short diagnostic supports the
+episode timers identifying propagation as the dominant cost; it is not a
+whole-study profile or a speedup measurement. The raw machine-specific sample
+stays in ignored evidence. The cohort continues unchanged.

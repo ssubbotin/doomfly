@@ -450,3 +450,28 @@ Before committing, inspect `git status --short` and remove the unrelated Metal t
 - [ ] Benchmark reports preserve raw samples and separate numerical correctness from throughput.
 - [ ] Documentation matches the implemented and measured executor without making a learning or biological-validation claim.
 - [ ] Source, reports, commits, and remote branch agree by digest and commit identifier.
+
+## Implementation Record (12 September 2026)
+
+The executor implementation and propagation evidence are committed and pushed on
+`cpu-batch-executor` at `2dd86b5a63d0a3ca88595ae1a1ecad4ad261c5fc`. The original
+`metal-backend` checkout is preserved; integration has not been performed.
+The checklist above records the original implementation procedure.
+
+Final full-graph reports identify runtime source commit
+`a49a6c890c2e775b9e05f1756b1e781d79e4bc5e`. Four lanes and four workers passed
+bitwise state, counts, decoder, and repeat checks at both 40 and 80 ms. Five
+benchmark repetitions measured median aggregate throughput of 1.012, 1.914,
+and 2.802 brain-seconds per wall-second for one, two, and four lanes.
+See `docs/doom-cpu-batch.md` and the committed validation inputs/reports.
+
+A fresh Linux regression run on the reporting descendant `8dbf9c7` passed
+192 tests with 35 platform-specific skips; the native ABI 1 build probe also
+passed. The separately recorded M4 Pro suite passed 222 tests with three skips.
+These checks establish the executor's tested numerical behavior, not learned
+survival or biological validity.
+
+The first complete training cohort uses the serial CPU reference under
+`docs/experiments/2026-09-12-controlled-cpu-training.md`. Connecting independent
+RGB, reinforcement, plasticity, and episode/reset schedules to the shared-graph
+executor remains the next architectural milestone.
