@@ -68,31 +68,36 @@ def _edgeless_pair(tmp_path,tau):
 @pytest.mark.parametrize('interval',INTERVALS)
 def test_sleeping_state_decay_and_refractory_boundary(tmp_path,tau,interval):
     cpu,metal=_edgeless_pair(tmp_path,tau)
-    # Four sleeping neurons isolate voltage, conductance, adaptation and frozen
-    # refractory adaptation. Seed before the first native upload.
-    for brain in [cpu,metal]:
-        brain.v[:]=[-51.,-52.,-52.,-52.]
-        brain.g[:]=[0.,1.,0.,0.]
-        brain.adaptation[:]=[0.,0.,1.,1.]
-        brain.refractory[:]=[0,0,0,interval+1]
-        brain.active_flag.fill(0);brain.nactive.fill(0);brain.last.fill(0)
-        brain.backend.advance(interval+1)
-        brain.backend.materialize('decay-fixture')
-        assert not brain.counts.any()
-        assert brain.cursor==interval+1
-        np.testing.assert_array_equal(brain.last,np.full(4,interval,dtype=np.int64))
-        np.testing.assert_array_equal(brain.refractory,[0,0,0,1])
-        assert brain.v[3]==-52. and brain.g[3]==0.
-        for name in ['v','g','adaptation']:
-            assert np.isfinite(getattr(brain,name)).all(),name
-    # Composite voltage arithmetic retains the established micrograph tolerance.
-    np.testing.assert_allclose(metal.v,cpu.v,rtol=1e-5,atol=.002)
-    if interval<1024:
-        # Multiplication by one isolates the actual canonical native coefficient.
-        np.testing.assert_array_equal(metal.g,cpu.g)
-        np.testing.assert_array_equal(metal.adaptation,cpu.adaptation)
-    else:
-        # The preserved GPU exp fallback has no bitwise host-equality guarantee.
-        # Compare its complete formula against the actual canonical CPU fallback.
-        np.testing.assert_allclose(metal.g,cpu.g,rtol=1e-5,atol=0.)
-        np.testing.assert_allclose(metal.adaptation,cpu.adaptation,rtol=1e-5,atol=0.)
+    try:
+        # Artificial sleeping histories isolate voltage, conductance, adaptation
+        # and frozen refractory adaptation without a physiological claim. Seed
+        # before initial upload; one valid public tick materializes elapsed
+        # history at now=0 while preserving the native 100-tick bin limit.
+        for brain in [cpu,metal]:
+            brain.v[:]=[-51.,-52.,-52.,-52.]
+            brain.g[:]=[0.,1.,0.,0.]
+            brain.adaptation[:]=[0.,0.,1.,1.]
+            brain.refractory[:]=[0,0,0,interval+1]
+            brain.active_flag.fill(0);brain.nactive.fill(0);brain.last.fill(-interval)
+            brain.backend.advance(1)
+            brain.backend.materialize('decay-fixture')
+            assert not brain.counts.any()
+            assert brain.cursor==1
+            np.testing.assert_array_equal(brain.last,np.zeros(4,dtype=np.int64))
+            np.testing.assert_array_equal(brain.refractory,[0,0,0,1])
+            assert brain.v[3]==-52. and brain.g[3]==0.
+            for name in ['v','g','adaptation']:
+                assert np.isfinite(getattr(brain,name)).all(),name
+        # Composite voltage arithmetic retains the established micrograph tolerance.
+        np.testing.assert_allclose(metal.v,cpu.v,rtol=1e-5,atol=.002)
+        if interval<1024:
+            # Multiplication by one isolates the actual canonical native coefficient.
+            np.testing.assert_array_equal(metal.g,cpu.g)
+            np.testing.assert_array_equal(metal.adaptation,cpu.adaptation)
+        else:
+            # The preserved GPU exp fallback has no bitwise host-equality guarantee.
+            # Compare its complete formula against the actual canonical CPU fallback.
+            np.testing.assert_allclose(metal.g,cpu.g,rtol=1e-5,atol=0.)
+            np.testing.assert_allclose(metal.adaptation,cpu.adaptation,rtol=1e-5,atol=0.)
+    finally:
+        cpu.backend.close();metal.backend.close()
