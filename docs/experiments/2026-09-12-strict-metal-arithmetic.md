@@ -75,6 +75,27 @@ Micrograph CPU/Metal voltage, conductance and adaptation differ within existing
 tolerances; queue/active storage ordering also differs. This is repeatability
 within Metal, rather than complete CPU/Metal state identity.
 
+## Implementation Verification
+
+After independent review, the measured golden/evidence update was committed as
+`7192e9c2d98ed923cec8b8958c80a26c1b6457ac`. An isolated, owned M4 Pro worktree
+was advanced to that commit without altering the existing main checkout or
+older experiment worktree. The complete suite then passed, including the new
+strict-math golden:
+
+```sh
+OPENBLAS_NUM_THREADS=1 python -m pytest -q
+```
+
+- Linux: 204 passed, 35 skipped, 50 dependency warnings, 20.52 seconds.
+- M4 Pro: 236 passed, three skipped, 50 dependency warnings, 15.35 seconds;
+  invoked under job-scoped `caffeinate -is`.
+
+These implementation tests do not replace the separately recorded full-graph
+80 ms stress failure. No numerical or scientific acceptance threshold changed.
+Both invocation blocks match their saved pre-execution scripts; portable source,
+configuration, artifact and transfer hashes were independently checked.
+
 ## Observational Timing
 
 Because 80 ms parity failed, the guarded benchmark was not invoked. A separate
