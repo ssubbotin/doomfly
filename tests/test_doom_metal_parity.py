@@ -115,13 +115,14 @@ def test_metal_repeated_runs_are_bitwise_identical(tmp_path):
         np.testing.assert_array_equal(getattr(first,name),getattr(second,name),err_msg=name)
 
 
-def test_metal_micrograph_digest_is_retained(tmp_path):
+def test_metal_micrograph_strict_math_digest_is_retained(tmp_path):
     _,metal=paired_brains(tmp_path)
     metal.backend.start_diagnostics();counts=run_trace(metal);metal.backend.stop_diagnostics()
     events=np.asarray(metal.backend.spike_events,dtype=np.int64)
     assert hashlib.sha256(counts.tobytes()).hexdigest()==(
         'de7d06da6e31fe80c35eb54c19926e81db5c514483fa170ca4eccf878d0fec90')
-    assert _state_digest(metal)=='0fdec182c34b38bc8aa9289d9eab39ace678df5f38d598a8f043d83bc29674e9'
+    # The previous fast-math state epoch remains in the strict diagnostic protocol.
+    assert _state_digest(metal)=='b5970b9261406420106a6289e86a9ebfc29f463a9c80ba9e724e523011e1a745'
     assert hashlib.sha256(events.tobytes()).hexdigest()==(
         '00ff37a29ca8cc916a39436e1ac4f4aac1bef46291502d751bb4860e21cd6ad1')
     assert len(events)==3

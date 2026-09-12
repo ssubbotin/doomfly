@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "source_commit": "bf9f327dd6820dc3a34b09b1ac686ac9f0a00853",
+  "experiment": "bounded strict Metal arithmetic diagnostic",
+  "retained_neurons": 166700,
+  "retained_edges": 25582938,
+  "plastic_slots": 4184,
+  "brain_step_ms": 0.1,
+  "maximum_rule_bin_ms": 10,
+  "phases": [
+    "synthetic arithmetic controls",
+    "micrograph repeatability",
+    "full-graph 40 ms parity",
+    "full-graph 80 ms parity",
+    "five repeated matched 40 ms timing samples"
+  ],
+  "strict_build": {
+    "schema": 2,
+    "abi_version": 3,
+    "sources": {
+      "api.h": "35329eef027c9867db0c7c3d6e6b853c7b108553ffeb10ab3fde0fed72c955f7",
+      "backend.mm": "e0e1939b7f0b5d7d406fbd233463d27c9d66fc4f4c38f7330f2bc5fa1e526e8a",
+      "kernels.metal": "f7e28117fd6a92f41d81d33bf5ce98ffb0ebcc59e27b877a0d43b64f2fb46ed0"
+    },
+    "binaries": {
+      "air": "cc18845b7d0a7a8a431740e79138dd6850f86c8faeed5f5010d87b7f4bf61ca2",
+      "metallib": "14cb82045b80ab668cce2659fb16477c587e79469664d43e85623d7cabae8092",
+      "library": "c6c059cceea479a19809628d4d636ffa5841f416f63a98863c1b41aa8991d44f"
+    },
+    "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+    "sdk": "26.5",
+    "macos": "26.6.2",
+    "architecture": "arm64",
+    "metal_language": "macos-metal2.4",
+    "build_configuration": {
+      "abi_version": 3,
+      "builder_sha256": "7ba977b589bfc4afe625537704115c8ee07e96cd8584d5385b2ef308d99d46fa",
+      "metal_compile_flags": [
+        "-std=macos-metal2.4",
+        "-fno-fast-math",
+        "-ffp-contract=off"
+      ],
+      "library_compile_flags": [
+        "-O3",
+        "-std=c++17",
+        "-dynamiclib",
+        "-fobjc-arc",
+        "-arch",
+        "arm64",
+        "-mmacosx-version-min=13.0"
+      ]
+    },
+    "device": {
+      "name": "Apple M4 Pro",
+      "recommended_working_set": 19069665280,
+      "has_unified_memory": true,
+      "supports_apple7": true,
+      "supported": true
+    }
+  },
+  "original_micrograph_fast_math_state_sha256": "0fdec182c34b38bc8aa9289d9eab39ace678df5f38d598a8f043d83bc29674e9",
+  "original_default_metallib_sha256": "62a1f686823a2669fd2cebd000f4f918672bd41465d0b5872d7b7abf24f7ab65",
+  "claim_scope": "Numerical arithmetic/parity/speed only; no game training, general learning or biological validation.",
+  "timing_scope": "Whole realtime starts after imports/commit guard/output creation, before provenance and probe; timing samples exclude construction.",
+  "game_training_enabled": false,
+  "learning_demonstrated": false,
+  "biologically_validated": false
+}

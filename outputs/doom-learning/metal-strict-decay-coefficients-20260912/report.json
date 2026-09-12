@@ -1,0 +1,207 @@
+{
+  "schema": 1,
+  "experiment": "synthetic strict Metal voltage-decay coefficient extraction",
+  "source_commit": "bf9f327dd6820dc3a34b09b1ac686ac9f0a00853",
+  "synthetic_graph_sha256": "17f416bdc3718cd67923cfd129345ff467d6c7095603433da519903f97000cf2",
+  "scope": "One inactive zero-edge synthetic neuron; rest0/v-64 and last timestamps chosen to extract exp(-dt*delta/20) through power-of-two scaling. No retained full-graph state changed; not a threshold-scheduling or physiological validation.",
+  "rows": [
+    {
+      "delta_steps": 1,
+      "exponent_float32": -0.004999999888241291,
+      "cpu": {
+        "coefficient": 0.9950124621391296,
+        "float32_bits": 1065269539,
+        "voltage_mv": -63.6807975769043
+      },
+      "metal": {
+        "coefficient": 0.9950124025344849,
+        "float32_bits": 1065269538,
+        "voltage_mv": -63.68079376220703
+      },
+      "metal_minus_cpu_float32_ulps": -1,
+      "host_float64_exp_rounded_float32": 0.9950124621391296,
+      "host_reference_float32_bits": 1065269539
+    },
+    {
+      "delta_steps": 2,
+      "exponent_float32": -0.009999999776482582,
+      "cpu": {
+        "coefficient": 0.9900498390197754,
+        "float32_bits": 1065186280,
+        "voltage_mv": -63.363189697265625
+      },
+      "metal": {
+        "coefficient": 0.9900497794151306,
+        "float32_bits": 1065186279,
+        "voltage_mv": -63.36318588256836
+      },
+      "metal_minus_cpu_float32_ulps": -1,
+      "host_float64_exp_rounded_float32": 0.9900498390197754,
+      "host_reference_float32_bits": 1065186280
+    },
+    {
+      "delta_steps": 18,
+      "exponent_float32": -0.09000000357627869,
+      "cpu": {
+        "coefficient": 0.9139311909675598,
+        "float32_bits": 1063909221,
+        "voltage_mv": -58.49159622192383
+      },
+      "metal": {
+        "coefficient": 0.913931131362915,
+        "float32_bits": 1063909220,
+        "voltage_mv": -58.49159240722656
+      },
+      "metal_minus_cpu_float32_ulps": -1,
+      "host_float64_exp_rounded_float32": 0.9139311909675598,
+      "host_reference_float32_bits": 1063909221
+    },
+    {
+      "delta_steps": 22,
+      "exponent_float32": -0.10999999940395355,
+      "cpu": {
+        "coefficient": 0.8958341479301453,
+        "float32_bits": 1063605603,
+        "voltage_mv": -57.3333854675293
+      },
+      "metal": {
+        "coefficient": 0.8958340883255005,
+        "float32_bits": 1063605602,
+        "voltage_mv": -57.33338165283203
+      },
+      "metal_minus_cpu_float32_ulps": -1,
+      "host_float64_exp_rounded_float32": 0.8958341479301453,
+      "host_reference_float32_bits": 1063605603
+    },
+    {
+      "delta_steps": 100,
+      "exponent_float32": -0.5,
+      "cpu": {
+        "coefficient": 0.6065306663513184,
+        "float32_bits": 1058751896,
+        "voltage_mv": -38.817962646484375
+      },
+      "metal": {
+        "coefficient": 0.6065306663513184,
+        "float32_bits": 1058751896,
+        "voltage_mv": -38.817962646484375
+      },
+      "metal_minus_cpu_float32_ulps": 0,
+      "host_float64_exp_rounded_float32": 0.6065306663513184,
+      "host_reference_float32_bits": 1058751896
+    },
+    {
+      "delta_steps": 286,
+      "exponent_float32": -1.4300000667572021,
+      "cpu": {
+        "coefficient": 0.2393089085817337,
+        "float32_bits": 1047858533,
+        "voltage_mv": -15.315770149230957
+      },
+      "metal": {
+        "coefficient": 0.2393089085817337,
+        "float32_bits": 1047858533,
+        "voltage_mv": -15.315770149230957
+      },
+      "metal_minus_cpu_float32_ulps": 0,
+      "host_float64_exp_rounded_float32": 0.2393089085817337,
+      "host_reference_float32_bits": 1047858533
+    },
+    {
+      "delta_steps": 1023,
+      "exponent_float32": -5.115000247955322,
+      "cpu": {
+        "coefficient": 0.006005976349115372,
+        "float32_bits": 1002753480,
+        "voltage_mv": -0.3843824863433838
+      },
+      "metal": {
+        "coefficient": 0.006005976814776659,
+        "float32_bits": 1002753481,
+        "voltage_mv": -0.3843825161457062
+      },
+      "metal_minus_cpu_float32_ulps": 1,
+      "host_float64_exp_rounded_float32": 0.006005976349115372,
+      "host_reference_float32_bits": 1002753480
+    },
+    {
+      "delta_steps": 1024,
+      "exponent_float32": -5.119999885559082,
+      "cpu": {
+        "coefficient": 0.005976023618131876,
+        "float32_bits": 1002689157,
+        "voltage_mv": -0.38246551156044006
+      },
+      "metal": {
+        "coefficient": 0.005976023618131876,
+        "float32_bits": 1002689157,
+        "voltage_mv": -0.38246551156044006
+      },
+      "metal_minus_cpu_float32_ulps": 0,
+      "host_float64_exp_rounded_float32": 0.005976023618131876,
+      "host_reference_float32_bits": 1002689157
+    }
+  ],
+  "backends": {
+    "cpu": {
+      "name": "cpu",
+      "build": {
+        "model": "adaptive-centered-v6",
+        "source_sha256": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+        "binary_sha256": "aa1004b6071e663efe70f6b4145d4d7e2b7ba822796c3919d41cd1197cbcc1fb",
+        "flags": [
+          "-O3",
+          "-std=c++17",
+          "-shared",
+          "-fPIC"
+        ]
+      }
+    },
+    "metal": {
+      "schema": 2,
+      "abi_version": 3,
+      "sources": {
+        "api.h": "35329eef027c9867db0c7c3d6e6b853c7b108553ffeb10ab3fde0fed72c955f7",
+        "backend.mm": "e0e1939b7f0b5d7d406fbd233463d27c9d66fc4f4c38f7330f2bc5fa1e526e8a",
+        "kernels.metal": "f7e28117fd6a92f41d81d33bf5ce98ffb0ebcc59e27b877a0d43b64f2fb46ed0"
+      },
+      "binaries": {
+        "air": "cc18845b7d0a7a8a431740e79138dd6850f86c8faeed5f5010d87b7f4bf61ca2",
+        "metallib": "14cb82045b80ab668cce2659fb16477c587e79469664d43e85623d7cabae8092",
+        "library": "c6c059cceea479a19809628d4d636ffa5841f416f63a98863c1b41aa8991d44f"
+      },
+      "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+      "sdk": "26.5",
+      "macos": "26.6.2",
+      "architecture": "arm64",
+      "metal_language": "macos-metal2.4",
+      "build_configuration": {
+        "abi_version": 3,
+        "builder_sha256": "7ba977b589bfc4afe625537704115c8ee07e96cd8584d5385b2ef308d99d46fa",
+        "metal_compile_flags": [
+          "-std=macos-metal2.4",
+          "-fno-fast-math",
+          "-ffp-contract=off"
+        ],
+        "library_compile_flags": [
+          "-O3",
+          "-std=c++17",
+          "-dynamiclib",
+          "-fobjc-arc",
+          "-arch",
+          "arm64",
+          "-mmacosx-version-min=13.0"
+        ]
+      },
+      "device": {
+        "name": "Apple M4 Pro",
+        "recommended_working_set": 19069665280,
+        "has_unified_memory": true,
+        "supports_apple7": true,
+        "supported": true
+      }
+    }
+  },
+  "learning_demonstrated": false,
+  "biologically_validated": false
+}
