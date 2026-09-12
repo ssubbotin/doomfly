@@ -1,0 +1,116 @@
+{
+  "completed_episodes": 8,
+  "latest": {
+    "identity": {
+      "dataset": "Yunncheng/gamewam-vizdoom",
+      "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+      "scenario": "defend_the_center",
+      "episode_index": 1,
+      "video_sha256": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501",
+      "control_sha256": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+    },
+    "training": false,
+    "weights_frozen": true,
+    "target_shift": 0,
+    "source_frame_count": 988,
+    "diagnostic_limit": 35,
+    "frames": 35,
+    "complete": false,
+    "brain_steps": 10000,
+    "brain_seconds": 1.0,
+    "recorded_seconds": 1.0,
+    "wall_seconds": 9.151250625000102,
+    "kernel_seconds": 4.510312920967408,
+    "warmup": {
+      "requested_ms": 2000,
+      "brain_steps": 20000,
+      "brain_seconds": 2.0,
+      "wall_seconds": 4.494820125000842,
+      "kernel_seconds": 4.375052412011428
+    },
+    "teacher_dose_current_ms": 0.0,
+    "pending_teacher_current": 0.0,
+    "before": {
+      "plastic_edges": 4184,
+      "changed_edges": 1701,
+      "mean_efficacy": 1.0185202360153198,
+      "minimum_efficacy": 0.8875272870063782,
+      "sha256": "0de77887f37c64213fa1a2aed54fe767fdb933bcb2f257e80e2434ea7575f51e",
+      "model": "adaptive-centered-v6",
+      "memory_u_sha256": "6808ae4405278dcb51f5a4ee777d4b58e8eb63587b960a60c6532c9f3b09dfd5",
+      "memory_w_sha256": "685fe5d0b510e907392098c3fb344038306ee4b284a0ba45e62a04c6d16f4492",
+      "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+      "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+    },
+    "after": {
+      "plastic_edges": 4184,
+      "changed_edges": 1701,
+      "mean_efficacy": 1.0185202360153198,
+      "minimum_efficacy": 0.8875272870063782,
+      "sha256": "0de77887f37c64213fa1a2aed54fe767fdb933bcb2f257e80e2434ea7575f51e",
+      "model": "adaptive-centered-v6",
+      "memory_u_sha256": "6808ae4405278dcb51f5a4ee777d4b58e8eb63587b960a60c6532c9f3b09dfd5",
+      "memory_w_sha256": "685fe5d0b510e907392098c3fb344038306ee4b284a0ba45e62a04c6d16f4492",
+      "rate_kc_sha256": "858a9176f7b37b56121d942e5087eec56170ef488840e859fd90486a5a3c265a",
+      "rate_dan_sha256": "3854f974098c556ba7e1f5f4285a1c2383e97b6e9af3588453f2ec3202156324"
+    },
+    "score": {
+      "mae_degrees": 4.392545316914715,
+      "direction_support": {
+        "left": 35,
+        "idle": 0,
+        "right": 0
+      },
+      "direction_recall": {
+        "left": 0.17142857142857143
+      },
+      "balanced_direction_recall": 0.17142857142857143,
+      "dead_zone_degrees": 0.1,
+      "constant_baselines": {
+        "left": {
+          "turn_degrees": -3.2645089285714284,
+          "mae_degrees": 0.4304846938775511,
+          "direction_support": {
+            "left": 35,
+            "idle": 0,
+            "right": 0
+          },
+          "direction_recall": {
+            "left": 1.0
+          },
+          "balanced_direction_recall": 1.0
+        },
+        "idle": {
+          "turn_degrees": 0.0,
+          "mae_degrees": 3.2645089285714284,
+          "direction_support": {
+            "left": 35,
+            "idle": 0,
+            "right": 0
+          },
+          "direction_recall": {
+            "left": 0.0
+          },
+          "balanced_direction_recall": 0.0
+        },
+        "right": {
+          "turn_degrees": 3.2645089285714284,
+          "mae_degrees": 6.529017857142857,
+          "direction_support": {
+            "left": 35,
+            "idle": 0,
+            "right": 0
+          },
+          "direction_recall": {
+            "left": 0.0
+          },
+          "balanced_direction_recall": 0.0
+        }
+      },
+      "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+    },
+    "arm": "shifted",
+    "phase": "held_out",
+    "invariants_unchanged": true
+  }
+}

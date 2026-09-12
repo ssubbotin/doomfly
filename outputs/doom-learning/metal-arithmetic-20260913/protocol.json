@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "source_commit": "9d24668932939f0416d384274ea4ba55e2fa2576",
+  "arithmetic_epoch": 5,
+  "metal_build": {
+    "schema": 2,
+    "abi_version": 5,
+    "sources": {
+      "api.h": "b847deea0effd85435b438a505abd0783f2d67b5dae1148ac81cda0a652ebbd2",
+      "backend.mm": "f5f825be083ddb060e36c84184acd1fa07fecbcecebc353a155268d5e414b9de",
+      "kernels.metal": "9daea7ee70af0ad31a7a2396eb9f357f7abc097f4cdab16cd53e9e0de8923914",
+      "decay_tables.h": "85702606729011f942be2174e4ba074d1ca90066f586d6980025458862570065"
+    },
+    "binaries": {
+      "air": "9bc2cfeecbbe832378d748e03baf126e2e1672cd137107f881b73c773e99daa2",
+      "metallib": "ffacca0549990039cc2c0201c4e100a4f127b10301cd7fedb1042d9dfcfa73ab",
+      "library": "1d96f5235c3900fabef6596cb6bef3cae162d20879c8ceace910a08a6861c29a"
+    },
+    "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+    "sdk": "26.5",
+    "macos": "26.6.2",
+    "architecture": "arm64",
+    "metal_language": "macos-metal2.4",
+    "build_configuration": {
+      "abi_version": 5,
+      "builder_sha256": "69af01512cf917fd7f506b8e617e5151c6962b7724edc20906e514718fc1f4d2",
+      "metal_compile_flags": [
+        "-std=macos-metal2.4",
+        "-fno-fast-math",
+        "-ffp-contract=off"
+      ],
+      "library_compile_flags": [
+        "-O3",
+        "-std=c++17",
+        "-dynamiclib",
+        "-fobjc-arc",
+        "-arch",
+        "arm64",
+        "-mmacosx-version-min=13.0"
+      ]
+    },
+    "device": {
+      "name": "Apple M4 Pro",
+      "recommended_working_set": 19069665280,
+      "has_unified_memory": true,
+      "supports_apple7": true,
+      "supported": true
+    }
+  },
+  "neurons": 166700,
+  "retained_edges": 25582938,
+  "plastic_slots": 4184,
+  "previous_micrograph_state_sha256": "6163f146b096db3ba7c086b2b1933977b380e3fec2cd08c6d7c7ce141b16d791",
+  "long_comparison": "Same initial checkpoint, 200 dark bins and original first RGB; source/epoch/output identities changed only",
+  "learning_demonstrated": false,
+  "announcement_ready": false
+}

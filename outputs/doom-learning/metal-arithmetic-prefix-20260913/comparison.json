@@ -1,0 +1,2267 @@
+{
+  "schema": 1,
+  "source_backend_cpu": "fb57fd1c57960fe5297c3532cd2f939cc16d0685",
+  "source_backend_metal": "9d24668932939f0416d384274ea4ba55e2fa2576",
+  "model_identity_equal": true,
+  "configuration_equal": true,
+  "tested_frame_prefix": 35,
+  "warmup_ms": 2000,
+  "short_validation_horizon_ms": 80,
+  "complete": false,
+  "learning_demonstrated": false,
+  "announcement_ready": false,
+  "cpu_invariants_unchanged": true,
+  "metal_invariants_unchanged": true,
+  "metal_erased_frozen_exact": true,
+  "phases": [
+    {
+      "path": "frozen/eval-0/episode.json",
+      "frames": 35,
+      "equal_fields": {
+        "DAN_spikes": 28,
+        "KC_spikes": 27,
+        "MBON_spikes": 29,
+        "action": 27,
+        "brain_seconds": 35,
+        "brain_steps": 35,
+        "frame_sha256": 35,
+        "index": 35,
+        "memory": 27,
+        "neural_steps": 35,
+        "raw_action": 35,
+        "spikes_sha256": 26,
+        "target_turn": 35,
+        "teacher_current": 35,
+        "teacher_dose_current_ms": 35,
+        "teacher_error": 29,
+        "teacher_index": 35,
+        "timestamp": 35
+      },
+      "cpu_first_control": {
+        "turn": 1.0436533596634152,
+        "forward": 3.478844532211385,
+        "attack": true,
+        "readouts": [
+          {
+            "index": 306,
+            "id": "10331",
+            "type": "MN9",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 332,
+            "id": "10360",
+            "type": "DNa02",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 706,
+            "id": "10763",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 725,
+            "id": "10783",
+            "type": "DNp09",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1087,
+            "id": "11177",
+            "type": "DNp09",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1196,
+            "id": "11288",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1240,
+            "id": "11332",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 2194,
+            "id": "12348",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 6367,
+            "id": "16949",
+            "type": "MN9",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 131957,
+            "id": "523769",
+            "type": "DNa02",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 48,
+            "id": "10059",
+            "type": "DNp20",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          },
+          {
+            "index": 146,
+            "id": "10162",
+            "type": "DNp20",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 489,
+            "id": "10527",
+            "type": "DNpe017",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 142493,
+            "id": "555871",
+            "type": "DNpe017",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          }
+        ]
+      },
+      "metal_first_control": {
+        "turn": 1.0436533596634152,
+        "forward": 3.478844532211385,
+        "attack": true,
+        "readouts": [
+          {
+            "index": 306,
+            "id": "10331",
+            "type": "MN9",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 332,
+            "id": "10360",
+            "type": "DNa02",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 706,
+            "id": "10763",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 725,
+            "id": "10783",
+            "type": "DNp09",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1087,
+            "id": "11177",
+            "type": "DNp09",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1196,
+            "id": "11288",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1240,
+            "id": "11332",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 2194,
+            "id": "12348",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 6367,
+            "id": "16949",
+            "type": "MN9",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 131957,
+            "id": "523769",
+            "type": "DNa02",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 48,
+            "id": "10059",
+            "type": "DNp20",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          },
+          {
+            "index": 146,
+            "id": "10162",
+            "type": "DNp20",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 489,
+            "id": "10527",
+            "type": "DNpe017",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 142493,
+            "id": "555871",
+            "type": "DNpe017",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          }
+        ]
+      },
+      "cpu_wall": 4.923517874995014,
+      "metal_wall": 8.882817999998224,
+      "cpu_kernel": 2.4226722530293046,
+      "metal_kernel": 4.245323871989967,
+      "cpu_warmup_wall": 2.3569843750010477,
+      "metal_warmup_wall": 4.492915958995582,
+      "cpu_changed_edges": 0,
+      "metal_changed_edges": 0,
+      "before_memory_equal": true,
+      "after_memory_equal": false,
+      "cpu_trace_file": {
+        "bytes": 151640,
+        "sha256": "1f4b4bfb2d3b927397e41e6df17f2d31769f88f64b13967d9e7bcefa696c2e7a"
+      },
+      "metal_trace_file": {
+        "bytes": 151622,
+        "sha256": "bea25342b7a34f40993af19b6b2a7983fb881b55905e6764625766698c96be34"
+      },
+      "teacher_free_frozen_eval": true
+    },
+    {
+      "path": "frozen/train-0-0/episode.json",
+      "frames": 35,
+      "equal_fields": {
+        "DAN_spikes": 35,
+        "KC_spikes": 35,
+        "MBON_spikes": 35,
+        "action": 35,
+        "brain_seconds": 35,
+        "brain_steps": 35,
+        "frame_sha256": 35,
+        "index": 35,
+        "memory": 35,
+        "neural_steps": 35,
+        "raw_action": 35,
+        "spikes_sha256": 35,
+        "target_turn": 35,
+        "teacher_current": 35,
+        "teacher_dose_current_ms": 35,
+        "teacher_error": 35,
+        "teacher_index": 35,
+        "timestamp": 35
+      },
+      "cpu_first_control": {
+        "turn": 1.0436533596634152,
+        "forward": 3.478844532211385,
+        "attack": true,
+        "readouts": [
+          {
+            "index": 306,
+            "id": "10331",
+            "type": "MN9",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 332,
+            "id": "10360",
+            "type": "DNa02",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 706,
+            "id": "10763",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 725,
+            "id": "10783",
+            "type": "DNp09",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1087,
+            "id": "11177",
+            "type": "DNp09",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1196,
+            "id": "11288",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1240,
+            "id": "11332",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 2194,
+            "id": "12348",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 6367,
+            "id": "16949",
+            "type": "MN9",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 131957,
+            "id": "523769",
+            "type": "DNa02",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 48,
+            "id": "10059",
+            "type": "DNp20",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          },
+          {
+            "index": 146,
+            "id": "10162",
+            "type": "DNp20",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 489,
+            "id": "10527",
+            "type": "DNpe017",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 142493,
+            "id": "555871",
+            "type": "DNpe017",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          }
+        ]
+      },
+      "metal_first_control": {
+        "turn": 1.0436533596634152,
+        "forward": 3.478844532211385,
+        "attack": true,
+        "readouts": [
+          {
+            "index": 306,
+            "id": "10331",
+            "type": "MN9",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 332,
+            "id": "10360",
+            "type": "DNa02",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 706,
+            "id": "10763",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 725,
+            "id": "10783",
+            "type": "DNp09",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1087,
+            "id": "11177",
+            "type": "DNp09",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1196,
+            "id": "11288",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1240,
+            "id": "11332",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 2194,
+            "id": "12348",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 6367,
+            "id": "16949",
+            "type": "MN9",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 131957,
+            "id": "523769",
+            "type": "DNa02",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 48,
+            "id": "10059",
+            "type": "DNp20",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          },
+          {
+            "index": 146,
+            "id": "10162",
+            "type": "DNp20",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 489,
+            "id": "10527",
+            "type": "DNpe017",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 142493,
+            "id": "555871",
+            "type": "DNpe017",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          }
+        ]
+      },
+      "cpu_wall": 4.887651791999815,
+      "metal_wall": 8.937616458002594,
+      "cpu_kernel": 2.3961975379570504,
+      "metal_kernel": 4.29376849799155,
+      "cpu_warmup_wall": 2.3415724580045207,
+      "metal_warmup_wall": 4.496730375001789,
+      "cpu_changed_edges": 0,
+      "metal_changed_edges": 0,
+      "before_memory_equal": true,
+      "after_memory_equal": true,
+      "cpu_trace_file": {
+        "bytes": 152605,
+        "sha256": "5b33920412ade2b496e8e464c0b40840d92a7cadf18b8fc5d5a89a9e2ad40b9a"
+      },
+      "metal_trace_file": {
+        "bytes": 152589,
+        "sha256": "5feb7f11d2e8c86fcc14e5a7681a701e988e3bc0f01be083ea780d81032865a6"
+      },
+      "teacher_free_frozen_eval": null
+    },
+    {
+      "path": "plastic/erased-0/episode.json",
+      "frames": 35,
+      "equal_fields": {
+        "DAN_spikes": 28,
+        "KC_spikes": 27,
+        "MBON_spikes": 29,
+        "action": 27,
+        "brain_seconds": 35,
+        "brain_steps": 35,
+        "frame_sha256": 35,
+        "index": 35,
+        "memory": 27,
+        "neural_steps": 35,
+        "raw_action": 35,
+        "spikes_sha256": 26,
+        "target_turn": 35,
+        "teacher_current": 35,
+        "teacher_dose_current_ms": 35,
+        "teacher_error": 29,
+        "teacher_index": 35,
+        "timestamp": 35
+      },
+      "cpu_first_control": {
+        "turn": 1.0436533596634152,
+        "forward": 3.478844532211385,
+        "attack": true,
+        "readouts": [
+          {
+            "index": 306,
+            "id": "10331",
+            "type": "MN9",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 332,
+            "id": "10360",
+            "type": "DNa02",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 706,
+            "id": "10763",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 725,
+            "id": "10783",
+            "type": "DNp09",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1087,
+            "id": "11177",
+            "type": "DNp09",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1196,
+            "id": "11288",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1240,
+            "id": "11332",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 2194,
+            "id": "12348",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 6367,
+            "id": "16949",
+            "type": "MN9",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 131957,
+            "id": "523769",
+            "type": "DNa02",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 48,
+            "id": "10059",
+            "type": "DNp20",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          },
+          {
+            "index": 146,
+            "id": "10162",
+            "type": "DNp20",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 489,
+            "id": "10527",
+            "type": "DNpe017",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 142493,
+            "id": "555871",
+            "type": "DNpe017",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          }
+        ]
+      },
+      "metal_first_control": {
+        "turn": 1.0436533596634152,
+        "forward": 3.478844532211385,
+        "attack": true,
+        "readouts": [
+          {
+            "index": 306,
+            "id": "10331",
+            "type": "MN9",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 332,
+            "id": "10360",
+            "type": "DNa02",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 706,
+            "id": "10763",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 725,
+            "id": "10783",
+            "type": "DNp09",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1087,
+            "id": "11177",
+            "type": "DNp09",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1196,
+            "id": "11288",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1240,
+            "id": "11332",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 2194,
+            "id": "12348",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 6367,
+            "id": "16949",
+            "type": "MN9",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 131957,
+            "id": "523769",
+            "type": "DNa02",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 48,
+            "id": "10059",
+            "type": "DNp20",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          },
+          {
+            "index": 146,
+            "id": "10162",
+            "type": "DNp20",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 489,
+            "id": "10527",
+            "type": "DNpe017",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 142493,
+            "id": "555871",
+            "type": "DNpe017",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          }
+        ]
+      },
+      "cpu_wall": 4.897551207999641,
+      "metal_wall": 8.886687957994582,
+      "cpu_kernel": 2.409351079011685,
+      "metal_kernel": 4.244376833012211,
+      "cpu_warmup_wall": 2.343354459000693,
+      "metal_warmup_wall": 4.497278374998132,
+      "cpu_changed_edges": 0,
+      "metal_changed_edges": 0,
+      "before_memory_equal": true,
+      "after_memory_equal": false,
+      "cpu_trace_file": {
+        "bytes": 151646,
+        "sha256": "76ba2fbd0556cddd6216f43b3dc2571c00c57c1f7144d9e8a9131fad7d2c5fbc"
+      },
+      "metal_trace_file": {
+        "bytes": 151630,
+        "sha256": "2afb8a12ccbb0812cbfbe23a52582519f415a3f76f3dec978122812acbdf29dd"
+      },
+      "teacher_free_frozen_eval": true
+    },
+    {
+      "path": "plastic/eval-0/episode.json",
+      "frames": 35,
+      "equal_fields": {
+        "DAN_spikes": 35,
+        "KC_spikes": 35,
+        "MBON_spikes": 35,
+        "action": 35,
+        "brain_seconds": 35,
+        "brain_steps": 35,
+        "frame_sha256": 35,
+        "index": 35,
+        "memory": 35,
+        "neural_steps": 35,
+        "raw_action": 35,
+        "spikes_sha256": 35,
+        "target_turn": 35,
+        "teacher_current": 35,
+        "teacher_dose_current_ms": 35,
+        "teacher_error": 35,
+        "teacher_index": 35,
+        "timestamp": 35
+      },
+      "cpu_first_control": {
+        "turn": 1.0436533596634152,
+        "forward": 3.478844532211385,
+        "attack": true,
+        "readouts": [
+          {
+            "index": 306,
+            "id": "10331",
+            "type": "MN9",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 332,
+            "id": "10360",
+            "type": "DNa02",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 706,
+            "id": "10763",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 725,
+            "id": "10783",
+            "type": "DNp09",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1087,
+            "id": "11177",
+            "type": "DNp09",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1196,
+            "id": "11288",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1240,
+            "id": "11332",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 2194,
+            "id": "12348",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 6367,
+            "id": "16949",
+            "type": "MN9",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 131957,
+            "id": "523769",
+            "type": "DNa02",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 48,
+            "id": "10059",
+            "type": "DNp20",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          },
+          {
+            "index": 146,
+            "id": "10162",
+            "type": "DNp20",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 489,
+            "id": "10527",
+            "type": "DNpe017",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 142493,
+            "id": "555871",
+            "type": "DNpe017",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          }
+        ]
+      },
+      "metal_first_control": {
+        "turn": 1.0436533596634152,
+        "forward": 3.478844532211385,
+        "attack": true,
+        "readouts": [
+          {
+            "index": 306,
+            "id": "10331",
+            "type": "MN9",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 332,
+            "id": "10360",
+            "type": "DNa02",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 706,
+            "id": "10763",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 725,
+            "id": "10783",
+            "type": "DNp09",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1087,
+            "id": "11177",
+            "type": "DNp09",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1196,
+            "id": "11288",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1240,
+            "id": "11332",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 2194,
+            "id": "12348",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 6367,
+            "id": "16949",
+            "type": "MN9",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 131957,
+            "id": "523769",
+            "type": "DNa02",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 48,
+            "id": "10059",
+            "type": "DNp20",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          },
+          {
+            "index": 146,
+            "id": "10162",
+            "type": "DNp20",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 489,
+            "id": "10527",
+            "type": "DNpe017",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 142493,
+            "id": "555871",
+            "type": "DNpe017",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          }
+        ]
+      },
+      "cpu_wall": 5.0315032090002205,
+      "metal_wall": 9.200319834002585,
+      "cpu_kernel": 2.586307912970369,
+      "metal_kernel": 4.550814626978536,
+      "cpu_warmup_wall": 2.299522875000548,
+      "metal_warmup_wall": 4.504286167000828,
+      "cpu_changed_edges": 1687,
+      "metal_changed_edges": 1687,
+      "before_memory_equal": true,
+      "after_memory_equal": true,
+      "cpu_trace_file": {
+        "bytes": 152913,
+        "sha256": "fc24fbeb48d4215ee844329511d076969844c866781ac2072a7702a8beceee93"
+      },
+      "metal_trace_file": {
+        "bytes": 152908,
+        "sha256": "19e268c44c55060e580719ca407aa4454460dd63b6f391e5b5de7d8960b8eab3"
+      },
+      "teacher_free_frozen_eval": true
+    },
+    {
+      "path": "plastic/retention-0/episode.json",
+      "frames": 35,
+      "equal_fields": {
+        "DAN_spikes": 29,
+        "KC_spikes": 26,
+        "MBON_spikes": 30,
+        "action": 27,
+        "brain_seconds": 35,
+        "brain_steps": 35,
+        "frame_sha256": 35,
+        "index": 35,
+        "memory": 26,
+        "neural_steps": 35,
+        "raw_action": 35,
+        "spikes_sha256": 26,
+        "target_turn": 35,
+        "teacher_current": 35,
+        "teacher_dose_current_ms": 35,
+        "teacher_error": 28,
+        "teacher_index": 35,
+        "timestamp": 35
+      },
+      "cpu_first_control": {
+        "turn": 1.0436533596634152,
+        "forward": 3.478844532211385,
+        "attack": true,
+        "readouts": [
+          {
+            "index": 306,
+            "id": "10331",
+            "type": "MN9",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 332,
+            "id": "10360",
+            "type": "DNa02",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 706,
+            "id": "10763",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 725,
+            "id": "10783",
+            "type": "DNp09",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1087,
+            "id": "11177",
+            "type": "DNp09",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1196,
+            "id": "11288",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1240,
+            "id": "11332",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 2194,
+            "id": "12348",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 6367,
+            "id": "16949",
+            "type": "MN9",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 131957,
+            "id": "523769",
+            "type": "DNa02",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 48,
+            "id": "10059",
+            "type": "DNp20",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          },
+          {
+            "index": 146,
+            "id": "10162",
+            "type": "DNp20",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 489,
+            "id": "10527",
+            "type": "DNpe017",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 142493,
+            "id": "555871",
+            "type": "DNpe017",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          }
+        ]
+      },
+      "metal_first_control": {
+        "turn": 1.0436533596634152,
+        "forward": 3.478844532211385,
+        "attack": true,
+        "readouts": [
+          {
+            "index": 306,
+            "id": "10331",
+            "type": "MN9",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 332,
+            "id": "10360",
+            "type": "DNa02",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 706,
+            "id": "10763",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 725,
+            "id": "10783",
+            "type": "DNp09",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1087,
+            "id": "11177",
+            "type": "DNp09",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1196,
+            "id": "11288",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1240,
+            "id": "11332",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 2194,
+            "id": "12348",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 6367,
+            "id": "16949",
+            "type": "MN9",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 131957,
+            "id": "523769",
+            "type": "DNa02",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 48,
+            "id": "10059",
+            "type": "DNp20",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          },
+          {
+            "index": 146,
+            "id": "10162",
+            "type": "DNp20",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 489,
+            "id": "10527",
+            "type": "DNpe017",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 142493,
+            "id": "555871",
+            "type": "DNpe017",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          }
+        ]
+      },
+      "cpu_wall": 5.045097124995664,
+      "metal_wall": 9.128606582999055,
+      "cpu_kernel": 2.5709446289838525,
+      "metal_kernel": 4.494573121017311,
+      "cpu_warmup_wall": 2.3310715410043485,
+      "metal_warmup_wall": 4.48712387499836,
+      "cpu_changed_edges": 1687,
+      "metal_changed_edges": 1687,
+      "before_memory_equal": true,
+      "after_memory_equal": false,
+      "cpu_trace_file": {
+        "bytes": 154444,
+        "sha256": "bc232bbd6990087de1cedbae7ec81621f30a565e8bfb524915d084b20508e522"
+      },
+      "metal_trace_file": {
+        "bytes": 154464,
+        "sha256": "636c598e28cbf3f677253544df0be23060bfd6a7e773aa30c83d48df5e0a0cfe"
+      },
+      "teacher_free_frozen_eval": true
+    },
+    {
+      "path": "plastic/train-0-0/episode.json",
+      "frames": 35,
+      "equal_fields": {
+        "DAN_spikes": 35,
+        "KC_spikes": 35,
+        "MBON_spikes": 35,
+        "action": 35,
+        "brain_seconds": 35,
+        "brain_steps": 35,
+        "frame_sha256": 35,
+        "index": 35,
+        "memory": 35,
+        "neural_steps": 35,
+        "raw_action": 35,
+        "spikes_sha256": 35,
+        "target_turn": 35,
+        "teacher_current": 35,
+        "teacher_dose_current_ms": 35,
+        "teacher_error": 35,
+        "teacher_index": 35,
+        "timestamp": 35
+      },
+      "cpu_first_control": {
+        "turn": 1.0436533596634152,
+        "forward": 3.478844532211385,
+        "attack": true,
+        "readouts": [
+          {
+            "index": 306,
+            "id": "10331",
+            "type": "MN9",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 332,
+            "id": "10360",
+            "type": "DNa02",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 706,
+            "id": "10763",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 725,
+            "id": "10783",
+            "type": "DNp09",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1087,
+            "id": "11177",
+            "type": "DNp09",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1196,
+            "id": "11288",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1240,
+            "id": "11332",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 2194,
+            "id": "12348",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 6367,
+            "id": "16949",
+            "type": "MN9",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 131957,
+            "id": "523769",
+            "type": "DNa02",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 48,
+            "id": "10059",
+            "type": "DNp20",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          },
+          {
+            "index": 146,
+            "id": "10162",
+            "type": "DNp20",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 489,
+            "id": "10527",
+            "type": "DNpe017",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 142493,
+            "id": "555871",
+            "type": "DNpe017",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          }
+        ]
+      },
+      "metal_first_control": {
+        "turn": 1.0436533596634152,
+        "forward": 3.478844532211385,
+        "attack": true,
+        "readouts": [
+          {
+            "index": 306,
+            "id": "10331",
+            "type": "MN9",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 332,
+            "id": "10360",
+            "type": "DNa02",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 706,
+            "id": "10763",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 725,
+            "id": "10783",
+            "type": "DNp09",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1087,
+            "id": "11177",
+            "type": "DNp09",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1196,
+            "id": "11288",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1240,
+            "id": "11332",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 2194,
+            "id": "12348",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 6367,
+            "id": "16949",
+            "type": "MN9",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 131957,
+            "id": "523769",
+            "type": "DNa02",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 48,
+            "id": "10059",
+            "type": "DNp20",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          },
+          {
+            "index": 146,
+            "id": "10162",
+            "type": "DNp20",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 489,
+            "id": "10527",
+            "type": "DNpe017",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 142493,
+            "id": "555871",
+            "type": "DNpe017",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          }
+        ]
+      },
+      "cpu_wall": 4.838937874999829,
+      "metal_wall": 9.033372249999957,
+      "cpu_kernel": 2.367606670995883,
+      "metal_kernel": 4.284034003969282,
+      "cpu_warmup_wall": 2.31020054200053,
+      "metal_warmup_wall": 4.572184000004199,
+      "cpu_changed_edges": 1687,
+      "metal_changed_edges": 1687,
+      "before_memory_equal": true,
+      "after_memory_equal": true,
+      "cpu_trace_file": {
+        "bytes": 153609,
+        "sha256": "afed876ea90d56bb2f449d59f0c86ecdb71a53404e4478368488ceaab9a32503"
+      },
+      "metal_trace_file": {
+        "bytes": 153592,
+        "sha256": "66ddebe704989aa3b58a0cb29fb70c827fb8ecbc9036af11ccd03831e762c808"
+      },
+      "teacher_free_frozen_eval": null
+    },
+    {
+      "path": "shifted/eval-0/episode.json",
+      "frames": 35,
+      "equal_fields": {
+        "DAN_spikes": 29,
+        "KC_spikes": 27,
+        "MBON_spikes": 27,
+        "action": 27,
+        "brain_seconds": 35,
+        "brain_steps": 35,
+        "frame_sha256": 35,
+        "index": 35,
+        "memory": 26,
+        "neural_steps": 35,
+        "raw_action": 35,
+        "spikes_sha256": 26,
+        "target_turn": 35,
+        "teacher_current": 35,
+        "teacher_dose_current_ms": 35,
+        "teacher_error": 28,
+        "teacher_index": 35,
+        "timestamp": 35
+      },
+      "cpu_first_control": {
+        "turn": 1.0436533596634152,
+        "forward": 3.478844532211385,
+        "attack": true,
+        "readouts": [
+          {
+            "index": 306,
+            "id": "10331",
+            "type": "MN9",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 332,
+            "id": "10360",
+            "type": "DNa02",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 706,
+            "id": "10763",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 725,
+            "id": "10783",
+            "type": "DNp09",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1087,
+            "id": "11177",
+            "type": "DNp09",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1196,
+            "id": "11288",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1240,
+            "id": "11332",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 2194,
+            "id": "12348",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 6367,
+            "id": "16949",
+            "type": "MN9",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 131957,
+            "id": "523769",
+            "type": "DNa02",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 48,
+            "id": "10059",
+            "type": "DNp20",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          },
+          {
+            "index": 146,
+            "id": "10162",
+            "type": "DNp20",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 489,
+            "id": "10527",
+            "type": "DNpe017",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 142493,
+            "id": "555871",
+            "type": "DNpe017",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          }
+        ]
+      },
+      "metal_first_control": {
+        "turn": 1.0436533596634152,
+        "forward": 3.478844532211385,
+        "attack": true,
+        "readouts": [
+          {
+            "index": 306,
+            "id": "10331",
+            "type": "MN9",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 332,
+            "id": "10360",
+            "type": "DNa02",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 706,
+            "id": "10763",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 725,
+            "id": "10783",
+            "type": "DNp09",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1087,
+            "id": "11177",
+            "type": "DNp09",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1196,
+            "id": "11288",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1240,
+            "id": "11332",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 2194,
+            "id": "12348",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 6367,
+            "id": "16949",
+            "type": "MN9",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 131957,
+            "id": "523769",
+            "type": "DNa02",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 48,
+            "id": "10059",
+            "type": "DNp20",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          },
+          {
+            "index": 146,
+            "id": "10162",
+            "type": "DNp20",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 489,
+            "id": "10527",
+            "type": "DNpe017",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 142493,
+            "id": "555871",
+            "type": "DNpe017",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          }
+        ]
+      },
+      "cpu_wall": 5.115836875003879,
+      "metal_wall": 9.151250625000102,
+      "cpu_kernel": 2.616663422981219,
+      "metal_kernel": 4.510312920967408,
+      "cpu_warmup_wall": 2.3541727920019184,
+      "metal_warmup_wall": 4.494820125000842,
+      "cpu_changed_edges": 1701,
+      "metal_changed_edges": 1701,
+      "before_memory_equal": true,
+      "after_memory_equal": false,
+      "cpu_trace_file": {
+        "bytes": 152903,
+        "sha256": "8c8537f51ef5bc460a4ea84ec1045fea2c4c48afa1974e83f8c2c2cc83e5493d"
+      },
+      "metal_trace_file": {
+        "bytes": 152889,
+        "sha256": "ddd0f376a8cf7799d6951b454b12b460bfee4978bdd8840610c0c2ea16d14494"
+      },
+      "teacher_free_frozen_eval": true
+    },
+    {
+      "path": "shifted/train-0-0/episode.json",
+      "frames": 35,
+      "equal_fields": {
+        "DAN_spikes": 35,
+        "KC_spikes": 35,
+        "MBON_spikes": 35,
+        "action": 35,
+        "brain_seconds": 35,
+        "brain_steps": 35,
+        "frame_sha256": 35,
+        "index": 35,
+        "memory": 35,
+        "neural_steps": 35,
+        "raw_action": 35,
+        "spikes_sha256": 35,
+        "target_turn": 35,
+        "teacher_current": 35,
+        "teacher_dose_current_ms": 35,
+        "teacher_error": 35,
+        "teacher_index": 35,
+        "timestamp": 35
+      },
+      "cpu_first_control": {
+        "turn": 1.0436533596634152,
+        "forward": 3.478844532211385,
+        "attack": true,
+        "readouts": [
+          {
+            "index": 306,
+            "id": "10331",
+            "type": "MN9",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 332,
+            "id": "10360",
+            "type": "DNa02",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 706,
+            "id": "10763",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 725,
+            "id": "10783",
+            "type": "DNp09",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1087,
+            "id": "11177",
+            "type": "DNp09",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1196,
+            "id": "11288",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1240,
+            "id": "11332",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 2194,
+            "id": "12348",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 6367,
+            "id": "16949",
+            "type": "MN9",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 131957,
+            "id": "523769",
+            "type": "DNa02",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 48,
+            "id": "10059",
+            "type": "DNp20",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          },
+          {
+            "index": 146,
+            "id": "10162",
+            "type": "DNp20",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 489,
+            "id": "10527",
+            "type": "DNpe017",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 142493,
+            "id": "555871",
+            "type": "DNpe017",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          }
+        ]
+      },
+      "metal_first_control": {
+        "turn": 1.0436533596634152,
+        "forward": 3.478844532211385,
+        "attack": true,
+        "readouts": [
+          {
+            "index": 306,
+            "id": "10331",
+            "type": "MN9",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 332,
+            "id": "10360",
+            "type": "DNa02",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 706,
+            "id": "10763",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 725,
+            "id": "10783",
+            "type": "DNp09",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1087,
+            "id": "11177",
+            "type": "DNp09",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1196,
+            "id": "11288",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 1240,
+            "id": "11332",
+            "type": "MDN",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 2194,
+            "id": "12348",
+            "type": "MDN",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 6367,
+            "id": "16949",
+            "type": "MN9",
+            "side": "R",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 131957,
+            "id": "523769",
+            "type": "DNa02",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 48,
+            "id": "10059",
+            "type": "DNp20",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          },
+          {
+            "index": 146,
+            "id": "10162",
+            "type": "DNp20",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 489,
+            "id": "10527",
+            "type": "DNpe017",
+            "side": "L",
+            "spikes": 0,
+            "rate_hz": 0.0
+          },
+          {
+            "index": 142493,
+            "id": "555871",
+            "type": "DNpe017",
+            "side": "R",
+            "spikes": 1,
+            "rate_hz": 8.697
+          }
+        ]
+      },
+      "cpu_wall": 4.959850667000865,
+      "metal_wall": 8.980088166994392,
+      "cpu_kernel": 2.4084078360174317,
+      "metal_kernel": 4.274240957995062,
+      "cpu_warmup_wall": 2.3903089169980376,
+      "metal_warmup_wall": 4.530291000002762,
+      "cpu_changed_edges": 1701,
+      "metal_changed_edges": 1701,
+      "before_memory_equal": true,
+      "after_memory_equal": true,
+      "cpu_trace_file": {
+        "bytes": 153780,
+        "sha256": "92655b9eef04458cb37bbc51c275926f1e5f3a37cc7e840c00ae43519d6a7cf2"
+      },
+      "metal_trace_file": {
+        "bytes": 153768,
+        "sha256": "3c0737199a52abf608df689720f781406d0f1bd8c586d3ac447c851273062220"
+      },
+      "teacher_free_frozen_eval": null
+    }
+  ],
+  "scope": "Counts/action/hash equality over an original 35-frame prefix; no captured event-time gate or whole-episode claim."
+}

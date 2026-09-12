@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "source_commit": "e9e19c17a40d67dbfbeeb09caa366b57475f4e8f",
+  "measured_production_commit": "9d24668932939f0416d384274ea4ba55e2fa2576",
+  "arithmetic_epoch": 5,
+  "source_change_after_measured_run": "Spec and tests only; validation_sources and builder/native source hashes unchanged",
+  "tdd": {
+    "hardware_test_only": {
+      "source_commit": "b9defb96375fb5e377881767a5f8300a1e58b9c8",
+      "passed": 0,
+      "failed": 8,
+      "seconds": 2.4,
+      "first_divergence": "v uint32 at first 100-tick bin",
+      "log": "metal-arithmetic-red.log"
+    },
+    "initial_implementation_trial": {
+      "source_commit": "9d24668932939f0416d384274ea4ba55e2fa2576",
+      "passed": 6,
+      "failed": 2,
+      "seconds": 1.85,
+      "first_remaining_divergence": "Composite g at bin44: CPU [0,0,4320706,5400880], Metal [0,0,0,0]",
+      "log": "metal-arithmetic-green.log"
+    },
+    "golden_red": {
+      "source_commit": "9d24668932939f0416d384274ea4ba55e2fa2576",
+      "failed": 1,
+      "seconds": 0.2,
+      "counts_matched": true,
+      "log": "metal-arithmetic-golden-red.log"
+    },
+    "fixture_contract": "Only edgeless composite 200-bin g may accept finite nonzero CPU abs(g)<float32tiny against Metalzero, from bin44. All other fields, normal g and short fixtures remain bit-exact. Eight literal positive/negative controls.",
+    "apple_reference": {
+      "title": "Metal Shading Language Specification",
+      "version": "4.1",
+      "published": "2026-06-04",
+      "sections": [
+        "8.1",
+        "8.5"
+      ],
+      "url": "https://developer.apple.com/metal/Metal-Shading-Language-Specification.pdf",
+      "sha256": "41538b30d2f1140a5b2a0c84ce0a9f7b67bf0c707e224cfea0bfe5a44aa26cf5",
+      "bundled": false
+    }
+  },
+  "portable_linux": {
+    "command": "OPENBLAS_NUM_THREADS=1 python -m pytest -q (LLVM21 environment)",
+    "passed": 313,
+    "skipped": 61,
+    "warnings": 50,
+    "seconds": 29.08,
+    "platform": "Linux x86_64",
+    "metal_hardware_execution": false
+  },
+  "actual_m4": {
+    "command": "OPENBLAS_NUM_THREADS=1 python -m pytest -q",
+    "passed": 371,
+    "skipped": 3,
+    "warnings": 50,
+    "seconds": 20.15,
+    "device": "Apple M4 Pro",
+    "log": "metal-arithmetic-full-suite.log"
+  },
+  "review": {
+    "spec_compliance": "Approved",
+    "task_quality": "Approved",
+    "critical": 0,
+    "important": 0,
+    "minor": "50 existing dependency deprecations retained for separate baseline maintenance"
+  },
+  "learning_demonstrated": false,
+  "biologically_validated": false,
+  "announcement_ready": false
+}
