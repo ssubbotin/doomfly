@@ -121,8 +121,10 @@ def test_metal_micrograph_strict_math_digest_is_retained(tmp_path):
     events=np.asarray(metal.backend.spike_events,dtype=np.int64)
     assert hashlib.sha256(counts.tobytes()).hexdigest()==(
         'de7d06da6e31fe80c35eb54c19926e81db5c514483fa170ca4eccf878d0fec90')
-    # The previous fast-math state epoch remains in the strict diagnostic protocol.
-    assert _state_digest(metal)=='b5970b9261406420106a6289e86a9ebfc29f463a9c80ba9e724e523011e1a745'
+    # Measured twice: outputs/doom-learning/metal-decay-tables-20260913/micrograph.json.
+    # Previous strict state: b5970b9261406420106a6289e86a9ebfc29f463a9c80ba9e724e523011e1a745.
+    # Prior strict and fast-math epochs remain in the diagnostic evidence.
+    assert _state_digest(metal)=='6163f146b096db3ba7c086b2b1933977b380e3fec2cd08c6d7c7ce141b16d791'
     assert hashlib.sha256(events.tobytes()).hexdigest()==(
         '00ff37a29ca8cc916a39436e1ac4f4aac1bef46291502d751bb4860e21cd6ad1')
     assert len(events)==3
