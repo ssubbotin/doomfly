@@ -91,7 +91,8 @@ def _state_digest(brain):
 
 
 def _portable_metal_metadata(metadata):
-    keys=['schema','abi_version','sources','binaries','compiler','sdk','macos','architecture','metal_language']
+    keys=['schema','abi_version','sources','binaries','compiler','sdk','macos','architecture',
+        'metal_language','build_configuration']
     device={k:v for k,v in metadata['device'].items() if k!='registry_id'}
     return {**{k:metadata[k] for k in keys},'device':device}
 

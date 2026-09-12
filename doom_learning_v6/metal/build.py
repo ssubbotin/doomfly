@@ -13,6 +13,9 @@ ROOT=Path(__file__).resolve().parents[2]
 SOURCE=Path(__file__).resolve().parent
 DEFAULT_OUTPUT=ROOT/'outputs/doom-learning/metal'
 ABI_VERSION=3
+METAL_COMPILE_FLAGS=('-std=macos-metal2.4','-fno-fast-math','-ffp-contract=off')
+LIBRARY_COMPILE_FLAGS=('-O3','-std=c++17','-dynamiclib','-fobjc-arc','-arch','arm64',
+    '-mmacosx-version-min=13.0')
 
 
 class DeviceInfo(C.Structure):
@@ -38,25 +41,29 @@ def build(output_dir=DEFAULT_OUTPUT):
         raise RuntimeError('Metal backend requires arm64 macOS')
     output=Path(output_dir);output.mkdir(parents=True,exist_ok=True)
     sources={name:_digest(SOURCE/name) for name in ['api.h','backend.mm','kernels.metal']}
+    configuration={'abi_version':ABI_VERSION,'builder_sha256':_digest(__file__),
+        'metal_compile_flags':list(METAL_COMPILE_FLAGS),
+        'library_compile_flags':list(LIBRARY_COMPILE_FLAGS)}
     air=output/'kernels.air';metallib=output/'kernels.metallib';library=library_path(output)
     metadata=output/'build.json'
     if metadata.exists() and air.exists() and metallib.exists() and library.exists():
         record=json.loads(metadata.read_text())
         binaries={'air':_digest(air),'metallib':_digest(metallib),'library':_digest(library)}
-        if record.get('sources')==sources and record.get('binaries')==binaries:return record
+        if (record.get('sources')==sources and record.get('binaries')==binaries
+                and record.get('build_configuration')==configuration):return record
     partial_air=air.with_suffix('.air.partial')
     partial_metallib=metallib.with_suffix('.metallib.partial')
     partial_library=library.with_suffix('.dylib.partial')
-    metal_command=['xcrun','-sdk','macosx','metal','-std=macos-metal2.4','-c',
+    metal_command=['xcrun','-sdk','macosx','metal',*METAL_COMPILE_FLAGS,'-c',
         str(SOURCE/'kernels.metal'),'-o',str(partial_air)]
     metallib_command=['xcrun','-sdk','macosx','metallib',str(partial_air),'-o',str(partial_metallib)]
-    library_command=['clang++','-O3','-std=c++17','-dynamiclib','-fobjc-arc','-arch','arm64',
-        '-mmacosx-version-min=13.0','-I',str(SOURCE),str(SOURCE/'backend.mm'),
+    library_command=['clang++',*LIBRARY_COMPILE_FLAGS,'-I',str(SOURCE),str(SOURCE/'backend.mm'),
         '-framework','Foundation','-framework','Metal','-o',str(partial_library)]
     for command in [metal_command,metallib_command,library_command]:subprocess.run(command,check=True)
     partial_air.replace(air);partial_metallib.replace(metallib);partial_library.replace(library)
     binaries={'air':_digest(air),'metallib':_digest(metallib),'library':_digest(library)}
-    record={'schema':1,'abi_version':ABI_VERSION,'sources':sources,'binaries':binaries,
+    record={'schema':2,'abi_version':ABI_VERSION,'sources':sources,'binaries':binaries,
+        'build_configuration':configuration,
         'commands':[metal_command,metallib_command,library_command],
         'compiler':_capture(['clang++','--version']).splitlines()[0],
         'sdk':_capture(['xcrun','-sdk','macosx','--show-sdk-version']),

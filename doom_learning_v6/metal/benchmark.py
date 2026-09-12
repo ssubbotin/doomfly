@@ -73,7 +73,8 @@ def _file_digest(path):
 
 def portable_backend_metadata(metadata):
     if metadata['name']=='cpu':return metadata
-    keys=['schema','abi_version','sources','binaries','compiler','sdk','macos','architecture','metal_language']
+    keys=['schema','abi_version','sources','binaries','compiler','sdk','macos','architecture',
+        'metal_language','build_configuration']
     return {**{key:metadata[key] for key in keys},
         'device':{key:value for key,value in metadata['device'].items() if key!='registry_id'}}
 

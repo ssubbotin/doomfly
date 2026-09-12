@@ -28,6 +28,23 @@ def test_empty_spike_and_zero_rate_inputs_are_finite():
     assert spike_metrics(set(),set(),np.zeros(2),np.array([0.,1.]))['rate_correlation']==0.
 
 
+@pytest.mark.parametrize('consumer',['validation','benchmark'])
+def test_portable_identity_keeps_math_configuration(consumer):
+    from doom_learning_v6.metal.validate import _portable_metal_metadata
+    from doom_learning_v6.metal.benchmark import portable_backend_metadata
+    configuration={'metal_compile_flags':['-std=macos-metal2.4',
+        '-fno-fast-math','-ffp-contract=off'],'abi_version':3}
+    metadata={'name':'metal','schema':2,'abi_version':3,'sources':{},'binaries':{},
+        'compiler':'Apple clang','sdk':'26.0','macos':'26.6.2','architecture':'arm64',
+        'metal_language':'macos-metal2.4','build_configuration':configuration,
+        'device':{'name':'Apple M4 Pro','registry_id':123},
+        'commands':[['compiler','private-machine-path']]}
+    function=_portable_metal_metadata if consumer=='validation' else portable_backend_metadata
+    portable=function(metadata)
+    assert portable['build_configuration']==configuration
+    assert 'commands' not in portable and 'registry_id' not in portable['device']
+
+
 def test_decoder_comparison_requires_exact_decisions():
     decisions=[{'turn':0.,'forward':2.,'attack':False}]
     assert compare_decisions(decisions,[dict(decisions[0])])
