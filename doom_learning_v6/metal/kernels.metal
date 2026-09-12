@@ -42,11 +42,14 @@ inline void evolve(uint i,long now,float current,device float *v,device float *g
   if(d>0){
     float a=d<1024?decay[d]:exp(-dt*d/20.0f);
     float b=d<1024?decay[1024+d]:exp(-dt*d/5.0f);
-    v[i]=rest[i]+(v[i]-rest[i])*a+current*(1.0f-a)+g[i]*(a-b)/3.0f;
+    float voltage=fma(v[i]-rest[i],a,rest[i]);
+    voltage=fma(current,1.0f-a,voltage);
+    v[i]=voltage+g[i]*(a-b)/3.0f;
     g[i]*=b;
     if(adaptation[i]>0.0f){
       float c=d<1024?decay[2048+d]:exp(-dt*d/adaptation_tau);
-      v[i]-=adaptation[i]*adaptation_tau/(adaptation_tau-20.0f)*(c-a);
+      float correction=(-adaptation[i]*adaptation_tau)/(adaptation_tau-20.0f);
+      v[i]=fma(correction,c-a,v[i]);
       adaptation[i]*=c;
     }
   }

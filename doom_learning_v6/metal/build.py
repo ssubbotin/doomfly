@@ -12,7 +12,7 @@ import sys
 ROOT=Path(__file__).resolve().parents[2]
 SOURCE=Path(__file__).resolve().parent
 DEFAULT_OUTPUT=ROOT/'outputs/doom-learning/metal'
-ABI_VERSION=4
+ABI_VERSION=5
 METAL_COMPILE_FLAGS=('-std=macos-metal2.4','-fno-fast-math','-ffp-contract=off')
 LIBRARY_COMPILE_FLAGS=('-O3','-std=c++17','-dynamiclib','-fobjc-arc','-arch','arm64',
     '-mmacosx-version-min=13.0')

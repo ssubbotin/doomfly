@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-#define DF_METAL_ABI_VERSION 4u
+#define DF_METAL_ABI_VERSION 5u
 
 typedef void *df_metal_handle;
 
