@@ -190,6 +190,17 @@ def test_original_indices_episode_and_float32_timing_are_checked(checked_episode
         OfflineEpisode(directory)
 
 
+def test_source_index_wrap_into_negative_int64_is_rejected(checked_episode_fixture):
+    directory = checked_episode_fixture()
+    change_column(directory, "index", [
+        9223372036854775804, 9223372036854775805,
+        9223372036854775806, 9223372036854775807,
+        -9223372036854775808, -9223372036854775807,
+        -9223372036854775806, -9223372036854775805])
+    with pytest.raises(ValueError, match="source indices"):
+        OfflineEpisode(directory)
+
+
 @pytest.mark.parametrize("column,value", [(0, .5), (7, -1), (8, 1.01),
                                          (8, -1.01), (8, np.inf), (6, np.nan)])
 def test_invalid_action_ranges_are_rejected(checked_episode_fixture, column, value):
@@ -220,6 +231,41 @@ def test_source_dimensions_are_validated_before_decode_allocation(checked_episod
     change_json(directory, "source-info.json", resize)
     with pytest.raises(ValueError):
         OfflineEpisode(directory)
+
+
+def test_actual_dimension_mismatch_rejects_before_ffprobe_frame_scan(checked_episode_fixture, monkeypatch):
+    directory = checked_episode_fixture()
+    def change_width(data):
+        image = data["features"]["observation.images"]
+        image["shape"][2] = 16
+        image["info"]["video.width"] = 16
+    change_json(directory, "source-info.json", change_width)
+    commands = []
+    real_run = subprocess.run
+    def observe_probe(command, **kwargs):
+        if command[0] == "ffprobe":
+            commands.append(list(command))
+        return real_run(command, **kwargs)
+    monkeypatch.setattr(subprocess, "run", observe_probe)
+    with pytest.raises(ValueError, match="dimensions"):
+        OfflineEpisode(directory)
+    assert commands
+    assert all("-show_frames" not in command for command in commands)
+
+
+def test_valid_video_stream_metadata_is_probed_before_frame_scan(checked_episode_fixture, monkeypatch):
+    directory = checked_episode_fixture()
+    commands = []
+    real_run = subprocess.run
+    def observe_probe(command, **kwargs):
+        if command[0] == "ffprobe":
+            commands.append(list(command))
+        return real_run(command, **kwargs)
+    monkeypatch.setattr(subprocess, "run", observe_probe)
+    assert OfflineEpisode(directory).frame_count == 8
+    assert "-show_streams" in commands[0]
+    assert "-show_frames" not in commands[0]
+    assert any("-show_frames" in command for command in commands[1:])
 
 
 def test_every_video_pts_is_checked_against_exact_tick_times(checked_episode_fixture):

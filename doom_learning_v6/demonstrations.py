@@ -137,7 +137,7 @@ class OfflineEpisode:
         original_indices = table["index"].to_numpy()
         if not np.array_equal(frame_indices, np.arange(length)):
             raise ValueError("Noncontiguous or reordered original frame indices")
-        if original_indices[0] < 0 or not np.all(np.diff(original_indices) == 1):
+        if np.any(original_indices < 0) or not np.all(np.diff(original_indices) == 1):
             raise ValueError("Noncontiguous original source indices")
         if not np.all(table["episode_index"].to_numpy() == episode_index):
             raise ValueError("Controls contain another episode")
@@ -192,26 +192,41 @@ class OfflineEpisode:
         try:
             result = subprocess.run([
                 "ffprobe", "-v", "error", "-select_streams", "v", "-show_streams",
-                "-show_frames", "-show_entries",
-                "stream=width,height,codec_name,pix_fmt,time_base,avg_frame_rate,nb_frames:frame=best_effort_timestamp",
+                "-show_entries",
+                "stream=width,height,codec_name,pix_fmt,time_base,avg_frame_rate,nb_frames",
                 "-of", "json", str(self._video)], capture_output=True, check=True)
             if result.stderr:
-                raise ValueError("Video decoding reported errors")
+                raise ValueError("Video stream probing reported errors")
             probe = json.loads(result.stdout)
             streams = probe["streams"]
             if len(streams) != 1:
                 raise ValueError("Require one video stream")
             stream = streams[0]
-            if (stream["width"] != self.width or stream["height"] != self.height or
+            width, height = stream["width"], stream["height"]
+            if (not _integer(width) or not _integer(height) or
+                    not (0 < width <= 4096 and 0 < height <= 4096 and width * height <= 8388608)):
+                raise ValueError("Unreasonable actual video dimensions")
+            if (width != self.width or height != self.height or
                     stream["codec_name"] != "h264" or stream["pix_fmt"] != "yuv420p"):
                 raise ValueError("Video dimensions or format differ from source schema")
             if Fraction(stream["avg_frame_rate"]) != 35:
                 raise ValueError("Video rate differs from 35 Hz tick rate")
-            frames = probe["frames"]
-            if len(frames) != self.frame_count or int(stream["nb_frames"]) != self.frame_count:
+            if int(stream["nb_frames"]) != self.frame_count:
                 raise ValueError("Video frame count differs from original controls")
             time_base = Fraction(stream["time_base"])
-            if time_base <= 0 or any(
+            if time_base <= 0:
+                raise ValueError("Video time base must be positive")
+            # Validate actual stream geometry before requesting frame decoding.
+            result = subprocess.run([
+                "ffprobe", "-v", "error", "-select_streams", "v:0", "-show_frames",
+                "-show_entries", "frame=best_effort_timestamp", "-of", "json",
+                str(self._video)], capture_output=True, check=True)
+            if result.stderr:
+                raise ValueError("Video decoding reported errors")
+            frames = json.loads(result.stdout)["frames"]
+            if len(frames) != self.frame_count:
+                raise ValueError("Decoded video frame count differs from original controls")
+            if any(
                 Fraction(frame["best_effort_timestamp"]) * time_base != Fraction(index, 35)
                 for index, frame in enumerate(frames)):
                 raise ValueError("Video PTS differs from exact rational tick timestamps")
