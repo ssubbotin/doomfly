@@ -48,6 +48,15 @@ Include a simple driven relaxation test that specifically reproduces the first
 dark-bin mismatch, separately from the composite adaptation case. Use actual
 native CPU as the reference. Always close both backends in `finally`.
 
+Hardware-derived amendment: keep all original driven comparisons strict. Add
+43-bin strict composite cases and continue the 200-bin composite comparisons
+under the spec's explicitly scoped conductance-underflow rule. Every other
+field stays bit-exact throughout 200 bins. Add portable negative checks proving
+the exception rejects normal CPU values and nonzero Metal mismatches. The
+original trial failures remain evidence; avoid broad tolerances or xfail masks.
+This amendment supersedes only the snippet's unconditional 200-bin composite
+`g` comparison. Full-graph gates and production arithmetic remain unchanged.
+
 ```python
 cpu, metal = _edgeless_pair(tmp_path, tau)
 for brain in [cpu, metal]:

@@ -67,6 +67,32 @@ that hide the measured voltage mismatch. These artificial controls provide no
 biological validation. Preserve failure output if another arithmetic mechanism
 also appears; diagnose it separately rather than weakening the test.
 
+### Scoped underflow ruling after hardware measurement
+
+The implemented voltage operations pass both two-second driven cases. Composite
+fixtures match every field for 43 bins; at bin 44 the unchanged conductance
+multiplication produces CPU subnormal bits `4320706`/`5400880` while Metal
+returns zero. Apple Metal Shading Language specification 4.1, sections 8.1 and
+8.5, permits subnormal inputs/results to flush to zero, including with strict
+math. This is an independently exposed platform limitation, not voltage FMA.
+
+Retain strict composite checks at one and 43 bins. Continue composite checks
+through 200 bins with bit-exact voltage, adaptation, counts, cursors,
+refractory and timestamps. Only the edgeless composite conductance comparison
+may accept a mismatch when the CPU value is finite, nonzero and strictly below
+`np.finfo(np.float32).tiny`, and the corresponding Metal value is zero. All
+normal conductances and every other field remain bit-exact. Test that this
+exception rejects normal-value and nonzero-Metal mismatches. Preserve the
+original eight-case RED and six-pass/two-failure trial evidence. No software
+subnormal arithmetic or CPU/compiler changes enter this experiment.
+
+The initial demand for bit-identical gradual conductance underflow exceeded the
+portable Metal contract. This explicit, fixture-local ruling revises that
+demand; it changes no full-graph numerical gate or production dynamics. If the
+scope is wrong, the arithmetic fixture requires rework and longer experiments
+remain unvalidated. Source: [Apple Metal specification](https://developer.apple.com/metal/Metal-Shading-Language-Specification.pdf),
+published 2026-06-04; the external specification is not bundled.
+
 Run portable focused and full Linux tests, actual M4 fixtures, independent
 micrograph repetitions and unchanged 40/80 ms full-graph gates. Re-run the
 preserved warmup/first-original-frame diagnostic, recording when divergence
