@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "source_commit": "a68f3c533bf65f42e7d6d1323b1ce67911514ee7",
+  "experiment": "resident canonical CPU decay coefficients on Metal",
+  "strict_build": {
+    "schema": 2,
+    "abi_version": 4,
+    "sources": {
+      "api.h": "0815aa7affcc7958c0488bda176038dad6b4a92870d7a18f33a371407a92e743",
+      "backend.mm": "f5f825be083ddb060e36c84184acd1fa07fecbcecebc353a155268d5e414b9de",
+      "kernels.metal": "b8ae1e2420a7afb7b5464f85acc3b9144e642b86e81861e14ad642da538af96a",
+      "decay_tables.h": "85702606729011f942be2174e4ba074d1ca90066f586d6980025458862570065"
+    },
+    "binaries": {
+      "air": "7ece77025eca056d7e802b582cbfd44e7cfe0a657e2efc8a4e478a8d71512f5d",
+      "metallib": "addfc325145a59c7b2778db09e8c27489cac9faf5c1af9bbd63966c82520d671",
+      "library": "9f0a3fd3d9f20e53bd862f3440ae10c467647554fae771902847eb0fa2643606"
+    },
+    "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+    "sdk": "26.5",
+    "macos": "26.6.2",
+    "architecture": "arm64",
+    "metal_language": "macos-metal2.4",
+    "build_configuration": {
+      "abi_version": 4,
+      "builder_sha256": "d4e731644270cdae147aedf525fe5f1ae00164c804c0188cdb45e0f09a6153e3",
+      "metal_compile_flags": [
+        "-std=macos-metal2.4",
+        "-fno-fast-math",
+        "-ffp-contract=off"
+      ],
+      "library_compile_flags": [
+        "-O3",
+        "-std=c++17",
+        "-dynamiclib",
+        "-fobjc-arc",
+        "-arch",
+        "arm64",
+        "-mmacosx-version-min=13.0"
+      ]
+    },
+    "device": {
+      "name": "Apple M4 Pro",
+      "recommended_working_set": 19069665280,
+      "has_unified_memory": true,
+      "supports_apple7": true,
+      "supported": true
+    }
+  },
+  "retained_neurons": 166700,
+  "retained_edges": 25582938,
+  "plastic_slots": 4184,
+  "table_entries": 3072,
+  "table_bytes": 12288,
+  "table_intervals": 1024,
+  "neural_dt_ms": 0.1,
+  "previous_micrograph_strict_state_sha256": "b5970b9261406420106a6289e86a9ebfc29f463a9c80ba9e724e523011e1a745",
+  "scope": "numerical arithmetic and unchanged full-graph parity gates; no learning, physiology or launch validation"
+}

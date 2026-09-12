@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "source_commit": "a5d31453ae2a5eca82cb39d8a40d0643a80cb477",
+  "target": "Apple M4 Pro / arm64 macOS",
+  "native_abi": 4,
+  "final_suite": {"passed": 353, "skipped": 3, "warnings": 50, "wall_seconds": 19.76},
+  "command": "OPENBLAS_NUM_THREADS=1 python -m pytest -q --tb=short --disable-warnings",
+  "environment": "Existing reviewed Python environment; FFmpeg/FFprobe and standard system sbin tools in PATH; existing bootstrap kernel through DOOM_KERNEL_PATH; job-scoped caffeinate.",
+  "focused_historical_fixture_suite": {"source_commit": "8284fca", "passed": 19, "wall_seconds": 0.99},
+  "prior_hardware_fixture_red": {"source_commit": "a68f3c5", "passed": 11, "failed": 8, "wall_seconds": 2.46, "cause": "Fixture advance exceeded existing 100-step limit; fixed timestamps, native limit unchanged."},
+  "prior_measured_golden_red": {"source_commit": "8284fca", "failed": 1, "wall_seconds": 0.15, "cause": "Old strict digest differed from twice-measured host-table epoch; only expected literal/comment updated."},
+  "baseline_dependency_warnings": "50 existing Brian2/pyparsing warnings retained; new focused coefficient tests warning-free.",
+  "learning_demonstrated": false,
+  "biologically_validated": false,
+  "announcement_ready": false
+}
