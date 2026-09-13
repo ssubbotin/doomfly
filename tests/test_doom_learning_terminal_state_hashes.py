@@ -113,21 +113,83 @@ def test_terminal_hashes_propagate_checked_materialization_error(tmp_path, monke
         assert unchanged_metadata(b) == before and calls == []
 
 
-def test_terminal_materialization_failure_preserves_primary_replay_error(tmp_path, monkeypatch):
+@pytest.mark.parametrize('interrupted', [False, True])
+@pytest.mark.parametrize('secondary_failure', [None, 'json', 'checkpoint'])
+def test_terminal_materialization_failure_preserves_trace_and_available_checkpoints(
+        tmp_path, monkeypatch, interrupted, secondary_failure):
+    from doom_learning import common
     from doom_learning_v6.causal_pilot import replay_episode
     from test_doom_learning_causal_pilot import _SerialCpuExecutor, _ThreeFrames, READOUTS
-    b = visual_brain(tmp_path)
-    original = KeyboardInterrupt('primary frame interruption')
-    data = _ThreeFrames(fail_after=0, failure=original)
+    lanes = [visual_brain(tmp_path) for _ in range(3)]
+    download_error = BackendError('terminal materialization failure')
+    original = KeyboardInterrupt('primary frame interruption') if interrupted else download_error
+    data = _ThreeFrames(fail_after=0, failure=original) if interrupted else _ThreeFrames()
+    if not interrupted:
+        data.frame_count = 1
+        data.turn_targets = lambda: np.zeros(1)
+        frames = data.iter_frames()
+        def one_frame():
+            try:
+                yield next(frames)
+            finally:
+                frames.close()
+        data.iter_frames = one_frame
+    downloads = []
     def fail(reason):
-        raise BackendError('secondary terminal materialization failure')
-    monkeypatch.setattr(b.backend, 'materialize', fail)
-    with pytest.raises(KeyboardInterrupt) as caught:
-        replay_episode([b], _SerialCpuExecutor([b]), data, READOUTS,
-                       np.zeros((1, 3)), learning=[False], frozen=[True],
-                       directory=tmp_path / 'interrupted', warmup_ms=0)
+        downloads.append(reason)
+        raise download_error
+    monkeypatch.setattr(lanes[0].backend, 'materialize', fail)
+    checkpoints = []
+    for index, b in enumerate(lanes):
+        checkpoint = b.checkpoint
+        def attempt(path, index=index, checkpoint=checkpoint):
+            checkpoints.append(index)
+            if secondary_failure == 'checkpoint' and index == 1:
+                raise OSError('secondary checkpoint writer failure')
+            return checkpoint(path)
+        monkeypatch.setattr(b, 'checkpoint', attempt)
+    phase = tmp_path / 'failed-terminal'
+    if secondary_failure == 'json':
+        save_json = common.save_json
+        def fail_progress(path, value):
+            if path == phase / 'progress.json' and 'frames' in value:
+                raise OSError('secondary progress writer failure')
+            return save_json(path, value)
+        monkeypatch.setattr(common, 'save_json', fail_progress)
+    with pytest.raises(type(original)) as caught:
+        replay_episode(lanes, _SerialCpuExecutor(lanes), data, READOUTS,
+                       np.zeros((3, data.frame_count)), learning=[False] * 3, frozen=[True] * 3,
+                       directory=phase, warmup_ms=0)
     assert caught.value is original and data.closed
-    assert any('Secondary record failure: BackendError' in note for note in original.__notes__)
+    # The failure must retain actual trace records, beyond the progress counter.
+    assert all((phase / f'lane-{index}/episode.json').exists() for index in range(3))
+    summary = json.loads((phase / 'summary.json').read_text())
+    assert summary['complete'] is False
+    assert summary['failure']['type'] == type(original).__name__
+    for index in range(3):
+        record = json.loads((phase / f'lane-{index}/episode.json').read_text())
+        assert len(record['trace']) == record['frames'] == 1
+        assert record['trace'][0]['index'] == 0
+        assert record == summary['lanes'][index]
+        assert not (phase / f'lane-{index}/final.npz').exists()
+    unavailable = summary['lanes'][0]
+    assert unavailable['complete'] is False
+    assert unavailable['terminal_state'] is None
+    assert unavailable['terminal_state_available'] is False
+    assert unavailable['terminal_state_error'] == {'type': 'BackendError'}
+    assert unavailable['checkpoint_available'] is False
+    assert unavailable['checkpoint_attempted'] is False
+    assert not (phase / 'lane-0/failure.npz').exists()
+    assert downloads == ['checkpoint']  # Failed lane is never synchronized again.
+    assert checkpoints == [1, 2]
+    for index in (1, 2):
+        if secondary_failure != 'checkpoint' or index != 1:
+            assert summary['lanes'][index]['terminal_state'] == checkpoint_hashes(
+                phase / f'lane-{index}/failure.npz')
+    if interrupted:
+        assert any('Secondary record failure: BackendError' in note for note in original.__notes__)
+    if secondary_failure is not None:
+        assert any('OSError' in note for note in original.__notes__)
 
 
 @pytest.mark.skipif(sys.platform != 'darwin', reason='Metal requires macOS')

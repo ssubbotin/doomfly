@@ -210,7 +210,7 @@ def _state_hashes(brain):
 
 
 def _lane_record(brain, data, frozen, before, trace, origin, started, warmup, failure=None, close_failure=None,
-                 timing=None):
+                 timing=None, *, terminal_state, terminal_failure=None):
     from .causal_controls import diagnostic_score
     from .imitation import _memory
     result = {
@@ -221,10 +221,14 @@ def _lane_record(brain, data, frozen, before, trace, origin, started, warmup, fa
         'recorded_seconds': len(trace) / 35, 'wall_seconds': time.perf_counter() - started,
         'warmup': warmup, 'before': before, 'after': _memory(brain),
         'phase_timing': timing,
-        'terminal_state': _state_hashes(brain), 'trace': trace,
+        'terminal_state': terminal_state, 'trace': trace,
         'diagnostic_score': diagnostic_score([row['action']['turn'] for row in trace],
                                              [row['target_turn'] for row in trace]) if trace else None,
     }
+    if terminal_failure is not None:
+        result.update(terminal_state_available=False,
+                      terminal_state_error={'type': type(terminal_failure).__name__},
+                      checkpoint_available=False, checkpoint_attempted=False)
     if failure is not None:
         result['failure'] = {'type': type(failure).__name__}
         if close_failure is not None:
@@ -247,7 +251,8 @@ def _write_phase(phase, lanes, records, *, failure=None, resident_bytes=None):
     for index, (brain, record) in enumerate(zip(lanes, records)):
         lane = phase / f'lane-{index}'
         attempt(save_json, lane / 'episode.json', record)
-        attempt(brain.checkpoint, lane / ('failure.npz' if failure is not None else 'final.npz'))
+        if record.get('checkpoint_available') is not False:
+            attempt(brain.checkpoint, lane / ('failure.npz' if failure is not None else 'final.npz'))
     summary = {'lanes': records, 'complete': failure is None and all(row['complete'] for row in records),
                'resident_bytes': resident_bytes}
     if failure is not None:
@@ -387,9 +392,20 @@ def replay_episode(brains, executor, data, readouts, currents, *, learning, froz
                     close_failure = error
                     failure.add_note(f'Secondary iterator cleanup failure: {type(error).__name__}: {error}')
     try:
-        records = [_lane_record(brain, data, value, item_before, trace, origin, started, warmup,
-                                failure, close_failure, timing)
-                   for brain, value, item_before, trace, origin in zip(lanes, freeze, before, traces, origins)]
+        records = []
+        for brain, value, item_before, trace, origin in zip(lanes, freeze, before, traces, origins):
+            terminal_state = terminal_failure = None
+            try:
+                terminal_state = _state_hashes(brain)
+            except BaseException as error:
+                terminal_failure = error
+                if failure is None:
+                    failure = error
+                else:
+                    failure.add_note(f'Secondary record failure: {type(error).__name__}')
+            records.append(_lane_record(brain, data, value, item_before, trace, origin, started, warmup,
+                                        failure, close_failure, timing, terminal_state=terminal_state,
+                                        terminal_failure=terminal_failure))
     except BaseException as evidence_failure:
         if failure is None:
             raise
