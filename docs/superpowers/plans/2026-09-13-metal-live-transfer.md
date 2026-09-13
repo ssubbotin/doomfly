@@ -46,7 +46,7 @@
 - `plan_waves(protocol) -> list[dict]`: eighteen records with `ordinal`, `kind` (`calibration`/`evaluation`), `environment`, `seed`, `hazard_left` (bool or None), `roles` (four strings). Calibration first in environment order; each evaluation seed rotates seven roles by seed ordinal modulo7 before grouping, with `baseline-filler` as group2's fourth role. Filler resolves to baseline vector.
 - `gameplay_metrics(trace, horizon_tics) -> dict`: require complete ordered horizon rows. Each row has `index`, `phase` (`live`/`padding`), `game_before`/`game_after` observer records (`tick`, `engine_tic`, `finished`, `dead`, `timeout`, `health`, `kills`), and `applied_action` (dict for live, None for padding). Validate contiguous one-tic active game advances, first terminal stops all later actions, padding retains terminal observer state. Return `live_game_tics`, `restricted_survival_seconds`, `died`, `right_censored`, `censor_reason`, `kills_at_fixed_horizon`, `damage_total`, `final_health`; use actual engine tic differences, never neural/padding duration.
 
-- [ ] **Step 1: Write behavioral failing tests.** Load production module dynamically after a useful missing-module assertion. Cover recursively malformed protocol types/extra keys/wrong SHA or bytes; missing/altered/reordered-role candidate inputs, non-float64, wrong shape/nonfinite/bounds/baseline; eighteen exact wave records/72charges/eight fillers/both seed lists/rotation. Hand-built complete traces cover death then padding, living timeout, living horizon/other-finished censoring, damage/healing and cumulative kills, malformed ticking/postterminal actions and incomplete horizon rejection.
+- [x] **Step 1: Write behavioral failing tests.** Load production module dynamically after a useful missing-module assertion. Cover recursively malformed protocol types/extra keys/wrong SHA or bytes; missing/altered/reordered-role candidate inputs, non-float64, wrong shape/nonfinite/bounds/baseline; eighteen exact wave records/72charges/eight fillers/both seed lists/rotation. Hand-built complete traces cover death then padding, living timeout, living horizon/other-finished censoring, damage/healing and cumulative kills, malformed ticking/postterminal actions and incomplete horizon rejection.
 
 ```python
 def test_full_schedule_preserves_all_roles(protocol):
@@ -63,8 +63,8 @@ def test_full_schedule_preserves_all_roles(protocol):
             assert sorted(r for r in roles if r!='baseline-filler') == sorted(c['role'] for c in protocol['candidates'])
 ```
 
-- [ ] **Step 2: Run authentic focused RED.** `python -m pytest -q tests/test_doom_live_controls.py`; preserve actual command/exit/full raw log. Missing module is acceptable initial RED, fixture errors are not.
-- [ ] **Step 3: Implement the named pure interfaces.** Use hashlib/JSON/Path/NumPy only for identity/math, no native allocation. Protocol validation precedes candidate reads/planning; allow_pickle=False; reject absolute/escaping protocol file paths. Copy arrays before making them read-only. Emit the exact eighteen-wave schedule without scores or randomness. Strictly distinguish bool/int/float/container/key types.
+- [x] **Step 2: Run authentic focused RED.** `python -m pytest -q tests/test_doom_live_controls.py`; preserve actual command/exit/full raw log. Missing module is acceptable initial RED, fixture errors are not. The initial tool-truncated log is explicitly limited; the strict-key correction has complete authentic two-case RED/GREEN evidence.
+- [x] **Step 3: Implement the named pure interfaces.** Use hashlib/JSON/Path/NumPy only for identity/math, no native allocation. Protocol validation precedes candidate reads/planning; allow_pickle=False; reject absolute/escaping protocol file paths. Copy arrays before making them read-only. Emit the exact eighteen-wave schedule without scores or randomness. Strictly distinguish bool/int/float/container/key types.
 
 ```python
 def plan_waves(protocol):
@@ -87,8 +87,8 @@ def plan_waves(protocol):
     return waves
 ```
 
-- [ ] **Step 4: Run focused GREEN and self-review.** Run new file plus existing pure optimizer/control tests, no old scientific matrix/full-suite repetition. Verify data/schema/hand-derived outcomes, zero native work, immutable protocol SHA and git diff --check; retain raw output.
-- [ ] **Step 5: Commit owned source/tests.** `git add doom_learning_v6/live_controls.py tests/test_doom_live_controls.py`; `git commit -m "feat: define frozen live Doom comparison contracts"`. Report actual Git-derived SHA, commands/exits/limitations under this plan's ignored workspace.
+- [x] **Step 4: Run focused GREEN and self-review.** Run new file plus existing pure optimizer/control tests, no old scientific matrix/full-suite repetition. Verify data/schema/hand-derived outcomes, zero native work, immutable protocol SHA and git diff --check; retain raw output. Final configured-interpreter covering result: 75 passed; task review and scoped strict-key correction approved.
+- [x] **Step 5: Commit owned source/tests.** `git add doom_learning_v6/live_controls.py tests/test_doom_live_controls.py`; `git commit -m "feat: define frozen live Doom comparison contracts"`. Report actual Git-derived SHA, commands/exits/limitations under this plan's ignored workspace. Implementation 9402148; reviewed strict-key correction e5ae7fb.
 
 ### Task 2: Safe, explicit game lifecycle
 
