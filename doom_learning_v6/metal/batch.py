@@ -250,7 +250,13 @@ class _LaneBackend:
 class MetalBatchExecutor:
     """One native command stream, separate host rules and copied observations."""
 
-    def __init__(self, brains):
+    def __init__(self, brains, *, window_ticks=0):
+        if isinstance(window_ticks, (bool, np.bool_)) or not isinstance(window_ticks, (int, np.integer)):
+            raise TypeError('Window ticks must be an integer in 0..18')
+        if not 0 <= int(window_ticks) <= 18:
+            raise ValueError('Window ticks must be in 0..18')
+        self._window_ticks = int(window_ticks)
+        self._window_configuration = self._window_ticks
         self._lock = threading.Lock(); self._thread = None
         self.closed = False; self.poisoned = False
         self.handle = C.c_void_p(); self.library = None; self.last_timing = {}
@@ -301,8 +307,9 @@ class MetalBatchExecutor:
             graph = Graph(b.n, len(b.post), b.queue.shape[0], b.dt, b.adaptation_jump, b.adaptation_tau,
                 _pointer(b.ptr), _pointer(b.post), _pointer(i.ptr), _pointer(i.pre), _pointer(i.edge),
                 _pointer(b.circuit['kc_mask']), _pointer(b.modulation_mask))
-            self._error(self.library.df_metal_create_batch(C.byref(graph),
-                str(Path(DEFAULT_OUTPUT) / 'kernels.metallib').encode(), len(self.brains), C.byref(self.handle)))
+            self._error(self.library.df_metal_create_batch_windowed(C.byref(graph),
+                str(Path(DEFAULT_OUTPUT) / 'kernels.metallib').encode(), len(self.brains),
+                self._window_ticks, C.byref(self.handle)))
             for lane in range(len(self.brains)):
                 self._error(self.library.df_metal_upload_lane_state(self.handle, lane, C.byref(self._state(lane))))
             shared, mutable = C.c_uint64(), C.c_uint64()
@@ -328,6 +335,8 @@ class MetalBatchExecutor:
         self.library.df_metal_last_error.restype = C.c_char_p
         signatures = {
             'df_metal_create_batch': [C.POINTER(Graph), C.c_char_p, C.c_int32, C.POINTER(C.c_void_p)],
+            'df_metal_create_batch_windowed': [C.POINTER(Graph), C.c_char_p, C.c_int32,
+                C.c_int32, C.POINTER(C.c_void_p)],
             'df_metal_upload_lane_state': [C.c_void_p, C.c_int32, C.POINTER(State)],
             'df_metal_download_lane_state': [C.c_void_p, C.c_int32, C.POINTER(State)],
             'df_metal_upload_lane_drive': [C.c_void_p, C.c_int32, C.c_void_p],
@@ -371,6 +380,8 @@ class MetalBatchExecutor:
             self._thread = None; self._lock.release()
 
     def _validate_bindings(self):
+        if self._window_ticks != self._window_configuration:
+            raise ValueError('Window tick configuration changed')
         for lane, b in enumerate(self.brains):
             if lane in self._released: continue
             if self.adapters and (b.backend is not self.adapters[lane] or getattr(b, '_metal_batch_owner', None) is not self):
@@ -590,7 +601,12 @@ class MetalBatchExecutor:
         self._check_open(allow_poison=True)
         return {**self._metadata, 'name': 'metal-batch', 'abi_version': ABI_VERSION,
                 'numerical_parent': NUMERICAL_PARENT, 'numerical_order': NUMERICAL_ORDER,
-                'lane_count': len(self.brains), **self._memory}
+                'lane_count': len(self.brains),
+                'scheduler': 'reference-two-dispatch' if self._window_ticks == 0 else 'temporal-window',
+                'window_ticks': self._window_ticks, **self._memory}
+
+    @property
+    def window_ticks(self): return self._window_ticks
 
     def _materialize_lane(self, lane, reason):
         self._validate_bindings()

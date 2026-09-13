@@ -80,14 +80,14 @@ def test_serial_rgb_subdivisions_match_explicit_observation_bins(tmp_path):
 mac = pytest.mark.skipif(sys.platform != 'darwin', reason='Real Metal requires macOS')
 
 
-def run_rgb(tmp_path, order=(0, 1), perturb=False):
+def run_rgb(tmp_path, order=(0, 1), perturb=False, window_ticks=0):
     references = [visual_brain(tmp_path, backend='metal') for _ in range(2)]
     hosts = [visual_brain(tmp_path) for _ in range(2)]
     for b in (references[1], hosts[1]): b.weights_frozen = True
     serial_controls, batch_controls = [controls(), controls()], [controls(), controls()]
     trajectory = [[], []]
     try:
-        with executor_type()([hosts[i] for i in order]) as executor:
+        with executor_type()([hosts[i] for i in order], window_ticks=window_ticks) as executor:
             for b in references + hosts: b.backend.start_diagnostics()
             for duration in (1000 / 35, 28.5, 10., 35., 1000 / 35):
                 images = [frame(0), frame(1)]
@@ -127,9 +127,20 @@ def test_rgb_distinct_frames_repeats_permutation_and_pixel_teacher_isolation(tmp
 
 
 @mac
-def test_rgb_invalid_neighbor_frame_and_stimulation_do_not_change_any_lane(tmp_path):
+@pytest.mark.parametrize('window_ticks', [0, 1, 2, 18])
+def test_rgb_window_modes_preserve_repeat_permutation_and_pixel_teacher_isolation(tmp_path, window_ticks):
+    baseline = run_rgb(tmp_path, window_ticks=window_ticks)
+    assert run_rgb(tmp_path, window_ticks=window_ticks) == baseline
+    assert run_rgb(tmp_path, order=(1, 0), window_ticks=window_ticks) == baseline
+    assert run_rgb(tmp_path, perturb=True, window_ticks=window_ticks)[0] == baseline[0]
+    assert run_rgb(tmp_path, order=(0,), window_ticks=window_ticks)[0] == baseline[0]
+
+
+@mac
+@pytest.mark.parametrize('window_ticks', [1, 18])
+def test_rgb_invalid_neighbor_frame_and_stimulation_do_not_change_any_lane(tmp_path, window_ticks):
     lanes = [visual_brain(tmp_path), visual_brain(tmp_path)]
-    with executor_type()(lanes) as executor:
+    with executor_type()(lanes, window_ticks=window_ticks) as executor:
         before = [snapshot(b) for b in lanes]
         for invalid in (np.zeros((3, 4), dtype=np.uint8), frame(0).astype(float),
                         np.zeros((0, 4, 3), dtype=np.uint8)):
