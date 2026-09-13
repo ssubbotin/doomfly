@@ -58,7 +58,7 @@ per brain second. This is a correctness improvement, with no measured speedup.
 ## Complete original cohort
 
 The fixed-source `e9e19c1` cohort finished all eight phases, 7,886 original RGB
-frames and 225.3143 seconds of brain time. The unchanged 80 ms report served
+frames and 225.3143 seconds of RGB brain time. The unchanged 80 ms report served
 only as a short numerical identity guard. [Results](../../outputs/doom-learning/metal-arithmetic-pilot-20260913/results.json)
 and the [causal comparison audit](../../outputs/doom-learning/metal-arithmetic-pilot-20260913/audit-comparison.json)
 retain every control. Original pixels/actions/timing, next-frame teacher
