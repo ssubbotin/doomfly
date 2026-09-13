@@ -29,8 +29,9 @@ gates pass with exact events, controls, weights and repeated Metal state.
 ## Failed warmup and original RGB prefix
 
 The [200-bin diagnostic](../../outputs/doom-learning/metal-incoming-carry-20260913/diagnostic/results.json)
-finds state differences at the third 10 ms bin and first spike differences at
-1.477 seconds. Two-second dark Jaccard is 0.7375 and within-one-tick fraction
+finds state differences at the third 10 ms bin and first spike differences
+during the 1.47 to 1.48 second interval (zero-based 10 ms bin 147).
+Two-second dark Jaccard is 0.7375 and within-one-tick fraction
 0.8630, below unchanged gates. First RGB turn is +1.04365 on CPU and -1.04365
 on Metal. The preceding FMA-only candidate had exact dark spikes.
 

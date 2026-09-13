@@ -41,8 +41,9 @@ advances arithmetic epoch to 6 with only settled-accumulator association changed
 All seven real native carry controls pass; M4 full suite gives 378 passes/three
 platform skips and 50 baseline warnings. Fresh 40/80 ms gates have exact events,
 decisions, weights and repeated Metal state. Longer parity regresses: dark spikes
-first differ at 1.477 seconds, first RGB turn has the opposite sign, and all
-eight original 35-frame phases have zero exact CPU/Metal fixed-control frames.
+first differ during the 1.47 to 1.48 second interval (zero-based 10 ms bin 147),
+first RGB turn has the opposite sign, and all eight original 35-frame phases
+have zero exact CPU/Metal fixed-control frames.
 Original input/timing/teacher/frozen/erasure/invariant controls still pass.
 This candidate stays isolated as a failed longer-parity experiment, without
 speedup, useful-learning or launch claims. Further work must instrument event
