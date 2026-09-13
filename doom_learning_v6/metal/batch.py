@@ -452,6 +452,70 @@ class MetalBatchExecutor:
             steps = self._steps(steps); self._validate_bindings(); self._validate_cursors(steps)
             return self._advance(steps)
 
+    def install_efficacies(self, lane, fractions, expected_edges):
+        """Install checked baseline-relative fractions without advancing neurons.
+
+        Only eligible weights are uploaded; stale host neural state stays stale.
+        A native failure can leave host/device efficacies half-installed. The
+        owner is poisoned and requires abort or explicit reset/restore of every
+        lane before reuse; no automatic rollback uploads stale neural state.
+        """
+        with self._operation():
+            self._validate_bindings()
+            if (isinstance(lane, (bool, np.bool_)) or
+                    not isinstance(lane, (int, np.integer)) or
+                    not 0 <= lane < len(self.brains)):
+                raise ValueError('Invalid efficacy lane index')
+            lane = int(lane)
+            if lane in self._released:
+                raise BackendError('Metal batch lane adapter is closed')
+            b, adapter = self.brains[lane], self.adapters[lane]
+            if adapter._host_weight_epoch != adapter._device_weight_epoch:
+                raise BackendError('Metal lane weight epochs disagree')
+            p = self._registrations[lane]['circuit.edges'][3][0]
+            edges = _array('plastic edges', b.circuit['edges'], np.int64, (p,))
+            expected = _array('expected plastic edges', expected_edges, np.int64, (p,))
+            if (np.any(edges < 0) or np.any(edges >= len(b.weight)) or
+                    len(np.unique(edges)) != p or
+                    digest(edges) != json.loads(self._identity)['circuit']['edges'] or
+                    not np.array_equal(edges, expected)):
+                raise ValueError('Expected edges must match registered ordered plastic slots')
+            baseline = _array('baseline_plastic', b.baseline_plastic, np.float32, (p,))
+            if np.any(baseline <= 0):
+                raise ValueError('Positive baseline plastic weights required')
+            for name in ('memory_u', 'memory_w'):
+                _array(name, getattr(b, name), np.float64, (p,), mutable=True)
+            values = _array('efficacy fractions', fractions, np.float64, (p,))
+            lo, hi = (b.rule_parameters.get(name) for name in ('minimum_fraction', 'maximum_fraction'))
+            if (any(isinstance(bound, (bool, np.bool_)) or
+                    not isinstance(bound, (int, float, np.integer, np.floating))
+                    for bound in (lo, hi))):
+                raise ValueError('Finite positive ordered efficacy bounds required')
+            try:
+                lo, hi = float(lo), float(hi)
+            except OverflowError as error:
+                raise ValueError('Finite positive ordered efficacy bounds required') from error
+            if not math.isfinite(lo) or not math.isfinite(hi) or not 0 < lo < hi:
+                raise ValueError('Finite positive ordered efficacy bounds required')
+            if np.any(values < lo) or np.any(values > hi):
+                raise ValueError('Efficacy fractions outside registered bounds')
+            try:
+                with np.errstate(over='raise', invalid='raise', under='ignore'):
+                    memory = values - 1.
+                    weights = (baseline.astype(np.float64) * values).astype(np.float32)
+            except FloatingPointError as error:
+                raise ValueError('Efficacy weights would overflow or become nonfinite') from error
+            if not np.isfinite(weights).all() or np.any(weights <= 0):
+                raise ValueError('Finite positive float32 efficacy weights required')
+            b.memory_u[:] = memory
+            b.memory_w[:] = memory
+            b.weight[edges] = weights
+            try:
+                b.backend.update_weights(edges, weights)
+            except BaseException:
+                self.poisoned = True; self._restored_lanes.clear()
+                raise
+
     def _advance(self, steps):
         self._validate_advance_inputs()
         diagnostics = any(a.capture_spikes for a in self.adapters)
