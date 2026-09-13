@@ -204,6 +204,7 @@ def _phase_inputs(brains, executor, data, readouts, currents, learning, frozen, 
 
 def _state_hashes(brain):
     from doom_learning.common import digest
+    brain.backend.sync_for_checkpoint()
     return {'cursor': int(brain.cursor), 'total_spikes': int(brain.total_spikes),
             **{name + '_sha256': digest(getattr(brain, name)) for name in ['weight', *brain.fields]}}
 
