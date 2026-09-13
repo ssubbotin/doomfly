@@ -96,7 +96,7 @@ def plan_waves(protocol):
 
 **Interfaces:** Preserve every existing positional/default Game call. Add keyword-only `episode_timeout_tics=None, episode_start_tics=None` to Game.__init__; strict nonnegative built-in ints when provided, reject before allocating DoomGame. Apply explicit values before init; original timeout/start semantics unchanged when None. Preserve SurvivalArena signature/map/settings. Both constructors close a created DoomGame upon any later BaseException, retaining exact original object if close fails. Normal close remains existing API.
 
-- [ ] **Step 1: Write failing fake-engine lifecycle tests.** Capture calls/defaults and prove zero allocation for malformed options, explicit settings occur before init, defaults unchanged, init/first-new-episode failure closes exactly once, earlier configuration failures close too, and secondary close error adds a note while exact primary KeyboardInterrupt/Exception propagates. Test both wrappers without a real external asset dependency using existing monkeypatch patterns.
+- [x] **Step 1: Write failing fake-engine lifecycle tests.** Capture calls/defaults and prove zero allocation for malformed options, explicit settings occur before init, defaults unchanged, init/first-new-episode failure closes exactly once, earlier configuration failures close too, and secondary close error adds a note while exact primary KeyboardInterrupt/Exception propagates. Test both wrappers without a real external asset dependency using existing monkeypatch patterns.
 
 ```python
 def test_first_episode_failure_closes_without_masking_primary(monkeypatch, fake_engine):
@@ -108,8 +108,8 @@ def test_first_episode_failure_closes_without_masking_primary(monkeypatch, fake_
     assert fake_engine.close_calls == 1
 ```
 
-- [ ] **Step 2: Run focused RED.** `python -m pytest -q tests/test_doom_game_lifecycle.py`, preserve complete log and actual failure cause/exit.
-- [ ] **Step 3: Implement minimal lifecycle changes.** Validate options before allocation; place post-allocation setup/init/new_episode under guarded cleanup. Do not change buttons, assets, hazard geometry, hidden buffers, spectator behavior or default public round timing.
+- [x] **Step 2: Run focused RED.** `python -m pytest -q tests/test_doom_game_lifecycle.py`, preserve complete log and actual failure cause/exit. Historical RED: 10 failed, 5 passed; its manually abridged transcript is explicitly labelled incomplete, never recreated as historical evidence.
+- [x] **Step 3: Implement minimal lifecycle changes.** Validate options before allocation; place post-allocation setup/init/new_episode under guarded cleanup. Do not change buttons, assets, hazard geometry, hidden buffers, spectator behavior or default public round timing.
 
 ```python
 try:
@@ -129,8 +129,8 @@ except BaseException as failure:
 ```
 
 Keep all existing post-allocation configuration within the same guarded boundary.
-- [ ] **Step 4: Run GREEN plus covering existing Doom/spectator/arena fixtures.** Execute real tiny Game and SurvivalArena checks where installed: request start0, effective configured/actual start1, one action advances one tic, actual final-minus-initial tic equals horizon, RGB24 dimensions/buffer isolation and deterministic same-seed initial hashes match. Include source default start10 preserved when settings are None. This is environment QA with explicitly programmed controls, zero neural attempts, no fly behavior claim. Preserve exits/assets/logs; no public server.
-- [ ] **Step 5: Commit only owned files.** `git add doom/game.py doom_learning/survival_arena.py tests/test_doom_game_lifecycle.py`; `git commit -m "fix: make evaluation game timing and construction explicit"`; ignored factual report/raw logs with actual source identity.
+- [x] **Step 4: Run GREEN plus covering existing Doom/spectator/arena fixtures.** Execute real tiny Game and SurvivalArena checks where installed: request start0, effective configured/actual start1, one action advances one tic, actual final-minus-initial tic equals horizon, RGB24 dimensions/buffer isolation and deterministic same-seed initial hashes match. Include source default start10 preserved when settings are None. This is environment QA with explicitly programmed controls, zero neural attempts, no fly behavior claim. Preserve exits/assets/logs; no public server. Exact final transcripts: 17 focused and 28 covering passed; fresh controller covering 28 passed. Headless Linux audio diagnostics reproduce in the original wrapper and remain documented.
+- [x] **Step 5: Commit only owned files.** `git add doom/game.py doom_learning/survival_arena.py tests/test_doom_game_lifecycle.py`; `git commit -m "fix: make evaluation game timing and construction explicit"`; ignored factual report/raw logs with actual source identity. Reviewed implementation 2b85504; both task-review verdicts approved with no code findings.
 
 ### Task 3: Checked frozen live runner and CLI
 
