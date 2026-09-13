@@ -19,6 +19,8 @@ def _exact_json(value, reference, location="protocol"):
     if type(value) is not type(reference):
         raise ValueError(f"{location} has the wrong JSON type")
     if type(reference) is dict:
+        if any(type(key) is not str for key in value):
+            raise ValueError(f"{location} has a non-builtin string key")
         if set(value) != set(reference):
             raise ValueError(f"{location} has different keys")
         for key in reference:

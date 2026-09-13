@@ -95,6 +95,27 @@ def test_validation_accepts_the_unmodified_immutable_protocol():
     controls().validate_live_protocol(live_protocol())
 
 
+class StringKeyAlias(str):
+    pass
+
+
+def test_validation_rejects_a_string_subclass_key_at_protocol_top_level():
+    value = live_protocol()
+    schema = value.pop("schema")
+    value[StringKeyAlias("schema")] = schema
+    with pytest.raises(ValueError):
+        controls().validate_live_protocol(value)
+
+
+def test_validation_rejects_a_string_subclass_key_in_a_nested_pin():
+    value = live_protocol()
+    pin = value["candidates"][0]["pin"]
+    byte_count = pin.pop("bytes")
+    pin[StringKeyAlias("bytes")] = byte_count
+    with pytest.raises(ValueError):
+        controls().validate_live_protocol(value)
+
+
 def test_candidate_loader_checks_real_pins_and_returns_read_only_frozen_copies(tmp_path, monkeypatch):
     fixture = synthetic_protocol(tmp_path)
     module = with_trusted_protocol(monkeypatch, fixture)
