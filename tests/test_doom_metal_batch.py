@@ -1,6 +1,7 @@
 """Owner validation is portable; trajectory/lifetime comparisons use real Metal."""
 import sys
 import threading
+import ctypes as C
 
 import numpy as np
 import pytest
@@ -12,6 +13,32 @@ from test_doom_learning_v6 import brain
 def executor_type():
     from doom_learning_v6.metal.batch import MetalBatchExecutor
     return MetalBatchExecutor
+
+
+def assert_initialized_brain_rejected(b):
+    with pytest.raises(ValueError, match='[Ii]nitialized'): executor_type()([b])
+
+
+def assert_reentrant_calls_rejected(executor):
+    with pytest.raises(BackendError, match='[Rr]eentrant|in-flight'): executor.advance(1)
+    with pytest.raises(BackendError, match='[Rr]eentrant|in-flight'): executor.close()
+
+
+def test_initialized_handle_guard_rejects_before_any_native_call(tmp_path):
+    b = brain(tmp_path, backend='metal')
+    original = b.backend.handle
+    # A nonnull handle flag exercises only the pre-native ownership rejection.
+    # Restore it before cleanup; this sentinel never reaches any native API.
+    b.backend.handle = C.c_void_p(1)
+    try: assert_initialized_brain_rejected(b)
+    finally: b.backend.handle = original
+
+
+def test_reentrant_guard_rejects_before_any_native_call():
+    executor = executor_type().__new__(executor_type())
+    executor._lock = threading.Lock(); executor._thread = None
+    executor.closed = False; executor.poisoned = False
+    with executor._operation(): assert_reentrant_calls_rejected(executor)
 
 
 def snapshot(b):
@@ -272,7 +299,7 @@ def test_initialized_or_already_owned_brains_are_rejected(tmp_path):
     b = brain(tmp_path, backend='metal')
     b.backend.ensure_initialized()
     try:
-        with pytest.raises(ValueError, match='initialized'): executor_type()([b])
+        assert_initialized_brain_rejected(b)
     finally: b.backend.close()
     b = brain(tmp_path)
     with executor_type()([b]):
@@ -285,41 +312,57 @@ def test_reentrant_execution_rejects_and_close_waits_for_inflight_work(tmp_path,
     b.memory_u[0] = -.1
     executor = executor_type()([b])
     entered, release, finished = threading.Event(), threading.Event(), threading.Event()
+    ready = threading.Event()
     original = b._prepare_neural_input
     errors = []
     def prepare(*args, **kwargs):
-        with pytest.raises(BackendError, match='reentrant|in-flight'): executor.advance(1)
-        with pytest.raises(BackendError, match='reentrant|in-flight'): executor.close()
+        assert_reentrant_calls_rejected(executor)
         before = snapshot(b)
         for operation in (b.reset, lambda: b.restore(tmp_path / 'missing.npz'),
                           lambda: b.checkpoint(tmp_path / 'reentrant.npz')):
             with pytest.raises(BackendError, match='[Rr]eentrant'): operation()
             assert snapshot(b) == before
         entered.set()
+        ready.set()
         assert release.wait(5)
         return original(*args, **kwargs)
     monkeypatch.setattr(b, '_prepare_neural_input', prepare)
     def run():
         try: executor.step([[]], 10)
         except BaseException as error: errors.append(error)
+        finally: ready.set()
+    def close():
+        try: executor.close()
+        except BaseException as error: errors.append(error)
+        finally: finished.set()
     worker = threading.Thread(target=run)
     worker.start()
-    assert entered.wait(5)
-    before = snapshot(b)
-    with pytest.raises(BackendError, match='in-flight'): b.reset()
-    with pytest.raises(BackendError, match='in-flight'): b.restore(tmp_path / 'missing.npz')
-    with pytest.raises(BackendError, match='in-flight'): b.checkpoint(tmp_path / 'concurrent.npz')
-    assert snapshot(b) == before
-    assert not (tmp_path / 'concurrent.npz').exists() and not (tmp_path / 'reentrant.npz').exists()
-    with pytest.raises(BackendError, match='in-flight'): executor.advance(1)
-    closer = threading.Thread(target=lambda: (executor.close(), finished.set()))
-    closer.start()
-    assert not finished.wait(.05)
-    assert b.backend.name == 'metal-batch'
-    release.set()
-    worker.join(5); closer.join(5)
-    assert not errors and finished.is_set()
-    assert b.backend.name == 'cpu' and b.cursor == 100
+    closer = None
+    try:
+        assert ready.wait(5), 'Worker did not enter preparation or finish'
+        if errors: raise errors[0]
+        assert entered.is_set(), 'Worker exited before preparation checkpoint'
+        before = snapshot(b)
+        with pytest.raises(BackendError, match='in-flight'): b.reset()
+        with pytest.raises(BackendError, match='in-flight'): b.restore(tmp_path / 'missing.npz')
+        with pytest.raises(BackendError, match='in-flight'): b.checkpoint(tmp_path / 'concurrent.npz')
+        assert snapshot(b) == before
+        assert not (tmp_path / 'concurrent.npz').exists() and not (tmp_path / 'reentrant.npz').exists()
+        with pytest.raises(BackendError, match='in-flight'): executor.advance(1)
+        closer = threading.Thread(target=close)
+        closer.start()
+        assert not finished.wait(.05), errors
+        assert b.backend.name == 'metal-batch'
+        release.set()
+        worker.join(5); closer.join(5)
+        if errors: raise errors[0]
+        assert finished.is_set() and not worker.is_alive() and not closer.is_alive()
+        assert b.backend.name == 'cpu' and b.cursor == 100
+    finally:
+        release.set()
+        worker.join(5)
+        if closer is not None: closer.join(5)
+        executor.close()
 
 
 @mac
