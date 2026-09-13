@@ -137,7 +137,7 @@ def test_rgb_window_modes_preserve_repeat_permutation_and_pixel_teacher_isolatio
 
 
 @mac
-@pytest.mark.parametrize('window_ticks', [1, 18])
+@pytest.mark.parametrize('window_ticks', [0, 1, 18])
 def test_rgb_invalid_neighbor_frame_and_stimulation_do_not_change_any_lane(tmp_path, window_ticks):
     lanes = [visual_brain(tmp_path), visual_brain(tmp_path)]
     with executor_type()(lanes, window_ticks=window_ticks) as executor:
