@@ -77,6 +77,10 @@ Report every role/seed, same-seed baseline differences and variation between the
 two fitted replicas per method, separately by task. Four seeds and two fitting
 replicas are exploratory; correlated frames are not independent samples. No
 cross-task pooling, significance claim or held-derived threshold is permitted.
+The two original random vectors are unselected movement controls with unequal
+fitting compute and perturbation magnitude. Preserve them unchanged and report
+each vector's baseline-relative displacement; they are not magnitude-matched
+causal controls. Stronger learning claims need independently declared controls.
 
 ## Components and failure contract
 
