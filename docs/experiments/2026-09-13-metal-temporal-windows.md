@@ -49,8 +49,9 @@ actual buffer lengths and event/sparse workspace growth.
 
 The initial validation machine is the M4 Pro, using Objective-C++ and strict
 `macos-metal2.4`, no fast math, disabled FP contraction, and macOS 13 minimum.
-The final source's full M4 suite completed with 1,146 passes and three platform
-skips. The portable suite completed with 416 passes and 733 platform skips.
+At native implementation source `44e00de919e9eb2d38344318705bbd9228588b65`,
+the full M4 suite completed with 1,146 passes and three platform skips. Its
+portable suite completed with 416 passes and 733 platform skips.
 Both reported 50 existing dependency warnings. Skips provide no device evidence.
 
 The Python integration's pre-correction full suites completed with 1,179 M4
