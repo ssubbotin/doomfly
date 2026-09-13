@@ -63,7 +63,7 @@ Other fixtures, all valid raw states:
 - prefilled-reset: edgeless neuron0 inactive, v=-52,g=.5,last=c-7; put neuron0 in queue[(c+18)%19], queue_count=1. This catches a fired-only reset.
 - future-reuse: neuron1 active,v=-40,refractory=2,last=c-1, zero drive, 2-tick advance; it fires at c+1. Its new future bit physically reuses slot c%19 and must survive.
 - shared-word: two edges source0→target1 (.5), source0→target2 (.75), incoming positions0/1 in one word; queue[c%19] contains source0.
-- fast-presence: sources0/1/2→target3 with weights (1e20,3,-1e20), g[target3]=-0.0, inactive; all sources in current queue. Add a separate zero-weight fast row. Presence activates targets even if the sum is zero.
+- fast-presence: sources0/1/2→target3 with weights (1e20,3,-1e20), g[target3]=-0.0, inactive; all sources in current queue. Add separate zero-weight fast rows with target g=-0.0 and g=7.0. Presence activates targets even if the sum is zero; the g=7 row also detects accidentally seeding the zero accumulator from existing g.
 - zero-modulation: source0 modulatory, edge0→1 weight0, modulation[1]=.5,modulation_last[1]=c-7, queued source0; zero still decays modulation and updates its timestamp.
 - lazy-evolution: edgeless inactive neuron0 v=-51,g=.3,adaptation=.7,last=c-7; no queue events. Final settlement must match reference without eager per-tick rounding.
 - gather-before-reset: queued source0→target1 weight.5, target1 active,v=-40,last=c-1; compare gathering followed by future membership reset.
@@ -200,12 +200,12 @@ Commit scoped files:
 - [ ] **Step 1: Add portable rejection RED and actual owner identity tests.**
 
 ```python
-@pytest.mark.parametrize("bad", [True, False, -1, 19, 2**63, 1.0, None, "18"])
+@pytest.mark.parametrize("bad", [True, False, np.bool_(True), -1, 19, 2**63, 1.0, None, "18"])
 def test_bad_window_rejected_before_brains_are_touched(bad):
     class ReadTrap:
         def __iter__(self):
             raise AssertionError("Brains accessed before window validation")
-    with pytest.raises((TypeError, ValueError), match="[Ww]indow"):
+    with pytest.raises((TypeError, ValueError), match="Window ticks must be"):
         MetalBatchExecutor(ReadTrap(), window_ticks=bad)
 ```
 
