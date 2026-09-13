@@ -47,7 +47,7 @@ The controller supplies TASK_KERNEL/TASK_PYTHON per dispatch. Preserve RED/GREEN
 - Produces: `training_mean(losses) -> float` requiring exactly2finite episode losses; `accept_proposal(incumbent_loss, proposal_loss) -> bool`.
 - Produces: `AttemptBudget(maximum=128)` with used:int, remaining:int and `charge(lanes=4, *, reserve_after=0) -> int`. Charge rejects bool/noninteger/invalid/over-cap/reserve exhaustion before changing used.
 
-- [ ] **Step 1: Write behavioral failing tests with hand-derived expectations.**
+- [x] **Step 1: Write behavioral failing tests with hand-derived expectations.**
 
 ```python
 def test_gaussian_direction_is_multiplied():
@@ -72,11 +72,11 @@ def test_budget_preserves_held_capacity():
 
 Also test finite mapping on large latent values; negative/nonfinite/empty/mismatched arrays and arithmetic overflow; strict loss ties; two-episode mean; independent/reproducible method streams; wrong protocol SHA/altered protocol; final120-charge capacity with8remaining and direct over-capacity rejection. Static-control generation and zero-update/no-refund behavior are tested at their actual driver consumer in Task3.
 
-- [ ] **Step 2: Run focused tests before source creation and retain authentic RED output.**
+- [x] **Step 2: Run focused tests before source creation and retain authentic RED output.**
 
 Run portable pytest on the new test file. Missing new feature is expected; fix import/fixture mistakes before accepting RED.
 
-- [ ] **Step 3: Implement minimal pure functions and budget class.**
+- [x] **Step 3: Implement minimal pure functions and budget class.**
 
 ```python
 # Validate finite equal nonempty vectors and positive finite c/a first.
@@ -88,11 +88,11 @@ candidate = theta.copy() if norm == 0 else theta - step_length * g / norm
 
 load_protocol checks exact pinned bytes/SHA and the committed protocol structure, returning a fresh record; no configuration knobs or native imports. Optimizer RNG uses the declared method index and seed derivation. Validate scalar types, including boolean rejection where integers are required.
 
-- [ ] **Step 4: Run focused GREEN, then ordinary full portable suite once; self-review.**
+- [x] **Step 4: Run focused GREEN, then ordinary full portable suite once; self-review.**
 
 Run the new test file, then `-m pytest -q`. Include command, raw paths, expected RED reason, actual GREEN counts/warnings and changed files in the ignored task report.
 
-- [ ] **Step 5: Commit only owned production/tests.**
+- [x] **Step 5: Commit only owned production/tests.**
 
 `git add doom_learning_v6/same_slot_optimizer.py tests/test_doom_learning_same_slot_optimizer.py`;
 `git commit -m "feat: add bounded same-slot efficacy optimizer"`.
@@ -108,7 +108,7 @@ Run the new test file, then `-m pytest -q`. Include command, raw paths, expected
 - Produces: `MetalBatchExecutor.install_efficacies(lane, fractions, expected_edges) -> None`; fractions are baseline-relative float64 vector, expected_edges exact ordered int64 canonical circuit ids.
 - Existing initialize_efficacies ownership rejection, advance/reset/restore and native ABI remain unchanged.
 
-- [ ] **Step 1: Add real fixture rejection/round-trip tests first.**
+- [x] **Step 1: Add real fixture rejection/round-trip tests first.**
 
 Use existing small MemoryBrain/VisualMemoryBrain fixture patterns in tests/test_doom_metal_batch*.py; native cases skip only absent Metal. Portable tests can replace only the native call below real executor validation, with explicit argument/poison expectations.
 
@@ -125,11 +125,11 @@ np.testing.assert_array_equal(b.weight, before[2])
 
 Cover wrong/duplicate/reordered/ineligible slots, bool/out-of-range lane, malformed bounds/shape, baseline NaN/Inf/nonpositive, float32 overflow/underflow, changed owner/bindings, closed/poisoned/in-flight executor, exact baseline round-trip, nonplastic bytes and unchanged stale-state validity. Native failure must poison and retain primary exception; installer does not execute neural ticks.
 
-- [ ] **Step 2: Run authentic RED focused suite before implementation.**
+- [x] **Step 2: Run authentic RED focused suite before implementation.**
 
 Run new fixture tests using portable environment; at least installer behavior must fail because missing, not fixture construction.
 
-- [ ] **Step 3: Implement a single serialized checked boundary.**
+- [x] **Step 3: Implement a single serialized checked boundary.**
 
 ```python
 with self._operation():
@@ -146,11 +146,11 @@ with self._operation():
 
 Do not temporarily remove ownership, call unowned initializer, upload stale full state, alter _host_state_valid, release/recreate executor or modify native kernels. Checked native failure poisons; document half-installed state requires abort/explicit restore.
 
-- [ ] **Step 4: Run focused GREEN and ordinary portable suite; retain logs and self-review.**
+- [x] **Step 4: Run focused GREEN and ordinary portable suite; retain logs and self-review.**
 
 Native fixture validation is performed by the controller once on M4 after source commit, before study. No full-connectome episode needed for unit ownership checks.
 
-- [ ] **Step 5: Commit owned boundary/tests.**
+- [x] **Step 5: Commit owned boundary/tests.**
 
 `git add doom_learning_v6/metal/batch.py tests/test_doom_metal_candidate_install.py`;
 `git commit -m "feat: install checked efficacies between Metal rollouts"`.
@@ -168,7 +168,7 @@ Native fixture validation is performed by the controller once on M4 after source
 - Produces CLI: `python -m doom_learning_v6.same_slot_runner --protocol FILE --protocol-sha256 SHA --train DIR --train DIR --eval DIR --eval DIR --reference DIR --expected-pins FILE --source-commit SHA --out FRESH_DIR`.
 - Produces pinned protocol/inputs/provenance, persistent attempt ledger, all wave/lane traces/all24 terminalCP, per-generation theta/fractions/draws/contrasts/acceptances, frozen seven-final-candidate manifest, before/after pins and results.json. Public claim flags false.
 
-- [ ] **Step 1: Write portable scheduling, selection and failure tests first.**
+- [x] **Step 1: Write portable scheduling, selection and failure tests first.**
 
 Small explicit replay double supplies complete lane records with finite hand-derived losses. Its native work is substituted; scheduling/optimizer/budget/artifact writes remain real.
 
@@ -183,11 +183,11 @@ assert accept_proposal(4., training_mean([2., 7.])) is False
 
 Add tests proving held is invoked only after final-manifest creation, every probe/proposal uses BOTH training episodes, labels never affect runtime controls, generation acceptance/ties/zero_update are correct, and an actual zero-gradient driver wave retains its consumed four-attempt charge. Verify actual saved static-control vectors use the declared independent seeds and uniform bounds, randoms have no training scores, altered identities/counts/protocol/source/pins reject before GPU, and failure/KeyboardInterrupt preserves chargedbudget/lastcenter/partial records without swallowing original or cleanup errors.
 
-- [ ] **Step 2: Run new focused RED and preserve expected failures.**
+- [x] **Step 2: Run new focused RED and preserve expected failures.**
 
 No fullgraph run; do not dispatch old pilots or alter fixture expectations to hide missing behavior.
 
-- [ ] **Step 3: Implement the thin resident harness and preflight.**
+- [x] **Step 3: Implement the thin resident harness and preflight.**
 
 ```python
 # Each wave validates four candidates, reserves budget, writes charge BEFORE
@@ -224,13 +224,13 @@ decoder andnonplastic/config invariants. Preserve currentrepo defaultW0; driver
 explicitW18 only. CLI writes allraw/private origins only under ignored freshout.
 Keep files focused; no copied replay implementation or new native buffers.
 
-- [ ] **Step 4: Run focused GREEN, ordinary portable suite and self-review.**
+- [x] **Step 4: Run focused GREEN, ordinary portable suite and self-review.**
 
 Report exactcommands/rawlogs and invariants; controller deploys reviewed source
 to ownedM4 and runs nativefixtures before allocating study. Do not starttraining
 from worker or make public/machine configuration changes.
 
-- [ ] **Step 5: Commit driver/tests.**
+- [x] **Step 5: Commit driver/tests.**
 
 `git add doom_learning_v6/same_slot_runner.py tests/test_doom_learning_same_slot_runner.py`;
 `git commit -m "feat: run bounded resident Metal efficacy fitting"`.
@@ -249,7 +249,7 @@ trusted graph/build/initialCP pins and ignored runtimeconfiguration.
 artifact-role SHA/bytes audit, exact tested source revision, validation/timing/
 pressure/budget evidence and scientifically qualified public report.
 
-- [ ] **Step 1: Controller fast-forwards only ownedM4 mirror in reviewed stages; validate physicalpins and focused nativefixtures.**
+- [x] **Step 1: Controller fast-forwards only ownedM4 mirror in reviewed stages; validate physicalpins and focused nativefixtures.**
 
 Preserve generatedCPU manifests/nativeproducts and usercheckout/unrelatedjobs.
 While Task3 is implemented, deploy reviewed Task1/Task2 source and run the
@@ -259,7 +259,7 @@ once. Use existing M4env and acquire scoped lease for anynativevalidation;
 ordinary fullnative suite once before finalhandoff. Fullgraph validation
 attempts, ifneeded, use fourlane waves within8reserve and do notrerun oldmatrix.
 
-- [ ] **Step 2: Controller launches exact pinned private study using utility-scoped caffeinate-is onAC.**
+- [x] **Step 2: Controller launches exact pinned private study using utility-scoped caffeinate-is onAC.**
 
 Use CLI signature fromTask3 with ignoredconfigpaths/exact committedsourceSHA/
 protocolSHA and controller-validated expectedpins. Poll actualprocesshandle,
@@ -267,7 +267,7 @@ neverrestart from missing/empty file ortimeout. Count allattempts. Preserve
 incompleteevidence; noadaptive scale/data/method retuning. Continue monitoring
 with concise updates; unrelatedworkloads remain untouched.
 
-- [ ] **Step 3: Controller audits actual terminal outputs and supplies fresh reportworker the compact evidence file.**
+- [x] **Step 3: Controller audits actual terminal outputs and supplies fresh reportworker the compact evidence file.**
 
 Verify completeframecounts/controlseparation/all24CProles/frozenmemory/
 nonplastic/config/source/physicalpins and128cap. Check all7heldvectors and2fillers,
@@ -275,7 +275,7 @@ pairdifferences tobaseline perheldepisode and replicatevariation. Retainraw
 nativeCPs onM4; nevercopy13GB into localtmpfs orbundle externalassets. Compact
 JSON carries semanticroles/hash/bytes, no privateorigins orfullthirdpartydata.
 
-- [ ] **Step 4: Fresh worker writes factual report and compact publicJSON using apply_patch.**
+- [x] **Step 4: Fresh worker writes factual report and compact publicJSON using apply_patch.**
 
 Report actualtrainchanges/acceptance, allheldprimary contrasts, diagnostic
 forward/attack, source/buildvalidation, exactclocks/pressure/budget andremaining
@@ -283,7 +283,7 @@ assumptions. Numericalfit/changedweights neverestablishbiological/Doomlearning.
 Humanreport earnsnoTDDtest; use structuredJSONparse/identity/metric checks against
 controller's realaudit. Preserve negativecontrols/failures. No publiclaunch.
 
-- [ ] **Step 5: Review task; final strongest whole-subproject review, one finalfixwave/one scopedrereview iffindings; verify and commit/push onlyownedbranch.**
+- [x] **Step 5: Review task; final strongest whole-subproject review, one finalfixwave/one scopedrereview iffindings; verify and commit/push onlyownedbranch.**
 
 Controller collects everychronological Ruling withcost into finalhandoff and
 preserves privateworkspace under projectfailed/control-evidence constraints.

@@ -14,12 +14,12 @@
 
 **Interfaces:** Preserve `fit` and `replay_episode` signatures, exact original raised exception, complete successful records, four-lane charging and existing checked checkpoint APIs. Availability may be propagated as bounded failure metadata or safely consumed evidence; unreadable or missing decisions must never affirmatively authorize repeating known failed materialization. Do not parse error-note text as a contract. Preserve failed-lane reason and other independent evidence. No reset/restore/upload, extra neural ticks, epoch increment or poison/ownership bypass to obtain a checkpoint.
 
-- [ ] Read complete final review and relevant existing regression reports before implementation. Decide the smallest robust producer-to-caller availability representation; document it in the ignored report.
-- [ ] Write authentic failing integration regressions for `fit` wrapping replay's unavailable-terminal lane, both prior interruption and new primary non-poisoning materialization failure. Verify no failed-lane checkpoint/sync retry, other recoverable lane accounting, persisted accumulated traces, charged attempts and exact primary identity through secondary evidence failures. Cover evidence-file read/write failure without using poison rejection as the only protection.
-- [ ] Write direct-fit malformed-protocol regressions covering types recursively (including booleans versus integers and float generation counts), asserting zero charges and zero installer/replay calls. The committed protocol bytes remain unchanged.
-- [ ] Run focused RED, preserve unique command/raw output and actual exit. Fixture setup errors are not accepted RED.
-- [ ] Make the minimum source correction and run focused GREEN plus covering existing runner/replay/logger regressions. Preserve existing pre-replay installation failure behavior. Do not repeat the ordinary full portable/native suite or old numerical/scientific matrices.
-- [ ] Self-review, `git diff --check`, commit only owned source/tests with `Sergey Subbotin <ssubbotin@gmail.com>`, and write the ignored report with exact commands/exits/raw evidence and source identity obtained from Git.
+- [x] Read complete final review and relevant existing regression reports before implementation. Decide the smallest robust producer-to-caller availability representation; document it in the ignored report.
+- [x] Write authentic failing integration regressions for `fit` wrapping replay's unavailable-terminal lane, both prior interruption and new primary non-poisoning materialization failure. Verify no failed-lane checkpoint/sync retry, other recoverable lane accounting, persisted accumulated traces, charged attempts and exact primary identity through secondary evidence failures. Cover evidence-file read/write failure without using poison rejection as the only protection.
+- [x] Write direct-fit malformed-protocol regressions covering types recursively (including booleans versus integers and float generation counts), asserting zero charges and zero installer/replay calls. The committed protocol bytes remain unchanged.
+- [x] Run focused RED, preserve unique command/raw output and actual exit. Fixture setup errors are not accepted RED.
+- [x] Make the minimum source correction and run focused GREEN plus covering existing runner/replay/logger regressions. Preserve existing pre-replay installation failure behavior. Do not repeat the ordinary full portable/native suite or old numerical/scientific matrices.
+- [x] Self-review, `git diff --check`, commit only owned source/tests with `Sergey Subbotin <ssubbotin@gmail.com>`, and write the ignored report with exact commands/exits/raw evidence and source identity obtained from Git.
 
 ## Controller follow-through
 
