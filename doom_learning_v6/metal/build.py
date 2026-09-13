@@ -12,7 +12,7 @@ import sys
 ROOT=Path(__file__).resolve().parents[2]
 SOURCE=Path(__file__).resolve().parent
 DEFAULT_OUTPUT=ROOT/'outputs/doom-learning/metal'
-ABI_VERSION=7
+ABI_VERSION=8
 NUMERICAL_PARENT='b24249ecfee12aa84b55ed803ffe47bd09c487ad'
 NUMERICAL_ORDER='epoch-5-zero-seeded-ascending-incoming'
 METAL_COMPILE_FLAGS=('-std=macos-metal2.4','-fno-fast-math','-ffp-contract=off')

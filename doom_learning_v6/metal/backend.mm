@@ -27,6 +27,7 @@ struct Backend {
   int32_t slots=0;
   int32_t words=0;
   int32_t lanes=1;
+  int32_t window_ticks=0;
   std::vector<int64_t> cursors;
   std::vector<uint8_t> uploaded;
   bool rest_initialized=false;
@@ -35,6 +36,7 @@ struct Backend {
   float adaptation_tau=200.0f;
   __strong id<MTLBuffer> out_ptr,out_post,in_ptr,in_pre,in_edge,kc_mask,modulation_mask;
   __strong id<MTLBuffer> edge_to_incoming,active_edge_bits;
+  __strong id<MTLBuffer> window_touched,window_edge_bits;
   __strong id<MTLBuffer> weight,v,g,refractory,drive,previous_drive,counts,active_flag,last;
   __strong id<MTLBuffer> modulation,modulation_last,rest,adaptation,ring,touched;
   __strong id<MTLBuffer> kc_events,event_count;
@@ -42,6 +44,7 @@ struct Backend {
   __strong id<MTLBuffer> weight_update_ids,weight_update_values;
   __strong id<MTLComputePipelineState> drive_pipeline,integrate_mark_pipeline;
   __strong id<MTLComputePipelineState> gather_finalize_pipeline;
+  __strong id<MTLComputePipelineState> window_prepare_pipeline,window_neuron_pipeline;
   __strong id<MTLComputePipelineState> materialize_pipeline,weight_update_pipeline;
   int32_t edge_words=0;
   uint32_t event_capacity=0;
@@ -70,9 +73,13 @@ struct KernelParams {
   uint64_t edge_stride;
   uint64_t ring_stride;
   uint64_t edge_bitmap_stride;
+  uint32_t window_ticks;
+  uint32_t window_capacity;
 };
-static_assert(sizeof(KernelParams)==88,"Metal Params layout must match kernels.metal");
+static_assert(sizeof(KernelParams)==96,"Metal Params layout must match kernels.metal");
 static_assert(offsetof(KernelParams,edge_stride)==64,"Metal lane strides must be aligned");
+static_assert(offsetof(KernelParams,window_ticks)==88,"Metal window width must match");
+static_assert(offsetof(KernelParams,window_capacity)==92,"Metal window capacity must match");
 
 bool valid_lane(const Backend *b,int32_t lane) { return b&&lane>=0&&lane<b->lanes; }
 
@@ -103,7 +110,7 @@ uint64_t mutable_bytes(const Backend *b) {
   for(id<MTLBuffer> buffer:{b->weight,b->v,b->g,b->refractory,b->drive,b->previous_drive,
       b->counts,b->active_flag,b->last,b->modulation,b->modulation_last,b->adaptation,
       b->ring,b->touched,b->active_edge_bits,b->kc_events,b->event_count,
-      b->weight_update_ids,b->weight_update_values})
+      b->weight_update_ids,b->weight_update_values,b->window_touched,b->window_edge_bits})
     if(buffer!=nil)bytes+=buffer.length;
   return bytes;
 }
@@ -209,7 +216,13 @@ extern "C" int df_metal_create(const df_metal_graph *graph,const char *metallib_
 
 extern "C" int df_metal_create_batch(const df_metal_graph *graph,const char *metallib_path,
     int32_t lanes,df_metal_handle *handle) {
+  return df_metal_create_batch_windowed(graph,metallib_path,lanes,0,handle);
+}
+
+extern "C" int df_metal_create_batch_windowed(const df_metal_graph *graph,const char *metallib_path,
+    int32_t lanes,int32_t window_ticks,df_metal_handle *handle) {
   if(handle!=nullptr)*handle=nullptr;
+  if(window_ticks<0||window_ticks>18)return fail("Metal window ticks must be in 0..18");
   try {
   if(graph==nullptr||handle==nullptr||metallib_path==nullptr)
     return fail("Metal create argument is null");
@@ -225,12 +238,15 @@ extern "C" int df_metal_create_batch(const df_metal_graph *graph,const char *met
       !present(graph->in_pre)||!present(graph->in_edge))))return fail("Metal graph pointer is null");
   // Bounds and allocation products precede traversal of user-provided arrays.
   size_t neuron_cells=0,edge_cells=0,ring_words=0,event_bytes=0;
+  size_t window_touched_bytes=0,window_edge_bytes=0;
   const size_t n=size_t(graph->neurons),e=size_t(graph->edges);
   const size_t words=(n+31)/32,edge_words=(e+31)/32;
   if(!product({n,size_t(lanes)},neuron_cells)||
       !product({e,size_t(lanes)},edge_cells)||
       !product({size_t(graph->delay_slots),words,size_t(lanes)},ring_words)||
       !product({neuron_cells,5,sizeof(df_metal_kc_event)},event_bytes)||
+      !product({size_t(window_ticks),size_t(lanes),n,sizeof(uint32_t)},window_touched_bytes)||
+      !product({size_t(window_ticks),size_t(lanes),edge_words,sizeof(uint32_t)},window_edge_bytes)||
       neuron_cells>std::numeric_limits<uint32_t>::max()/100u)
     return fail("Metal batch dimensions exceed checked grid limits");
   @autoreleasepool {
@@ -248,6 +264,12 @@ extern "C" int df_metal_create_batch(const df_metal_graph *graph,const char *met
       size_t allocated=std::max<size_t>(length,1);
       if(allocated>device.maxBufferLength||total>std::numeric_limits<uint64_t>::max()-allocated)
         return fail("Metal batch allocation exceeds device buffer limit");
+      total+=allocated;
+    }
+    if(window_ticks>0)for(size_t length:{window_touched_bytes,window_edge_bytes}){
+      size_t allocated=std::max<size_t>(length,1);
+      if(allocated>device.maxBufferLength||total>std::numeric_limits<uint64_t>::max()-allocated)
+        return fail("Metal window allocation exceeds device buffer limit");
       total+=allocated;
     }
     if(total>device.recommendedMaxWorkingSetSize)
@@ -275,6 +297,7 @@ extern "C" int df_metal_create_batch(const df_metal_graph *graph,const char *met
   @autoreleasepool {
     auto owner=std::make_unique<Backend>();
     Backend *backend=owner.get();
+    backend->window_ticks=window_ticks;
     backend->device=MTLCreateSystemDefaultDevice();
     df_metal_device_info info;
     if(!set_device_info(backend->device,&info)){
@@ -293,9 +316,14 @@ extern "C" int df_metal_create_batch(const df_metal_graph *graph,const char *met
     backend->gather_finalize_pipeline=make_pipeline(backend,@"df_gather_finalize",&error);
     backend->materialize_pipeline=make_pipeline(backend,@"df_materialize",&error);
     backend->weight_update_pipeline=make_pipeline(backend,@"df_update_weights",&error);
+    if(window_ticks>0){
+      backend->window_prepare_pipeline=make_pipeline(backend,@"df_window_prepare",&error);
+      backend->window_neuron_pipeline=make_pipeline(backend,@"df_window_neurons",&error);
+    }
     if(backend->drive_pipeline==nil||backend->integrate_mark_pipeline==nil||
         backend->gather_finalize_pipeline==nil||
-        backend->materialize_pipeline==nil||backend->weight_update_pipeline==nil){
+        backend->materialize_pipeline==nil||backend->weight_update_pipeline==nil||
+        (window_ticks>0&&(backend->window_prepare_pipeline==nil||backend->window_neuron_pipeline==nil))){
       std::string message=error==nil?"Metal pipeline creation failed":error.localizedDescription.UTF8String;
       return fail(message.c_str());
     }
@@ -338,6 +366,14 @@ extern "C" int df_metal_create_batch(const df_metal_graph *graph,const char *met
     backend->adaptation=make_buffer(backend->device,nullptr,neuron_cells*sizeof(float));
     backend->ring=make_buffer(backend->device,nullptr,ring_words*sizeof(uint32_t));
     backend->touched=make_buffer(backend->device,nullptr,neuron_cells*sizeof(uint32_t));
+    if(window_ticks>0){
+      backend->window_touched=make_buffer(backend->device,nullptr,window_touched_bytes);
+      backend->window_edge_bits=make_buffer(backend->device,nullptr,window_edge_bytes);
+      if(backend->window_touched==nil||backend->window_edge_bits==nil)
+        return fail("Metal window buffer allocation failed");
+      std::memset(backend->window_touched.contents,0,backend->window_touched.length);
+      std::memset(backend->window_edge_bits.contents,0,backend->window_edge_bits.length);
+    }
     uint32_t kc_count=0;
     for(size_t i=0;i<n;i++)if(graph->kc_mask[i])kc_count++;
     backend->event_capacity=std::max<uint32_t>(1,kc_count*5u*uint32_t(lanes));
@@ -435,6 +471,12 @@ extern "C" int df_metal_upload_lane_state(df_metal_handle handle,int32_t lane,
   std::memset(lane_contents(b->touched,lane,ni),0,ni);b->cursors[lane]=s->cursor;
   const size_t edge_bytes=size_t(b->edge_words)*sizeof(uint32_t);
   std::memset(lane_contents(b->active_edge_bits,lane,edge_bytes),0,edge_bytes);
+  if(b->window_ticks>0){
+    const size_t touched_plane_bytes=size_t(b->window_ticks)*ni;
+    const size_t edge_plane_bytes=size_t(b->window_ticks)*edge_bytes;
+    std::memset(lane_contents(b->window_touched,lane,touched_plane_bytes),0,touched_plane_bytes);
+    std::memset(lane_contents(b->window_edge_bits,lane,edge_plane_bytes),0,edge_plane_bytes);
+  }
   b->uploaded[lane]=1;b->last_event_count=0;
   if(std::all_of(b->uploaded.begin(),b->uploaded.end(),[](uint8_t value){return value!=0;}))
     b->poisoned=false;
@@ -600,7 +642,21 @@ extern "C" int df_metal_advance(df_metal_handle handle,int32_t steps,
       uint64_t(b->slots)*uint64_t(b->words),uint64_t(b->edge_words)};
     encode(encoder,b->drive_pipeline,{b->v,b->g,b->refractory,b->drive,b->previous_drive,
       b->active_flag,b->last,b->rest,b->adaptation,b->decay_tables},p,b->neurons,dispatch_count);
-    for(int32_t step=0;step<steps;step++){
+    if(b->window_ticks>0){
+      for(int32_t done=0;done<steps;){
+        const uint32_t width=uint32_t(std::min(b->window_ticks,steps-done));
+        p.clock=cursor+done;p.window_ticks=width;p.window_capacity=uint32_t(b->window_ticks);
+        encode(encoder,b->window_prepare_pipeline,{b->ring,b->out_ptr,b->out_post,
+          b->edge_to_incoming,b->window_touched,b->window_edge_bits},p,
+          uint32_t(b->words)*width,dispatch_count);
+        encode(encoder,b->window_neuron_pipeline,{b->v,b->g,b->refractory,b->drive,
+          b->active_flag,b->last,b->rest,b->adaptation,b->ring,b->counts,b->kc_mask,
+          b->kc_events,b->event_count,b->in_ptr,b->in_pre,b->in_edge,b->weight,
+          b->window_touched,b->window_edge_bits,b->modulation,b->modulation_last,
+          b->modulation_mask,b->decay_tables},p,b->neurons,dispatch_count);
+        done+=int32_t(width);
+      }
+    }else for(int32_t step=0;step<steps;step++){
       p.clock=cursor+step;p.slot=uint32_t(p.clock%b->slots);
       p.future=uint32_t((p.clock+delay)%b->slots);
       encode(encoder,b->integrate_mark_pipeline,{b->v,b->g,b->refractory,b->drive,
@@ -645,8 +701,9 @@ extern "C" int df_metal_advance(df_metal_handle handle,int32_t steps,
       command.GPUEndTime-command.GPUStartTime:0.0;
     timing->encoder_count=1;timing->dispatch_count=dispatch_count;
     timing->indirect_dispatch_count=0;
-    timing->mark_grid_threads=uint32_t(steps)*uint32_t(b->neurons)*uint32_t(b->lanes);
-    timing->gather_grid_threads=uint32_t(steps)*uint32_t(b->neurons)*uint32_t(b->lanes);
+    timing->mark_grid_threads=uint32_t(steps)*uint32_t(b->window_ticks>0?b->words:b->neurons)*uint32_t(b->lanes);
+    const uint32_t workers=b->window_ticks>0?uint32_t((steps+b->window_ticks-1)/b->window_ticks):uint32_t(steps);
+    timing->gather_grid_threads=workers*uint32_t(b->neurons)*uint32_t(b->lanes);
   }
   timing->native_total_seconds=std::chrono::duration<double>(
     std::chrono::steady_clock::now()-started).count();

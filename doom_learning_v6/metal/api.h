@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-#define DF_METAL_ABI_VERSION 7u
+#define DF_METAL_ABI_VERSION 8u
 
 typedef void *df_metal_handle;
 
@@ -86,6 +86,8 @@ int df_metal_create(const df_metal_graph *graph,const char *metallib_path,
     df_metal_handle *handle);
 int df_metal_create_batch(const df_metal_graph *graph,const char *metallib_path,
     int32_t lanes,df_metal_handle *handle);
+int df_metal_create_batch_windowed(const df_metal_graph *graph,const char *metallib_path,
+    int32_t lanes,int32_t window_ticks,df_metal_handle *handle);
 int df_metal_upload_lane_state(df_metal_handle handle,int32_t lane,const df_metal_state *state);
 int df_metal_download_lane_state(df_metal_handle handle,int32_t lane,df_metal_state *state);
 int df_metal_upload_lane_drive(df_metal_handle handle,int32_t lane,const float *drive);
