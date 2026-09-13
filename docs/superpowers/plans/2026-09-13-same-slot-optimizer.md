@@ -70,7 +70,7 @@ def test_budget_preserves_held_capacity():
     assert budget.used == 112
 ```
 
-Also test finite mapping on large latent values; negative/nonfinite/empty/mismatched arrays and arithmetic overflow; strict loss ties; two-episode mean; independent/reproducible method streams; PCG64 static controls; wrong protocol SHA/altered protocol; final120-charge capacity with8remaining and no zero-update budget repurposing.
+Also test finite mapping on large latent values; negative/nonfinite/empty/mismatched arrays and arithmetic overflow; strict loss ties; two-episode mean; independent/reproducible method streams; wrong protocol SHA/altered protocol; final120-charge capacity with8remaining and direct over-capacity rejection. Static-control generation and zero-update/no-refund behavior are tested at their actual driver consumer in Task3.
 
 - [ ] **Step 2: Run focused tests before source creation and retain authentic RED output.**
 
@@ -181,7 +181,7 @@ assert accept_proposal(4., training_mean([2., 7.])) is False
 # Seven distinct final roles +two baseline fillers appear on both held episodes.
 ```
 
-Add tests proving held is invoked only after final-manifest creation, every probe/proposal uses BOTH training episodes, labels never affect runtime controls, generation acceptance/ties/zero_update are correct, randoms have no training scores, altered identities/counts/protocol/source/pins reject before GPU, and failure/KeyboardInterrupt preserves chargedbudget/lastcenter/partial records without swallowing original or cleanup errors.
+Add tests proving held is invoked only after final-manifest creation, every probe/proposal uses BOTH training episodes, labels never affect runtime controls, generation acceptance/ties/zero_update are correct, and an actual zero-gradient driver wave retains its consumed four-attempt charge. Verify actual saved static-control vectors use the declared independent seeds and uniform bounds, randoms have no training scores, altered identities/counts/protocol/source/pins reject before GPU, and failure/KeyboardInterrupt preserves chargedbudget/lastcenter/partial records without swallowing original or cleanup errors.
 
 - [ ] **Step 2: Run new focused RED and preserve expected failures.**
 
