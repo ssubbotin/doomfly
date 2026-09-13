@@ -329,6 +329,18 @@ def _physical_pins(reference):
             'native_build': current_preflight_identity()}
 
 
+def _validate_expected_pins(path, observed):
+    """Compare controller-provided trusted identities before native execution."""
+    try:
+        expected = json.loads(Path(path).read_text())
+    except (OSError, ValueError, TypeError) as error:
+        raise ValueError('Trusted expected pins are required') from error
+    required = {'source_commit', 'sources', 'inputs', 'references', 'cpu', 'native', 'native_abi'}
+    if not isinstance(expected, dict) or not required.issubset(expected) or any(expected[key] != observed.get(key) for key in required):
+        raise ValueError('Trusted expected pins differ from observed identities')
+    return expected
+
+
 def _readouts():
     from doom_learning.common import GRAPH
     rows = json.loads((GRAPH.parent / 'manifest.json').read_text())['readouts']
@@ -447,10 +459,10 @@ def _run_causal(args, train, held, reference, readouts, out):
     for brain in brains:
         brain.restore(initial)
     invariant = _model_gate(brains)
+    configurations = [brain.configuration_signature() for brain in brains]
     pressure = {'before_training': _memory_pressure()}
     try:
         with MetalBatchExecutor(brains, window_ticks=18) as executor:
-            invariant = [brain.configuration_signature() for brain in brains]
             train_result = replay_episode(brains, executor, train, readouts,
                                           np.stack([aligned, np.zeros_like(aligned), shifted, np.zeros_like(aligned)]),
                                           learning=[True, True, True, True], frozen=[False, False, False, True],
@@ -470,7 +482,7 @@ def _run_causal(args, train, held, reference, readouts, out):
                                         learning=[False] * 4, frozen=[True] * 4,
                                         directory=out / 'evaluation')
             pressure['after_evaluation'] = _phase_pressure(pressure['before_evaluation'], 'evaluation')
-            if _model_gate(brains) != invariant:
+            if _model_gate(brains) != invariant or [brain.configuration_signature() for brain in brains] != configurations:
                 raise ValueError('Fixed invariants changed')
     finally:
         for brain in brains:
@@ -479,7 +491,7 @@ def _run_causal(args, train, held, reference, readouts, out):
     return {'mode': 'causal', 'schedule_mapping': mapping.tolist(), 'dose_proof': proof,
             'train': train_result, 'evaluation': evaluation,
             'learned_checkpoints': [str(path.relative_to(out)) for path in learned],
-            'golden_checkpoint_comparison': golden, 'invariants': {'before': invariant, 'after': invariant},
+            'golden_checkpoint_comparison': golden, 'invariants': {'before': invariant, 'after': _model_gate(brains)},
             'phase_pressure': pressure}
 
 
@@ -577,6 +589,7 @@ def build_parser():
     parser.add_argument('--reference', required=True)
     parser.add_argument('--out', required=True)
     parser.add_argument('--source-commit', required=True)
+    parser.add_argument('--expected-pins')
     return parser
 
 
@@ -603,6 +616,15 @@ def run(args):
     readouts = _readouts()
     _check_reference(args.reference, train)
     pins = _physical_pins(args.reference)
+    observed = {'source_commit': args.source_commit, 'sources': pins['sources'],
+                'inputs': {'graph': pins['graph'], 'annotations': pins['annotations'],
+                           'normalized_neurons': pins['normalized_neurons']},
+                'references': pins['reference'], 'cpu': {}, 'native': pins['native_build'],
+                'native_abi': pins['native_build'].get('metal_environment', {}).get('abi_version', 8)}
+    if args.expected_pins:
+        _validate_expected_pins(args.expected_pins, observed)
+    else:
+        raise ValueError('Trusted expected pins are required for native causal pilot')
     lock = _acquire_gpu_lock()
     try:
         before = _memory_pressure()

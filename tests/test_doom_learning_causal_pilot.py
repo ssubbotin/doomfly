@@ -164,6 +164,24 @@ def test_directional_sensitivity_controls_are_distinct_from_uniform_controls():
     np.testing.assert_allclose(controls['fallback'][2:], [[-.05, -.05, -.05], [.05, .05, .05]])
 
 
+def test_expected_pins_require_matching_source_and_required_roles(tmp_path):
+    """A self-hash cannot substitute for the controller's trusted expectation."""
+    from doom_learning_v6.causal_pilot import _validate_expected_pins
+    expected = tmp_path / 'expected.json'
+    expected.write_text(json.dumps({'source_commit': 'a' * 40, 'sources': {'x': {'sha256': '1', 'bytes': 1}},
+                                    'inputs': {'graph': {'sha256': '2', 'bytes': 2}},
+                                    'references': {'initial': {'sha256': '3', 'bytes': 3}},
+                                    'cpu': {'manifest': 'cpu'}, 'native': {'manifest': 'metal'}, 'native_abi': 8}))
+    observed = {'source_commit': 'a' * 40, 'sources': {'x': {'sha256': '1', 'bytes': 1}},
+                'inputs': {'graph': {'sha256': '2', 'bytes': 2}},
+                'references': {'initial': {'sha256': '3', 'bytes': 3}},
+                'cpu': {'manifest': 'cpu'}, 'native': {'manifest': 'metal'}, 'native_abi': 8}
+    assert _validate_expected_pins(expected, observed)['source_commit'] == 'a' * 40
+    observed['native_abi'] = 7
+    with pytest.raises(ValueError, match='expected pins'):
+        _validate_expected_pins(expected, observed)
+
+
 class _ThreeFrames:
     """Only video acquisition is synthetic. The neural execution remains native."""
     frame_count = 3
