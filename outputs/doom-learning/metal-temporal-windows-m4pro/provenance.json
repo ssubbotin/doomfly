@@ -1,0 +1,304 @@
+{
+  "schema": 1,
+  "experiment": "metal-temporal-windows-m4pro",
+  "source_commit": "e81d83dbaaba28e38d32cee47c333193224ed013",
+  "default_window_ticks": 0,
+  "selected_candidate_window_ticks": 18,
+  "learning_demonstrated": false,
+  "biologically_validated": false,
+  "announcement_ready": false,
+  "status": "retained correctness and three-pair throughput verified",
+  "native_commit": "44e00de919e9eb2d38344318705bbd9228588b65",
+  "python_pre_correction_commit": "8f645ead75302b09b8e694fe9b2da8f364064c87",
+  "parent_commit": "6708110addebfdb6ae922ae630940b0a94e75079",
+  "guard_only_commit": "d87adfcd1498bcd5bd6ee8e96647469c433a69cf",
+  "connectome": {
+    "release": "MaleCNS v1.0",
+    "retained_neurons": 166700,
+    "retained_connections": 25582938,
+    "plastic_slots": 4184,
+    "graph": {
+      "bytes": 250157214,
+      "sha256": "346b8af85a11af13b8324e18669812c1924569e7d1adcb4e6f45cc461a2c344b"
+    }
+  },
+  "model": {
+    "name": "adaptive-centered-v6",
+    "eta": 0.001,
+    "dt_ms": 0.1,
+    "delay_ticks": 18,
+    "ring_slots": 19,
+    "efficacy_filter_ms": 50,
+    "passive_memory_decay_minutes": 30,
+    "plastic_connections": "Existing KC-to-MBON11 slots",
+    "decoder": "Fixed DNp20/DNpe017 mapping",
+    "separation": "RGB sensory drive, propagation, teacher reinforcement, host-double plasticity and fixed controls remain distinct."
+  },
+  "native_build": {
+    "schema": 2,
+    "abi_version": 8,
+    "sources": {
+      "api.h": "c7eebe2454d928ca8e3da356ed34de905931671f26b53bb5c436941810765f33",
+      "backend.mm": "3c9c20c41b0788cabfb46bacb87b290457d62b4a9ed24b2ca8ff045b9d54b49f",
+      "kernels.metal": "5f37176d1cc9e3ee0ad3fd93b822e8a565f5263bedd6ee37f1fb0283eb70a7b0",
+      "decay_tables.h": "85702606729011f942be2174e4ba074d1ca90066f586d6980025458862570065"
+    },
+    "binaries": {
+      "air": "6d61f0f95239c2841e503a20c1fd985e8c1382194168b76fa9f0d18f54258957",
+      "metallib": "b7c81cb0c2bd19bfb038330f6287ffbd669a006dc4f600132d82694bba4172ef",
+      "library": "e8815e8884d61800a8c5b5c50ff9230ae9f5c2ba907a2797bfc69b147a3f62b2"
+    },
+    "build_configuration": {
+      "abi_version": 8,
+      "builder_sha256": "b8adf7fa129afd9a1d4391e90321f4f56bfbbf81cefa7bb6cc8f928a4e15b64a",
+      "numerical_parent": "b24249ecfee12aa84b55ed803ffe47bd09c487ad",
+      "numerical_order": "epoch-5-zero-seeded-ascending-incoming",
+      "metal_compile_flags": [
+        "-std=macos-metal2.4",
+        "-fno-fast-math",
+        "-ffp-contract=off"
+      ],
+      "library_compile_flags": [
+        "-O3",
+        "-std=c++17",
+        "-dynamiclib",
+        "-fobjc-arc",
+        "-arch",
+        "arm64",
+        "-mmacosx-version-min=13.0"
+      ]
+    },
+    "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+    "sdk": "26.5",
+    "macos": "26.6.2",
+    "architecture": "arm64",
+    "metal_language": "macos-metal2.4"
+  },
+  "validation_source_sha256": {
+    "doom_learning_v6/brain.py": "3fb45f825e3ae02b778cd221f1fdabacfb78acb177326e056944c4977faf81f7",
+    "doom_learning_v6/kernel.cpp": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+    "doom_learning_v6/rule.py": "0df2ae1bf10b97a213064b3ac3934227539d08e51521a99cdb56fe7f5b44b725",
+    "doom_learning_v6/visual.py": "1ed714224c119e7b5252a5e8b407ab8eed4dc32826dd11c757e1543246021437",
+    "doom_learning_v6/calibration.py": "c9006ef72436c74453209f896e4f1d9371179311e33fa1ae734ad52fc26408b9",
+    "doom_learning_v6/survival.py": "1c85e94e0a1fb9bc1f500c167a861ca91975a61e0716abce52eaea8801b7f568",
+    "doom_learning/common.py": "79de9a34c3d53db399ce67b12df084ab000d6b66123b658e5c2bfb5c6d108d12",
+    "doom_learning_v2/vision.py": "20279cdc14352b23fcbb76db2ee4bdebcc26394bccc04a1ad5fcedc5e3accdeb",
+    "doom/engine.py": "5fc0ce73c05a49ff58af01729a9169018080bb5b913cedb2268116a95c04aeb3",
+    "doom_learning_v6/metal/api.h": "c7eebe2454d928ca8e3da356ed34de905931671f26b53bb5c436941810765f33",
+    "doom_learning_v6/metal/decay_tables.h": "85702606729011f942be2174e4ba074d1ca90066f586d6980025458862570065",
+    "doom_learning_v6/metal/backend.mm": "3c9c20c41b0788cabfb46bacb87b290457d62b4a9ed24b2ca8ff045b9d54b49f",
+    "doom_learning_v6/metal/backend.py": "9797b8bcd1e8a49ffb6e6133ff42dd42c7abfcdfa762ac96da9f00e2b41f71e7",
+    "doom_learning_v6/metal/build.py": "b8adf7fa129afd9a1d4391e90321f4f56bfbbf81cefa7bb6cc8f928a4e15b64a",
+    "doom_learning_v6/metal/graph.py": "79286a9a37f606ace87218a1cb0ba6fb9bfc1a05526b46963c3564d146681f49",
+    "doom_learning_v6/metal/kernels.metal": "5f37176d1cc9e3ee0ad3fd93b822e8a565f5263bedd6ee37f1fb0283eb70a7b0",
+    "doom_learning_v6/metal/validate.py": "8a573e1cc1e28a7a14451cf3dfc6e72bba5974f82a1b4c3d0d5cc5d1817e95de",
+    "doom_learning_v6/metal/benchmark.py": "28dc9a0d0a7a34b12338dab6a7a4f4d9ee00a9712fc8c88773ce5e443f968604"
+  },
+  "source_file_pins": {
+    "doom_learning_v6/metal/api.h": {
+      "bytes": 3809,
+      "sha256": "c7eebe2454d928ca8e3da356ed34de905931671f26b53bb5c436941810765f33"
+    },
+    "doom_learning_v6/metal/backend.mm": {
+      "bytes": 40261,
+      "sha256": "3c9c20c41b0788cabfb46bacb87b290457d62b4a9ed24b2ca8ff045b9d54b49f"
+    },
+    "doom_learning_v6/metal/kernels.metal": {
+      "bytes": 14480,
+      "sha256": "5f37176d1cc9e3ee0ad3fd93b822e8a565f5263bedd6ee37f1fb0283eb70a7b0"
+    },
+    "doom_learning_v6/metal/build.py": {
+      "bytes": 5110,
+      "sha256": "b8adf7fa129afd9a1d4391e90321f4f56bfbbf81cefa7bb6cc8f928a4e15b64a"
+    },
+    "doom_learning_v6/metal/batch.py": {
+      "bytes": 40114,
+      "sha256": "5443ffb404a9363bebea507c7b87d4b24ad8645472c98cf86400eacc5a61d264"
+    },
+    "tests/test_doom_metal_windows.py": {
+      "bytes": 7226,
+      "sha256": "1c157c0f03a343f82717314cfce9fd6e96db0c0ee50109a2958bf18f35bc1b33"
+    },
+    "tests/test_doom_metal_batch_rgb.py": {
+      "bytes": 7182,
+      "sha256": "f2771570b608a1ab77165ce6c5be0309777f5fc0690ca4f903df6c321c923886"
+    },
+    "doom_learning_v6/kernel.cpp": {
+      "bytes": 5217,
+      "sha256": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406"
+    }
+  },
+  "native_binary_pins": {
+    "libmemory-metal.dylib": {
+      "bytes": 95168,
+      "sha256": "e8815e8884d61800a8c5b5c50ff9230ae9f5c2ba907a2797bfc69b147a3f62b2"
+    },
+    "kernels.air": {
+      "bytes": 18752,
+      "sha256": "6d61f0f95239c2841e503a20c1fd985e8c1382194168b76fa9f0d18f54258957"
+    },
+    "kernels.metallib": {
+      "bytes": 55853,
+      "sha256": "b7c81cb0c2bd19bfb038330f6287ffbd669a006dc4f600132d82694bba4172ef"
+    },
+    "build.json": {
+      "bytes": 2661,
+      "sha256": "3852225220cfee2f62dd1228a54903327da814236bb8d0ce826668415a0d1e1c"
+    }
+  },
+  "current_CPU_build": {
+    "model": "adaptive-centered-v6",
+    "source_sha256": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+    "binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9",
+    "flags": [
+      "-O3",
+      "-std=c++17",
+      "-shared",
+      "-fPIC"
+    ]
+  },
+  "original_CPU_binary_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+  "original_CPU_source_and_flags_equal_current": true,
+  "original_CPU_binary_equal_current": false,
+  "runtime_script_pins": {
+    "matched-rgb-windows.py": {
+      "bytes": 22087,
+      "sha256": "70d85a4ff5eea4af868ad727f38914e6c59dad4cfe0ac20636b22979aa3c22aa"
+    },
+    "rgb-batch-identity-windows.py": {
+      "bytes": 9713,
+      "sha256": "f57cf7b37b8b1f34ec9d0f93fb983d5134a0f47a3a61275df53f2c659d7615c3"
+    },
+    "retained-gates-windows.py": {
+      "bytes": 2399,
+      "sha256": "2a002a46638b61bd712597c87ca5aa03fd451b27916e3827bc06bb4051f23e2b"
+    },
+    "window_evidence.py": {
+      "bytes": 1988,
+      "sha256": "476be76c4e7ae7ea3e468b58a44df7494183856d74ad7a1e4548f74bb1fee24e"
+    },
+    "window-m4-job.py": {
+      "bytes": 5175,
+      "sha256": "169fd4bb4d81950b6d18314e4f3797a1c497eb3384c09fa90616e478cb57dbd1"
+    },
+    "historical_test_doom_metal_incoming.py": {
+      "bytes": 3911,
+      "sha256": "0381288e216bb0302be679228c06eb844f79c92ead72de95778e8f275d93c470"
+    }
+  },
+  "inputs": {
+    "dataset": "Yunncheng/gamewam-vizdoom",
+    "revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+    "episodes": [
+      {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 0,
+        "video_sha256": "4fb2a7b08d2a3e91244073ff9b7dc0b848eefcb9e6235d8a357a0330af4f5efe",
+        "control_sha256": "fe6a070d684a8e72beb1e36a0cec30e1e4a6ab2409bfc039ba4460e39212c54a"
+      },
+      {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 1,
+        "video_sha256": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501",
+        "control_sha256": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+      }
+    ],
+    "kind": "Stationary APPO engineering fixtures, not independent human/hazard demonstrations.",
+    "episode_frames": {
+      "training": 982,
+      "held_out": 988
+    },
+    "capture_Hz": 35,
+    "capture_frame_skip": 1,
+    "policy_action_repeat": 4
+  },
+  "source_and_native_runtime_hashes_unchanged_before_after_full_suite_and_controls": true,
+  "skipped_tests_are_device_evidence": false,
+  "tests": {
+    "final_M4": {
+      "passed": 1180,
+      "skipped": 3,
+      "warnings": 50,
+      "seconds": 24.95,
+      "raw_sha256": "4a9a59cb3ab6eba37322496fbc234ef4679ff993f5bf92adc70bf2ee5e7aefe6"
+    },
+    "final_portable": {
+      "passed": 428,
+      "skipped": 755,
+      "warnings": 50,
+      "seconds": 30.24,
+      "raw_sha256": "681b2d5e5f453e115d2f01e973594a7400f84e8087dc2a42eaf0bb7d973f03ea"
+    }
+  },
+  "scope": "No live-service changes; engineering results only. Useful learning and biological validity remain unestablished.",
+  "individual_dataset_and_validation_report_pins": {
+    "eval": {
+      "episode_index": 1,
+      "files": {
+        "SOURCE-README.md": {
+          "bytes": 6063,
+          "sha256": "0ede252d2b9eb0a48c2d52b64f3fd42f10ff8c671e96ca5d2ad8b43ae96b47d9"
+        },
+        "episode-metadata.json": {
+          "bytes": 738,
+          "sha256": "e6436a14d0e0015865b2aefa5cef6bab1436b04383a8051ab437b81b35f19a9b"
+        },
+        "episode_000001.mp4": {
+          "bytes": 21997229,
+          "sha256": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501"
+        },
+        "episode_000001.parquet": {
+          "bytes": 21316,
+          "sha256": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+        },
+        "source-info.json": {
+          "bytes": 3029,
+          "sha256": "137cc17aba4a9785d1ed7238583d305c159fd23bb9eee821898e06ab33465e55"
+        }
+      },
+      "published_sha256": {
+        "episode_000001.mp4": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501",
+        "episode_000001.parquet": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+      },
+      "report_sha256": "52ed577c39387599232443872c4930983033afe1f8629e73ab44845b51f55d4f",
+      "scenario": "defend_the_center"
+    },
+    "train": {
+      "episode_index": 0,
+      "files": {
+        "SOURCE-README.md": {
+          "bytes": 6063,
+          "sha256": "0ede252d2b9eb0a48c2d52b64f3fd42f10ff8c671e96ca5d2ad8b43ae96b47d9"
+        },
+        "episode-metadata.json": {
+          "bytes": 733,
+          "sha256": "1238532b273a6fad872e8979d759874199009becf7616e8b3bad8226908b1b97"
+        },
+        "episode_000000.mp4": {
+          "bytes": 23638400,
+          "sha256": "4fb2a7b08d2a3e91244073ff9b7dc0b848eefcb9e6235d8a357a0330af4f5efe"
+        },
+        "episode_000000.parquet": {
+          "bytes": 21213,
+          "sha256": "fe6a070d684a8e72beb1e36a0cec30e1e4a6ab2409bfc039ba4460e39212c54a"
+        },
+        "source-info.json": {
+          "bytes": 3029,
+          "sha256": "137cc17aba4a9785d1ed7238583d305c159fd23bb9eee821898e06ab33465e55"
+        }
+      },
+      "published_sha256": {
+        "episode_000000.mp4": "4fb2a7b08d2a3e91244073ff9b7dc0b848eefcb9e6235d8a357a0330af4f5efe",
+        "episode_000000.parquet": "fe6a070d684a8e72beb1e36a0cec30e1e4a6ab2409bfc039ba4460e39212c54a"
+      },
+      "report_sha256": "8898414ccfb98e9c4d8231775517db803cc6b4d1a7dbaaddbc9656af0483d845",
+      "scenario": "defend_the_center"
+    }
+  },
+  "source_and_native_runtime_hashes_unchanged_before_after_full_suite_controls_and_timing": true,
+  "source_after_timing_captured_utc": "2026-09-13T07:37:16Z"
+}

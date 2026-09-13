@@ -1,0 +1,1440 @@
+{
+  "schema": 1,
+  "experiment": "metal-temporal-windows-m4pro",
+  "source_commit": "e81d83dbaaba28e38d32cee47c333193224ed013",
+  "acceptance_complete": true,
+  "total_required_matched_pairs": 3,
+  "completed_matched_pairs": 3,
+  "measurement_scope": "complete-original-episodes",
+  "lanes": 4,
+  "frames_per_lane": {
+    "training": 982,
+    "held_out": 988
+  },
+  "aggregate_RGB_brain_seconds_per_complete_run": 225.1428,
+  "outer_order": [
+    "R,C",
+    "C,R",
+    "R,C"
+  ],
+  "pairs": [
+    {
+      "pair": 1,
+      "source_commit": "e81d83dbaaba28e38d32cee47c333193224ed013",
+      "order": "reference0 then candidate18",
+      "reference": {
+        "label": "timing-pair-1-reference-e81",
+        "window_ticks": 0,
+        "qualified_complete_pair_rate": 0.3694811917077454,
+        "RGB_pair_wall_seconds": 609.348473082995,
+        "aggregate_RGB_brain_seconds": 225.14280000000002,
+        "peak_RSS_available": false,
+        "process_memory": null,
+        "phases": [
+          {
+            "phase": "training",
+            "frames": 982,
+            "lanes": 4,
+            "training": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "frozen": [
+              false,
+              true,
+              false,
+              true
+            ],
+            "RGB_ticks_per_lane": 280571,
+            "RGB_brain_seconds_per_lane": 28.057100000000002,
+            "aggregate_RGB_brain_seconds": 112.22840000000001,
+            "RGB_wall_seconds": 305.58262024999567,
+            "per_lane_completion_seconds": [
+              305.580568708996,
+              305.5812292089977,
+              305.581856124998,
+              305.58251445899805
+            ],
+            "timing": {
+              "shared_resident_bytes": 413006712,
+              "mutable_resident_bytes": 459009604,
+              "full_upload_seconds": 0,
+              "full_upload_bytes": 0,
+              "materialize_seconds": 0,
+              "materialize_bytes": 0,
+              "sparse_weight_update_seconds": 0.9064447992495843,
+              "sparse_weight_update_bytes": 295825536,
+              "host_rule_seconds": 3.2899162530666217,
+              "drive_copy_seconds": 0.6247536045702873,
+              "drive_copy_bytes": 7857571200,
+              "native_total_seconds": 282.7950226720002,
+              "gpu_seconds": 280.48759295837226,
+              "counts_clear_seconds": 0.033437283000000005,
+              "encode_seconds": 0.2752461369999996,
+              "commit_call_seconds": 0.019054692999999998,
+              "wait_call_seconds": 282.456473363,
+              "native_event_copy_seconds": 0.002787922,
+              "native_event_copy_bytes": 15861024,
+              "encoder_count": 2946,
+              "dispatch_count": 567034,
+              "mark_grid_threads": 187084742800,
+              "gather_grid_threads": 187084742800,
+              "indirect_dispatch_count": 0,
+              "edge_bitmap_words": 799467,
+              "event_conversion_sort_seconds": 0.36100628581334604,
+              "eligibility_seconds": 0.056112689824658446,
+              "counts_copy_seconds": 0.12945103491074406,
+              "counts_copy_bytes": 7857571200,
+              "backend_seconds": 284.4494611789123,
+              "input_preflight_seconds": 6.26749986505456,
+              "input_preparation_seconds": 5.694680508269812
+            },
+            "resident": {
+              "shared_bytes": 413006712,
+              "mutable_bytes": 459059812,
+              "total_bytes": 872066524,
+              "native_owner_count": 1
+            },
+            "memory_status": {
+              "free_percent": 82,
+              "swap_used_mib": 0
+            },
+            "warmup_wall_seconds": 6.576099208999949,
+            "warmup_brain_seconds_per_lane": 2,
+            "host_rule_seconds": 3.3074531820238917,
+            "measured_trace_hash_record_seconds": 2.2820765620053862,
+            "measured_observer_seconds": 0.008554405212635174,
+            "full_state_or_spike_capture": false
+          },
+          {
+            "phase": "held-out",
+            "frames": 988,
+            "lanes": 4,
+            "training": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "frozen": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "RGB_ticks_per_lane": 282286,
+            "RGB_brain_seconds_per_lane": 28.2286,
+            "aggregate_RGB_brain_seconds": 112.9144,
+            "RGB_wall_seconds": 303.76585283299937,
+            "per_lane_completion_seconds": [
+              303.76378683299845,
+              303.764457917001,
+              303.7651182080008,
+              303.76577616700524
+            ],
+            "timing": {
+              "shared_resident_bytes": 413006712,
+              "mutable_resident_bytes": 459009604,
+              "full_upload_seconds": 0,
+              "full_upload_bytes": 0,
+              "materialize_seconds": 0,
+              "materialize_bytes": 0,
+              "sparse_weight_update_seconds": 0,
+              "sparse_weight_update_bytes": 0,
+              "host_rule_seconds": 0.2543585662278929,
+              "drive_copy_seconds": 0.6288651262875646,
+              "drive_copy_bytes": 7905580800,
+              "native_total_seconds": 283.74986882,
+              "gpu_seconds": 281.38193849984236,
+              "counts_clear_seconds": 0.03457191500000001,
+              "encode_seconds": 0.2795921470000004,
+              "commit_call_seconds": 0.02213257300000005,
+              "wait_call_seconds": 283.40281619800004,
+              "native_event_copy_seconds": 0.0026471479999999985,
+              "native_event_copy_bytes": 15721504,
+              "encoder_count": 2964,
+              "dispatch_count": 570500,
+              "mark_grid_threads": 188228304800,
+              "gather_grid_threads": 188228304800,
+              "indirect_dispatch_count": 0,
+              "edge_bitmap_words": 799467,
+              "event_conversion_sort_seconds": 0.353953520716459,
+              "eligibility_seconds": 0.05797840365994489,
+              "counts_copy_seconds": 0.13366196581773693,
+              "counts_copy_bytes": 7905580800,
+              "backend_seconds": 285.4358967029402,
+              "input_preflight_seconds": 6.24018314613204,
+              "input_preparation_seconds": 5.708079047864885
+            },
+            "resident": {
+              "shared_bytes": 413006712,
+              "mutable_bytes": 459059812,
+              "total_bytes": 872066524,
+              "native_owner_count": 1
+            },
+            "memory_status": {
+              "free_percent": 82,
+              "swap_used_mib": 0
+            },
+            "warmup_wall_seconds": 6.370856041001389,
+            "warmup_brain_seconds_per_lane": 2,
+            "host_rule_seconds": 0.27112440768542,
+            "measured_trace_hash_record_seconds": 2.4745619730092585,
+            "measured_observer_seconds": 0.00930319310282357,
+            "full_state_or_spike_capture": false
+          }
+        ]
+      },
+      "candidate": {
+        "label": "timing-pair-1-candidate-e81",
+        "window_ticks": 18,
+        "qualified_complete_pair_rate": 0.6431438239584721,
+        "RGB_pair_wall_seconds": 350.06602195800224,
+        "aggregate_RGB_brain_seconds": 225.14280000000002,
+        "peak_RSS_available": true,
+        "process_memory": {
+          "collector": "/usr/bin/time -l",
+          "maximum_individual_waited_process_RSS_bytes": 3734716416,
+          "maximum_individual_waited_process_RSS_GiB": 3.4782257080078125,
+          "wrapper_lifetime_peak_physical_footprint_bytes": 11289008,
+          "wrapper_physical_footprint_is_neural_child_memory": false,
+          "includes_initialization_and_checkpoint_IO": true
+        },
+        "phases": [
+          {
+            "phase": "training",
+            "frames": 982,
+            "lanes": 4,
+            "training": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "frozen": [
+              false,
+              true,
+              false,
+              true
+            ],
+            "RGB_ticks_per_lane": 280571,
+            "RGB_brain_seconds_per_lane": 28.057100000000002,
+            "aggregate_RGB_brain_seconds": 112.22840000000001,
+            "RGB_wall_seconds": 176.45532804100367,
+            "per_lane_completion_seconds": [
+              176.45328924999922,
+              176.45395787500456,
+              176.45460054100113,
+              176.455260540999
+            ],
+            "timing": {
+              "shared_resident_bytes": 413006712,
+              "mutable_resident_bytes": 737265700,
+              "full_upload_seconds": 0,
+              "full_upload_bytes": 0,
+              "materialize_seconds": 0,
+              "materialize_bytes": 0,
+              "sparse_weight_update_seconds": 0.905318264849484,
+              "sparse_weight_update_bytes": 295825536,
+              "host_rule_seconds": 3.3155405165598495,
+              "drive_copy_seconds": 0.6260504599704291,
+              "drive_copy_bytes": 7857571200,
+              "native_total_seconds": 153.34377951799988,
+              "gpu_seconds": 151.29241641702538,
+              "counts_clear_seconds": 0.032587963000000025,
+              "encode_seconds": 0.041838563000000016,
+              "commit_call_seconds": 0.015185883999999997,
+              "wait_call_seconds": 153.2437844860002,
+              "native_event_copy_seconds": 0.00285634,
+              "native_event_copy_bytes": 15861024,
+              "encoder_count": 2946,
+              "dispatch_count": 39280,
+              "mark_grid_threads": 5847099640,
+              "gather_grid_threads": 11131559200,
+              "indirect_dispatch_count": 0,
+              "edge_bitmap_words": 799467,
+              "event_conversion_sort_seconds": 0.37694904662203044,
+              "eligibility_seconds": 0.08689958587638102,
+              "counts_copy_seconds": 0.13336874835658818,
+              "counts_copy_bytes": 7857571200,
+              "backend_seconds": 155.06768828364875,
+              "input_preflight_seconds": 6.314225055000861,
+              "input_preparation_seconds": 5.756072025105823
+            },
+            "resident": {
+              "shared_bytes": 413006712,
+              "mutable_bytes": 737315908,
+              "total_bytes": 1150322620,
+              "native_owner_count": 1
+            },
+            "memory_status": {
+              "free_percent": 81,
+              "swap_used_mib": 0
+            },
+            "warmup_wall_seconds": 5.139448292000452,
+            "warmup_brain_seconds_per_lane": 2,
+            "host_rule_seconds": 3.3325568667132757,
+            "measured_trace_hash_record_seconds": 2.3760871148115257,
+            "measured_observer_seconds": 0.009034869370225351,
+            "full_state_or_spike_capture": false
+          },
+          {
+            "phase": "held-out",
+            "frames": 988,
+            "lanes": 4,
+            "training": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "frozen": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "RGB_ticks_per_lane": 282286,
+            "RGB_brain_seconds_per_lane": 28.2286,
+            "aggregate_RGB_brain_seconds": 112.9144,
+            "RGB_wall_seconds": 173.61069391699857,
+            "per_lane_completion_seconds": [
+              173.6086296249996,
+              173.60929658299574,
+              173.60995812500187,
+              173.61061612499907
+            ],
+            "timing": {
+              "shared_resident_bytes": 413006712,
+              "mutable_resident_bytes": 737265700,
+              "full_upload_seconds": 0,
+              "full_upload_bytes": 0,
+              "materialize_seconds": 0,
+              "materialize_bytes": 0,
+              "sparse_weight_update_seconds": 0,
+              "sparse_weight_update_bytes": 0,
+              "host_rule_seconds": 0.2574415075505385,
+              "drive_copy_seconds": 0.6274846284868545,
+              "drive_copy_bytes": 7905580800,
+              "native_total_seconds": 153.54207732299994,
+              "gpu_seconds": 151.45392270822776,
+              "counts_clear_seconds": 0.032192593,
+              "encode_seconds": 0.04511907,
+              "commit_call_seconds": 0.01860261799999998,
+              "wait_call_seconds": 153.43575716200004,
+              "native_event_copy_seconds": 0.0027451110000000006,
+              "native_event_copy_bytes": 15721504,
+              "encoder_count": 2964,
+              "dispatch_count": 39520,
+              "mark_grid_threads": 5882840240,
+              "gather_grid_threads": 11199572800,
+              "indirect_dispatch_count": 0,
+              "edge_bitmap_words": 799467,
+              "event_conversion_sort_seconds": 0.369764532741101,
+              "eligibility_seconds": 0.087416054935602,
+              "counts_copy_seconds": 0.13564437479362823,
+              "counts_copy_bytes": 7905580800,
+              "backend_seconds": 155.2740679431081,
+              "input_preflight_seconds": 6.258581725953263,
+              "input_preparation_seconds": 5.717862252939085
+            },
+            "resident": {
+              "shared_bytes": 413006712,
+              "mutable_bytes": 737315908,
+              "total_bytes": 1150322620,
+              "native_owner_count": 1
+            },
+            "memory_status": {
+              "free_percent": 81,
+              "swap_used_mib": 0
+            },
+            "warmup_wall_seconds": 4.914090499994927,
+            "warmup_brain_seconds_per_lane": 2,
+            "host_rule_seconds": 0.2738053899593069,
+            "measured_trace_hash_record_seconds": 2.470978767851193,
+            "measured_observer_seconds": 0.009604176644643303,
+            "full_state_or_spike_capture": false
+          }
+        ]
+      },
+      "candidate_over_reference_complete_rate": 1.7406672880583056,
+      "all_four_training_and_held_canonical_traces_original_equal": true,
+      "all_four_learned_numeric_checkpoints_original_equal": true,
+      "all_four_training_and_held_canonical_traces_directly_equal": true,
+      "all_four_learned_numeric_checkpoints_directly_equal": true,
+      "complete_raw_local_copies_and_hash_audit_passed": true,
+      "independent_learning_replicates": false,
+      "learning_demonstrated": false
+    },
+    {
+      "pair": 2,
+      "source_commit": "e81d83dbaaba28e38d32cee47c333193224ed013",
+      "order": "candidate18 then reference0",
+      "reference": {
+        "label": "timing-pair-2-reference-e81",
+        "window_ticks": 0,
+        "qualified_complete_pair_rate": 0.3695319681660066,
+        "RGB_pair_wall_seconds": 609.2647440420042,
+        "aggregate_RGB_brain_seconds": 225.14280000000002,
+        "peak_RSS_available": true,
+        "process_memory": {
+          "collector": "/usr/bin/time -l",
+          "maximum_individual_waited_process_RSS_bytes": 3477766144,
+          "maximum_individual_waited_process_RSS_GiB": 3.238922119140625,
+          "includes_initialization_and_checkpoint_IO": true,
+          "wrapper_physical_footprint_is_neural_child_memory": false
+        },
+        "phases": [
+          {
+            "phase": "training",
+            "frames": 982,
+            "lanes": 4,
+            "training": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "frozen": [
+              false,
+              true,
+              false,
+              true
+            ],
+            "RGB_ticks_per_lane": 280571,
+            "RGB_brain_seconds_per_lane": 28.057100000000002,
+            "aggregate_RGB_brain_seconds": 112.22840000000001,
+            "RGB_wall_seconds": 305.7927230830028,
+            "per_lane_completion_seconds": [
+              305.7906605410026,
+              305.79133049999655,
+              305.7919743750026,
+              305.79263745799835
+            ],
+            "timing": {
+              "shared_resident_bytes": 413006712,
+              "mutable_resident_bytes": 459009604,
+              "full_upload_seconds": 0,
+              "full_upload_bytes": 0,
+              "materialize_seconds": 0,
+              "materialize_bytes": 0,
+              "sparse_weight_update_seconds": 0.9101597870394471,
+              "sparse_weight_update_bytes": 295825536,
+              "host_rule_seconds": 3.382071372019709,
+              "drive_copy_seconds": 0.6235436480783392,
+              "drive_copy_bytes": 7857571200,
+              "native_total_seconds": 282.594528625,
+              "gpu_seconds": 280.27225124991674,
+              "counts_clear_seconds": 0.03323309900000001,
+              "encode_seconds": 0.2733982639999996,
+              "commit_call_seconds": 0.020306906000000003,
+              "wait_call_seconds": 282.2568087849999,
+              "native_event_copy_seconds": 0.002878089999999998,
+              "native_event_copy_bytes": 15861024,
+              "encoder_count": 2946,
+              "dispatch_count": 567034,
+              "mark_grid_threads": 187084742800,
+              "gather_grid_threads": 187084742800,
+              "indirect_dispatch_count": 0,
+              "edge_bitmap_words": 799467,
+              "event_conversion_sort_seconds": 0.35908762942563044,
+              "eligibility_seconds": 0.0593819975911174,
+              "counts_copy_seconds": 0.13507145629409933,
+              "counts_copy_bytes": 7857571200,
+              "backend_seconds": 284.28158213712595,
+              "input_preflight_seconds": 6.29950982092123,
+              "input_preparation_seconds": 5.753788014168094
+            },
+            "resident": {
+              "shared_bytes": 413006712,
+              "mutable_bytes": 459059812,
+              "total_bytes": 872066524,
+              "native_owner_count": 1
+            },
+            "memory_status": {
+              "free_percent": 82,
+              "swap_used_mib": 0
+            },
+            "warmup_wall_seconds": 6.660794417002762,
+            "warmup_brain_seconds_per_lane": 2,
+            "host_rule_seconds": 3.3990665171149885,
+            "measured_trace_hash_record_seconds": 2.4197764121418004,
+            "measured_observer_seconds": 0.008803770753729623,
+            "full_state_or_spike_capture": false
+          },
+          {
+            "phase": "held-out",
+            "frames": 988,
+            "lanes": 4,
+            "training": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "frozen": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "RGB_ticks_per_lane": 282286,
+            "RGB_brain_seconds_per_lane": 28.2286,
+            "aggregate_RGB_brain_seconds": 112.9144,
+            "RGB_wall_seconds": 303.4720209590014,
+            "per_lane_completion_seconds": [
+              303.4699386670036,
+              303.4706128339967,
+              303.4712758340029,
+              303.47193625000364
+            ],
+            "timing": {
+              "shared_resident_bytes": 413006712,
+              "mutable_resident_bytes": 459009604,
+              "full_upload_seconds": 0,
+              "full_upload_bytes": 0,
+              "materialize_seconds": 0,
+              "materialize_bytes": 0,
+              "sparse_weight_update_seconds": 0,
+              "sparse_weight_update_bytes": 0,
+              "host_rule_seconds": 0.2562282081344165,
+              "drive_copy_seconds": 0.6245627989192144,
+              "drive_copy_bytes": 7905580800,
+              "native_total_seconds": 283.4761073039997,
+              "gpu_seconds": 281.1054426253104,
+              "counts_clear_seconds": 0.03387500999999996,
+              "encode_seconds": 0.276940036,
+              "commit_call_seconds": 0.023672820999999993,
+              "wait_call_seconds": 283.13084964199993,
+              "native_event_copy_seconds": 0.002685883000000003,
+              "native_event_copy_bytes": 15721504,
+              "encoder_count": 2964,
+              "dispatch_count": 570500,
+              "mark_grid_threads": 188228304800,
+              "gather_grid_threads": 188228304800,
+              "indirect_dispatch_count": 0,
+              "edge_bitmap_words": 799467,
+              "event_conversion_sort_seconds": 0.34994887284119613,
+              "eligibility_seconds": 0.05858134524169145,
+              "counts_copy_seconds": 0.13621613250143128,
+              "counts_copy_bytes": 7905580800,
+              "backend_seconds": 285.1548720902865,
+              "input_preflight_seconds": 6.231052657953114,
+              "input_preparation_seconds": 5.701348775764927
+            },
+            "resident": {
+              "shared_bytes": 413006712,
+              "mutable_bytes": 459059812,
+              "total_bytes": 872066524,
+              "native_owner_count": 1
+            },
+            "memory_status": {
+              "free_percent": 82,
+              "swap_used_mib": 0
+            },
+            "warmup_wall_seconds": 6.378116083003988,
+            "warmup_brain_seconds_per_lane": 2,
+            "host_rule_seconds": 0.2724601780282683,
+            "measured_trace_hash_record_seconds": 2.4820714407833293,
+            "measured_observer_seconds": 0.009212486373144202,
+            "full_state_or_spike_capture": false
+          }
+        ]
+      },
+      "candidate": {
+        "label": "timing-pair-2-candidate-e81",
+        "window_ticks": 18,
+        "qualified_complete_pair_rate": 0.6436253911747853,
+        "RGB_pair_wall_seconds": 349.804098917004,
+        "aggregate_RGB_brain_seconds": 225.14280000000002,
+        "peak_RSS_available": true,
+        "process_memory": {
+          "collector": "/usr/bin/time -l",
+          "maximum_individual_waited_process_RSS_bytes": 3758161920,
+          "maximum_individual_waited_process_RSS_GiB": 3.50006103515625,
+          "includes_initialization_and_checkpoint_IO": true,
+          "wrapper_physical_footprint_is_neural_child_memory": false
+        },
+        "phases": [
+          {
+            "phase": "training",
+            "frames": 982,
+            "lanes": 4,
+            "training": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "frozen": [
+              false,
+              true,
+              false,
+              true
+            ],
+            "RGB_ticks_per_lane": 280571,
+            "RGB_brain_seconds_per_lane": 28.057100000000002,
+            "aggregate_RGB_brain_seconds": 112.22840000000001,
+            "RGB_wall_seconds": 176.4369041250029,
+            "per_lane_completion_seconds": [
+              176.43486487500195,
+              176.43553229200188,
+              176.43617724999785,
+              176.436836957997
+            ],
+            "timing": {
+              "shared_resident_bytes": 413006712,
+              "mutable_resident_bytes": 737265700,
+              "full_upload_seconds": 0,
+              "full_upload_bytes": 0,
+              "materialize_seconds": 0,
+              "materialize_bytes": 0,
+              "sparse_weight_update_seconds": 0.9181639305170393,
+              "sparse_weight_update_bytes": 295825536,
+              "host_rule_seconds": 3.3518250380075187,
+              "drive_copy_seconds": 0.6252638477599248,
+              "drive_copy_bytes": 7857571200,
+              "native_total_seconds": 153.30991220199994,
+              "gpu_seconds": 151.24903637514944,
+              "counts_clear_seconds": 0.03257413899999999,
+              "encode_seconds": 0.04115843700000003,
+              "commit_call_seconds": 0.01582598699999999,
+              "wait_call_seconds": 153.20998731099982,
+              "native_event_copy_seconds": 0.0029121819999999928,
+              "native_event_copy_bytes": 15861024,
+              "encoder_count": 2946,
+              "dispatch_count": 39280,
+              "mark_grid_threads": 5847099640,
+              "gather_grid_threads": 11131559200,
+              "indirect_dispatch_count": 0,
+              "edge_bitmap_words": 799467,
+              "event_conversion_sort_seconds": 0.3760663232096704,
+              "eligibility_seconds": 0.0879796923181857,
+              "counts_copy_seconds": 0.13281763707345817,
+              "counts_copy_bytes": 7857571200,
+              "backend_seconds": 155.04171915692132,
+              "input_preflight_seconds": 6.269935344236728,
+              "input_preparation_seconds": 5.72101430893963
+            },
+            "resident": {
+              "shared_bytes": 413006712,
+              "mutable_bytes": 737315908,
+              "total_bytes": 1150322620,
+              "native_owner_count": 1
+            },
+            "memory_status": {
+              "free_percent": 81,
+              "swap_used_mib": 0
+            },
+            "warmup_wall_seconds": 5.181419250002364,
+            "warmup_brain_seconds_per_lane": 2,
+            "host_rule_seconds": 3.369185936942813,
+            "measured_trace_hash_record_seconds": 2.408429747883929,
+            "measured_observer_seconds": 0.008950793257099576,
+            "full_state_or_spike_capture": false
+          },
+          {
+            "phase": "held-out",
+            "frames": 988,
+            "lanes": 4,
+            "training": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "frozen": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "RGB_ticks_per_lane": 282286,
+            "RGB_brain_seconds_per_lane": 28.2286,
+            "aggregate_RGB_brain_seconds": 112.9144,
+            "RGB_wall_seconds": 173.3671947920011,
+            "per_lane_completion_seconds": [
+              173.36512304200005,
+              173.36578854199615,
+              173.36645037499693,
+              173.36712120899756
+            ],
+            "timing": {
+              "shared_resident_bytes": 413006712,
+              "mutable_resident_bytes": 737265700,
+              "full_upload_seconds": 0,
+              "full_upload_bytes": 0,
+              "materialize_seconds": 0,
+              "materialize_bytes": 0,
+              "sparse_weight_update_seconds": 0,
+              "sparse_weight_update_bytes": 0,
+              "host_rule_seconds": 0.25794694163050735,
+              "drive_copy_seconds": 0.626864539764938,
+              "drive_copy_bytes": 7905580800,
+              "native_total_seconds": 153.39303940100018,
+              "gpu_seconds": 151.29056041679723,
+              "counts_clear_seconds": 0.03201600400000001,
+              "encode_seconds": 0.044284133,
+              "commit_call_seconds": 0.01893901499999998,
+              "wait_call_seconds": 153.2873676189999,
+              "native_event_copy_seconds": 0.0027028350000000024,
+              "native_event_copy_bytes": 15721504,
+              "encoder_count": 2964,
+              "dispatch_count": 39520,
+              "mark_grid_threads": 5882840240,
+              "gather_grid_threads": 11199572800,
+              "indirect_dispatch_count": 0,
+              "edge_bitmap_words": 799467,
+              "event_conversion_sort_seconds": 0.36830079790524906,
+              "eligibility_seconds": 0.08768966217758134,
+              "counts_copy_seconds": 0.13360636107245227,
+              "counts_copy_bytes": 7905580800,
+              "backend_seconds": 155.12246287911694,
+              "input_preflight_seconds": 6.205981316881662,
+              "input_preparation_seconds": 5.666971744707553
+            },
+            "resident": {
+              "shared_bytes": 413006712,
+              "mutable_bytes": 737315908,
+              "total_bytes": 1150322620,
+              "native_owner_count": 1
+            },
+            "memory_status": {
+              "free_percent": 81,
+              "swap_used_mib": 0
+            },
+            "warmup_wall_seconds": 4.911546584000462,
+            "warmup_brain_seconds_per_lane": 2,
+            "host_rule_seconds": 0.2742251690578996,
+            "measured_trace_hash_record_seconds": 2.4714959651391837,
+            "measured_observer_seconds": 0.00936549582547741,
+            "full_state_or_spike_capture": false
+          }
+        ]
+      },
+      "candidate_over_reference_complete_rate": 1.7417312888222067,
+      "all_four_training_and_held_canonical_traces_original_equal": true,
+      "all_four_learned_numeric_checkpoints_original_equal": true,
+      "all_four_training_and_held_canonical_traces_directly_equal": true,
+      "all_four_learned_numeric_checkpoints_directly_equal": true,
+      "complete_raw_local_copies_and_hash_audit_passed": true,
+      "independent_learning_replicates": false,
+      "learning_demonstrated": false
+    },
+    {
+      "pair": 3,
+      "source_commit": "e81d83dbaaba28e38d32cee47c333193224ed013",
+      "order": "reference0 then candidate18",
+      "reference": {
+        "label": "timing-pair-3-reference-e81",
+        "window_ticks": 0,
+        "qualified_complete_pair_rate": 0.36993694510283887,
+        "RGB_pair_wall_seconds": 608.5977704589968,
+        "aggregate_RGB_brain_seconds": 225.14280000000002,
+        "peak_RSS_available": true,
+        "process_memory": {
+          "collector": "/usr/bin/time -l",
+          "maximum_individual_waited_process_RSS_bytes": 3473571840,
+          "maximum_individual_waited_process_RSS_GiB": 3.235015869140625,
+          "includes_initialization_and_checkpoint_IO": true,
+          "wrapper_physical_footprint_is_neural_child_memory": false
+        },
+        "phases": [
+          {
+            "phase": "training",
+            "frames": 982,
+            "lanes": 4,
+            "training": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "frozen": [
+              false,
+              true,
+              false,
+              true
+            ],
+            "RGB_ticks_per_lane": 280571,
+            "RGB_brain_seconds_per_lane": 28.057100000000002,
+            "aggregate_RGB_brain_seconds": 112.22840000000001,
+            "RGB_wall_seconds": 305.48638595899683,
+            "per_lane_completion_seconds": [
+              305.4843335419937,
+              305.48499987499963,
+              305.4856411669971,
+              305.4863037499963
+            ],
+            "timing": {
+              "shared_resident_bytes": 413006712,
+              "mutable_resident_bytes": 459009604,
+              "full_upload_seconds": 0,
+              "full_upload_bytes": 0,
+              "materialize_seconds": 0,
+              "materialize_bytes": 0,
+              "sparse_weight_update_seconds": 0.9106407908911933,
+              "sparse_weight_update_bytes": 295825536,
+              "host_rule_seconds": 3.3933671531194705,
+              "drive_copy_seconds": 0.6220267298849649,
+              "drive_copy_bytes": 7857571200,
+              "native_total_seconds": 282.32527183199994,
+              "gpu_seconds": 280.0069779166879,
+              "counts_clear_seconds": 0.03390773600000002,
+              "encode_seconds": 0.27911024099999965,
+              "commit_call_seconds": 0.018363088999999982,
+              "wait_call_seconds": 281.98327679700003,
+              "native_event_copy_seconds": 0.0027597210000000036,
+              "native_event_copy_bytes": 15861024,
+              "encoder_count": 2946,
+              "dispatch_count": 567034,
+              "mark_grid_threads": 187084742800,
+              "gather_grid_threads": 187084742800,
+              "indirect_dispatch_count": 0,
+              "edge_bitmap_words": 799467,
+              "event_conversion_sort_seconds": 0.353494474751642,
+              "eligibility_seconds": 0.058419489017978776,
+              "counts_copy_seconds": 0.13239435144350864,
+              "counts_copy_bytes": 7857571200,
+              "backend_seconds": 284.0049850669384,
+              "input_preflight_seconds": 6.278340577126073,
+              "input_preparation_seconds": 5.727317484088417
+            },
+            "resident": {
+              "shared_bytes": 413006712,
+              "mutable_bytes": 459059812,
+              "total_bytes": 872066524,
+              "native_owner_count": 1
+            },
+            "memory_status": {
+              "free_percent": 82,
+              "swap_used_mib": 0
+            },
+            "warmup_wall_seconds": 6.6326412910057115,
+            "warmup_brain_seconds_per_lane": 2,
+            "host_rule_seconds": 3.411362118735269,
+            "measured_trace_hash_record_seconds": 2.4215414251666516,
+            "measured_observer_seconds": 0.008808180144114885,
+            "full_state_or_spike_capture": false
+          },
+          {
+            "phase": "held-out",
+            "frames": 988,
+            "lanes": 4,
+            "training": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "frozen": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "RGB_ticks_per_lane": 282286,
+            "RGB_brain_seconds_per_lane": 28.2286,
+            "aggregate_RGB_brain_seconds": 112.9144,
+            "RGB_wall_seconds": 303.1113845,
+            "per_lane_completion_seconds": [
+              303.1093058339975,
+              303.10997554200003,
+              303.11063770899636,
+              303.11129799999617
+            ],
+            "timing": {
+              "shared_resident_bytes": 413006712,
+              "mutable_resident_bytes": 459009604,
+              "full_upload_seconds": 0,
+              "full_upload_bytes": 0,
+              "materialize_seconds": 0,
+              "materialize_bytes": 0,
+              "sparse_weight_update_seconds": 0,
+              "sparse_weight_update_bytes": 0,
+              "host_rule_seconds": 0.25900126705528237,
+              "drive_copy_seconds": 0.6253648545825854,
+              "drive_copy_bytes": 7905580800,
+              "native_total_seconds": 283.08360291400004,
+              "gpu_seconds": 280.7165537084802,
+              "counts_clear_seconds": 0.03467124799999998,
+              "encode_seconds": 0.28312777599999966,
+              "commit_call_seconds": 0.02166468599999999,
+              "wait_call_seconds": 282.73351433600027,
+              "native_event_copy_seconds": 0.002672596,
+              "native_event_copy_bytes": 15721504,
+              "encoder_count": 2964,
+              "dispatch_count": 570500,
+              "mark_grid_threads": 188228304800,
+              "gather_grid_threads": 188228304800,
+              "indirect_dispatch_count": 0,
+              "edge_bitmap_words": 799467,
+              "event_conversion_sort_seconds": 0.3448973701597424,
+              "eligibility_seconds": 0.0583318976641749,
+              "counts_copy_seconds": 0.13327528371155495,
+              "counts_copy_bytes": 7905580800,
+              "backend_seconds": 284.7569399597123,
+              "input_preflight_seconds": 6.2439088599567185,
+              "input_preparation_seconds": 5.714520151232136
+            },
+            "resident": {
+              "shared_bytes": 413006712,
+              "mutable_bytes": 459059812,
+              "total_bytes": 872066524,
+              "native_owner_count": 1
+            },
+            "memory_status": {
+              "free_percent": 82,
+              "swap_used_mib": 0
+            },
+            "warmup_wall_seconds": 6.378250375004427,
+            "warmup_brain_seconds_per_lane": 2,
+            "host_rule_seconds": 0.27599552016909,
+            "measured_trace_hash_record_seconds": 2.480220569843368,
+            "measured_observer_seconds": 0.009287697277613916,
+            "full_state_or_spike_capture": false
+          }
+        ]
+      },
+      "candidate": {
+        "label": "timing-pair-3-candidate-e81",
+        "window_ticks": 18,
+        "qualified_complete_pair_rate": 0.6429240794399401,
+        "RGB_pair_wall_seconds": 350.18567074999737,
+        "aggregate_RGB_brain_seconds": 225.14280000000002,
+        "peak_RSS_available": true,
+        "process_memory": {
+          "collector": "/usr/bin/time -l",
+          "maximum_individual_waited_process_RSS_bytes": 3742793728,
+          "maximum_individual_waited_process_RSS_GiB": 3.485748291015625,
+          "includes_initialization_and_checkpoint_IO": true,
+          "wrapper_physical_footprint_is_neural_child_memory": false
+        },
+        "phases": [
+          {
+            "phase": "training",
+            "frames": 982,
+            "lanes": 4,
+            "training": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "frozen": [
+              false,
+              true,
+              false,
+              true
+            ],
+            "RGB_ticks_per_lane": 280571,
+            "RGB_brain_seconds_per_lane": 28.057100000000002,
+            "aggregate_RGB_brain_seconds": 112.22840000000001,
+            "RGB_wall_seconds": 176.73403929099732,
+            "per_lane_completion_seconds": [
+              176.73200212499796,
+              176.7326688749963,
+              176.73330995799915,
+              176.73396870800207
+            ],
+            "timing": {
+              "shared_resident_bytes": 413006712,
+              "mutable_resident_bytes": 737265700,
+              "full_upload_seconds": 0,
+              "full_upload_bytes": 0,
+              "materialize_seconds": 0,
+              "materialize_bytes": 0,
+              "sparse_weight_update_seconds": 0.9177485432082904,
+              "sparse_weight_update_bytes": 295825536,
+              "host_rule_seconds": 3.3845250604426838,
+              "drive_copy_seconds": 0.6276776950617204,
+              "drive_copy_bytes": 7857571200,
+              "native_total_seconds": 153.44907053500035,
+              "gpu_seconds": 151.39629808349855,
+              "counts_clear_seconds": 0.032307538000000025,
+              "encode_seconds": 0.039863309000000006,
+              "commit_call_seconds": 0.015113859000000016,
+              "wait_call_seconds": 153.35197234400013,
+              "native_event_copy_seconds": 0.0026924489999999982,
+              "native_event_copy_bytes": 15861024,
+              "encoder_count": 2946,
+              "dispatch_count": 39280,
+              "mark_grid_threads": 5847099640,
+              "gather_grid_threads": 11131559200,
+              "indirect_dispatch_count": 0,
+              "edge_bitmap_words": 799467,
+              "event_conversion_sort_seconds": 0.3809784850527649,
+              "eligibility_seconds": 0.08871417339105392,
+              "counts_copy_seconds": 0.13273821303300792,
+              "counts_copy_bytes": 7857571200,
+              "backend_seconds": 155.18905162900774,
+              "input_preflight_seconds": 6.331699233836844,
+              "input_preparation_seconds": 5.767222405804205
+            },
+            "resident": {
+              "shared_bytes": 413006712,
+              "mutable_bytes": 737315908,
+              "total_bytes": 1150322620,
+              "native_owner_count": 1
+            },
+            "memory_status": {
+              "free_percent": 81,
+              "swap_used_mib": 0
+            },
+            "warmup_wall_seconds": 5.1813753329988685,
+            "warmup_brain_seconds_per_lane": 2,
+            "host_rule_seconds": 3.402125149485073,
+            "measured_trace_hash_record_seconds": 2.418237146586762,
+            "measured_observer_seconds": 0.009084789475309663,
+            "full_state_or_spike_capture": false
+          },
+          {
+            "phase": "held-out",
+            "frames": 988,
+            "lanes": 4,
+            "training": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "frozen": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "RGB_ticks_per_lane": 282286,
+            "RGB_brain_seconds_per_lane": 28.2286,
+            "aggregate_RGB_brain_seconds": 112.9144,
+            "RGB_wall_seconds": 173.45163145900005,
+            "per_lane_completion_seconds": [
+              173.4495460420003,
+              173.45021262500086,
+              173.45088929199846,
+              173.45155137500115
+            ],
+            "timing": {
+              "shared_resident_bytes": 413006712,
+              "mutable_resident_bytes": 737265700,
+              "full_upload_seconds": 0,
+              "full_upload_bytes": 0,
+              "materialize_seconds": 0,
+              "materialize_bytes": 0,
+              "sparse_weight_update_seconds": 0,
+              "sparse_weight_update_bytes": 0,
+              "host_rule_seconds": 0.25406809874402825,
+              "drive_copy_seconds": 0.627050661125395,
+              "drive_copy_bytes": 7905580800,
+              "native_total_seconds": 153.39213759500004,
+              "gpu_seconds": 151.2959682087021,
+              "counts_clear_seconds": 0.03184653500000006,
+              "encode_seconds": 0.043378375000000045,
+              "commit_call_seconds": 0.01835639099999998,
+              "wait_call_seconds": 153.28849962999985,
+              "native_event_copy_seconds": 0.002620719999999997,
+              "native_event_copy_bytes": 15721504,
+              "encoder_count": 2964,
+              "dispatch_count": 39520,
+              "mark_grid_threads": 5882840240,
+              "gather_grid_threads": 11199572800,
+              "indirect_dispatch_count": 0,
+              "edge_bitmap_words": 799467,
+              "event_conversion_sort_seconds": 0.37200260099052684,
+              "eligibility_seconds": 0.08729057262826245,
+              "counts_copy_seconds": 0.13356925013067666,
+              "counts_copy_bytes": 7905580800,
+              "backend_seconds": 155.11911893013894,
+              "input_preflight_seconds": 6.261057468975196,
+              "input_preparation_seconds": 5.714446915037115
+            },
+            "resident": {
+              "shared_bytes": 413006712,
+              "mutable_bytes": 737315908,
+              "total_bytes": 1150322620,
+              "native_owner_count": 1
+            },
+            "memory_status": {
+              "free_percent": 81,
+              "swap_used_mib": 0
+            },
+            "warmup_wall_seconds": 4.917741792000015,
+            "warmup_brain_seconds_per_lane": 2,
+            "host_rule_seconds": 0.270449152267247,
+            "measured_trace_hash_record_seconds": 2.47293151501799,
+            "measured_observer_seconds": 0.00939474321785383,
+            "full_state_or_spike_capture": false
+          }
+        ]
+      },
+      "candidate_over_reference_complete_rate": 1.7379288226030345,
+      "all_four_training_and_held_canonical_traces_original_equal": true,
+      "all_four_learned_numeric_checkpoints_original_equal": true,
+      "all_four_training_and_held_canonical_traces_directly_equal": true,
+      "all_four_learned_numeric_checkpoints_directly_equal": true,
+      "complete_raw_local_copies_and_hash_audit_passed": true,
+      "independent_learning_replicates": false,
+      "learning_demonstrated": false
+    }
+  ],
+  "process_memory_method": {
+    "collector": "/usr/bin/time -l around unchanged job wrapper; outside timed RGB runner",
+    "metric": "Maximum individual lifetime resident peak over waited process subtree",
+    "units": "bytes",
+    "includes": "Initialization, warmup, complete RGB work and checkpoint I/O",
+    "not_measured": [
+      "Simultaneous process-tree sum",
+      "RGB-only resident peak",
+      "Neural-child lifetime physical footprint"
+    ],
+    "first_reference_peak_RSS_available": false,
+    "primary_sources": [
+      "https://github.com/apple-oss-distributions/shell_cmds/blob/main/time/time.c",
+      "https://github.com/apple-oss-distributions/xnu/blob/main/bsd/man/man2/getrusage.2",
+      "https://github.com/apple-oss-distributions/xnu/blob/main/bsd/kern/kern_resource.c",
+      "https://github.com/apple-oss-distributions/xnu/blob/main/bsd/kern/kern_exit.c"
+    ]
+  },
+  "median_range_and_final_statistics_pending": false,
+  "raw_complete_local_copy_and_hash_audit_pending": false,
+  "learning_demonstrated": false,
+  "biologically_validated": false,
+  "announcement_ready": false,
+  "default_window_ticks": 0,
+  "interpretation": "Three complete matched engineering timing pairs, alternating R,C / C,R / R,C, no GPU overlap or artifact transfer. Initialization/dark warmup/checkpoint I/O excluded from RGB rate. Native/GPU/wait/host stages overlap; sums are not a wall-time decomposition. Dense dispatch grids are not active edges and GPU time per dispatch is not hardware latency. Duplicates are not independent learning replicates; independent review gates govern branch publication.",
+  "acceptance_scope": "Complete engineering timing and raw-artifact verification; independent review gates govern branch publication.",
+  "statistics": {
+    "reference_median_rate": 0.3695319681660066,
+    "reference_rate_range": [
+      0.3694811917077454,
+      0.36993694510283887
+    ],
+    "candidate_median_rate": 0.6431438239584721,
+    "candidate_rate_range": [
+      0.6429240794399401,
+      0.6436253911747853
+    ],
+    "ratio_of_median_rates": 1.7404281073445576,
+    "paired_gain_median": 1.7406672880583056,
+    "paired_gain_range": [
+      1.7379288226030345,
+      1.7417312888222067
+    ],
+    "reference_RGB_pair_wall_range": [
+      608.5977704589968,
+      609.348473082995
+    ],
+    "candidate_RGB_pair_wall_range": [
+      349.804098917004,
+      350.18567074999737
+    ],
+    "minimum_free_percent": 81,
+    "maximum_swap_mib": 0
+  },
+  "process_RSS_sample_counts": {
+    "reference": 2,
+    "candidate": 3,
+    "first_reference_unavailable": true
+  },
+  "local_raw_audit": {
+    "files": 78,
+    "bytes": 3248127610,
+    "all_roles_physical_bytes_SHA256_match_target": true,
+    "original_numeric_checkpoint_comparisons": {
+      "timing-pair-1-reference-e81/learned-0": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": false,
+        "reference_cpu_binary_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "timing-pair-1-reference-e81/learned-1": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": false,
+        "reference_cpu_binary_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "timing-pair-1-reference-e81/learned-2": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": false,
+        "reference_cpu_binary_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "timing-pair-1-reference-e81/learned-3": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": false,
+        "reference_cpu_binary_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "timing-pair-1-candidate-e81/learned-0": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": false,
+        "reference_cpu_binary_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "timing-pair-1-candidate-e81/learned-1": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": false,
+        "reference_cpu_binary_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "timing-pair-1-candidate-e81/learned-2": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": false,
+        "reference_cpu_binary_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "timing-pair-1-candidate-e81/learned-3": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": false,
+        "reference_cpu_binary_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "timing-pair-2-reference-e81/learned-0": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": false,
+        "reference_cpu_binary_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "timing-pair-2-reference-e81/learned-1": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": false,
+        "reference_cpu_binary_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "timing-pair-2-reference-e81/learned-2": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": false,
+        "reference_cpu_binary_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "timing-pair-2-reference-e81/learned-3": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": false,
+        "reference_cpu_binary_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "timing-pair-2-candidate-e81/learned-0": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": false,
+        "reference_cpu_binary_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "timing-pair-2-candidate-e81/learned-1": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": false,
+        "reference_cpu_binary_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "timing-pair-2-candidate-e81/learned-2": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": false,
+        "reference_cpu_binary_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "timing-pair-2-candidate-e81/learned-3": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": false,
+        "reference_cpu_binary_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "timing-pair-3-reference-e81/learned-0": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": false,
+        "reference_cpu_binary_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "timing-pair-3-reference-e81/learned-1": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": false,
+        "reference_cpu_binary_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "timing-pair-3-reference-e81/learned-2": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": false,
+        "reference_cpu_binary_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "timing-pair-3-reference-e81/learned-3": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": false,
+        "reference_cpu_binary_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "timing-pair-3-candidate-e81/learned-0": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": false,
+        "reference_cpu_binary_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "timing-pair-3-candidate-e81/learned-1": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": false,
+        "reference_cpu_binary_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "timing-pair-3-candidate-e81/learned-2": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": false,
+        "reference_cpu_binary_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "timing-pair-3-candidate-e81/learned-3": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": false,
+        "reference_cpu_binary_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      }
+    },
+    "direct_reference_candidate_numeric_checkpoint_comparisons": {
+      "pair-1/lane-0": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": true,
+        "reference_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "pair-1/lane-1": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": true,
+        "reference_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "pair-1/lane-2": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": true,
+        "reference_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "pair-1/lane-3": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": true,
+        "reference_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "pair-2/lane-0": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": true,
+        "reference_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "pair-2/lane-1": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": true,
+        "reference_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "pair-2/lane-2": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": true,
+        "reference_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "pair-2/lane-3": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": true,
+        "reference_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "pair-3/lane-0": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": true,
+        "reference_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "pair-3/lane-1": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": true,
+        "reference_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "pair-3/lane-2": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": true,
+        "reference_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      },
+      "pair-3/lane-3": {
+        "all_numeric_arrays_bitwise": true,
+        "numeric_arrays": 24,
+        "cpu_source_and_flags_equal": true,
+        "cpu_binary_equal": true,
+        "reference_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9",
+        "candidate_cpu_binary_sha256": "4f24914924b83c41f4dcbdf4ff107b77c1bfea175f3061101a6c92a24a59d2e9"
+      }
+    }
+  },
+  "source_and_native_runtime_hashes_unchanged_before_after": true,
+  "source_after_captured_utc": "2026-09-13T07:37:16Z"
+}

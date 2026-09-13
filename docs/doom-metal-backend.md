@@ -109,3 +109,46 @@ before any reset read/write. Its actual M4 verification passes 186 focused,
 86 serial and 521 full-suite tests; skips and the 50 existing warnings remain
 explicit in the experiment's separate correction report. The source080
 complete-workload timings above remain labeled with their original source.
+
+## Optional temporal-window execution
+
+The [temporal-window experiment](experiments/2026-09-13-metal-temporal-windows.md)
+adds `MetalBatchExecutor(brains, window_ticks=18)` at execution ABI 8. Integer
+widths 0..18 are fixed for the owner's lifetime; the default remains 0. Positive
+widths prepare timestamped incoming presence and advance each neuron's window
+chronologically with ordinary tracked dispatch boundaries. Delay, ring slots,
+ascending arithmetic, lazy evolution, sensory inputs, teacher timing,
+host-double plasticity and the fixed decoder remain unchanged. Every released
+connection remains retained.
+
+At source `e81d83dbaaba28e38d32cee47c333193224ed013`, the fresh M4 suite reports
+1,180 passes, three platform skips and 50 existing warnings; portable validation
+reports 428 passes and 755 skips. All six own-reference/isolation trials at each
+of N=2 and N=4 pass full state/event comparisons. All eight original complete
+controls and three numeric learned checkpoints reproduce exactly. Short 40/80
+ms CPU gates pass, with full CPU/Metal state differences and both historical
+incoming-carry failures preserved.
+
+W18 reaches 1.583 times current reference0 in one short, 35+35-frame N=4
+diagnostic. W1 is slower and W2 is approximately neutral. These are bounded
+measurements, excluded from complete-episode throughput claims. W18 uses
+1,150,322,620 actual native buffer bytes at N=4, including 278,256,096 added
+scratch bytes; short-run free memory stays at least 82% with zero swap.
+Three complete alternating-order N=4 reference/candidate pairs at the same
+`e81d83d` source give median aggregate rates 0.369532 and 0.643144 RGB brain
+seconds per wall second, a 1.740428x ratio of medians. Paired gains span
+1.737929..1.741731. Every run processes all 982 training and 988 held-out
+frames per lane; all original canonical traces and full numeric checkpoints
+match, including direct scheduler comparisons. Complete raw copies/hashes
+are audited. No artifact transfer or concurrent GPU job overlapped timing.
+Available process peak RSS ranges are 3.474..3.478 decimal GB for reference0
+(two samples) and 3.735..3.758 for W18 (three); the first reference reading
+is unavailable. These lifetime waited-process peaks include setup/checkpoint
+I/O and differ from native buffers and simultaneous process-tree memory.
+All twelve phase-end samples stay at least 81% free with zero swap.
+GPU time falls from about 561 to 303 seconds per complete run, while host
+plasticity stays near 3.6 seconds; overlapping counters are not additive wall
+components. Independent evidence and branch review govern publication.
+Default reference0 and the live service remain unchanged.
+Held-out learning results remain mixed; faster execution and changed weights
+do not establish useful learning or authorize a public launch.
