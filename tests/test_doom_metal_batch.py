@@ -307,6 +307,69 @@ def test_owned_state_operations_reject_before_host_mutation_or_checkpoint_write(
     assert snapshot(b) == before and not destination.exists()
 
 
+@pytest.mark.parametrize('replacement', ['learning-alias', 'reallocated', 'undersized'])
+@pytest.mark.parametrize('keep_memory', [False, True])
+def test_owned_reset_rejects_bindings_before_host_writes_and_preserves_recovery(tmp_path, monkeypatch, replacement, keep_memory):
+    lanes = [brain(tmp_path), brain(tmp_path)]
+    references = [brain(tmp_path), brain(tmp_path)]
+    sources = [tmp_path / f'pre-reset-{i}.npz' for i in range(2)]
+    for i, (b, ref, source) in enumerate(zip(lanes, references, sources)):
+        b.step([], 28.6, stimulation=([0, 2], 20), lamina_bias=0)
+        b.memory_u[:] = -.1 - i * .2
+        b.memory_w[:] = -.2 - i * .1
+        b.weights_frozen = bool(i)
+        b.checkpoint(source)
+        ref.restore(source)
+    with guarded_portable_owner(lanes, monkeypatch) as (owner, calls):
+        field = 'memory_u' if replacement == 'learning-alias' else 'memory_w'
+        original = getattr(lanes[0], field)
+        if replacement == 'learning-alias': lanes[0].memory_u = lanes[1].memory_u
+        elif replacement == 'reallocated': lanes[0].memory_w = original.copy()
+        else: lanes[0].memory_w = np.empty(0, dtype=original.dtype)
+        before = [snapshot(b) for b in lanes]
+        flags = [b.weights_frozen for b in lanes]
+        with pytest.raises(ValueError): lanes[0].reset(keep_memory=keep_memory)
+        assert snapshot(lanes[1]) == before[1]
+        assert [snapshot(b) for b in lanes] == before
+        assert [b.weights_frozen for b in lanes] == flags
+        assert calls == [] and not owner.poisoned
+        setattr(lanes[0], field, original)
+        owner._validate_bindings()
+        assert [snapshot(b) for b in lanes] == [snapshot(b) for b in references]
+        # This fixture has no device. Closed/poisoned recovery uses the real
+        # adapter's explicit release path and genuine original CPU backends.
+        owner.poisoned = True
+        owner.close()
+        lanes[0].reset(keep_memory=keep_memory)
+        references[0].reset(keep_memory=keep_memory)
+        assert lanes[0]._metal_batch_owner is None
+        assert lanes[1]._metal_batch_owner is owner
+        lanes[1].restore(sources[1])
+        assert lanes[1]._metal_batch_owner is None
+        assert calls == [('destroy', 1)]
+    for actual, expected in zip(lanes, references):
+        counts, _ = actual.step([], 28.6, learning=True, stimulation=([0, 2], 20), lamina_bias=0)
+        wanted, _ = expected.step([], 28.6, learning=True, stimulation=([0, 2], 20), lamina_bias=0)
+        np.testing.assert_array_equal(counts, wanted)
+        assert_equal(actual, expected)
+        assert actual.weights_frozen == expected.weights_frozen
+
+
+def test_owned_reset_validates_before_keep_memory_reads(tmp_path, monkeypatch):
+    class ReadTrap(np.ndarray):
+        def copy(self, *args, **kwargs):
+            raise AssertionError('Reset read learning buffer before binding validation')
+    lanes = [brain(tmp_path), brain(tmp_path)]
+    lanes[1].memory_u = lanes[1].memory_u.view(ReadTrap)
+    with guarded_portable_owner(lanes, monkeypatch) as (owner, calls):
+        original = lanes[0].memory_u
+        lanes[0].memory_u = lanes[1].memory_u
+        before = [snapshot(b) for b in lanes]
+        with pytest.raises(ValueError, match='binding'): lanes[0].reset(keep_memory=True)
+        assert [snapshot(b) for b in lanes] == before and calls == []
+        lanes[0].memory_u = original
+
+
 def test_cursor_validation_reserves_native_delay_and_rejects_unregistered_clock(tmp_path):
     b = brain(tmp_path)
     owner = executor_type().__new__(executor_type())
@@ -356,6 +419,61 @@ def test_finite_overflow_preflight_leaves_all_real_lane_inputs_and_state_unchang
 
 
 mac = pytest.mark.skipif(sys.platform != 'darwin', reason='Real Metal requires macOS')
+
+
+@mac
+@pytest.mark.parametrize('replacement', ['learning-alias', 'reallocated', 'undersized'])
+@pytest.mark.parametrize('keep_memory', [False, True])
+def test_native_reset_binding_rejection_preserves_reset_restore_and_independent_continuation(tmp_path, monkeypatch, replacement, keep_memory):
+    lanes = [brain(tmp_path), brain(tmp_path)]
+    serial = [brain(tmp_path, backend='metal'), brain(tmp_path, backend='metal')]
+    sources = [tmp_path / f'native-pre-reset-{i}.npz' for i in range(2)]
+    try:
+        for i, (b, ref, source) in enumerate(zip(lanes, serial, sources)):
+            b.step([], 28.6, stimulation=([0, 2], 20), lamina_bias=0)
+            b.memory_u[:] = -.1 - i * .2
+            b.memory_w[:] = -.2 - i * .1
+            b.weights_frozen = bool(i)
+            b.checkpoint(source)
+            ref.restore(source)
+        with executor_type()(lanes) as owner:
+            field = 'memory_u' if replacement == 'learning-alias' else 'memory_w'
+            original = getattr(lanes[0], field)
+            if replacement == 'learning-alias': lanes[0].memory_u = lanes[1].memory_u
+            elif replacement == 'reallocated': lanes[0].memory_w = original.copy()
+            else: lanes[0].memory_w = np.empty(0, dtype=original.dtype)
+            before = [snapshot(b) for b in lanes]
+            flags = [b.weights_frozen for b in lanes]
+            def forbidden(*args): pytest.fail('Rejected reset reached native upload')
+            try:
+                with monkeypatch.context() as context:
+                    context.setattr(owner.library, 'df_metal_upload_lane_state', forbidden)
+                    with pytest.raises(ValueError, match='binding'): lanes[0].reset(keep_memory=keep_memory)
+                assert [snapshot(b) for b in lanes] == before
+                assert [b.weights_frozen for b in lanes] == flags and not owner.poisoned
+            finally: setattr(lanes[0], field, original)
+            owner.step([[], []], 1, stimulations=[([0, 2], 20)] * 2, lamina_bias=0)
+            for a, e in zip(lanes, serial):
+                e.step([], 1, stimulation=([0, 2], 20), lamina_bias=0)
+                assert_equal(a, e)
+            neighbor = snapshot(lanes[1])
+            lanes[0].reset(keep_memory=keep_memory)
+            serial[0].reset(keep_memory=keep_memory)
+            assert_equal(lanes[0], serial[0])
+            assert snapshot(lanes[1]) == neighbor
+            with pytest.raises(ValueError, match='cursor'): owner.advance(1)
+            for a, e, source in zip(lanes, serial, sources):
+                a.restore(source); e.restore(source)
+                assert_equal(a, e)
+            actual, _ = owner.step([[], []], 28.6, learning=True,
+                stimulations=[([0, 2], 20)] * 2, lamina_bias=0)
+            for a, e, counts in zip(lanes, serial, actual):
+                expected, _ = e.step([], 28.6, learning=True, stimulation=([0, 2], 20), lamina_bias=0)
+                np.testing.assert_array_equal(counts, expected)
+                assert_equal(a, e)
+                assert a.weights_frozen == e.weights_frozen
+    finally:
+        for b in serial: b.backend.close()
 
 
 @mac

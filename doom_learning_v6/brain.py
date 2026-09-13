@@ -82,6 +82,8 @@ class MemoryBrain(NativeBrain):
 
     def reset(self,keep_memory=False):
         with self._owned_state_operation(restore=True):
+            owner=getattr(self,'_metal_batch_owner',None)
+            if owner is not None:owner._validate_bindings()
             if keep_memory:saved=(self.memory_u.copy(),self.memory_w.copy())
             for k,v in self.initial.items():getattr(self,k)[:]=v
             self.cursor=0;self.sim_ms=0.;self.total_spikes=0
