@@ -39,7 +39,11 @@ its disabled flag currently freezes weights while still allowing damage pulses.
 
 Use existing `blue-floor-survival-v1` as the primary transfer question and
 `defend_the_center` as separate source-task concordance. Horizon is 2,100 tics
-(60 seconds) at 35 Hz, episode start offset zero. Companion protocol fixes four
+(60 seconds) at 35 Hz, requested episode start zero (effective start one).
+ViZDoom 1.3.0 explicitly clamps start0 to1. Record actual initial engine tic and
+initial health before controls; use engine-tic differences for gameplay metrics.
+The source config's historical default starts at10; this evaluation declares its
+minimum-start setting separately. Companion protocol fixes four
 fresh seeds per task, alternating left/right hazards, all seven vector pins,
 the installed ViZDoom 1.3.0 engine/API/IWAD/source-scenario asset pins, and role
 rotation. Generated hazard maps and their original texture metadata are hashed
@@ -130,6 +134,7 @@ evaluation. Future learning claims require the project's additional sensory,
 conditioning, independent learned/frozen/shuffled comparisons and causal controls.
 
 References: [ViZDoom API](https://vizdoom.farama.org/api/cpp/doom_game/),
+[ViZDoom 1.3.0 start/timeout implementation](https://github.com/Farama-Foundation/ViZDoom/blob/1.3.0/src/lib/ViZDoomController.cpp#L524),
 [ViZDoom 1.3.0 release](https://github.com/Farama-Foundation/ViZDoom/releases/tag/1.3.0),
 [prior factual study](../../experiments/2026-09-13-same-slot-optimizer.md),
 [spectator requirements](../../doomfly-spectator-experience.md).
