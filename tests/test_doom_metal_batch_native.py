@@ -294,6 +294,8 @@ def test_native_cursor_overflow_rejected_before_counts_clear():
         for lane in range(2):
             state, arrays = raw_empty_state()
             state.cursor = 2**63 - 2
+            arrays[11][:] = state.cursor
+            arrays[13][:] = state.cursor
             arrays[7][:] = 9
             check(library, library.df_metal_upload_lane_state(handle, lane, C.byref(state)))
         events, count, timing = (KCEvent * 2)(), C.c_int32(), Timing()
@@ -367,3 +369,50 @@ def test_native_advance_requires_validated_state_in_every_lane():
         advance(library, handle, 1, 2)
     finally:
         library.df_metal_destroy(handle)
+
+
+def test_native_negative_sleeping_histories_match_serial_and_reject_unsafe_timestamps():
+    library = batch_library()
+    graph, keepalive = raw_empty_graph()
+    handle = create(library, graph, 2)
+    references = []
+    try:
+        for lane, history in enumerate((286, 1024)):
+            reference = C.c_void_p()
+            check(library, library.df_metal_create(C.byref(graph),
+                str(DEFAULT_OUTPUT / 'kernels.metallib').encode(), C.byref(reference)))
+            references.append(reference)
+            state, arrays = raw_empty_state()
+            arrays[0][:] = -51
+            arrays[1][:] = 1
+            arrays[11][:] = -history
+            arrays[15][:] = 1
+            check(library, library.df_metal_upload_state(reference, C.byref(state)))
+            check(library, library.df_metal_upload_lane_state(handle, lane, C.byref(state)))
+        for steps in (1, 100):
+            advance(library, handle, steps, 2)
+            for lane, reference in enumerate(references):
+                advance(library, reference, steps, 1)
+                expected, expected_arrays = raw_empty_state()
+                actual, actual_arrays = raw_empty_state()
+                check(library, library.df_metal_download_state(reference, C.byref(expected)))
+                check(library, library.df_metal_download_lane_state(handle, lane, C.byref(actual)))
+                assert actual.cursor == expected.cursor
+                for observed, wanted in zip(actual_arrays, expected_arrays):
+                    np.testing.assert_array_equal(observed.view(np.uint8), wanted.view(np.uint8))
+        before, before_arrays = raw_empty_state()
+        check(library, library.df_metal_download_lane_state(handle, 0, C.byref(before)))
+        for timestamp in (-2**63, -2**31, before.cursor + 1):
+            candidate, candidate_arrays = raw_empty_state()
+            candidate.cursor = before.cursor
+            candidate_arrays[11][:] = timestamp
+            assert library.df_metal_upload_lane_state(handle, 0, C.byref(candidate)) != 0
+            after, after_arrays = raw_empty_state()
+            check(library, library.df_metal_download_lane_state(handle, 0, C.byref(after)))
+            assert after.cursor == before.cursor
+            for observed, wanted in zip(after_arrays, before_arrays):
+                np.testing.assert_array_equal(observed.view(np.uint8), wanted.view(np.uint8))
+    finally:
+        library.df_metal_destroy(handle)
+        for reference in references:
+            library.df_metal_destroy(reference)

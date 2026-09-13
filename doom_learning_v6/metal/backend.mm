@@ -381,11 +381,15 @@ extern "C" int df_metal_upload_lane_state(df_metal_handle handle,int32_t lane,
   if(s->cursor<0)return fail("Invalid Metal lane cursor");
   for(int64_t edge=0;edge<b->edges;edge++)
     if(!std::isfinite(s->weight[edge]))return fail("Nonfinite Metal state weight");
+  // Sleeping histories may precede zero. Reserve 99 further ticks so evolve's
+  // unchanged int(d) cast remains representable for a maximum 100-tick command.
+  const int64_t history_limit=int64_t(std::numeric_limits<int32_t>::max())-99;
   for(int32_t neuron=0;neuron<n;neuron++){
     for(const float *field:{s->v,s->g,s->drive,s->previous_drive,s->modulation,s->rest,s->adaptation})
       if(!std::isfinite(field[neuron]))return fail("Nonfinite Metal neuron state");
     if(s->refractory[neuron]<0||s->counts[neuron]<0||s->active_flag[neuron]>1||
-        s->last[neuron]<-1||s->last[neuron]>s->cursor||
+        s->last[neuron]<s->cursor-history_limit||
+        s->last[neuron]>s->cursor||
         s->modulation_last[neuron]<0||s->modulation_last[neuron]>s->cursor)
       return fail("Invalid Metal discrete neuron state");
   }
