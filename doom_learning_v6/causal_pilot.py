@@ -294,6 +294,14 @@ def replay_episode(brains, executor, data, readouts, currents, *, learning, froz
     traces = [[] for _ in lanes]
     frames = None
     failure = close_failure = None
+    availability = [None for _ in lanes]
+    def retain_availability(error):
+        # Current phase and ordered identities prevent consuming another
+        # replay's decisions. This survives secondary evidence-file failures.
+        error._doomfly_replay_availability = {
+            'directory': str(phase.resolve()), 'lane_ids': tuple(map(id, lanes)),
+            'lanes': availability,
+        }
     origins = [0 for _ in lanes]
     before = [{} for _ in lanes]
     warmup = {'requested_ms': float(warmup_ms), 'brain_steps': 0, 'brain_seconds': 0.,
@@ -377,6 +385,7 @@ def replay_episode(brains, executor, data, readouts, currents, *, learning, froz
                 raise ValueError('Frozen plastic state changed')
     except BaseException as error:
         failure = error
+        retain_availability(failure)
     finally:
         if warmup_started is None:
             timing['setup_reset_wall_seconds'] = time.perf_counter() - started
@@ -393,32 +402,42 @@ def replay_episode(brains, executor, data, readouts, currents, *, learning, froz
                     failure.add_note(f'Secondary iterator cleanup failure: {type(error).__name__}: {error}')
     try:
         records = []
-        for brain, value, item_before, trace, origin in zip(lanes, freeze, before, traces, origins):
+        for index, (brain, value, item_before, trace, origin) in enumerate(zip(lanes, freeze, before, traces, origins)):
             terminal_state = terminal_failure = None
             try:
                 terminal_state = _state_hashes(brain)
+                availability[index] = {'terminal_state_available': True}
             except BaseException as error:
                 terminal_failure = error
+                availability[index] = {'terminal_state_available': False,
+                                       'terminal_state_error': {'type': type(error).__name__},
+                                       'checkpoint_available': False, 'checkpoint_attempted': False}
                 if failure is None:
                     failure = error
                 else:
                     failure.add_note(f'Secondary record failure: {type(error).__name__}')
+                retain_availability(failure)
             records.append(_lane_record(brain, data, value, item_before, trace, origin, started, warmup,
                                         failure, close_failure, timing, terminal_state=terminal_state,
                                         terminal_failure=terminal_failure))
     except BaseException as evidence_failure:
         if failure is None:
+            retain_availability(evidence_failure)
             raise
+        retain_availability(failure)
         failure.add_note(f'Secondary record failure: {type(evidence_failure).__name__}')
         raise failure
     try:
         summary = _write_phase(phase, lanes, records, failure=failure, resident_bytes=resident_bytes)
     except BaseException as evidence_failure:
         if failure is None:
+            retain_availability(evidence_failure)
             raise
+        retain_availability(failure)
         failure.add_note(f'Secondary evidence failure: {type(evidence_failure).__name__}')
         raise failure
     if failure is not None:
+        retain_availability(failure)
         raise failure
     return summary
 

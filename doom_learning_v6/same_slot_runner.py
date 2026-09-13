@@ -40,8 +40,20 @@ _ROOT = Path(__file__).resolve().parents[1]
 _PROTOCOL = _ROOT / 'docs/experiments/2026-09-13-same-slot-optimizer-protocol.json'
 
 
+def _exact_protocol(value, reference):
+    """Compare exact JSON protocol types and values, including object keys."""
+    if type(value) is not type(reference):
+        return False
+    if isinstance(reference, dict):
+        return (all(type(key) is str for key in value) and value.keys() == reference.keys() and
+                all(_exact_protocol(value[key], item) for key, item in reference.items()))
+    if isinstance(reference, list):
+        return len(value) == len(reference) and all(_exact_protocol(a, b) for a, b in zip(value, reference))
+    return value == reference
+
+
 def _contract(train, held, readouts, protocol):
-    if protocol != load_protocol(_PROTOCOL, _PINNED_PROTOCOL_SHA256):
+    if not _exact_protocol(protocol, load_protocol(_PROTOCOL, _PINNED_PROTOCOL_SHA256)):
         raise ValueError('Exact committed fitting protocol required')
     if len(train) != 2 or len(held) != 2:
         raise ValueError('Exactly two complete training and two held episodes required')
@@ -313,12 +325,24 @@ def fit(executor, train, held, readouts, protocol, out, *, replay=replay_episode
     except BaseException as failure:
         availability = []
         if waves:
+            replay_availability = getattr(failure, '_doomfly_replay_availability', None)
+            current_phase = out / waves[-1]['directory']
+            current_replay = (isinstance(replay_availability, dict) and
+                              replay_availability.get('directory') == str(current_phase.resolve()) and
+                              replay_availability.get('lane_ids') == tuple(map(id, brains)))
             for lane, brain in enumerate(brains):
-                directory = out / waves[-1]['directory'] / f'lane-{lane}'
+                directory = current_phase / f'lane-{lane}'
                 existing = [path for path in (directory / 'failure.npz', directory / 'final.npz') if path.exists()]
                 path = existing[0] if existing else directory / 'failure.npz'
                 record = {'lane': lane, 'path': str(path.relative_to(out)),
                           'scope': 'already produced replay state' if existing else 'best-effort interrupted resident state'}
+                decision = replay_availability['lanes'][lane] if current_replay else None
+                if decision is not None and decision.get('terminal_state_available') is False:
+                    record.update(decision, all24_available=False,
+                                  scope='replay declared terminal state unavailable',
+                                  reason=decision['terminal_state_error']['type'] + ': terminal materialization unavailable')
+                    availability.append(record)
+                    continue
                 try:
                     if not existing:
                         # Owned checkpoint materialization rejects a poisoned

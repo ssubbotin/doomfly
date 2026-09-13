@@ -239,6 +239,139 @@ def test_bad_portable_contract_rejects_before_any_charge_or_install(study, chang
     assert all(b.backend._host_weight_epoch == 0 for b in ex.brains)
 
 
+@pytest.mark.parametrize('path,value', [
+    (('learning',), 0), (('frozen',), 1), (('generations',), 4.0),
+    (('schema',), True), (('pairs_per_update',), True),
+    (('episodes', 0, 'frames'), 948.0),
+    (('budget', 'baseline'), 8.0), (('historical_indices', 0), False),
+    (('historical_indices', 1), True), (('fraction_bounds', 1), 2.0),
+    (('episodes',), ()), (('budget',), []),
+    (('budget', 'key-type'), None), (('episodes', 0, 'key-type'), None),
+])
+def test_direct_fit_rejects_recursive_protocol_type_mutations_without_work(study, monkeypatch, path, value):
+    module, ex, train, held, protocol, out = study
+    target = protocol
+    for key in path[:-1]:
+        target = target[key]
+    if path[-1] == 'key-type':
+        class NonBuiltinKey(str):
+            pass
+        key = next(iter(target))
+        item = target.pop(key)
+        target[NonBuiltinKey(key)] = item
+    else:
+        target[path[-1]] = value
+    calls = []
+    monkeypatch.setattr(ex, 'install_efficacies', lambda *args: calls.append('install'))
+    def forbidden_replay(*args, **kwargs):
+        calls.append('replay')
+        raise RuntimeError('malformed protocol reached replay')
+    with pytest.raises(ValueError, match='Exact committed fitting protocol'):
+        module.fit(ex, train, held, READOUTS, protocol, out, replay=forbidden_replay)
+    assert calls == []
+    assert not (out / 'attempt-ledger.json').exists()
+
+
+def _same_slot_visual_brain(tmp_path):
+    """Real visual CPU/checkpoint implementation with a bounded synthetic graph."""
+    from doom_learning_v6.brain import MemoryBrain
+    from test_doom_metal_batch_rgb import visual_brain
+    b = visual_brain(tmp_path)
+    path = tmp_path / 'same-slot-synthetic.npz'
+    np.savez(path, ptr=np.array([0, *([4186] * 14)], dtype=np.int64),
+             post=np.ones(4186, dtype=np.int32), weight=np.ones(4186, dtype=np.float32),
+             ids=np.arange(14, dtype=np.int64), retina=np.array([3], dtype=np.int32),
+             uv=np.array([[.75, .25]], dtype=np.float32), lamina=np.empty(0, dtype=np.int32),
+             sugar=np.empty(0, dtype=np.int32), superclass=np.array(['test'] * 14))
+    circuit = dict(b.circuit, edges=np.arange(4184, dtype=np.int64),
+                   pre=np.zeros(4184, dtype=np.int32), gain=np.ones((4184, 1), dtype=np.float32),
+                   kc_mask=np.array([1, *([0] * 13)], dtype=np.uint8),
+                   dan_index=np.array([-1, -1, 0, *([-1] * 11)], dtype=np.int8))
+    MemoryBrain.__init__(b, path, circuit=circuit, modulation_mask=np.array([0, 0, 1, *([0] * 11)]))
+    b.fields.append('r8_light')
+    b.initial['r8_light'] = b.r8_light.copy()
+    b.backend._host_weight_epoch = b.backend._device_weight_epoch = 0
+    return b
+
+
+@pytest.mark.parametrize('interrupted', [False, True])
+@pytest.mark.parametrize('secondary', [None, 'json', 'read', 'json-read'])
+def test_fit_consumes_real_replay_unavailable_lane_without_retry(study, tmp_path, monkeypatch, interrupted, secondary):
+    from doom_learning import common
+    from doom_learning_v6 import causal_pilot
+    from doom_learning_v6.backend import BackendError
+    from test_doom_learning_causal_pilot import _SerialCpuExecutor
+    module, ex, train, held, protocol, out = study
+    ex.brains = [_same_slot_visual_brain(tmp_path) for _ in range(4)]
+    serial = _SerialCpuExecutor(ex.brains)
+    monkeypatch.setattr(ex, 'rgb_step', serial.rgb_step, raising=False)
+    download_error = BackendError('non-poisoning terminal download failure')
+    primary = KeyboardInterrupt('original frame interruption') if interrupted else download_error
+    train[0].height, train[0].width = 3, 4
+    def frames():
+        for index in range(train[0].frame_count):
+            if interrupted and index == 1:
+                raise primary
+            yield SimpleNamespace(index=index, timestamp=index / 35,
+                                  rgb=np.zeros((3, 4, 3), dtype=np.uint8), action=np.zeros(9))
+    train[0].iter_frames = frames
+    downloads, checkpoints = [], []
+    def materialize(reason):
+        if reason == 'checkpoint':
+            downloads.append(reason)
+            # Deliberately leave the owner usable. A redundant sync would succeed.
+            if len(downloads) == 1:
+                raise download_error
+    monkeypatch.setattr(ex.brains[0].backend, 'materialize', materialize)
+    for lane, brain in enumerate(ex.brains):
+        checkpoint = brain.checkpoint
+        def save(path, lane=lane, checkpoint=checkpoint):
+            checkpoints.append(lane)
+            return checkpoint(path)
+        monkeypatch.setattr(brain, 'checkpoint', save)
+    phase = out / 'waves/w-00'
+    save_json = common.save_json
+    def writer(path, value):
+        if secondary in ('json', 'json-read') and Path(path) == phase / 'summary.json':
+            raise OSError('secondary replay summary writer')
+        return save_json(path, value)
+    monkeypatch.setattr(common, 'save_json', writer)
+    load = np.load
+    def reader(path, *args, **kwargs):
+        if secondary in ('read', 'json-read') and Path(path) == phase / 'lane-1/failure.npz':
+            raise OSError('secondary checkpoint evidence read')
+        return load(path, *args, **kwargs)
+    monkeypatch.setattr(np, 'load', reader)
+    try:
+        with pytest.raises(type(primary)) as caught:
+            module.fit(ex, train, held, READOUTS, protocol, out, replay=causal_pilot.replay_episode)
+        assert caught.value is primary
+        assert checkpoints == [1, 2, 3]
+        assert downloads == ['checkpoint']
+        assert not (phase / 'lane-0/failure.npz').exists()
+        for lane in range(4):
+            record = json.loads((phase / f'lane-{lane}/episode.json').read_text())
+            assert record['frames'] == len(record['trace']) == (1 if interrupted else 948)
+            assert record['trace'][0]['index'] == 0
+        failed = json.loads((phase / 'lane-0/episode.json').read_text())
+        assert failed['terminal_state'] is None
+        assert failed['terminal_state_available'] is False
+        assert failed['checkpoint_available'] is False and failed['checkpoint_attempted'] is False
+        availability = json.loads((out / 'failure-checkpoints.json').read_text())['lanes']
+        assert availability[0]['all24_available'] is False
+        assert 'BackendError' in availability[0]['reason']
+        assert [row['all24_available'] for row in availability[1:]] == [
+            secondary not in ('read', 'json-read'), True, True]
+        ledger = json.loads((out / 'attempt-ledger.json').read_text())
+        assert ledger['used'] == 4 and ledger['waves'][0]['state'] == 'charged'
+        assert json.loads((out / 'interrupted-progress.json').read_text())['attempts'] == 4
+        if secondary is not None:
+            assert any('OSError' in note for note in primary.__notes__)
+    finally:
+        for brain in ex.brains:
+            brain.backend.close()
+
+
 @pytest.mark.parametrize('change', ['trace', 'checkpoint', 'epoch', 'weight', 'teacher', 'target'])
 def test_runtime_cross_lane_and_frozen_contracts_stop_before_cached_scores(study, change):
     module, ex, train, held, protocol, out = study
