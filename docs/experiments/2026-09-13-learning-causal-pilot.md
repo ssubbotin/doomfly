@@ -26,21 +26,26 @@ define the controls and scoring before these results were known.
 
 ## What was held fixed, and what could change
 
-Live 640x480 RGB frames were mapped to sensory input, propagated through the
-retained neural graph, and read by the fixed DNp20 turn and DNpe017
+Recorded 640x480 RGB frames from fixed offline recordings were consumed by the
+preserved RGB sensory processing, propagated through the retained neural graph,
+and read by the fixed DNp20 turn and DNpe017
 forward/attack decoder. No game telemetry selected actions, aimed, recovered a
 controller, or changed the decoder. The model uses chosen host dynamics and
 inferred mappings. They are separate from measured released circuitry; the
 retained connectome is not a literal living brain.
 
-The sole mutable state was the efficacy fraction of 4,184 identified positive
-KC-to-MBON11 slots, bounded to [0.1, 2.0] relative to baseline. RGB mapping,
-graph, all nonplastic weights, neural dynamics, modulation, eta=0.001, the
-plasticity rule, tonic calibration, and decoding remained fixed. During plastic
-training, the predeclared signal supplied an unsigned, bounded, bilateral
-additional current to the two PPL101 entries. It was delayed by one original
-frame, with frame 0 at zero. This is modeled reinforcement input, not a claim
-about biological dopamine or credit assignment.
+This pilot opted into `window_ticks=18`; the default remains `window_ticks=0`,
+and the public/live runtime is unchanged. The only learned connection parameters
+permitted to change were the efficacy fractions of 4,184 identified positive
+KC-to-MBON11 slots, bounded to [0.1, 2.0] relative to baseline. Neural fast
+state and activity evolved throughout replay; u/w synaptic memory and
+eligibility/rate traces evolved during plastic training under the fixed rules.
+RGB mapping, graph, all nonplastic weights, neural dynamics, modulation,
+eta=0.001, the plasticity rule, tonic calibration, and decoding remained fixed.
+During plastic training, the predeclared signal supplied an unsigned, bounded,
+bilateral additional current to the two PPL101 entries. It was delayed by one
+original frame, with frame 0 at zero. This is modeled reinforcement input, not a
+claim about biological dopamine or credit assignment.
 
 ## Controls and causal protocol
 
