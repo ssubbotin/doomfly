@@ -29,8 +29,8 @@ future experiments; this plan implements windows now regardless of guard timing.
 Execution ABI becomes 8; numerical parent/order stay unchanged.
 Public Graph, State, KCEvent and Timing layouts stay unchanged.
 
-Add `df_metal_create_batch_windowed(const DFMetalGraph *, const char *,
-int32_t lanes, int32_t window_ticks, DFMetalHandle *)`.
+Add `df_metal_create_batch_windowed(const df_metal_graph *, const char *,
+int32_t lanes, int32_t window_ticks, df_metal_handle *)`.
 The original create/create_batch entry points delegate to window_ticks=0.
 Reject native window_ticks outside 0..18 before traversing graph pointers.
 Creation selects an immutable schedule for the handle lifetime.
