@@ -5,43 +5,57 @@ import numpy as np
 import vizdoom as vzd
 
 class Game:
-    def __init__(self,seed=41027,scenario='defend_the_center',spectator=False,observer_engine=None):
+    def __init__(self,seed=41027,scenario='defend_the_center',spectator=False,observer_engine=None,
+                 *,episode_timeout_tics=None,episode_start_tics=None):
+        for name,value in [('episode_timeout_tics',episode_timeout_tics),
+                           ('episode_start_tics',episode_start_tics)]:
+            if value is not None:
+                if type(value) is not int:raise TypeError(f'{name} must be a built-in int or None')
+                if value<0:raise ValueError(f'{name} must be nonnegative')
         self.game=vzd.DoomGame()
-        # Used only by the isolated spectator mirror. The neural game always
-        # uses the installed, unmodified ViZDoom executable.
-        if observer_engine:self.game.set_vizdoom_path(str(observer_engine))
-        directory=Path(__file__).parent/'scenarios' if scenario=='combat_survival' else Path(vzd.scenarios_path)
-        cfg=directory/(scenario+'.cfg')
-        wad=directory/(scenario+'.wad')
-        self.scenario=scenario
-        iwad=Path(vzd.__file__).parent/'freedoom2.wad'
-        self.game.load_config(str(cfg))
-        self.game.set_doom_scenario_path(str(wad.resolve()))
-        self.game.set_doom_game_path(str(iwad))
-        self.assets={'vizdoom_version':vzd.__version__,'scenario':scenario,
-          'sha256':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in [cfg,wad,iwad]}}
-        if scenario=='combat_survival':
-            import json
-            self.assets['rules']=json.loads((directory/'combat_survival.json').read_text())
-        self.game.set_window_visible(False);self.game.set_sound_enabled(False)
-        self.game.set_screen_format(vzd.ScreenFormat.RGB24)
-        self.game.set_screen_resolution(vzd.ScreenResolution.RES_640X480)
-        self.game.set_mode(vzd.Mode.PLAYER)
-        self.game.set_depth_buffer_enabled(bool(observer_engine));self.game.set_labels_buffer_enabled(False)
-        self.spectator_enabled=spectator
-        self.game.set_automap_buffer_enabled(False);self.game.set_objects_info_enabled(spectator)
-        self.game.set_sectors_info_enabled(spectator)
-        self.game.set_available_buttons([vzd.Button.TURN_LEFT_RIGHT_DELTA,vzd.Button.MOVE_FORWARD_BACKWARD_DELTA,vzd.Button.ATTACK])
-        self.game.set_button_max_value(vzd.Button.TURN_LEFT_RIGHT_DELTA,6)
-        self.game.set_button_max_value(vzd.Button.MOVE_FORWARD_BACKWARD_DELTA,20)
-        self.game.clear_available_game_variables()
-        # These are observer/reinforcement outputs only. Never fed to controls.
-        self.game.add_available_game_variable(vzd.GameVariable.HEALTH)
-        self.game.add_available_game_variable(vzd.GameVariable.KILLCOUNT)
-        self.game.add_available_game_variable(vzd.GameVariable.AMMO2)
-        self.game.set_episode_timeout(0 if scenario=='combat_survival' else 35*60)
-        self.game.set_seed(seed);self.game.init()
-        self.episode=0;self.tick=0;self.episodes=[];self.new_episode()
+        try:
+            # Used only by the isolated spectator mirror. The neural game always
+            # uses the installed, unmodified ViZDoom executable.
+            if observer_engine:self.game.set_vizdoom_path(str(observer_engine))
+            directory=Path(__file__).parent/'scenarios' if scenario=='combat_survival' else Path(vzd.scenarios_path)
+            cfg=directory/(scenario+'.cfg')
+            wad=directory/(scenario+'.wad')
+            self.scenario=scenario
+            iwad=Path(vzd.__file__).parent/'freedoom2.wad'
+            self.game.load_config(str(cfg))
+            self.game.set_doom_scenario_path(str(wad.resolve()))
+            self.game.set_doom_game_path(str(iwad))
+            self.assets={'vizdoom_version':vzd.__version__,'scenario':scenario,
+              'sha256':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in [cfg,wad,iwad]}}
+            if scenario=='combat_survival':
+                import json
+                self.assets['rules']=json.loads((directory/'combat_survival.json').read_text())
+            self.game.set_window_visible(False);self.game.set_sound_enabled(False)
+            self.game.set_screen_format(vzd.ScreenFormat.RGB24)
+            self.game.set_screen_resolution(vzd.ScreenResolution.RES_640X480)
+            self.game.set_mode(vzd.Mode.PLAYER)
+            self.game.set_depth_buffer_enabled(bool(observer_engine));self.game.set_labels_buffer_enabled(False)
+            self.spectator_enabled=spectator
+            self.game.set_automap_buffer_enabled(False);self.game.set_objects_info_enabled(spectator)
+            self.game.set_sectors_info_enabled(spectator)
+            self.game.set_available_buttons([vzd.Button.TURN_LEFT_RIGHT_DELTA,vzd.Button.MOVE_FORWARD_BACKWARD_DELTA,vzd.Button.ATTACK])
+            self.game.set_button_max_value(vzd.Button.TURN_LEFT_RIGHT_DELTA,6)
+            self.game.set_button_max_value(vzd.Button.MOVE_FORWARD_BACKWARD_DELTA,20)
+            self.game.clear_available_game_variables()
+            # These are observer/reinforcement outputs only. Never fed to controls.
+            self.game.add_available_game_variable(vzd.GameVariable.HEALTH)
+            self.game.add_available_game_variable(vzd.GameVariable.KILLCOUNT)
+            self.game.add_available_game_variable(vzd.GameVariable.AMMO2)
+            self.game.set_episode_timeout(0 if scenario=='combat_survival' else 35*60)
+            if episode_timeout_tics is not None:self.game.set_episode_timeout(episode_timeout_tics)
+            if episode_start_tics is not None:self.game.set_episode_start_time(episode_start_tics)
+            self.game.set_seed(seed);self.game.init()
+            self.episode=0;self.tick=0;self.episodes=[];self.new_episode()
+        except BaseException as failure:
+            try:self.game.close()
+            except BaseException as secondary:
+                failure.add_note('Secondary game constructor cleanup: '+type(secondary).__name__)
+            raise
     def new_episode(self):
         self.game.new_episode();self.episode+=1;self.tick=0
     def pixels(self):

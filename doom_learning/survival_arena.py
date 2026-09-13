@@ -74,21 +74,27 @@ class SurvivalArena:
     def __init__(self,path,seed=41031,*,seconds=60,hazard_left=True,angle=None):
         self.assets=build_map(path,seed,hazard_left=hazard_left,angle=angle)
         self.game=g=vzd.DoomGame()
-        g.set_doom_game_path(str(Path(vzd.__file__).parent/'freedoom2.wad'))
-        g.set_doom_scenario_path(str(Path(path).resolve()));g.set_doom_map('map01')
-        g.set_window_visible(False);g.set_sound_enabled(False)
-        g.set_screen_format(vzd.ScreenFormat.RGB24)
-        g.set_screen_resolution(vzd.ScreenResolution.RES_640X480)
-        g.set_mode(vzd.Mode.PLAYER);g.set_render_hud(False)
-        g.set_depth_buffer_enabled(False);g.set_labels_buffer_enabled(False)
-        g.set_automap_buffer_enabled(False);g.set_objects_info_enabled(False)
-        g.set_sectors_info_enabled(False)
-        g.set_available_buttons([vzd.Button.TURN_LEFT_RIGHT_DELTA,vzd.Button.MOVE_FORWARD_BACKWARD_DELTA,vzd.Button.ATTACK])
-        g.set_button_max_value(vzd.Button.TURN_LEFT_RIGHT_DELTA,6)
-        g.set_button_max_value(vzd.Button.MOVE_FORWARD_BACKWARD_DELTA,20)
-        g.set_available_game_variables([vzd.GameVariable.HEALTH,vzd.GameVariable.KILLCOUNT,vzd.GameVariable.AMMO2])
-        g.set_episode_timeout(round(35*seconds));g.set_episode_start_time(0)
-        g.set_seed(seed);g.init();g.new_episode();self.tick=0
+        try:
+            g.set_doom_game_path(str(Path(vzd.__file__).parent/'freedoom2.wad'))
+            g.set_doom_scenario_path(str(Path(path).resolve()));g.set_doom_map('map01')
+            g.set_window_visible(False);g.set_sound_enabled(False)
+            g.set_screen_format(vzd.ScreenFormat.RGB24)
+            g.set_screen_resolution(vzd.ScreenResolution.RES_640X480)
+            g.set_mode(vzd.Mode.PLAYER);g.set_render_hud(False)
+            g.set_depth_buffer_enabled(False);g.set_labels_buffer_enabled(False)
+            g.set_automap_buffer_enabled(False);g.set_objects_info_enabled(False)
+            g.set_sectors_info_enabled(False)
+            g.set_available_buttons([vzd.Button.TURN_LEFT_RIGHT_DELTA,vzd.Button.MOVE_FORWARD_BACKWARD_DELTA,vzd.Button.ATTACK])
+            g.set_button_max_value(vzd.Button.TURN_LEFT_RIGHT_DELTA,6)
+            g.set_button_max_value(vzd.Button.MOVE_FORWARD_BACKWARD_DELTA,20)
+            g.set_available_game_variables([vzd.GameVariable.HEALTH,vzd.GameVariable.KILLCOUNT,vzd.GameVariable.AMMO2])
+            g.set_episode_timeout(round(35*seconds));g.set_episode_start_time(0)
+            g.set_seed(seed);g.init();g.new_episode();self.tick=0
+        except BaseException as failure:
+            try:g.close()
+            except BaseException as secondary:
+                failure.add_note('Secondary game constructor cleanup: '+type(secondary).__name__)
+            raise
 
     def pixels(self):
         state=self.game.get_state()
