@@ -101,13 +101,14 @@ def _lane_record(brain, data, frozen, before, trace, origin, started, warmup, fa
     return result
 
 
-def _write_phase(phase, lanes, records, *, failure=None):
+def _write_phase(phase, lanes, records, *, failure=None, resident_bytes=None):
     from doom_learning.common import save_json
     for index, (brain, record) in enumerate(zip(lanes, records)):
         lane = phase / f'lane-{index}'
         save_json(lane / 'episode.json', record)
         brain.checkpoint(lane / ('failure.npz' if failure is not None else 'final.npz'))
-    summary = {'lanes': records, 'complete': failure is None and all(row['complete'] for row in records)}
+    summary = {'lanes': records, 'complete': failure is None and all(row['complete'] for row in records),
+               'resident_bytes': resident_bytes}
     if failure is not None:
         summary['failure'] = {'type': type(failure).__name__}
     save_json(phase / 'summary.json', summary)
@@ -130,6 +131,11 @@ def replay_episode(brains, executor, data, readouts, currents, *, learning, froz
     lanes, ticks, height, width, learn, freeze, schedule, targets, phase, controls = _phase_inputs(
         brains, executor, data, readouts, currents, learning, frozen, directory, warmup_ms)
     phase.mkdir(parents=True)
+    try:
+        metadata = executor.metadata()
+        resident_bytes = {name: metadata[name] for name in ('shared_resident_bytes', 'mutable_resident_bytes')}
+    except Exception:
+        resident_bytes = None
     started = time.perf_counter()
     traces = [[] for _ in lanes]
     frames = None
@@ -199,6 +205,10 @@ def replay_episode(brains, executor, data, readouts, currents, *, learning, froz
                     'frame_sha256': digest(image), 'spikes_sha256': digest(counts[lane]),
                     'memory': _memory(brain), 'native_elapsed_seconds': float(elapsed),
                 })
+            from doom_learning.common import save_json
+            save_json(phase / 'progress.json', {'complete': False,
+                                                'decoded_frames': [len(trace) for trace in traces],
+                                                'resident_bytes': resident_bytes})
         if any(len(trace) != data.frame_count for trace in traces):
             raise ValueError('Incomplete original episode')
         for brain, value, expected in zip(lanes, freeze, frozen_state):
@@ -216,10 +226,22 @@ def replay_episode(brains, executor, data, readouts, currents, *, learning, froz
                     failure = error
                 else:
                     close_failure = error
-    records = [_lane_record(brain, data, value, item_before, trace, origin, started, warmup,
-                            failure, close_failure)
-               for brain, value, item_before, trace, origin in zip(lanes, freeze, before, traces, origins)]
-    summary = _write_phase(phase, lanes, records, failure=failure)
+    try:
+        records = [_lane_record(brain, data, value, item_before, trace, origin, started, warmup,
+                                failure, close_failure)
+                   for brain, value, item_before, trace, origin in zip(lanes, freeze, before, traces, origins)]
+    except Exception as evidence_failure:
+        if failure is None:
+            raise
+        failure.add_note(f'Secondary record failure: {type(evidence_failure).__name__}')
+        raise failure
+    try:
+        summary = _write_phase(phase, lanes, records, failure=failure, resident_bytes=resident_bytes)
+    except Exception as evidence_failure:
+        if failure is None:
+            raise
+        failure.add_note(f'Secondary evidence failure: {type(evidence_failure).__name__}')
+        raise failure
     if failure is not None:
         raise failure
     return summary
@@ -255,6 +277,58 @@ def _memory_pressure():
     return value
 
 
+def _phase_pressure(before, name):
+    """Sample a phase boundary and reject either unsafe free RAM or swap growth."""
+    after = _memory_pressure()
+    if after['swap_used_mib'] > before['swap_used_mib']:
+        raise ValueError(f'Swap grew during {name}')
+    return after
+
+
+def _model_gate(brains):
+    """Validate the full retained graph and materialize immutable evidence."""
+    from .imitation import _invariants
+    records = []
+    for brain in brains:
+        brain.backend.materialize('causal-pilot-invariants')
+        edges = brain.circuit['edges']
+        if (brain.n, len(brain.weight), len(edges), len(brain.circuit['dan'])) != (166700, 25582938, 4184, 2):
+            raise ValueError('Exact retained graph, plastic slots and two DAN neurons required')
+        values = brain.weight[edges] / brain.baseline_plastic
+        if not (values > 0).all() or not (values >= .1).all() or not (values <= 2).all():
+            raise ValueError('Plastic efficacies exceed declared baseline-relative bounds')
+        records.append(_invariants(brain))
+    if any(record != records[0] for record in records[1:]):
+        raise ValueError('Fixed invariants differ between lanes')
+    return records[0]
+
+
+def _file_pin(path):
+    from .metal.benchmark import _file_digest
+    value = Path(path)
+    if not value.is_file():
+        raise ValueError(f'Required physical input missing: {value.name}')
+    return {'bytes': value.stat().st_size, 'sha256': _file_digest(value)}
+
+
+def _physical_pins(reference):
+    """Pin ignored inputs and native build identities before any simulation."""
+    from doom_learning.common import GRAPH, ROOT, provenance_sources
+    from .metal.benchmark import current_preflight_identity
+    reference = Path(reference)
+    required = ['results.json', 'protocol.json', 'provenance.json', 'initial.npz',
+                'plastic/learned.npz', 'plastic/train-0-0/episode.json',
+                'plastic/eval-0/episode.json', 'frozen/eval-0/episode.json']
+    return {'graph': _file_pin(GRAPH),
+            'annotations': _file_pin(ROOT / 'connectome_data/malecns_v1/annotations.feather'),
+            'normalized_neurons': _file_pin(ROOT / 'connectome_data/malecns_v1/normalized/neurons.feather'),
+            'reference': {name: _file_pin(reference / name) for name in required},
+            'sources': {str(path.relative_to(ROOT)): _file_pin(path)
+                        for path in provenance_sources(ROOT, ['doom', 'doom_learning', 'doom_learning_v2',
+                                                              'doom_learning_v4', 'doom_learning_v5', 'doom_learning_v6'])},
+            'native_build': current_preflight_identity()}
+
+
 def _readouts():
     from doom_learning.common import GRAPH
     rows = json.loads((GRAPH.parent / 'manifest.json').read_text())['readouts']
@@ -281,15 +355,81 @@ def _check_reference(reference, train):
     return root, trace
 
 
+def _reference_schedule(trace, count):
+    """Validate the preserved one-frame delayed reinforcement records."""
+    import numpy as np
+    from .causal_controls import frame_ticks
+    from .imitation import teacher_error
+
+    rows = trace.get('trace')
+    if not isinstance(rows, list) or len(rows) != count:
+        raise ValueError('Complete original plastic reference trace required')
+    ticks = frame_ticks(count)
+    currents = np.empty(count, dtype=np.float64)
+    for index, row in enumerate(rows):
+        if not isinstance(row, dict) or row.get('index') != index or row.get('teacher_index') != index:
+            raise ValueError('Reference records must preserve contiguous original indices')
+        if row.get('neural_steps') != int(ticks[index]):
+            raise ValueError('Reference current/tick trace is not the canonical original schedule')
+        try:
+            current = float(row['teacher_current'])
+            error = teacher_error(float(row['action']['turn']), float(row['target_turn']))
+        except (KeyError, TypeError, ValueError) as failure:
+            raise ValueError('Reference delayed-feedback record is invalid') from failure
+        if not math.isfinite(current) or not 0 <= current <= 4 or row.get('teacher_error') != error:
+            raise ValueError('Reference delayed-feedback record is invalid')
+        if index == 0:
+            if current != 0:
+                raise ValueError('First reference teacher current must be zero')
+        elif current != 4 * float(rows[index - 1]['teacher_error']):
+            raise ValueError('Reference delayed-feedback recurrence differs')
+        currents[index] = current
+    return currents, ticks
+
+
 def _same_without_wall(left, right):
+    """Compare canonical science records after removing only physical clocks."""
+    excluded = {'wall_seconds', 'actual_wall_seconds', 'native_elapsed_seconds',
+                'teacher_float32_current'}
     if isinstance(left, dict):
-        return {key: _same_without_wall(value, right[key]) for key, value in left.items()
-                if 'wall' not in key and key in right} == {key: _same_without_wall(value, left[key])
-                                                            for key, value in right.items()
-                                                           if 'wall' not in key and key in left}
+        left = {key: value for key, value in left.items() if key not in excluded}
+        right = {key: value for key, value in right.items() if key not in excluded}
+        return set(left) == set(right) and all(_same_without_wall(left[key], right[key]) for key in left)
     if isinstance(left, list):
         return len(left) == len(right) and all(_same_without_wall(x, y) for x, y in zip(left, right))
     return left == right
+
+
+def _compare_checkpoint_arrays(reference, candidate):
+    """Require exact dtype, shape and data equality for every checkpoint array."""
+    import numpy as np
+    try:
+        with np.load(reference, allow_pickle=False) as expected, np.load(candidate, allow_pickle=False) as actual:
+            expected_keys = set(expected.files) - {'metadata'}
+            actual_keys = set(actual.files) - {'metadata'}
+            if expected_keys != actual_keys:
+                raise ValueError('Checkpoint array keys differ')
+            for name in sorted(expected_keys):
+                if expected[name].dtype != actual[name].dtype:
+                    raise ValueError(f'Checkpoint dtype differs: {name}')
+                if expected[name].shape != actual[name].shape:
+                    raise ValueError(f'Checkpoint shape differs: {name}')
+                if not np.array_equal(expected[name], actual[name]):
+                    raise ValueError(f'Checkpoint data differs: {name}')
+    except OSError as error:
+        raise ValueError('Checkpoint arrays cannot be compared') from error
+    return {'passed': True, 'arrays': sorted(expected_keys)}
+
+
+def _sensitivity_memory_controls(direction):
+    """Return the prescribed directional and uniform memory interventions."""
+    import numpy as np
+    value = np.asarray(direction, dtype=np.float64)
+    if value.ndim != 1 or not len(value) or not np.isfinite(value).all():
+        raise ValueError('Finite learned direction required')
+    return {'primary': np.stack([np.zeros_like(value), np.zeros_like(value), .05 * value, -.05 * value]),
+            'fallback': np.stack([.20 * value, -.20 * value,
+                                  np.full_like(value, -.05), np.full_like(value, .05)])}
 
 
 def _run_causal(args, train, held, reference, readouts, out):
@@ -299,18 +439,15 @@ def _run_causal(args, train, held, reference, readouts, out):
     from .metal.batch import MetalBatchExecutor
 
     _, reference_trace = _check_reference(reference, train)
-    aligned = np.asarray([row['teacher_current'] for row in reference_trace['trace']], dtype=np.float64)
-    ticks = np.asarray([row['neural_steps'] for row in reference_trace['trace']], dtype=np.int64)
-    if (aligned.shape != (982,) or ticks.shape != (982,) or aligned[0] != 0 or
-            np.any(aligned[:5] != 0) or not np.array_equal(ticks, frame_ticks(982))):
-        raise ValueError('Reference current/tick trace is not the canonical original schedule')
+    aligned, ticks = _reference_schedule(reference_trace, train.frame_count)
     shifted, mapping = duration_permutation(aligned, ticks)
     proof = dose_proof(aligned, shifted, ticks)
     brains = [calibrated_brain(.001, backend='cpu') for _ in range(4)]
     initial = Path(reference) / 'initial.npz'
     for brain in brains:
         brain.restore(initial)
-    invariant = None
+    invariant = _model_gate(brains)
+    pressure = {'before_training': _memory_pressure()}
     try:
         with MetalBatchExecutor(brains, window_ticks=18) as executor:
             invariant = [brain.configuration_signature() for brain in brains]
@@ -318,78 +455,108 @@ def _run_causal(args, train, held, reference, readouts, out):
                                           np.stack([aligned, np.zeros_like(aligned), shifted, np.zeros_like(aligned)]),
                                           learning=[True, True, True, True], frozen=[False, False, False, True],
                                           directory=out / 'train')
+            pressure['after_training'] = _phase_pressure(pressure['before_training'], 'training')
             if not _same_without_wall(train_result['lanes'][0]['trace'], reference_trace['trace']):
                 raise ValueError('A replay differs from the preserved original plastic trace')
             learned = []
             for index, brain in enumerate(brains):
                 path = out / f'lane-{index}' / 'learned.npz'; brain.checkpoint(path); learned.append(path)
+            golden = _compare_checkpoint_arrays(Path(reference) / 'plastic' / 'learned.npz', learned[0])
             for brain, checkpoint in zip(brains, learned):
                 brain.restore(checkpoint)
+            pressure['before_evaluation'] = _memory_pressure()
             evaluation = replay_episode(brains, executor, held, readouts,
                                         np.zeros((4, held.frame_count), dtype=np.float64),
                                         learning=[False] * 4, frozen=[True] * 4,
                                         directory=out / 'evaluation')
-            if any(brain.configuration_signature() != item for brain, item in zip(brains, invariant)):
-                raise ValueError('Fixed graph/configuration changed')
+            pressure['after_evaluation'] = _phase_pressure(pressure['before_evaluation'], 'evaluation')
+            if _model_gate(brains) != invariant:
+                raise ValueError('Fixed invariants changed')
     finally:
         for brain in brains:
             if getattr(brain.backend, 'name', None) != 'metal-batch':
                 brain.backend.close()
     return {'mode': 'causal', 'schedule_mapping': mapping.tolist(), 'dose_proof': proof,
             'train': train_result, 'evaluation': evaluation,
-            'learned_checkpoints': [str(path.relative_to(out)) for path in learned]}
+            'learned_checkpoints': [str(path.relative_to(out)) for path in learned],
+            'golden_checkpoint_comparison': golden, 'invariants': {'before': invariant, 'after': invariant},
+            'phase_pressure': pressure}
 
 
 def _run_sensitivity(train, reference, readouts, out):
     """Measure declared initial-efficacy perturbations with frozen weights."""
     import numpy as np
-    from .causal_controls import initialize_efficacies
+    from .causal_controls import initialize_efficacies, learned_direction
     from .calibration import calibrated_brain
     from .metal.batch import MetalBatchExecutor
 
     _check_reference(reference, train)
     initial = Path(reference) / 'initial.npz'
-    perturbations = [0., 0., .05, -.05]
-    brains = [calibrated_brain(.001, backend='cpu') for _ in perturbations]
-    for brain, perturbation in zip(brains, perturbations):
+    probe = calibrated_brain(.001, backend='cpu')
+    try:
+        probe.restore(initial)
+        baseline = probe.weight[probe.circuit['edges']].copy()
+        with np.load(Path(reference) / 'plastic' / 'learned.npz', allow_pickle=False) as saved:
+            learned = saved['weight'][probe.circuit['edges']].copy()
+        direction = learned_direction(baseline, learned)
+    finally:
+        probe.backend.close()
+    controls = _sensitivity_memory_controls(direction)
+    brains = [calibrated_brain(.001, backend='cpu') for _ in range(4)]
+    for brain, memory in zip(brains, controls['primary']):
         brain.restore(initial)
-        initialize_efficacies(brain, np.full(brain.memory_u.shape, perturbation, dtype=np.float64))
+        initialize_efficacies(brain, memory)
+    invariant = _model_gate(brains)
+    pressure = {'before_training': _memory_pressure()}
     try:
         with MetalBatchExecutor(brains, window_ticks=18) as executor:
             first = replay_episode(brains, executor, train, readouts,
                                    np.zeros((len(brains), train.frame_count), dtype=np.float64),
                                    learning=[True] * len(brains), frozen=[True] * len(brains),
                                    directory=out / 'sensitivity')
+            pressure['after_training'] = _phase_pressure(pressure['before_training'], 'sensitivity training')
             replica = [_without_wall_lane(first['lanes'][index]) for index in (0, 1)]
             if replica[0] != replica[1]:
                 raise ValueError('Zero-memory sensitivity replicas diverged')
             actions = [[row['action'] for row in lane['trace']] for lane in first['lanes']]
             null = actions[2] == actions[0] and actions[3] == actions[0]
+            if _model_gate(brains) != invariant:
+                raise ValueError('Fixed invariants changed')
     finally:
         for brain in brains:
             if getattr(brain.backend, 'name', None) != 'metal-batch':
                 brain.backend.close()
     additional = None
     if null:
-        extra_perturbations = [.20, -.20, -.05, .05]
-        extra = [calibrated_brain(.001, backend='cpu') for _ in extra_perturbations]
-        for brain, perturbation in zip(extra, extra_perturbations):
+        extra = [calibrated_brain(.001, backend='cpu') for _ in range(4)]
+        for brain, memory in zip(extra, controls['fallback']):
             brain.restore(initial)
-            initialize_efficacies(brain, np.full(brain.memory_u.shape, perturbation, dtype=np.float64))
+            initialize_efficacies(brain, memory)
+        extra_invariant = _model_gate(extra)
+        pressure['before_additional'] = _memory_pressure()
         try:
             with MetalBatchExecutor(extra, window_ticks=18) as executor:
                 additional = replay_episode(extra, executor, train, readouts,
                                             np.zeros((len(extra), train.frame_count), dtype=np.float64),
                                             learning=[True] * len(extra), frozen=[True] * len(extra),
                                             directory=out / 'sensitivity-additional')
+                pressure['after_additional'] = _phase_pressure(pressure['before_additional'], 'sensitivity controls')
+                if _model_gate(extra) != extra_invariant:
+                    raise ValueError('Fixed invariants changed')
         finally:
             for brain in extra:
                 if getattr(brain.backend, 'name', None) != 'metal-batch':
                     brain.backend.close()
-    return {'mode': 'sensitivity', 'perturbations': perturbations, 'training': first,
+    baseline_actions = [row['action'] for row in first['lanes'][0]['trace']]
+    fallback_comparisons = (None if additional is None else
+                            [[row['action'] for row in lane['trace']] == baseline_actions
+                             for lane in additional['lanes']])
+    return {'mode': 'sensitivity', 'direction': direction.tolist(),
+            'perturbations': controls['primary'].tolist(), 'training': first,
             'replica_exact': True, 'manual_perturbation_actions_unchanged': null,
-            'additional_perturbations': ([.20, -.20, -.05, .05] if null else None),
-            'additional_training': additional,
+            'additional_perturbations': (controls['fallback'].tolist() if null else None),
+            'additional_training': additional, 'fallback_baseline_action_comparisons': fallback_comparisons,
+            'invariants': {'before': invariant, 'after': invariant}, 'phase_pressure': pressure,
             'limitation': 'Frozen perturbations probe readout sensitivity, not learned behavior.'}
 
 
@@ -435,13 +602,15 @@ def run(args):
         raise ValueError('Training and evaluation artifacts must be distinct')
     readouts = _readouts()
     _check_reference(args.reference, train)
+    pins = _physical_pins(args.reference)
     lock = _acquire_gpu_lock()
     try:
         before = _memory_pressure()
         out.mkdir(parents=True)
         save_json(out / 'inputs.json', {'arguments': vars(args), 'train': train.identity, 'evaluation': held.identity,
                                         'reference': _file_digest(Path(args.reference) / 'results.json'),
-                                        'source_commit': args.source_commit, 'lock_pid': os.getpid()})
+                                        'source_commit': args.source_commit, 'lock_pid': os.getpid(),
+                                        'physical_pins': pins})
         result = (_run_causal(args, train, held, args.reference, readouts, out)
                   if args.mode == 'causal' else _run_sensitivity(train, args.reference, readouts, out))
         after = _memory_pressure()
@@ -450,6 +619,11 @@ def run(args):
                        'mechanism_diagnostic_scope': 'Controlled schedule comparison only; it does not establish fly learning.'})
         save_json(out / 'results.json', result)
         return result
+    except Exception as failure:
+        if out.exists():
+            save_json(out / 'failure.json', {'failure': {'type': type(failure).__name__},
+                                              'progress': 'incomplete'})
+        raise
     finally:
         fcntl.flock(lock.fileno(), fcntl.LOCK_UN)
         lock.close()

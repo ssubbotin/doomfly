@@ -121,6 +121,49 @@ def test_cli_rejects_fresh_output_and_source_commit_before_platform_or_native_im
     assert not fresh.exists()
 
 
+@pytest.mark.parametrize('reference,replay,expected', [
+    ({'spikes_sha256': 'a'}, {'spikes_sha256': 'b'}, False),
+    ({'action': {'turn': 1.}}, {'action': {'turn': 2.}}, False),
+    ({'memory_u_sha256': 'a'}, {}, False),
+    ({'wall_seconds': 1., 'teacher_float32_current': 1., 'spikes_sha256': 'a'},
+     {'wall_seconds': 9., 'teacher_float32_current': 2., 'spikes_sha256': 'a'}, True),
+])
+def test_original_replay_identity_rejects_every_scientific_difference(reference, replay, expected):
+    """Only clock fields and the added float32 diagnostic are excluded."""
+    from doom_learning_v6.causal_pilot import _same_without_wall
+    assert _same_without_wall(reference, replay) is expected
+
+
+def test_checkpoint_comparison_rejects_missing_dtype_shape_and_data(tmp_path):
+    """A golden replay needs all checkpoint arrays, not producer metadata."""
+    from doom_learning_v6.causal_pilot import _compare_checkpoint_arrays
+    base = tmp_path / 'base.npz'; candidate = tmp_path / 'candidate.npz'
+    np.savez(base, metadata='base', weight=np.array([1, 2], dtype=np.float32), memory_u=np.array([.1]))
+    np.savez(candidate, metadata='candidate', weight=np.array([1, 3], dtype=np.float32), memory_u=np.array([.1]))
+    with pytest.raises(ValueError, match='weight'):
+        _compare_checkpoint_arrays(base, candidate)
+    np.savez(candidate, metadata='candidate', weight=np.array([1, 2], dtype=np.float64), memory_u=np.array([.1]))
+    with pytest.raises(ValueError, match='dtype'):
+        _compare_checkpoint_arrays(base, candidate)
+    np.savez(candidate, metadata='candidate', weight=np.array([[1, 2]], dtype=np.float32), memory_u=np.array([.1]))
+    with pytest.raises(ValueError, match='shape'):
+        _compare_checkpoint_arrays(base, candidate)
+    np.savez(candidate, metadata='candidate', weight=np.array([1, 2], dtype=np.float32))
+    with pytest.raises(ValueError, match='array keys'):
+        _compare_checkpoint_arrays(base, candidate)
+
+
+def test_directional_sensitivity_controls_are_distinct_from_uniform_controls():
+    """Changing a direction to a uniform offset must fail the intervention contract."""
+    from doom_learning_v6.causal_pilot import _sensitivity_memory_controls
+    direction = np.array([-.5, 1., 0.])
+    controls = _sensitivity_memory_controls(direction)
+    np.testing.assert_allclose(controls['primary'][2], [-.025, .05, 0])
+    np.testing.assert_allclose(controls['primary'][3], [.025, -.05, 0])
+    np.testing.assert_allclose(controls['fallback'][:2], [[-.1, .2, 0], [.1, -.2, 0]])
+    np.testing.assert_allclose(controls['fallback'][2:], [[-.05, -.05, -.05], [.05, .05, .05]])
+
+
 class _ThreeFrames:
     """Only video acquisition is synthetic. The neural execution remains native."""
     frame_count = 3
@@ -192,6 +235,7 @@ def test_metal_replay_matches_independent_serial_trajectory_and_frozen_lane(tmp_
     data = _ThreeFrames()
     currents = np.array([[0., 1., 2.], [0., 0., 0.]], dtype=np.float64)
     lanes = [visual_brain(tmp_path), visual_brain(tmp_path)]
+    frozen_before = [(lane.memory_u.copy(), lane.memory_w.copy(), lane.weight.copy()) for lane in lanes]
     initial = [tmp_path / f'initial-{index}.npz' for index in range(len(lanes))]
     for lane, checkpoint in zip(lanes, initial):
         lane.checkpoint(checkpoint)
@@ -223,12 +267,12 @@ def test_metal_replay_matches_independent_serial_trajectory_and_frozen_lane(tmp_
             learned = [tmp_path / f'learned-{index}.npz' for index in range(len(lanes))]
             for lane, checkpoint in zip(lanes, learned):
                 lane.checkpoint(checkpoint)
-            frozen_before = [(lane.memory_u.copy(), lane.memory_w.copy(), lane.weight.copy()) for lane in lanes]
+            evaluation_before = [(lane.memory_u.copy(), lane.memory_w.copy(), lane.weight.copy()) for lane in lanes]
             evaluation = replay(lanes, executor, _ThreeFrames(), READOUTS, np.zeros((2, 3)),
                                 learning=[False, False], frozen=[True, True],
                                 directory=tmp_path / 'evaluation', warmup_ms=0)
             assert all(row['teacher_current'] == 0. for lane in evaluation['lanes'] for row in lane['trace'])
-            for lane, before in zip(lanes, frozen_before):
+            for lane, before in zip(lanes, evaluation_before):
                 np.testing.assert_array_equal(lane.memory_u, before[0])
                 np.testing.assert_array_equal(lane.memory_w, before[1])
                 np.testing.assert_array_equal(lane.weight, before[2])
