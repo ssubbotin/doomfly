@@ -1,0 +1,1200 @@
+{
+  "complete": false,
+  "protocol": {
+    "schema": 1,
+    "model": "adaptive-centered-v6",
+    "connectome": "MaleCNS v1.0",
+    "neurons": 166700,
+    "retained_edges": 25582938,
+    "plastic_slots": 4184,
+    "model_identity": {
+      "ids_sha256": "6b6b40c3bddf84b1281ef0b18db06927c2bf61c5f4cb32a4219ec9b7839dc2e5",
+      "out_ptr_sha256": "a29aa0296125a5daa972c12d17711360d01a1209cd9cd9d7ccb1f6959224bcaf",
+      "out_post_sha256": "4cc5e857d3481f433576f35ddb8d580cc33cf8e22b6651fa03e08cde5d956d90",
+      "original_weight_sha256": "d95171c2d59cfe3ebef2e5bd52be779b8f74754d718fc8941a93b8f2921c632b",
+      "plastic_edges_sha256": "550335ad546f5c3106e4988426197ad24d8556367c9285e2f4c8c33f37f3cc68",
+      "configuration_sha256": "9499403434ee781463272a83fcd88ee3df37acca3aeb220f436810b0028bfbd3"
+    },
+    "configuration": {
+      "initial_weight": "40a2e78d7299197d24ba03a24c94a8e1cd0eb45a653d69f001fc3acee2fdc779",
+      "modulation_mask": "914dcf25dae442aecbcf27565f7bc8be76ea8254e7fbc944f2efe6e2413e6d5a",
+      "rule": {
+        "trace_kc_seconds": 1.0,
+        "trace_dan_seconds": 1.0,
+        "memory_decay_seconds": 1800.0,
+        "weight_filter_seconds": 0.05,
+        "minimum_fraction": 0.1,
+        "maximum_fraction": 2.0,
+        "maximum_rate_bin_ms": 10.0,
+        "source": "https://doi.org/10.1038/s41586-024-07819-w",
+        "interpretation": "Centered rate-rule adaptation on existing individual edges, not an exact reproduction of the published nine-unit model. Equal trace constants, efficacy bounds, gain and 50 ms weight filter require calibration."
+      },
+      "rule_sha256": "0df2ae1bf10b97a213064b3ac3934227539d08e51521a99cdb56fe7f5b44b725",
+      "tonic": "9987b0e2557db3948dd617b9a70397a9ad7bf0367f8cf9e3e29af4d8d05f0420",
+      "dan_baseline_hz": "986c1936fd3d3ff90de54565be34655fda3e5157d9bd1ee7e032be868fb9a799",
+      "rest": "275bd935e4f1a56cbc2ca22b8f258f1cef511894f42f531e9a52476dd7b02946",
+      "adaptation_jump": 8.0,
+      "adaptation_tau": 200.0,
+      "retina": "5ec145156d998f582e5d8f08c4174e10f7f853d34745118adab8589f192d04b4",
+      "uv": "51f7dafd4355a06176418e22373ffcdf5bc066f75050da6dcbaaaccbad55a714",
+      "lamina": "22d6fa8ac7aa40700d09394aea1cf35226711d2efc78bc716882920ba180e47e",
+      "sugar": "89b057c7b57d5e783f608815b4219b17b54c812c3fa229bcb78b1cafa30d37a1",
+      "pre": "a58bac7b66de7bbc48f47c4c5d12db216cbfbeed4a2148020ac4638dde143acd",
+      "gain": "94a6bdd055ad6010d8e476c97eea5af1c240009c7068be0d82b4bfa07fdc5cfd",
+      "kc_mask": "43e6ed840af2d547a3ae5848155e639f6e2abf60d5b7caa83c4298a3fb64c617",
+      "dan_index": "2a62818a14eb7fb9a288eaf1dd4e93dec4e66de1428f12e844ca2ba5497823dd",
+      "r8": "27c803c738f86c0509cabc57269e265bac832d8b4477773688e59a14d671f0ff",
+      "r8_uv": "e567b93a289fa467ec1096295c4682dce0dfd4f7d92844159f7eb4a380e22719",
+      "r8_channel": "350fc24c7884470b78254805a557e57bf12b89b71ea8a32af2f4929e951555ae",
+      "corrected_edges": "64916a520f2d1e7daf30bfd027a67d53ceb0f8270097b17c0635572ce2db658d"
+    },
+    "execution": {
+      "backend": "metal",
+      "backend_metadata": {
+        "schema": 2,
+        "abi_version": 6,
+        "sources": {
+          "api.h": "086055c1dd46f13caced371bf9a799ed4fca029d72453cde8ec83754be34f4f6",
+          "backend.mm": "f5f825be083ddb060e36c84184acd1fa07fecbcecebc353a155268d5e414b9de",
+          "kernels.metal": "a1cbabde0f145937bed851939c83dd4beed732d2fef2e4e1a19c705ad6508bb0",
+          "decay_tables.h": "85702606729011f942be2174e4ba074d1ca90066f586d6980025458862570065"
+        },
+        "binaries": {
+          "air": "4dfd9f291d9ae797aeb34dd254de9d92668ea8f7f51dbba56c0337afa9ce1fff",
+          "metallib": "71dcc018f43a0346c732617e5c0a945ad94e46816f81bd964563f514ce918516",
+          "library": "3be9bb5b220495a707ca937284b7520418530eb4639d5a9cff729d12acf8c7a7"
+        },
+        "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+        "sdk": "26.5",
+        "macos": "26.6.2",
+        "architecture": "arm64",
+        "metal_language": "macos-metal2.4",
+        "build_configuration": {
+          "abi_version": 6,
+          "builder_sha256": "63b1fe0ba43ec439ce9ea848b6624a7bfa5c10d2e444dd57fe1ccd2764d1d7ff",
+          "metal_compile_flags": [
+            "-std=macos-metal2.4",
+            "-fno-fast-math",
+            "-ffp-contract=off"
+          ],
+          "library_compile_flags": [
+            "-O3",
+            "-std=c++17",
+            "-dynamiclib",
+            "-fobjc-arc",
+            "-arch",
+            "arm64",
+            "-mmacosx-version-min=13.0"
+          ]
+        },
+        "device": {
+          "name": "Apple M4 Pro",
+          "recommended_working_set": 19069665280,
+          "has_unified_memory": true,
+          "supports_apple7": true,
+          "supported": true
+        }
+      },
+      "metal_validation_sha256": "cbe27d9df04c5aec8ea5232624ee92cfc7fc0d194bbcfc4dbd9d49373c14055d",
+      "metal_validation_horizon_ms": 80
+    },
+    "calibration": {
+      "MBON_current": 9.87,
+      "DAN_current": 11.3125,
+      "observed_MBON_hz": [
+        37,
+        37
+      ],
+      "observed_DAN_hz": [
+        23,
+        19
+      ],
+      "target_MBON_hz": 37.16625,
+      "target_MBON_sd": 9.06014,
+      "target_DAN_hz": 20.09,
+      "target_DAN_sd": 4.30193,
+      "evidence": "https://doi.org/10.1038/s41586-024-07819-w",
+      "source_data": "Figure 1, panels d/e, n=20 flies per type",
+      "limits": "A fitted background current is not identified pacemaker physiology. This only constrains baseline rates, not cue responses, burst statistics or learned behavior."
+    },
+    "training": [
+      {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 0,
+        "video_sha256": "4fb2a7b08d2a3e91244073ff9b7dc0b848eefcb9e6235d8a357a0330af4f5efe",
+        "control_sha256": "fe6a070d684a8e72beb1e36a0cec30e1e4a6ab2409bfc039ba4460e39212c54a"
+      }
+    ],
+    "evaluation": [
+      {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 1,
+        "video_sha256": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501",
+        "control_sha256": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+      }
+    ],
+    "epochs": 1,
+    "eta": 0.001,
+    "diagnostic_limit": 35,
+    "arms": [
+      "plastic",
+      "frozen",
+      "shifted"
+    ],
+    "readouts": [
+      {
+        "index": 306,
+        "id": "10331",
+        "type": "MN9",
+        "side": "L"
+      },
+      {
+        "index": 332,
+        "id": "10360",
+        "type": "DNa02",
+        "side": "R"
+      },
+      {
+        "index": 706,
+        "id": "10763",
+        "type": "MDN",
+        "side": "R"
+      },
+      {
+        "index": 725,
+        "id": "10783",
+        "type": "DNp09",
+        "side": "L"
+      },
+      {
+        "index": 1087,
+        "id": "11177",
+        "type": "DNp09",
+        "side": "R"
+      },
+      {
+        "index": 1196,
+        "id": "11288",
+        "type": "MDN",
+        "side": "L"
+      },
+      {
+        "index": 1240,
+        "id": "11332",
+        "type": "MDN",
+        "side": "R"
+      },
+      {
+        "index": 2194,
+        "id": "12348",
+        "type": "MDN",
+        "side": "L"
+      },
+      {
+        "index": 6367,
+        "id": "16949",
+        "type": "MN9",
+        "side": "R"
+      },
+      {
+        "index": 131957,
+        "id": "523769",
+        "type": "DNa02",
+        "side": "L"
+      },
+      {
+        "index": 48,
+        "id": "10059",
+        "type": "DNp20",
+        "side": "R"
+      },
+      {
+        "index": 146,
+        "id": "10162",
+        "type": "DNp20",
+        "side": "L"
+      },
+      {
+        "index": 489,
+        "id": "10527",
+        "type": "DNpe017",
+        "side": "L"
+      },
+      {
+        "index": 142493,
+        "id": "555871",
+        "type": "DNpe017",
+        "side": "R"
+      }
+    ],
+    "shift_offsets": [
+      491
+    ],
+    "teacher": "After decoding, min(abs(student-target)/6,1); next original frame gets 4*error at PPL101. First frame and all evaluations receive zero teacher current.",
+    "shift": "Circular positive np.roll turn targets only. Original RGB/raw controls unchanged; feedback dose can differ and is measured.",
+    "timing": {
+      "source_hz": 35,
+      "neural_dt_ms": 0.1,
+      "warmup_ms": 2000,
+      "retention_ms": 5000,
+      "frame_end_steps": "round((index+1)*10000/35)"
+    },
+    "evaluation_mode": "Teacher-free frozen efficacies, learned full checkpoint restored independently per episode; decoder and fast state reset.",
+    "retention_mode": "Unfrozen efficacies; no teacher or learning during five seconds dark, then frozen teacher-free evaluation.",
+    "target_calibration": "Local ViZDoom 1.3.0: 320 yaw units for held count below six, then 640; 360/65536 degrees per unit. Original collector engine provenance unresolved.",
+    "claim_gate": "Exploratory turn-only reinforcement. Physiological validation failed/pending. Changed weights and numeric controls establish no biological learning or held-out gameplay; hazard-arena transfer and scientific launch gates remain required."
+  },
+  "episodes": [
+    {
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 0,
+        "video_sha256": "4fb2a7b08d2a3e91244073ff9b7dc0b848eefcb9e6235d8a357a0330af4f5efe",
+        "control_sha256": "fe6a070d684a8e72beb1e36a0cec30e1e4a6ab2409bfc039ba4460e39212c54a"
+      },
+      "training": true,
+      "weights_frozen": false,
+      "target_shift": 0,
+      "source_frame_count": 982,
+      "diagnostic_limit": 35,
+      "frames": 35,
+      "complete": false,
+      "brain_steps": 10000,
+      "brain_seconds": 1.0,
+      "recorded_seconds": 1.0,
+      "wall_seconds": 8.594353208005487,
+      "kernel_seconds": 3.8590801230311627,
+      "warmup": {
+        "requested_ms": 2000,
+        "brain_steps": 20000,
+        "brain_seconds": 2.0,
+        "wall_seconds": 4.5618151250018855,
+        "kernel_seconds": 4.3884997539789765
+      },
+      "teacher_dose_current_ms": 3202.5487054395194,
+      "pending_teacher_current": 2.759549632798415,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 0,
+        "mean_efficacy": 1.0,
+        "minimum_efficacy": 1.0,
+        "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 1493,
+        "mean_efficacy": 1.0151898860931396,
+        "minimum_efficacy": 0.8767432570457458,
+        "sha256": "fc9e467182f0d4a7797740e75453a9e5d4232347c40d7543927318d1a5ea5ba4",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "09392e44969d166de5986d3b4e3f56df87ccaa3391622ae57e3d4212298b7b47",
+        "memory_w_sha256": "7df84989729394945f1c8a5c490fe9b2e6b2b0a92901784290b61bb278ef463d",
+        "rate_kc_sha256": "f57b99bd1ba21d271b657bd71b8ee77b8cd10d889558f1c07fa09905aa0b1d95",
+        "rate_dan_sha256": "517e4f1a245e36af64081d04687e36fb98a1f8104af581acb2cc1890719581dc"
+      },
+      "score": {
+        "mae_degrees": 5.010624505117237,
+        "direction_support": {
+          "left": 35,
+          "idle": 0,
+          "right": 0
+        },
+        "direction_recall": {
+          "left": 0.05714285714285714
+        },
+        "balanced_direction_recall": 0.05714285714285714,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -3.2645089285714284,
+            "mae_degrees": 0.4304846938775511,
+            "direction_support": {
+              "left": 35,
+              "idle": 0,
+              "right": 0
+            },
+            "direction_recall": {
+              "left": 1.0
+            },
+            "balanced_direction_recall": 1.0
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 3.2645089285714284,
+            "direction_support": {
+              "left": 35,
+              "idle": 0,
+              "right": 0
+            },
+            "direction_recall": {
+              "left": 0.0
+            },
+            "balanced_direction_recall": 0.0
+          },
+          "right": {
+            "turn_degrees": 3.2645089285714284,
+            "mae_degrees": 6.529017857142857,
+            "direction_support": {
+              "left": 35,
+              "idle": 0,
+              "right": 0
+            },
+            "direction_recall": {
+              "left": 0.0
+            },
+            "balanced_direction_recall": 0.0
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "arm": "plastic",
+      "phase": "training",
+      "invariants_unchanged": true
+    },
+    {
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 1,
+        "video_sha256": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501",
+        "control_sha256": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+      },
+      "training": false,
+      "weights_frozen": true,
+      "target_shift": 0,
+      "source_frame_count": 988,
+      "diagnostic_limit": 35,
+      "frames": 35,
+      "complete": false,
+      "brain_steps": 10000,
+      "brain_seconds": 1.0,
+      "recorded_seconds": 1.0,
+      "wall_seconds": 9.100364333004109,
+      "kernel_seconds": 4.460336380005174,
+      "warmup": {
+        "requested_ms": 2000,
+        "brain_steps": 20000,
+        "brain_seconds": 2.0,
+        "wall_seconds": 4.498540708998917,
+        "kernel_seconds": 4.378522030034219
+      },
+      "teacher_dose_current_ms": 0.0,
+      "pending_teacher_current": 0.0,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 1493,
+        "mean_efficacy": 1.0151898860931396,
+        "minimum_efficacy": 0.8767432570457458,
+        "sha256": "fc9e467182f0d4a7797740e75453a9e5d4232347c40d7543927318d1a5ea5ba4",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "09392e44969d166de5986d3b4e3f56df87ccaa3391622ae57e3d4212298b7b47",
+        "memory_w_sha256": "7df84989729394945f1c8a5c490fe9b2e6b2b0a92901784290b61bb278ef463d",
+        "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 1493,
+        "mean_efficacy": 1.0151898860931396,
+        "minimum_efficacy": 0.8767432570457458,
+        "sha256": "fc9e467182f0d4a7797740e75453a9e5d4232347c40d7543927318d1a5ea5ba4",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "09392e44969d166de5986d3b4e3f56df87ccaa3391622ae57e3d4212298b7b47",
+        "memory_w_sha256": "7df84989729394945f1c8a5c490fe9b2e6b2b0a92901784290b61bb278ef463d",
+        "rate_kc_sha256": "8213fb0170fa8c82ab23ec2550d3bc579d39f9da47f7b688da8fa6e3061b1e03",
+        "rate_dan_sha256": "019c147c55b909f64d0e4e0e49433b01064a1f2fe2ccb1feb2597f496ef4d92b"
+      },
+      "score": {
+        "mae_degrees": 4.300568731850722,
+        "direction_support": {
+          "left": 35,
+          "idle": 0,
+          "right": 0
+        },
+        "direction_recall": {
+          "left": 0.17142857142857143
+        },
+        "balanced_direction_recall": 0.17142857142857143,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -3.2645089285714284,
+            "mae_degrees": 0.4304846938775511,
+            "direction_support": {
+              "left": 35,
+              "idle": 0,
+              "right": 0
+            },
+            "direction_recall": {
+              "left": 1.0
+            },
+            "balanced_direction_recall": 1.0
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 3.2645089285714284,
+            "direction_support": {
+              "left": 35,
+              "idle": 0,
+              "right": 0
+            },
+            "direction_recall": {
+              "left": 0.0
+            },
+            "balanced_direction_recall": 0.0
+          },
+          "right": {
+            "turn_degrees": 3.2645089285714284,
+            "mae_degrees": 6.529017857142857,
+            "direction_support": {
+              "left": 35,
+              "idle": 0,
+              "right": 0
+            },
+            "direction_recall": {
+              "left": 0.0
+            },
+            "balanced_direction_recall": 0.0
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "arm": "plastic",
+      "phase": "held_out",
+      "invariants_unchanged": true
+    },
+    {
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 1,
+        "video_sha256": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501",
+        "control_sha256": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+      },
+      "training": false,
+      "weights_frozen": true,
+      "target_shift": 0,
+      "source_frame_count": 988,
+      "diagnostic_limit": 35,
+      "frames": 35,
+      "complete": false,
+      "brain_steps": 10000,
+      "brain_seconds": 1.0,
+      "recorded_seconds": 1.0,
+      "wall_seconds": 9.111096000000543,
+      "kernel_seconds": 4.480396956038021,
+      "warmup": {
+        "requested_ms": 2000,
+        "brain_steps": 20000,
+        "brain_seconds": 2.0,
+        "wall_seconds": 4.484001124998031,
+        "kernel_seconds": 4.364973168063443
+      },
+      "teacher_dose_current_ms": 0.0,
+      "pending_teacher_current": 0.0,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 1493,
+        "mean_efficacy": 1.0323764085769653,
+        "minimum_efficacy": 0.8536425232887268,
+        "sha256": "ed371b5919b8e9db9c099c63a16a81383acf869ed55bec5e59ff4e8a6663dec8",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "b7170c882e9249436ff31a5c33b756d6c0334c3efc11ca45d87ee852dcd1d1ce",
+        "memory_w_sha256": "bee2b2f72a53ea341d719beb4f9ce5eee5c97ddba4dcb777b06b26e56bb30572",
+        "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 1493,
+        "mean_efficacy": 1.0323764085769653,
+        "minimum_efficacy": 0.8536425232887268,
+        "sha256": "ed371b5919b8e9db9c099c63a16a81383acf869ed55bec5e59ff4e8a6663dec8",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "b7170c882e9249436ff31a5c33b756d6c0334c3efc11ca45d87ee852dcd1d1ce",
+        "memory_w_sha256": "bee2b2f72a53ea341d719beb4f9ce5eee5c97ddba4dcb777b06b26e56bb30572",
+        "rate_kc_sha256": "72774e6e0927e99937f3b593690da4c8ff9e10a91544a411b5e226f5b1a0bfd6",
+        "rate_dan_sha256": "83b0acfd163467cb7a7f559e89b281230c5b8fc6cd559edff19ea137bd7daaec"
+      },
+      "score": {
+        "mae_degrees": 4.861422559650672,
+        "direction_support": {
+          "left": 35,
+          "idle": 0,
+          "right": 0
+        },
+        "direction_recall": {
+          "left": 0.02857142857142857
+        },
+        "balanced_direction_recall": 0.02857142857142857,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -3.2645089285714284,
+            "mae_degrees": 0.4304846938775511,
+            "direction_support": {
+              "left": 35,
+              "idle": 0,
+              "right": 0
+            },
+            "direction_recall": {
+              "left": 1.0
+            },
+            "balanced_direction_recall": 1.0
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 3.2645089285714284,
+            "direction_support": {
+              "left": 35,
+              "idle": 0,
+              "right": 0
+            },
+            "direction_recall": {
+              "left": 0.0
+            },
+            "balanced_direction_recall": 0.0
+          },
+          "right": {
+            "turn_degrees": 3.2645089285714284,
+            "mae_degrees": 6.529017857142857,
+            "direction_support": {
+              "left": 35,
+              "idle": 0,
+              "right": 0
+            },
+            "direction_recall": {
+              "left": 0.0
+            },
+            "balanced_direction_recall": 0.0
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "arm": "plastic",
+      "phase": "retention_5s",
+      "invariants_unchanged": true,
+      "retention": {
+        "brain_steps": 50000,
+        "brain_seconds": 5.0,
+        "wall_seconds": 33.708314249997784,
+        "kernel_seconds": 33.29238708300545,
+        "weights_frozen": false,
+        "learning": false,
+        "teacher_current": 0.0,
+        "before": {
+          "plastic_edges": 4184,
+          "changed_edges": 1493,
+          "mean_efficacy": 1.0151898860931396,
+          "minimum_efficacy": 0.8767432570457458,
+          "sha256": "fc9e467182f0d4a7797740e75453a9e5d4232347c40d7543927318d1a5ea5ba4",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "09392e44969d166de5986d3b4e3f56df87ccaa3391622ae57e3d4212298b7b47",
+          "memory_w_sha256": "7df84989729394945f1c8a5c490fe9b2e6b2b0a92901784290b61bb278ef463d",
+          "rate_kc_sha256": "f57b99bd1ba21d271b657bd71b8ee77b8cd10d889558f1c07fa09905aa0b1d95",
+          "rate_dan_sha256": "517e4f1a245e36af64081d04687e36fb98a1f8104af581acb2cc1890719581dc"
+        },
+        "after": {
+          "plastic_edges": 4184,
+          "changed_edges": 1493,
+          "mean_efficacy": 1.0323764085769653,
+          "minimum_efficacy": 0.8536425232887268,
+          "sha256": "ed371b5919b8e9db9c099c63a16a81383acf869ed55bec5e59ff4e8a6663dec8",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b7170c882e9249436ff31a5c33b756d6c0334c3efc11ca45d87ee852dcd1d1ce",
+          "memory_w_sha256": "bee2b2f72a53ea341d719beb4f9ce5eee5c97ddba4dcb777b06b26e56bb30572",
+          "rate_kc_sha256": "bbe5c360e07d124743e983befc2d458537ae087963f85fb3961cf170ad6ecbdf",
+          "rate_dan_sha256": "1d9b66e3ea3de99f1e0c309f36238367f90a99a1c2bdeff1a453ae332add7444"
+        }
+      }
+    },
+    {
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 1,
+        "video_sha256": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501",
+        "control_sha256": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+      },
+      "training": false,
+      "weights_frozen": true,
+      "target_shift": 0,
+      "source_frame_count": 988,
+      "diagnostic_limit": 35,
+      "frames": 35,
+      "complete": false,
+      "brain_steps": 10000,
+      "brain_seconds": 1.0,
+      "recorded_seconds": 1.0,
+      "wall_seconds": 9.15737466700375,
+      "kernel_seconds": 4.515094958005648,
+      "warmup": {
+        "requested_ms": 2000,
+        "brain_steps": 20000,
+        "brain_seconds": 2.0,
+        "wall_seconds": 4.495540707997861,
+        "kernel_seconds": 4.375895286932064
+      },
+      "teacher_dose_current_ms": 0.0,
+      "pending_teacher_current": 0.0,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 0,
+        "mean_efficacy": 1.0,
+        "minimum_efficacy": 1.0,
+        "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 0,
+        "mean_efficacy": 1.0,
+        "minimum_efficacy": 1.0,
+        "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_kc_sha256": "145ba69ff2fc7f72b13aadcd2f93985cfeae79f1b5c0a8f489828fe21b6d70cf",
+        "rate_dan_sha256": "f20d330a38086422d9142e436222956293fe758d5d2156d46d4f2708631450ee"
+      },
+      "score": {
+        "mae_degrees": 4.932659598249592,
+        "direction_support": {
+          "left": 35,
+          "idle": 0,
+          "right": 0
+        },
+        "direction_recall": {
+          "left": 0.05714285714285714
+        },
+        "balanced_direction_recall": 0.05714285714285714,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -3.2645089285714284,
+            "mae_degrees": 0.4304846938775511,
+            "direction_support": {
+              "left": 35,
+              "idle": 0,
+              "right": 0
+            },
+            "direction_recall": {
+              "left": 1.0
+            },
+            "balanced_direction_recall": 1.0
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 3.2645089285714284,
+            "direction_support": {
+              "left": 35,
+              "idle": 0,
+              "right": 0
+            },
+            "direction_recall": {
+              "left": 0.0
+            },
+            "balanced_direction_recall": 0.0
+          },
+          "right": {
+            "turn_degrees": 3.2645089285714284,
+            "mae_degrees": 6.529017857142857,
+            "direction_support": {
+              "left": 35,
+              "idle": 0,
+              "right": 0
+            },
+            "direction_recall": {
+              "left": 0.0
+            },
+            "balanced_direction_recall": 0.0
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "arm": "plastic",
+      "phase": "memory_erased",
+      "invariants_unchanged": true
+    },
+    {
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 0,
+        "video_sha256": "4fb2a7b08d2a3e91244073ff9b7dc0b848eefcb9e6235d8a357a0330af4f5efe",
+        "control_sha256": "fe6a070d684a8e72beb1e36a0cec30e1e4a6ab2409bfc039ba4460e39212c54a"
+      },
+      "training": true,
+      "weights_frozen": true,
+      "target_shift": 0,
+      "source_frame_count": 982,
+      "diagnostic_limit": 35,
+      "frames": 35,
+      "complete": false,
+      "brain_steps": 10000,
+      "brain_seconds": 1.0,
+      "recorded_seconds": 1.0,
+      "wall_seconds": 9.1941450000013,
+      "kernel_seconds": 4.553815872022824,
+      "warmup": {
+        "requested_ms": 2000,
+        "brain_steps": 20000,
+        "brain_seconds": 2.0,
+        "wall_seconds": 4.49821662499744,
+        "kernel_seconds": 4.378441198015935
+      },
+      "teacher_dose_current_ms": 3232.428449235138,
+      "pending_teacher_current": 3.1950643074055622,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 0,
+        "mean_efficacy": 1.0,
+        "minimum_efficacy": 1.0,
+        "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 0,
+        "mean_efficacy": 1.0,
+        "minimum_efficacy": 1.0,
+        "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_kc_sha256": "c913587c4aeb73a124f9ed50aaa7901c0f6ecf1371bfd09aa1b9697a53939bb8",
+        "rate_dan_sha256": "22a955e59cd8112c1268a4ef90b205921a9c404a29a2a991a23aafe9f9029da4"
+      },
+      "score": {
+        "mae_degrees": 5.194219252982782,
+        "direction_support": {
+          "left": 35,
+          "idle": 0,
+          "right": 0
+        },
+        "direction_recall": {
+          "left": 0.02857142857142857
+        },
+        "balanced_direction_recall": 0.02857142857142857,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -3.2645089285714284,
+            "mae_degrees": 0.4304846938775511,
+            "direction_support": {
+              "left": 35,
+              "idle": 0,
+              "right": 0
+            },
+            "direction_recall": {
+              "left": 1.0
+            },
+            "balanced_direction_recall": 1.0
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 3.2645089285714284,
+            "direction_support": {
+              "left": 35,
+              "idle": 0,
+              "right": 0
+            },
+            "direction_recall": {
+              "left": 0.0
+            },
+            "balanced_direction_recall": 0.0
+          },
+          "right": {
+            "turn_degrees": 3.2645089285714284,
+            "mae_degrees": 6.529017857142857,
+            "direction_support": {
+              "left": 35,
+              "idle": 0,
+              "right": 0
+            },
+            "direction_recall": {
+              "left": 0.0
+            },
+            "balanced_direction_recall": 0.0
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "arm": "frozen",
+      "phase": "training",
+      "invariants_unchanged": true
+    },
+    {
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 1,
+        "video_sha256": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501",
+        "control_sha256": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+      },
+      "training": false,
+      "weights_frozen": true,
+      "target_shift": 0,
+      "source_frame_count": 988,
+      "diagnostic_limit": 35,
+      "frames": 35,
+      "complete": false,
+      "brain_steps": 10000,
+      "brain_seconds": 1.0,
+      "recorded_seconds": 1.0,
+      "wall_seconds": 9.163095500000054,
+      "kernel_seconds": 4.514141578940325,
+      "warmup": {
+        "requested_ms": 2000,
+        "brain_steps": 20000,
+        "brain_seconds": 2.0,
+        "wall_seconds": 4.502852666999388,
+        "kernel_seconds": 4.382469670017599
+      },
+      "teacher_dose_current_ms": 0.0,
+      "pending_teacher_current": 0.0,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 0,
+        "mean_efficacy": 1.0,
+        "minimum_efficacy": 1.0,
+        "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 0,
+        "mean_efficacy": 1.0,
+        "minimum_efficacy": 1.0,
+        "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_kc_sha256": "145ba69ff2fc7f72b13aadcd2f93985cfeae79f1b5c0a8f489828fe21b6d70cf",
+        "rate_dan_sha256": "f20d330a38086422d9142e436222956293fe758d5d2156d46d4f2708631450ee"
+      },
+      "score": {
+        "mae_degrees": 4.932659598249592,
+        "direction_support": {
+          "left": 35,
+          "idle": 0,
+          "right": 0
+        },
+        "direction_recall": {
+          "left": 0.05714285714285714
+        },
+        "balanced_direction_recall": 0.05714285714285714,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -3.2645089285714284,
+            "mae_degrees": 0.4304846938775511,
+            "direction_support": {
+              "left": 35,
+              "idle": 0,
+              "right": 0
+            },
+            "direction_recall": {
+              "left": 1.0
+            },
+            "balanced_direction_recall": 1.0
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 3.2645089285714284,
+            "direction_support": {
+              "left": 35,
+              "idle": 0,
+              "right": 0
+            },
+            "direction_recall": {
+              "left": 0.0
+            },
+            "balanced_direction_recall": 0.0
+          },
+          "right": {
+            "turn_degrees": 3.2645089285714284,
+            "mae_degrees": 6.529017857142857,
+            "direction_support": {
+              "left": 35,
+              "idle": 0,
+              "right": 0
+            },
+            "direction_recall": {
+              "left": 0.0
+            },
+            "balanced_direction_recall": 0.0
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "arm": "frozen",
+      "phase": "held_out",
+      "invariants_unchanged": true
+    },
+    {
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 0,
+        "video_sha256": "4fb2a7b08d2a3e91244073ff9b7dc0b848eefcb9e6235d8a357a0330af4f5efe",
+        "control_sha256": "fe6a070d684a8e72beb1e36a0cec30e1e4a6ab2409bfc039ba4460e39212c54a"
+      },
+      "training": true,
+      "weights_frozen": false,
+      "target_shift": 491,
+      "source_frame_count": 982,
+      "diagnostic_limit": 35,
+      "frames": 35,
+      "complete": false,
+      "brain_steps": 10000,
+      "brain_seconds": 1.0,
+      "recorded_seconds": 1.0,
+      "wall_seconds": 8.92098083300516,
+      "kernel_seconds": 4.208670422005525,
+      "warmup": {
+        "requested_ms": 2000,
+        "brain_steps": 20000,
+        "brain_seconds": 2.0,
+        "wall_seconds": 4.53930862499692,
+        "kernel_seconds": 4.37680699993507
+      },
+      "teacher_dose_current_ms": 2596.755443927828,
+      "pending_teacher_current": 3.4341471299561532,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 0,
+        "mean_efficacy": 1.0,
+        "minimum_efficacy": 1.0,
+        "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 1661,
+        "mean_efficacy": 1.0344905853271484,
+        "minimum_efficacy": 0.8297344446182251,
+        "sha256": "18e48a16b2f114227c7b7949e6ded0d7f0c5c5912063b15e6ddb196d6adcc41d",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "8e406586476dba4c913956a2c038bce3d622e419e26006a8818364aac01aba31",
+        "memory_w_sha256": "01175c05621e97ca2f1fa609a140024c6394b0994c1411bf604c0b16619d3221",
+        "rate_kc_sha256": "94aa89c1208c95d47c26d89395bcc2173ced2790350454623ccc431bbdabcdd8",
+        "rate_dan_sha256": "1ebc3e06f3bd428cea8d2b477a3d32024682170844cbd66ed5e7c2f6802a7f3b"
+      },
+      "score": {
+        "mae_degrees": 4.060041210415918,
+        "direction_support": {
+          "left": 27,
+          "idle": 4,
+          "right": 4
+        },
+        "direction_recall": {
+          "left": 0.037037037037037035,
+          "idle": 0.0,
+          "right": 1.0
+        },
+        "balanced_direction_recall": 0.345679012345679,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -2.8627232142857144,
+            "mae_degrees": 1.6243622448979589,
+            "direction_support": {
+              "left": 27,
+              "idle": 4,
+              "right": 4
+            },
+            "direction_recall": {
+              "left": 1.0,
+              "idle": 0.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 2.8627232142857144,
+            "direction_support": {
+              "left": 27,
+              "idle": 4,
+              "right": 4
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 1.0,
+              "right": 0.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          },
+          "right": {
+            "turn_degrees": 2.8627232142857144,
+            "mae_degrees": 5.071109693877553,
+            "direction_support": {
+              "left": 27,
+              "idle": 4,
+              "right": 4
+            },
+            "direction_recall": {
+              "left": 0.0,
+              "idle": 0.0,
+              "right": 1.0
+            },
+            "balanced_direction_recall": 0.3333333333333333
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "arm": "shifted",
+      "phase": "training",
+      "invariants_unchanged": true
+    },
+    {
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 1,
+        "video_sha256": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501",
+        "control_sha256": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+      },
+      "training": false,
+      "weights_frozen": true,
+      "target_shift": 0,
+      "source_frame_count": 988,
+      "diagnostic_limit": 35,
+      "frames": 35,
+      "complete": false,
+      "brain_steps": 10000,
+      "brain_seconds": 1.0,
+      "recorded_seconds": 1.0,
+      "wall_seconds": 8.276211875003355,
+      "kernel_seconds": 3.6280244199733716,
+      "warmup": {
+        "requested_ms": 2000,
+        "brain_steps": 20000,
+        "brain_seconds": 2.0,
+        "wall_seconds": 4.502081624996208,
+        "kernel_seconds": 4.382363954922766
+      },
+      "teacher_dose_current_ms": 0.0,
+      "pending_teacher_current": 0.0,
+      "before": {
+        "plastic_edges": 4184,
+        "changed_edges": 1661,
+        "mean_efficacy": 1.0344905853271484,
+        "minimum_efficacy": 0.8297344446182251,
+        "sha256": "18e48a16b2f114227c7b7949e6ded0d7f0c5c5912063b15e6ddb196d6adcc41d",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "8e406586476dba4c913956a2c038bce3d622e419e26006a8818364aac01aba31",
+        "memory_w_sha256": "01175c05621e97ca2f1fa609a140024c6394b0994c1411bf604c0b16619d3221",
+        "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+        "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+      },
+      "after": {
+        "plastic_edges": 4184,
+        "changed_edges": 1661,
+        "mean_efficacy": 1.0344905853271484,
+        "minimum_efficacy": 0.8297344446182251,
+        "sha256": "18e48a16b2f114227c7b7949e6ded0d7f0c5c5912063b15e6ddb196d6adcc41d",
+        "model": "adaptive-centered-v6",
+        "memory_u_sha256": "8e406586476dba4c913956a2c038bce3d622e419e26006a8818364aac01aba31",
+        "memory_w_sha256": "01175c05621e97ca2f1fa609a140024c6394b0994c1411bf604c0b16619d3221",
+        "rate_kc_sha256": "acd5f97b11545be795f0560f89472687baf6b61b93e67b53c914d64f5fa34bca",
+        "rate_dan_sha256": "aca20dbde7e102cf99c4dc5cd84f526c431c407e6efbc7b59d6470d24a82441d"
+      },
+      "score": {
+        "mae_degrees": 4.222561669922172,
+        "direction_support": {
+          "left": 35,
+          "idle": 0,
+          "right": 0
+        },
+        "direction_recall": {
+          "left": 0.22857142857142856
+        },
+        "balanced_direction_recall": 0.22857142857142856,
+        "dead_zone_degrees": 0.1,
+        "constant_baselines": {
+          "left": {
+            "turn_degrees": -3.2645089285714284,
+            "mae_degrees": 0.4304846938775511,
+            "direction_support": {
+              "left": 35,
+              "idle": 0,
+              "right": 0
+            },
+            "direction_recall": {
+              "left": 1.0
+            },
+            "balanced_direction_recall": 1.0
+          },
+          "idle": {
+            "turn_degrees": 0.0,
+            "mae_degrees": 3.2645089285714284,
+            "direction_support": {
+              "left": 35,
+              "idle": 0,
+              "right": 0
+            },
+            "direction_recall": {
+              "left": 0.0
+            },
+            "balanced_direction_recall": 0.0
+          },
+          "right": {
+            "turn_degrees": 3.2645089285714284,
+            "mae_degrees": 6.529017857142857,
+            "direction_support": {
+              "left": 35,
+              "idle": 0,
+              "right": 0
+            },
+            "direction_recall": {
+              "left": 0.0
+            },
+            "balanced_direction_recall": 0.0
+          }
+        },
+        "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+      },
+      "arm": "shifted",
+      "phase": "held_out",
+      "invariants_unchanged": true
+    }
+  ],
+  "learning_demonstrated": false,
+  "announcement_ready": false
+}

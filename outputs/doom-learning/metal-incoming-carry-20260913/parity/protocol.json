@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "source_commit": "fba0c93112c59b5f61317b4026aee0b92978fc41",
+  "arithmetic_epoch": 6,
+  "metal_build": {
+    "schema": 2,
+    "abi_version": 6,
+    "sources": {
+      "api.h": "086055c1dd46f13caced371bf9a799ed4fca029d72453cde8ec83754be34f4f6",
+      "backend.mm": "f5f825be083ddb060e36c84184acd1fa07fecbcecebc353a155268d5e414b9de",
+      "kernels.metal": "a1cbabde0f145937bed851939c83dd4beed732d2fef2e4e1a19c705ad6508bb0",
+      "decay_tables.h": "85702606729011f942be2174e4ba074d1ca90066f586d6980025458862570065"
+    },
+    "binaries": {
+      "air": "4dfd9f291d9ae797aeb34dd254de9d92668ea8f7f51dbba56c0337afa9ce1fff",
+      "metallib": "71dcc018f43a0346c732617e5c0a945ad94e46816f81bd964563f514ce918516",
+      "library": "3be9bb5b220495a707ca937284b7520418530eb4639d5a9cff729d12acf8c7a7"
+    },
+    "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+    "sdk": "26.5",
+    "macos": "26.6.2",
+    "architecture": "arm64",
+    "metal_language": "macos-metal2.4",
+    "build_configuration": {
+      "abi_version": 6,
+      "builder_sha256": "63b1fe0ba43ec439ce9ea848b6624a7bfa5c10d2e444dd57fe1ccd2764d1d7ff",
+      "metal_compile_flags": [
+        "-std=macos-metal2.4",
+        "-fno-fast-math",
+        "-ffp-contract=off"
+      ],
+      "library_compile_flags": [
+        "-O3",
+        "-std=c++17",
+        "-dynamiclib",
+        "-fobjc-arc",
+        "-arch",
+        "arm64",
+        "-mmacosx-version-min=13.0"
+      ]
+    },
+    "device": {
+      "name": "Apple M4 Pro",
+      "recommended_working_set": 19069665280,
+      "has_unified_memory": true,
+      "supports_apple7": true,
+      "supported": true
+    }
+  },
+  "neurons": 166700,
+  "retained_edges": 25582938,
+  "plastic_slots": 4184,
+  "original_fma_cohort_results_sha256": "084291bbec53fc6418a97706907358e8d2d3a861a8b522bed470a2552add967e",
+  "learning_demonstrated": false,
+  "announcement_ready": false
+}

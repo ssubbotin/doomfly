@@ -36,6 +36,18 @@ OPENBLAS_NUM_THREADS=1 .venv-neural/bin/python -m doom_learning_v6.survival \
 
 ## Performance result
 
+The [incoming-carry experiment](experiments/2026-09-13-metal-incoming-carry.md)
+advances arithmetic epoch to 6 with only settled-accumulator association changed.
+All seven real native carry controls pass; M4 full suite gives 378 passes/three
+platform skips and 50 baseline warnings. Fresh 40/80 ms gates have exact events,
+decisions, weights and repeated Metal state. Longer parity regresses: dark spikes
+first differ at 1.477 seconds, first RGB turn has the opposite sign, and all
+eight original 35-frame phases have zero exact CPU/Metal fixed-control frames.
+Original input/timing/teacher/frozen/erasure/invariant controls still pass.
+This candidate stays isolated as a failed longer-parity experiment, without
+speedup, useful-learning or launch claims. Further work must instrument event
+ordering and modulatory timing. CPU remains the default scientific reference.
+
 Run `python -m doom_learning_v6.metal.benchmark --out FRESH_PATH` for five repetitions. The program warms each backend once, then measures contiguous CPU and Metal blocks. This measures short contiguous neural traces and avoids repeatedly cooling the GPU with an intervening CPU reference run. Complete training throughput requires a separate measurement.
 
 On the M4 Pro, the two-dispatch result used exactly 808 dispatches per 40 ms trace and no indirect dispatches. Median GPU time was `0.03010 s`, which passes the `0.05690 s` target. Median Metal neural time was `0.03328 s`; CPU was `0.03464 s`, giving `1.0408x` CPU throughput. Total sample wall time was `0.03886 s`, and Metal reached `1.2019x` real time. Relative to the retained resident-state result, neural time improved by 53.9%, GPU time by 56.8%, and wall time by 49.1%. Peak RSS was `2.35 GiB`, free memory remained at or above 85%, and swap stayed zero.
