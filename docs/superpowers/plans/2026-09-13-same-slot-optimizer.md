@@ -247,12 +247,14 @@ trusted graph/build/initialCP pins and ignored runtimeconfiguration.
 artifact-role SHA/bytes audit, exact tested source revision, validation/timing/
 pressure/budget evidence and scientifically qualified public report.
 
-- [ ] **Step 1: Controller fast-forwards only ownedM4 mirror; validate physicalpins and focused nativefixtures.**
+- [ ] **Step 1: Controller fast-forwards only ownedM4 mirror in reviewed stages; validate physicalpins and focused nativefixtures.**
 
 Preserve generatedCPU manifests/nativeproducts and usercheckout/unrelatedjobs.
-Use existing M4env and acquire scoped lease for anynativevalidation. Focused
-pytest runs Task1/Task2/Task3newfiles plus existing causalreplay fixture tests
-once; ordinary fullnative suite once before finalhandoff. Fullgraph validation
+While Task3 is implemented, deploy reviewed Task1/Task2 source and run the
+Task2 candidate-install file once on M4. After Task3 review, deploy the exact
+reviewed CLI revision and run Task1/Task3 plus existing causalreplay fixtures
+once. Use existing M4env and acquire scoped lease for anynativevalidation;
+ordinary fullnative suite once before finalhandoff. Fullgraph validation
 attempts, ifneeded, use fourlane waves within8reserve and do notrerun oldmatrix.
 
 - [ ] **Step 2: Controller launches exact pinned private study using utility-scoped caffeinate-is onAC.**
