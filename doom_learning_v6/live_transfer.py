@@ -155,6 +155,28 @@ def _terminal_evidence(brains, directory, records, failure, expected, timing):
     return failure
 
 
+def _invalidate_phase(directory, brains, summary, failure):
+    """Invalidate metadata only; retain independent terminal/CP availability."""
+    records = summary['lanes']
+    for record in records:
+        scope = ('materialized terminal only; overall phase incomplete'
+                 if record.get('terminal_state_available') and record.get('frozen_verified')
+                 else 'frozen proof unavailable; overall phase incomplete')
+        record.update(complete=False, frozen_proof_scope=scope)
+    summary.update(complete=False, frozen_success=False, failure={'type': type(failure).__name__})
+    _retain(failure, directory, brains, records)
+    writes = [(Path(directory) / f'lane-{lane}/episode.json', record)
+              for lane, record in enumerate(records)]
+    writes += [(Path(directory) / 'summary.json', summary),
+               (Path(directory) / 'progress.json', {'complete': False,
+                   'frames': [len(row['trace']) for row in records], 'failure': summary['failure']})]
+    for path, value in writes:
+        try:
+            save_json(path, value)
+        except BaseException as error:
+            _secondary(failure, error, f'phase metadata invalidation {path.name}')
+
+
 def _persist_phase(directory, brains, records, failure, timing, batch_calls):
     """Persist metadata only; checkpoint ownership stays in terminal evidence."""
     if failure is not None:
@@ -177,6 +199,9 @@ def _persist_phase(directory, brains, records, failure, timing, batch_calls):
             save_json(Path(directory) / f'lane-{lane}/episode.json', record)
         except BaseException as error:
             failure = _secondary(failure, error, f'lane-{lane} JSON')
+            for item in records:
+                item['complete'] = False
+            _retain(failure, directory, brains, records)
     if failure is not None:
         for record in records:
             record['complete'] = False
@@ -188,8 +213,12 @@ def _persist_phase(directory, brains, records, failure, timing, batch_calls):
             save_json(Path(directory) / filename, value)
         except BaseException as error:
             failure = _secondary(failure, error, 'phase JSON')
+            for record in records:
+                record['complete'] = False
             summary['complete'] = False
             _retain(failure, directory, brains, records)
+    if failure is not None:
+        _invalidate_phase(directory, brains, summary, failure)
     timing['terminal_json_wall_seconds'] = time.perf_counter() - io_started
     return summary, failure
 
@@ -357,8 +386,7 @@ def live_wave(brains, executor, games, readouts, *, horizon_tics, warmup_ms, dir
         save_json(phase / 'timing.json', timing)
     except BaseException as error:
         failure = _secondary(failure, error, 'terminal timing JSON')
-        summary['complete'] = False
-        _retain(failure, phase, lanes, records)
+        _invalidate_phase(phase, lanes, summary, failure)
     if failure is not None:
         raise failure
     return summary
@@ -413,9 +441,9 @@ def evaluate(executor, candidates, readouts, protocol, out, *, game_factory):
             entry = {**planned, 'state': 'charged', 'directory': str(directory.relative_to(out)),
                      'used': budget.charge(4, reserve_after=protocol['budget']['reserved'])}
             waves.append(entry)
-            ledger()  # Durable four-lane charge precedes installation/reset/rollout.
             phase = None
             try:
+                ledger()  # Durable four-lane charge precedes installation/reset/rollout.
                 with _phase_boundary(pressure, directory.name), _Resources() as resources:
                     storage = _storage(executor)
                     for lane, role in enumerate(planned['roles']):
@@ -518,6 +546,36 @@ def build_parser():
     return parser
 
 
+def _after_release(args, out, pressure, failure):
+    """Collect release-boundary evidence independently after all release attempts."""
+    errors = []
+    def attempt(stage, function):
+        nonlocal failure
+        try:
+            return function(), True
+        except BaseException as error:
+            errors.append({'stage': stage, 'type': type(error).__name__, 'message': str(error)})
+            failure = _secondary(failure, error, 'release evidence ' + stage)
+            return None, False
+    restored_pressure, available = attempt('pressure_reload', lambda: _pressure(out))
+    if available:
+        pressure = restored_pressure
+    attempt('pressure_observe', lambda: pressure.observe('after_native_release'))
+    after, physical_available = attempt('physical_pins', lambda: _physical_pins(args.reference))
+    if physical_available:
+        attempt('observed_pins_write', lambda: save_json(Path(out) / 'observed-pins-after.json', after))
+        attempt('expected_pins_validation', lambda: _validate_expected_pins(args.expected_pins, after))
+    pin_errors = [row for row in errors if row['stage'] in
+                  ('physical_pins', 'observed_pins_write', 'expected_pins_validation')]
+    if pin_errors:
+        attempt('pin_error_write', lambda: save_json(Path(out) / 'observed-pins-after-error.json', {
+            'physical_available': physical_available, 'errors': pin_errors}))
+    attempt('release_summary_write', lambda: save_json(Path(out) / 'release-evidence.json', {
+        'scope': 'after registered resource release attempts', 'errors': errors,
+        'physical_available': physical_available}))
+    return pressure, failure
+
+
 def run(args):
     """Validate independent physical pins before ownership, then release one lease."""
     out = Path(args.out)
@@ -566,27 +624,28 @@ def run(args):
         pressure.observe('before_native_allocation')
         from .calibration import calibrated_brain
         from .metal.batch import MetalBatchExecutor
-        with _Resources() as resources:
-            brains = _restored_brains(resources, lambda: calibrated_brain(.001, backend='cpu'),
-                                      Path(args.reference) / 'initial.npz', 4)
-            _model_gate(brains, relationships['protocol'])
-            _readout_contract(readouts, brains)
-            for lane, brain in enumerate(brains):
-                checkpoint = out / 'initial' / f'lane-{lane}.npz'
-                brain.checkpoint(checkpoint)
-                _compare_checkpoint_arrays(Path(args.reference) / 'initial.npz', checkpoint)
-            executor = resources.add(MetalBatchExecutor(brains, window_ticks=18))
-            result = evaluate(executor, candidates, readouts, protocol, out, game_factory=_game_factory(protocol))
-        pressure = _pressure(out)
-        pressure.observe('after_native_release')
-        after = _physical_pins(args.reference)
-        _validate_expected_pins(args.expected_pins, after)
-        save_json(out / 'observed-pins-after.json', after)
-        result.update(source_commit=args.source_commit, physical_identity_records=[
-            'expected-pins.json', 'observed-pins.json', 'observed-pins-after.json', 'reference-validation.json'])
-        save_json(out / 'results.json', result)
+        try:
+            with _Resources() as resources:
+                brains = _restored_brains(resources, lambda: calibrated_brain(.001, backend='cpu'),
+                                          Path(args.reference) / 'initial.npz', 4)
+                _model_gate(brains, relationships['protocol'])
+                _readout_contract(readouts, brains)
+                for lane, brain in enumerate(brains):
+                    checkpoint = out / 'initial' / f'lane-{lane}.npz'
+                    brain.checkpoint(checkpoint)
+                    _compare_checkpoint_arrays(Path(args.reference) / 'initial.npz', checkpoint)
+                executor = resources.add(MetalBatchExecutor(brains, window_ticks=18))
+                result = evaluate(executor, candidates, readouts, protocol, out, game_factory=_game_factory(protocol))
+        except BaseException as error:
+            failure = error
+        finally:
+            pressure, failure = _after_release(args, out, pressure, failure)
+        if failure is None:
+            result.update(source_commit=args.source_commit, physical_identity_records=[
+                'expected-pins.json', 'observed-pins.json', 'observed-pins-after.json', 'reference-validation.json'])
+            save_json(out / 'results.json', result)
     except BaseException as error:
-        failure = error
+        failure = _secondary(failure, error, 'CLI orchestration')
     finally:
         for cleanup in (lambda: fcntl.flock(lock.fileno(), fcntl.LOCK_UN), lock.close):
             try:

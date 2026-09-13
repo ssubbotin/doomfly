@@ -736,3 +736,175 @@ def test_declared_game_boundary_never_relaxes_rule_calibration_or_sensory(source
     observed = {'sources': {name: {'sha256': value} for name, value in declaration.items()}}
     observed['sources'][source] = {'sha256': 'c' * 64}
     with pytest.raises(ValueError): _reference_source_transitions(previous, observed, boundary_sources=declaration)
+
+
+@pytest.mark.parametrize('late_file', ['summary.json', 'progress.json', 'timing.json'])
+@pytest.mark.parametrize('persistent', [False, True])
+def test_late_phase_json_invalidates_prior_success_without_neural_retries(case, monkeypatch, late_file, persistent):
+    module = runner()
+    primary = KeyboardInterrupt('late phase writer')
+    writer, failures, syncs, checkpoints, subsequent_availability = module.save_json, [], [], [], []
+    for lane, brain in enumerate(case.brains):
+        sync, cp = brain.backend.sync_for_checkpoint, brain.checkpoint
+        def synchronize(lane=lane, sync=sync):
+            syncs.append(lane)
+            return sync()
+        def checkpoint(path, lane=lane, cp=cp):
+            checkpoints.append(lane)
+            return cp(path)
+        monkeypatch.setattr(brain.backend, 'sync_for_checkpoint', synchronize)
+        monkeypatch.setattr(brain, 'checkpoint', checkpoint)
+    def save(path, value):
+        if failures and hasattr(primary, '_doomfly_live_availability'):
+            subsequent_availability.append([row['complete'] for row in primary._doomfly_live_availability['lanes']])
+        target = Path(path).name == late_file
+        final = late_file != 'progress.json' or value.get('complete') is True
+        if target and final and not failures:
+            failures.append(path)
+            raise primary
+        if persistent and target and failures: raise OSError('persistent secondary writer')
+        return writer(path, value)
+    monkeypatch.setattr(module, 'save_json', save)
+    with pytest.raises(KeyboardInterrupt) as caught: wave(case, warmup_ms=0)
+    assert caught.value is primary
+    records = primary._doomfly_live_availability['lanes']
+    assert all(row['complete'] is False for row in records)
+    assert all(flags == [False] * 4 for flags in subsequent_availability)
+    assert all(row['checkpoint_available'] is True and row['frozen_verified'] is True for row in records)
+    assert all(row['frozen_proof_scope'] == 'materialized terminal only; overall phase incomplete' for row in records)
+    assert checkpoints == [0, 1, 2, 3] and sorted(syncs) == [0, 0, 1, 1, 2, 2, 3, 3]
+    for lane in range(4):
+        assert json.loads((case.out / f'lane-{lane}/episode.json').read_text())['complete'] is False
+    if late_file != 'summary.json' or not persistent:
+        assert json.loads((case.out / 'summary.json').read_text())['complete'] is False
+    if late_file != 'progress.json' or not persistent:
+        assert json.loads((case.out / 'progress.json').read_text())['complete'] is False
+    if persistent and late_file != 'timing.json':
+        assert any('persistent secondary writer' in note for note in primary.__notes__)
+
+
+def test_phase_invalidation_writer_failure_preserves_primary_and_in_memory_state(case, monkeypatch):
+    module = runner()
+    primary = KeyboardInterrupt('timing write')
+    writer = module.save_json
+    def save(path, value):
+        if Path(path).name == 'timing.json': raise primary
+        if Path(path) == case.out / 'lane-1/episode.json' and value['complete'] is False:
+            raise OSError('secondary lane invalidation')
+        return writer(path, value)
+    monkeypatch.setattr(module, 'save_json', save)
+    with pytest.raises(KeyboardInterrupt) as caught: wave(case, warmup_ms=0)
+    assert caught.value is primary
+    assert all(row['complete'] is False for row in primary._doomfly_live_availability['lanes'])
+    assert json.loads((case.out / 'summary.json').read_text())['complete'] is False
+    assert json.loads((case.out / 'lane-0/episode.json').read_text())['complete'] is False
+    assert any('secondary lane invalidation' in note for note in primary.__notes__)
+
+
+@pytest.mark.parametrize('secondary', [False, True])
+def test_initial_charged_ledger_failure_has_one_safe_pre_wave_evidence_pass(study, monkeypatch, secondary):
+    module, protocol, candidates, executor, out = study
+    primary = KeyboardInterrupt('initial charged ledger')
+    writer, writes, syncs, checkpoints = module.save_json, [], [], []
+    for lane, brain in enumerate(executor.brains):
+        sync, cp = brain.backend.sync_for_checkpoint, brain.checkpoint
+        def synchronize(lane=lane, sync=sync):
+            syncs.append(lane)
+            return sync()
+        def checkpoint(path, lane=lane, cp=cp):
+            checkpoints.append(lane)
+            return cp(path)
+        monkeypatch.setattr(brain.backend, 'sync_for_checkpoint', synchronize)
+        monkeypatch.setattr(brain, 'checkpoint', checkpoint)
+    def save(path, value):
+        if Path(path).name == 'attempt-ledger.json':
+            writes.append(value['used'])
+            if len(writes) == 1: raise primary
+        if secondary and Path(path).name == 'summary.json': raise OSError('secondary evidence write')
+        return writer(path, value)
+    monkeypatch.setattr(module, 'save_json', save)
+    with pytest.raises(KeyboardInterrupt) as caught:
+        module.evaluate(executor, candidates, READOUTS14, protocol, out,
+                        game_factory=lambda *args: pytest.fail('game constructed before durable charge'))
+    assert caught.value is primary
+    ledger = json.loads((out / 'attempt-ledger.json').read_text())
+    assert ledger['used'] == 4 and ledger['waves'][0]['state'] == 'failed'
+    assert all(row['checkpoint_available'] for row in primary._doomfly_live_availability['lanes'])
+    assert checkpoints == [0, 1, 2, 3] and sorted(syncs) == [0, 0, 1, 1, 2, 2, 3, 3]
+    assert not executor.installs and not executor.rgb_calls
+    assert all(brain.cursor == 0 and brain.backend._host_weight_epoch == 0 for brain in executor.brains)
+
+
+@pytest.mark.parametrize('main_failure', ['evaluation', 'resource'])
+@pytest.mark.parametrize('secondary', [None, 'pressure', 'pins', 'validation', 'writer'])
+def test_failed_cli_attempts_after_release_pressure_and_pins_without_new_neural_evidence(cli, monkeypatch, main_failure, secondary):
+    module = cli.module
+    primary = KeyboardInterrupt(main_failure)
+    if main_failure == 'evaluation':
+        monkeypatch.setattr(module, '_game_factory', lambda p: lambda *args: ShortGame(failure=primary))
+    else:
+        def close():
+            cli.closed.append('executor')
+            raise primary
+        cli.executor.close = close
+    syncs, cp_calls, pin_calls, pressure_names, events = [], [], [], [], []
+    for lane, brain in enumerate(cli.executor.brains):
+        sync, cp = brain.backend.sync_for_checkpoint, brain.checkpoint
+        def synchronize(lane=lane, sync=sync):
+            syncs.append(lane)
+            return sync()
+        def checkpoint(path, lane=lane, cp=cp):
+            cp_calls.append(lane)
+            return cp(path)
+        monkeypatch.setattr(brain.backend, 'sync_for_checkpoint', synchronize)
+        monkeypatch.setattr(brain, 'checkpoint', checkpoint)
+    def pins(reference):
+        pin_calls.append(reference)
+        if len(pin_calls) == 2:
+            events.append(list(cli.closed))
+            if secondary == 'pins': raise OSError('secondary after physical pins')
+            if secondary == 'validation':
+                changed = copy.deepcopy(cli.observed)
+                changed['sources']['doom/game.py']['sha256'] = 'c' * 64
+                return changed
+        return copy.deepcopy(cli.observed)
+    monkeypatch.setattr(module, '_physical_pins', pins)
+    pilot = importlib.import_module('doom_learning_v6.causal_pilot')
+    observe = pilot._PressureHistory.observe
+    def pressure(self, name):
+        pressure_names.append(name)
+        if name == 'after_native_release':
+            events.append(list(cli.closed))
+            if secondary == 'pressure': raise OSError('secondary release pressure')
+        return observe(self, name)
+    monkeypatch.setattr(pilot._PressureHistory, 'observe', pressure)
+    writer = module.save_json
+    def save(path, value):
+        if secondary == 'writer' and Path(path).name == 'observed-pins-after.json':
+            raise OSError('secondary after pins writer')
+        return writer(path, value)
+    monkeypatch.setattr(module, 'save_json', save)
+    with pytest.raises(KeyboardInterrupt) as caught: module.run(cli.args)
+    assert caught.value is primary
+    assert pressure_names.count('after_native_release') == 1 and len(pin_calls) == 2
+    assert events == [['executor', 'brain-3', 'brain-2', 'brain-1', 'brain-0']] * 2
+    assert cli.closed == ['executor', 'brain-3', 'brain-2', 'brain-1', 'brain-0', 'unlock', 'lease']
+    waves = 1 if main_failure == 'evaluation' else 18
+    assert len(syncs) == 4 + waves * 8 and len(cp_calls) == 4 + waves * 4
+    release = json.loads((cli.out / 'release-evidence.json').read_text())
+    assert release['scope'] == 'after registered resource release attempts'
+    if secondary is not None:
+        assert release['errors'] and any('Secondary' in note for note in primary.__notes__)
+    if secondary in ('pins', 'validation', 'writer'):
+        assert (cli.out / 'observed-pins-after-error.json').exists()
+
+
+def test_unavailable_terminal_never_gets_materialized_frozen_proof_label(case, monkeypatch):
+    primary = KeyboardInterrupt('terminal unavailable')
+    def synchronize(): raise primary
+    monkeypatch.setattr(case.brains[0].backend, 'sync_for_checkpoint', synchronize)
+    with pytest.raises(KeyboardInterrupt) as caught: wave(case, warmup_ms=0)
+    assert caught.value is primary
+    record = primary._doomfly_live_availability['lanes'][0]
+    assert record['checkpoint_available'] is False and record['complete'] is False
+    assert record['frozen_proof_scope'] == 'frozen proof unavailable; overall phase incomplete'
