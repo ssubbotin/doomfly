@@ -1,5 +1,6 @@
 """Full-graph candidate memory dynamics with explicit stimulation and checkpoints."""
 import ctypes as C
+from contextlib import contextmanager
 import hashlib,json,math,subprocess,sys,time
 from pathlib import Path
 import numpy as np
@@ -80,12 +81,22 @@ class MemoryBrain(NativeBrain):
         self.backend=create_backend(backend,self)
 
     def reset(self,keep_memory=False):
-        if keep_memory:saved=(self.memory_u.copy(),self.memory_w.copy())
-        for k,v in self.initial.items():getattr(self,k)[:]=v
-        self.cursor=0;self.sim_ms=0.;self.total_spikes=0
-        if not keep_memory:self.weight[self.circuit['edges']]=self.baseline_plastic
-        else:self.memory_u[:],self.memory_w[:]=saved
-        self.backend.restore_from_host(reason='reset')
+        with self._owned_state_operation(restore=True):
+            if keep_memory:saved=(self.memory_u.copy(),self.memory_w.copy())
+            for k,v in self.initial.items():getattr(self,k)[:]=v
+            self.cursor=0;self.sim_ms=0.;self.total_spikes=0
+            if not keep_memory:self.weight[self.circuit['edges']]=self.baseline_plastic
+            else:self.memory_u[:],self.memory_w[:]=saved
+            self.backend.restore_from_host(reason='reset')
+
+    @contextmanager
+    def _owned_state_operation(self,restore=False):
+        owner=getattr(self,'_metal_batch_owner',None)
+        if owner is None:
+            yield
+            return
+        with owner._operation(allow_poison=restore,allow_closed_restore=restore):
+            yield
 
     def _advance_cpu(self,steps,capture_spikes=False):
         clock=np.asarray([self.cursor],dtype=np.int64);c=self.circuit
@@ -110,11 +121,14 @@ class MemoryBrain(NativeBrain):
         self.cursor=int(clock[0])
         return elapsed
 
-    def _neural_step(self,luminance,duration_ms,*,learning=False,stimulation=None,lamina_bias=12.):
+    def _assert_serial_execution(self):
+        if getattr(self,'_metal_batch_owner',None) is not None:
+            raise BackendError('Brain is owned by a Metal batch executor')
+
+    def _prepare_neural_input(self,luminance,steps,stimulation=None,lamina_bias=12.):
         light=np.asarray(luminance)
         if light.shape!=(len(self.retina),) or not np.isfinite(light).all():raise ValueError('Invalid retinal input')
-        steps=round(duration_ms/self.dt)
-        if not math.isfinite(duration_ms) or steps<1 or not math.isfinite(lamina_bias):raise ValueError('Invalid interval/current')
+        if steps<1 or not math.isfinite(lamina_bias):raise ValueError('Invalid interval/current')
         self.luminance+=(1-math.exp(-steps*self.dt/10))*(np.clip(light,0,1)-self.luminance)
         self.drive.fill(0);self.drive[self.lamina]=lamina_bias
         self.drive[self.retina]=30*self.luminance/(.02+self.luminance)
@@ -126,12 +140,31 @@ class MemoryBrain(NativeBrain):
                 amplitude=np.asarray(current,dtype=np.float32)
                 if ix.ndim!=1 or np.any(ix<0) or np.any(ix>=self.n) or not np.isfinite(amplitude).all() or amplitude.shape not in [(),ix.shape]:raise ValueError('Invalid external stimulation')
                 self.drive[ix]+=amplitude
+
+    def _neural_step(self,luminance,duration_ms,*,learning=False,stimulation=None,lamina_bias=12.):
+        self._assert_serial_execution()
+        light=np.asarray(luminance)
+        if light.shape!=(len(self.retina),) or not np.isfinite(light).all():raise ValueError('Invalid retinal input')
+        steps=round(duration_ms/self.dt)
+        if not math.isfinite(duration_ms) or steps<1 or not math.isfinite(lamina_bias):raise ValueError('Invalid interval/current')
+        self._prepare_neural_input(light,steps,stimulation=stimulation,lamina_bias=lamina_bias)
         self.counts.fill(0);elapsed=self.backend.advance(steps)
         self.sim_ms=self.cursor*self.dt;self.total_spikes+=int(self.counts.sum())
         return self.counts.copy(),elapsed
 
-    def step(self,luminance,duration_ms,*,learning=False,stimulation=None,lamina_bias=12.):
+    def _apply_centered_rule(self,counts,seconds,learning):
         from .rule import advance
+        rule_started=time.perf_counter()
+        advance(self.rate_kc,self.rate_dan,self.memory_u,self.memory_w,
+            counts[self.circuit['pre']]/seconds,counts[self.circuit['dan']]/seconds-self.dan_baseline_hz,
+            self.circuit['gain'],seconds,self.eta,learning,self.weights_frozen)
+        if not self.weights_frozen:
+            self.weight[self.circuit['edges']]=self.baseline_plastic*(1+self.memory_w)
+            self.backend.update_weights(self.circuit['edges'],self.weight[self.circuit['edges']])
+        self.last_rule_seconds+=time.perf_counter()-rule_started
+
+    def step(self,luminance,duration_ms,*,learning=False,stimulation=None,lamina_bias=12.):
+        self._assert_serial_execution()
         if not math.isfinite(duration_ms) or duration_ms<=0:raise ValueError('Invalid duration')
         remaining=round(duration_ms/self.dt)
         if remaining<1:raise ValueError('Duration too short')
@@ -142,14 +175,7 @@ class MemoryBrain(NativeBrain):
             # writes candidate memory efficacies; all neural integration remains.
             c,t=self._neural_step(luminance,interval,learning=False,stimulation=stimulation,lamina_bias=lamina_bias)
             seconds=interval/1000
-            rule_started=time.perf_counter()
-            advance(self.rate_kc,self.rate_dan,self.memory_u,self.memory_w,
-                c[self.circuit['pre']]/seconds,c[self.circuit['dan']]/seconds-self.dan_baseline_hz,
-                self.circuit['gain'],seconds,self.eta,learning,self.weights_frozen)
-            if not self.weights_frozen:
-                self.weight[self.circuit['edges']]=self.baseline_plastic*(1+self.memory_w)
-                self.backend.update_weights(self.circuit['edges'],self.weight[self.circuit['edges']])
-            self.last_rule_seconds+=time.perf_counter()-rule_started
+            self._apply_centered_rule(c,seconds,learning)
             total+=c;wall+=t;remaining-=ticks
         self.counts[:]=total
         return total,wall
@@ -161,29 +187,31 @@ class MemoryBrain(NativeBrain):
             'sha256':digest(w),'model':MODEL}
 
     def checkpoint(self,path):
-        self.backend.sync_for_checkpoint()
-        metadata={'model':MODEL,'build':self.build,'producer_backend':self.backend.name,'backend':self.backend.metadata(),
-            'eta':self.eta,'parameters':PARAMETERS,'cursor':self.cursor,'weights_frozen':self.weights_frozen,
-            'total_spikes':self.total_spikes,'graph_ids_sha256':digest(self.ids),'graph_ptr_sha256':digest(self.ptr),
-            'graph_post_sha256':digest(self.post),'plastic_edges_sha256':digest(self.circuit['edges']),
-            'configuration_sha256':self.configuration_signature()}
-        path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
-        np.savez(path,metadata=json.dumps(metadata),weight=self.weight,**{k:getattr(self,k) for k in self.fields})
+        with self._owned_state_operation():
+            self.backend.sync_for_checkpoint()
+            metadata={'model':MODEL,'build':self.build,'producer_backend':self.backend.name,'backend':self.backend.metadata(),
+                'eta':self.eta,'parameters':PARAMETERS,'cursor':self.cursor,'weights_frozen':self.weights_frozen,
+                'total_spikes':self.total_spikes,'graph_ids_sha256':digest(self.ids),'graph_ptr_sha256':digest(self.ptr),
+                'graph_post_sha256':digest(self.post),'plastic_edges_sha256':digest(self.circuit['edges']),
+                'configuration_sha256':self.configuration_signature()}
+            path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
+            np.savez(path,metadata=json.dumps(metadata),weight=self.weight,**{k:getattr(self,k) for k in self.fields})
 
     def restore(self,path):
-        with np.load(path,allow_pickle=False) as a:
-            m=json.loads(str(a['metadata']))
-            expected={'model':MODEL,'eta':self.eta,'parameters':PARAMETERS,
-                'graph_ids_sha256':digest(self.ids),'graph_ptr_sha256':digest(self.ptr),'graph_post_sha256':digest(self.post),
-                'plastic_edges_sha256':digest(self.circuit['edges']),
-                'configuration_sha256':self.configuration_signature()}
-            if any(m.get(k)!=v for k,v in expected.items()):raise ValueError('Checkpoint provenance mismatch')
-            for k in ['weight',*self.fields]:
-                if a[k].shape!=getattr(self,k).shape or a[k].dtype!=getattr(self,k).dtype:raise ValueError('Checkpoint array mismatch')
-            for k in ['weight',*self.fields]:getattr(self,k)[:]=a[k]
-            self.cursor=int(m['cursor']);self.sim_ms=self.cursor*self.dt;self.total_spikes=int(m['total_spikes'])
-            self.weights_frozen=bool(m['weights_frozen'])
-            self.backend.restore_from_host(reason='restore')
+        with self._owned_state_operation(restore=True):
+            with np.load(path,allow_pickle=False) as a:
+                m=json.loads(str(a['metadata']))
+                expected={'model':MODEL,'eta':self.eta,'parameters':PARAMETERS,
+                    'graph_ids_sha256':digest(self.ids),'graph_ptr_sha256':digest(self.ptr),'graph_post_sha256':digest(self.post),
+                    'plastic_edges_sha256':digest(self.circuit['edges']),
+                    'configuration_sha256':self.configuration_signature()}
+                if any(m.get(k)!=v for k,v in expected.items()):raise ValueError('Checkpoint provenance mismatch')
+                for k in ['weight',*self.fields]:
+                    if a[k].shape!=getattr(self,k).shape or a[k].dtype!=getattr(self,k).dtype:raise ValueError('Checkpoint array mismatch')
+                for k in ['weight',*self.fields]:getattr(self,k)[:]=a[k]
+                self.cursor=int(m['cursor']);self.sim_ms=self.cursor*self.dt;self.total_spikes=int(m['total_spikes'])
+                self.weights_frozen=bool(m['weights_frozen'])
+                self.backend.restore_from_host(reason='restore')
 
     def configuration_signature(self):
         # Equal cell IDs and CSR endpoints alone do not imply equal input

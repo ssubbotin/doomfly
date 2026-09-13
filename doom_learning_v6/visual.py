@@ -68,12 +68,17 @@ class VisualMemoryBrain(MemoryBrain):
             'validated':False}
 
     def rgb_step(self,frame,duration_ms,**kwargs):
+        self._assert_serial_execution()
         if duration_ms>10:
             ticks=round(duration_ms/self.dt);total=np.zeros(self.n,dtype=np.int32);wall=0.
             while ticks:
                 n=min(100,ticks);c,t=self.rgb_step(frame,n*self.dt,**kwargs);total+=c;wall+=t;ticks-=n
             self.counts[:]=total
             return total,wall
+        light,pulses=self._prepare_rgb_input(frame,duration_ms,stimulation=kwargs.pop('stimulation',None))
+        return self.step(light,duration_ms,stimulation=pulses,**kwargs)
+
+    def _prepare_rgb_input(self,frame,duration_ms,stimulation=None):
         from doom.game import retinal_samples
         frame=np.asarray(frame)
         if frame.ndim!=3 or frame.shape[2]!=3 or frame.dtype!=np.uint8:raise ValueError('RGB uint8 required')
@@ -83,10 +88,10 @@ class VisualMemoryBrain(MemoryBrain):
         values=frame[y,x,self.r8_channel].astype(np.float32)/255
         values=np.where(values<=.04045,values/12.92,((values+.055)/1.055)**2.4)
         self.r8_light+=(1-math.exp(-round(duration_ms/self.dt)*self.dt/10))*(values-self.r8_light)
-        extra=kwargs.pop('stimulation',None)
+        extra=stimulation
         pulses=[] if extra is None else list(extra) if isinstance(extra,list) else [extra]
         pulses.append((self.r8,30*self.r8_light/(.02+self.r8_light)))
-        return self.step(retinal_samples(frame,self.uv),duration_ms,stimulation=pulses,**kwargs)
+        return retinal_samples(frame,self.uv),pulses
 
     def configuration_signature(self):
         return {**super().configuration_signature(),**{k:digest(getattr(self,k)) for k in ['r8','r8_uv','r8_channel','corrected_edges']}}

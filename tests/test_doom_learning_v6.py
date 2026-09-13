@@ -55,3 +55,25 @@ def test_no_learning_preserves_original_neural_kernel(tmp_path):
         np.testing.assert_array_equal(a,d)
         np.testing.assert_allclose(b.v,c.v,atol=.002,rtol=0)
         np.testing.assert_array_equal(b.weight,c.weight)
+
+
+def test_neural_preparation_preserves_drive_order_without_advancing(tmp_path):
+    b=brain(tmp_path);b.tonic[:]=[1,2,3,4]
+    before=b.cursor
+    b._prepare_neural_input([],40,stimulation=[([0,2],20),([0],3)],lamina_bias=0)
+    np.testing.assert_array_equal(b.drive,[24,2,23,4])
+    assert b.cursor==before and not b.counts.any()
+
+
+def test_shared_centered_rule_boundary_matches_serial_full_state(tmp_path):
+    a,e=brain(tmp_path),brain(tmp_path)
+    actual,_=a.step([],28.6,learning=True,stimulation=([0,2],20),lamina_bias=0)
+    expected=np.zeros(e.n,dtype=np.int32)
+    for ticks in (100,100,86):
+        counts,_=e._neural_step([],ticks*e.dt,stimulation=([0,2],20),lamina_bias=0)
+        e._apply_centered_rule(counts,ticks*e.dt/1000,True)
+        expected+=counts
+    e.counts[:]=expected
+    np.testing.assert_array_equal(actual,expected)
+    for name in ['weight',*a.fields]:
+        assert getattr(a,name).tobytes()==getattr(e,name).tobytes(),name
