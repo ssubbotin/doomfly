@@ -12,7 +12,7 @@
 
 ### Task 1: Materialize before terminal hashing
 
-**Ownership:** `doom_learning_v6/causal_pilot.py` (terminal hash boundary only), new `tests/test_doom_learning_terminal_state_hashes.py`, ignored task report/raw logs. You are not alone; preserve others' changes. No child agents, SSH, GPU jobs or unrelated edits.
+**Ownership:** `doom_learning_v6/causal_pilot.py` (terminal hash synchronization and its record-error preservation boundary only), new `tests/test_doom_learning_terminal_state_hashes.py`, ignored task report/raw logs. You are not alone; preserve others' changes. No child agents, SSH, GPU jobs or unrelated edits.
 
 **Interfaces:** `_state_hashes(brain) -> dict` must hash the current complete 24-array state using the existing checked backend materialization API. Preserve cursor, total-spike metadata and current field names. CPU and Metal must remain supported. No host-state-validity bypass, upload, restore/reset, additional tick or weight-epoch increment.
 
@@ -20,6 +20,7 @@
 - [ ] Add a real native Metal fixture regression that advances an owned small four-lane executor, confirms stale host state, and compares all terminal hashes with the subsequently saved 24-array checkpoint. Skip only absent Metal. This is numerical validation, not biological evidence.
 - [ ] Run focused RED; retain command, actual exit and raw output. Fix fixture mistakes before accepting RED.
 - [ ] Make the smallest checked synchronization change. Keep neural controls, traces, scoring, frozen weights and simulation clocks unchanged.
+- [ ] On terminal materialization failure, keep the original primary error, persist accumulated frame traces with native terminal hashes explicitly unavailable, and attempt every available lane checkpoint through existing guarded paths. Never fall back to stale hashes, retry the download, reset/restore, bypass poison/ownership, or replace the primary error with a writer/cleanup failure. Add authentic failing regressions asserting persisted traces, unavailable-state flags and all checkpoint attempts for both an existing interruption and a newly primary download error.
 - [ ] Run focused GREEN and relevant existing causal fixtures. Run the ordinary portable suite once before committing, record known warnings separately, and self-review. Do not run historical connectome matrices or scientific trajectories.
 - [ ] Commit only owned source/tests with `Sergey Subbotin <ssubbotin@gmail.com>` and write the ignored report. Controller obtains fresh spec/quality review and later native focused evidence before future use.
 
