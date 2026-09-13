@@ -85,6 +85,11 @@ A failed GPU command or event overflow poisons the whole owner; validation
 errors before dispatch are recoverable. Close is idempotent, serializes with
 in-flight calls and preserves ownership until completion.
 
+Lifecycle serialization and idempotent close are enforced by the Python owner
+in Task2. As with the existing raw C API, native callers serialize operations
+on one handle and destroy that handle exactly once after all calls complete;
+do not add a native tombstone/handle registry as part of batching.
+
 ## Python training boundary
 
 Add `MetalBatchExecutor(brains)` in `doom_learning_v6/metal/batch.py`.
