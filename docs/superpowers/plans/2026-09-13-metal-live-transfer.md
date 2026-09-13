@@ -31,6 +31,7 @@
 - `doom/game.py`: optional pre-init timeout/start settings and exception-safe native construction, existing defaults preserved.
 - `doom_learning/survival_arena.py`: close an engine if its existing constructor fails; existing map rules/settings unchanged.
 - `doom_learning_v6/live_transfer.py`: independent live-game ticking, checked frozen setup, evidence/failure/resource contracts and exact-source CLI.
+- `doom_learning_v6/same_slot_runner.py`: only an additive, explicitly pinned game-boundary declaration in `_initial_reference`; existing callers and fitting behavior remain unchanged.
 - Focused new tests mirror these responsibilities; existing model/backend tests remain controls.
 - `docs/experiments/2026-09-13-metal-live-transfer.md` and compact `outputs/doom-learning/metal-live-transfer-m4pro/results.json`: actual audited outcomes only after execution.
 
@@ -133,10 +134,11 @@ Keep all existing post-allocation configuration within the same guarded boundary
 
 ### Task 3: Checked frozen live runner and CLI
 
-**Files:** Create `doom_learning_v6/live_transfer.py`, `tests/test_doom_live_transfer.py`. Existing helpers are consumed, not modified; not alone, no children/deployment/scientific launch from worker.
+**Files:** Create `doom_learning_v6/live_transfer.py`, `tests/test_doom_live_transfer.py`; modify only the static-reference boundary in `doom_learning_v6/same_slot_runner.py`. Other existing helpers are consumed unchanged; not alone, no children/deployment/scientific launch from worker.
 
 **Interfaces:**
 - Consume Task1's five exact interfaces and Task2's optional Game timing.
+- `_initial_reference(reference, observed, *, boundary_sources=None)`: preserve the default guard. When provided, require an exact built-in dictionary with exactly the two built-in string keys `doom/game.py` and `doom_learning/survival_arena.py`, each a built-in lowercase64-hex SHA256 matching its observed source pin. Validate before opening reference/graph files. The new CLI supplies these from independently provided expected pins after `_validate_expected_pins`. Permit changes to these two boundary sources only when explicitly declared; record original/current transitions. All existing graph, rule, sensory, calibration, initial-state, CPU/native and configuration checks remain intact. No arbitrary additional allowed sources or provenance rewriting.
 - `live_wave(brains, executor, games, readouts, *, horizon_tics, warmup_ms, directory) -> dict`: four ordered distinct executor brains/games, original14readouts; fresh phase; full indexed trace for every neural tic/lane; reset fast state/reinstall retained eligible slots, freeze and dark warmup; iterate active games independently/pad finished games; persist availability and all24 wave-final CPs with explicit postpadding scope.
 - `evaluate(executor, candidates, readouts, protocol, out, *, game_factory) -> dict`: consumes already resident four-lane executor, seven immutable vectors, exact protocol, freshout and callable `game_factory(wave,lane,directory)` returning pixels/act/observation/close plus raw `.game` engine for authoritative tic/death/timeout observer fields. Owns durable charge, per-wave games/resources, checked installation/full frozen snapshots/epochs/resident checks, calibration canonicaltrace/all24 comparisons, complete-only metrics and all role results.
 - `build_parser()`, `run(args)`, module main: require `--protocol`, `--protocol-sha256`, `--reference`, `--expected-pins`, `--source-commit`, `--candidates-root`, `--out`. Darwin/HEAD/sourceclean/committed-protocol/engine/vector/core/config/calibration/readout/all24 initial validation before native rollouts; original static reference only, never historical replay. Use existing calibrated CPU brain constructor, _restored_brains/registry and MetalBatchExecutor W18; physical before/after and pressure allocation-to-release; nonblocking scoped lease.
@@ -158,8 +160,10 @@ def test_dead_game_pads_without_steering_or_masking(case):
 ```
 
 Exercise render/act/constructor/install/terminal sync/CP/JSON/pressure/resource/lease errors, including primary KeyboardInterrupt and usable-owner terminal sync failure. Preserve traces/4charge/healthyall24/exactprimary through secondary failures; no repeated knownfailed sync/checkpoint. CLI late failures cannot leave results.complete=True or claim frozen success.
+Test that the original reference guard still rejects undeclared game-wrapper changes, accepts only both exact declared current pins with recorded original/current hashes, and rejects wrong hashes, extra/missing keys and type aliases before reference access. Unrelated rule/sensory/calibration changes must still fail even with a valid boundary declaration.
 - [ ] **Step 2: Run authentic new focused RED.** `python -m pytest -q tests/test_doom_live_transfer.py`; preserve actual exits/raw logs and fixture validity.
 - [ ] **Step 3: Implement the thin runner.** Use Task1 schedule plus existing AttemptBudget, `_Resources`, `_PressureHistory`, `_phase_boundary`, `_state_hashes`, `_write_phase`, `_physical_pins`, `_validate_expected_pins`, `_source_clean`, `_initial_reference`, `_restored_brains`, `_frozen`, `_storage`, `_compare_checkpoint_arrays`, `_same_without_wall`, `_readouts` where their actual interfaces fit. Never invoke recorded replay/teacher/DamageTraining. Snapshot game observers separately after decoding; controls receive only counts/time. Wave handler owns one terminal evidence attempt per lane; outer CLI writes failure metadata only, preventing a second materialization layer. For pre-wave install/constructor failure, guarded best-effort evidence occurs once without reset/upload/poison bypass.
+Implement only the specified additive static-reference argument in the existing helper; obtain its boundary declaration from validated independent expected pins, never substitute historical source hashes into observed physical evidence.
 
 ```python
 frames = [g.pixels() if active else black for g, active in zip(games, alive)]
@@ -174,7 +178,7 @@ for lane, game in enumerate(games):
 
 Aggregate shared batch-advance/last_timing once per call, separate input/game/traceIO/materialization/checkpoint/warmup/live/padding envelope clocks. Save per-tic RGB/spikehash/readouts/memory/cursors/requested/applied/gameobserver fields and per-wave runtimefrozen/source/epoch/storage evidence; current/progress JSON is private and never a broadcast.
 - [ ] **Step 4: Run focused GREEN/covering tests and ordinary portable suite once.** Include new three files plus existing causal replay/logger/installer/optimizer/control tests; preserve raw exits/knownwarning debt. Self-review exact contracts and gitdiffcheck; no old study/matrix/dependency/native rewrites. Controller later runs reviewed native fixtures before study.
-- [ ] **Step 5: Commit owned runner/tests only.** `git add doom_learning_v6/live_transfer.py tests/test_doom_live_transfer.py`; `git commit -m "feat: evaluate frozen efficacies in closed-loop Metal Doom"`; actual Git-derived report/raw evidence.
+- [ ] **Step 5: Commit owned runner/tests and bounded reference-helper change only.** `git add doom_learning_v6/live_transfer.py tests/test_doom_live_transfer.py doom_learning_v6/same_slot_runner.py`; `git commit -m "feat: evaluate frozen efficacies in closed-loop Metal Doom"`; actual Git-derived report/raw evidence.
 
 ### Task 4: Execute, audit and report the fixed private study
 

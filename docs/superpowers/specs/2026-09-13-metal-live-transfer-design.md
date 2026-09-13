@@ -93,6 +93,17 @@ live RGB ticking, trace/checkpoint evidence and exact-source CLI orchestration.
 Reuse existing resource registry, pressure history, physical-pin/reference and
 checkpoint helpers. Do not copy the recorded replay or activate its teacher path.
 
+The original reference also pins both game-wrapper sources. Extend only its
+static-reference helper with optional keyword-only `boundary_sources=None`.
+The default retains its existing rejection behavior. The new evaluator declares
+exactly `doom/game.py` and `doom_learning/survival_arena.py`, using their current
+SHA256 values from independently supplied, already verified expected pins.
+Reject malformed declarations or observed-pin mismatches before reference work.
+Record original/current hashes as explicit boundary transitions. This permits
+the reviewed construction/timing changes without relaxing graph, neural-rule,
+sensory, calibration, configuration or checkpoint identity checks. It does not
+claim that the new evaluation has the historical game's timing boundary.
+
 Validate committed protocol SHA, exact HEAD, clean model/test sources, trusted
 physical source/graph/CPU/native/reference relationships, original configuration,
 calibration/readouts, all24 initial state and candidate/engine pins before native
