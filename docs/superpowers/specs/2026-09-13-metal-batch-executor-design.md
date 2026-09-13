@@ -106,6 +106,8 @@ MetalBatchExecutor(brains: list[MemoryBrain])
 executor.advance(steps: int) -> tuple[list[np.ndarray], float]
 executor.step(luminances, duration_ms, *, learning=False,
               stimulations=None, lamina_bias=12.) -> tuple[list[np.ndarray], float]
+executor.rgb_step(frames, duration_ms, *, learning=False,
+                  stimulations=None, lamina_bias=12.) -> tuple[list[np.ndarray], float]
 executor.metadata() -> dict
 executor.close() -> None
 ```
@@ -126,6 +128,14 @@ bins, lane-local luminance smoothing and tonic/teacher drive, one native
 batch advance per bin, then the unchanged float64 rule independently per lane.
 Only the existing identified slots update. No sensory, teacher, decoder or
 credit-rule changes.
+
+For VisualMemoryBrain lanes, rgb_step accepts one RGB uint8 frame per lane and
+uses the existing <=100-tick RGB subdivision, R8 coordinate/channel sampling,
+linear-sRGB conversion, lane-local r8_light smoothing and R8 pulse mapping.
+Factor that preparation into a helper shared with serial rgb_step. Validate
+all frames before changing any lane; direct attached-brain rgb_step fails
+before updating r8_light. RGB duration subdivision must match the original
+VisualMemoryBrain behavior exactly, including a fractional final bin.
 
 Checkpoint metadata reports `metal-batch`, numerical parent, ABI, order and
 lane count/index; it must not claim CPU or serial Metal production. Neural
@@ -190,4 +200,3 @@ Exclude game engine ports, policy substitution, pruning, telemetry actions,
 GPU plastic-rule migration, new credit rules, public deployment and launch
 claims. Update published “How it works” only as part of a separately authorized
 release with exact deployed evidence.
-
