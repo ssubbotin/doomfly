@@ -12,7 +12,9 @@ import sys
 ROOT=Path(__file__).resolve().parents[2]
 SOURCE=Path(__file__).resolve().parent
 DEFAULT_OUTPUT=ROOT/'outputs/doom-learning/metal'
-ABI_VERSION=5
+ABI_VERSION=7
+NUMERICAL_PARENT='b24249ecfee12aa84b55ed803ffe47bd09c487ad'
+NUMERICAL_ORDER='epoch-5-zero-seeded-ascending-incoming'
 METAL_COMPILE_FLAGS=('-std=macos-metal2.4','-fno-fast-math','-ffp-contract=off')
 LIBRARY_COMPILE_FLAGS=('-O3','-std=c++17','-dynamiclib','-fobjc-arc','-arch','arm64',
     '-mmacosx-version-min=13.0')
@@ -42,6 +44,7 @@ def build(output_dir=DEFAULT_OUTPUT):
     output=Path(output_dir);output.mkdir(parents=True,exist_ok=True)
     sources={name:_digest(SOURCE/name) for name in ['api.h','backend.mm','kernels.metal','decay_tables.h']}
     configuration={'abi_version':ABI_VERSION,'builder_sha256':_digest(__file__),
+        'numerical_parent':NUMERICAL_PARENT,'numerical_order':NUMERICAL_ORDER,
         'metal_compile_flags':list(METAL_COMPILE_FLAGS),
         'library_compile_flags':list(LIBRARY_COMPILE_FLAGS)}
     air=output/'kernels.air';metallib=output/'kernels.metallib';library=library_path(output)

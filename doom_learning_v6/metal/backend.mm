@@ -7,9 +7,11 @@
 #include <algorithm>
 #include <chrono>
 #include <cmath>
+#include <cstddef>
 #include <cstring>
 #include <initializer_list>
 #include <limits>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -24,7 +26,10 @@ struct Backend {
   int64_t edges=0;
   int32_t slots=0;
   int32_t words=0;
-  int64_t cursor=0;
+  int32_t lanes=1;
+  std::vector<int64_t> cursors;
+  std::vector<uint8_t> uploaded;
+  bool rest_initialized=false;
   float dt=0.1f;
   float adaptation_jump=8.0f;
   float adaptation_tau=200.0f;
@@ -60,7 +65,66 @@ struct KernelParams {
   int32_t refractory_ticks;
   uint32_t event_capacity;
   uint32_t capture_all_spikes;
+  uint32_t lanes;
+  uint32_t weight_lane;
+  uint64_t edge_stride;
+  uint64_t ring_stride;
+  uint64_t edge_bitmap_stride;
 };
+static_assert(sizeof(KernelParams)==88,"Metal Params layout must match kernels.metal");
+static_assert(offsetof(KernelParams,edge_stride)==64,"Metal lane strides must be aligned");
+
+bool valid_lane(const Backend *b,int32_t lane) { return b&&lane>=0&&lane<b->lanes; }
+
+void poison(Backend *b) {
+  b->poisoned=true;b->last_event_count=0;
+  std::fill(b->uploaded.begin(),b->uploaded.end(),0);
+}
+
+bool product(std::initializer_list<size_t> factors,size_t &result) {
+  result=1;
+  for(size_t factor:factors){
+    if(factor!=0&&result>std::numeric_limits<size_t>::max()/factor)return false;
+    result*=factor;
+  }
+  return true;
+}
+
+uint64_t shared_bytes(const Backend *b) {
+  uint64_t bytes=0;
+  for(id<MTLBuffer> buffer:{b->out_ptr,b->out_post,b->in_ptr,b->in_pre,b->in_edge,
+      b->edge_to_incoming,b->kc_mask,b->modulation_mask,b->rest,b->decay_tables})
+    if(buffer!=nil)bytes+=buffer.length;
+  return bytes;
+}
+
+uint64_t mutable_bytes(const Backend *b) {
+  uint64_t bytes=0;
+  for(id<MTLBuffer> buffer:{b->weight,b->v,b->g,b->refractory,b->drive,b->previous_drive,
+      b->counts,b->active_flag,b->last,b->modulation,b->modulation_last,b->adaptation,
+      b->ring,b->touched,b->active_edge_bits,b->kc_events,b->event_count,
+      b->weight_update_ids,b->weight_update_values})
+    if(buffer!=nil)bytes+=buffer.length;
+  return bytes;
+}
+
+bool replacement_fits(const Backend *b,std::initializer_list<size_t> lengths) {
+  // Include old buffers until replacement succeeds, preserving failure atomicity.
+  uint64_t total=shared_bytes(b)+mutable_bytes(b);
+  for(size_t length:lengths){
+    const size_t allocated=std::max<size_t>(length,1);
+    if(allocated>b->device.maxBufferLength||
+        total>std::numeric_limits<uint64_t>::max()-allocated)return false;
+    total+=allocated;
+  }
+  return total<=b->device.recommendedMaxWorkingSetSize;
+}
+
+void *lane_contents(id<MTLBuffer> buffer,int32_t lane,size_t stride) {
+  return static_cast<uint8_t *>(buffer.contents)+size_t(lane)*stride;
+}
+
+Backend *cast(df_metal_handle handle) { return static_cast<Backend *>(handle); }
 
 int fail(const char *message) {
   last_error=message==nullptr?"Unknown Metal backend error":message;
@@ -95,7 +159,8 @@ void encode(id<MTLComputeCommandEncoder> encoder,id<MTLComputePipelineState> pip
   for(id<MTLBuffer> buffer:buffers)[encoder setBuffer:buffer offset:0 atIndex:index++];
   [encoder setBytes:&params length:sizeof(params) atIndex:index];
   NSUInteger width=std::min<NSUInteger>(256,pipeline.maxTotalThreadsPerThreadgroup);
-  [encoder dispatchThreads:MTLSizeMake(threads,1,1) threadsPerThreadgroup:MTLSizeMake(width,1,1)];
+  [encoder dispatchThreads:MTLSizeMake(threads,params.lanes,1)
+    threadsPerThreadgroup:MTLSizeMake(width,1,1)];
   dispatch_count++;
 }
 
@@ -108,8 +173,6 @@ bool state_pointers_present(const Backend *backend,const df_metal_state *s) {
     present(s->last)&&present(s->modulation)&&present(s->modulation_last)&&
     present(s->rest)&&present(s->adaptation);
 }
-
-Backend *cast(df_metal_handle handle) { return static_cast<Backend *>(handle); }
 
 bool set_device_info(id<MTLDevice> device,df_metal_device_info *info) {
   std::memset(info,0,sizeof(*info));
@@ -141,32 +204,81 @@ extern "C" int df_metal_probe(df_metal_device_info *info) {
 
 extern "C" int df_metal_create(const df_metal_graph *graph,const char *metallib_path,
     df_metal_handle *handle) {
+  return df_metal_create_batch(graph,metallib_path,1,handle);
+}
+
+extern "C" int df_metal_create_batch(const df_metal_graph *graph,const char *metallib_path,
+    int32_t lanes,df_metal_handle *handle) {
+  if(handle!=nullptr)*handle=nullptr;
+  try {
   if(graph==nullptr||handle==nullptr||metallib_path==nullptr)
     return fail("Metal create argument is null");
   *handle=nullptr;
-  if(graph->neurons<1||graph->edges<0||graph->edges>std::numeric_limits<int32_t>::max()||
+  if(lanes<1||graph->neurons<1||graph->edges<0||graph->edges>std::numeric_limits<int32_t>::max()||
       graph->delay_slots<1||graph->dt_ms!=0.1f)
     return fail("Invalid Metal graph dimensions");
   if(graph->delay_slots!=19)return fail("Metal delay slot count must be 19");
+  if(!std::isfinite(graph->adaptation_jump_mv)||!std::isfinite(graph->adaptation_tau_ms)||
+      graph->adaptation_tau_ms<=0)return fail("Invalid Metal adaptation configuration");
   if(!present(graph->out_ptr)||!present(graph->in_ptr)||!present(graph->kc_mask)||
       !present(graph->modulation_mask)||(graph->edges>0&&(!present(graph->out_post)||
       !present(graph->in_pre)||!present(graph->in_edge))))return fail("Metal graph pointer is null");
+  // Bounds and allocation products precede traversal of user-provided arrays.
+  size_t neuron_cells=0,edge_cells=0,ring_words=0,event_bytes=0;
+  const size_t n=size_t(graph->neurons),e=size_t(graph->edges);
+  const size_t words=(n+31)/32,edge_words=(e+31)/32;
+  if(!product({n,size_t(lanes)},neuron_cells)||
+      !product({e,size_t(lanes)},edge_cells)||
+      !product({size_t(graph->delay_slots),words,size_t(lanes)},ring_words)||
+      !product({neuron_cells,5,sizeof(df_metal_kc_event)},event_bytes)||
+      neuron_cells>std::numeric_limits<uint32_t>::max()/100u)
+    return fail("Metal batch dimensions exceed checked grid limits");
+  @autoreleasepool {
+    id<MTLDevice> device=MTLCreateSystemDefaultDevice();
+    df_metal_device_info info;
+    if(!set_device_info(device,&info))
+      return fail("Metal requires unified memory and Apple GPU family 7");
+    uint64_t total=0;
+    const size_t lengths[]={(n+1)*8,e*4,(n+1)*8,e*4,e*4,e*4,n,n,n*4,3072*4,
+      edge_cells*4,neuron_cells*4,neuron_cells*4,neuron_cells*2,neuron_cells*4,
+      neuron_cells*4,neuron_cells*4,neuron_cells,neuron_cells*8,neuron_cells*4,
+      neuron_cells*8,neuron_cells*4,ring_words*4,neuron_cells*4,
+      edge_words*size_t(lanes)*4,event_bytes,4};
+    for(size_t length:lengths){
+      size_t allocated=std::max<size_t>(length,1);
+      if(allocated>device.maxBufferLength||total>std::numeric_limits<uint64_t>::max()-allocated)
+        return fail("Metal batch allocation exceeds device buffer limit");
+      total+=allocated;
+    }
+    if(total>device.recommendedMaxWorkingSetSize)
+      return fail("Metal batch allocation exceeds recommended working set");
+  }
   if(graph->out_ptr[0]!=0||graph->out_ptr[graph->neurons]!=graph->edges||
       graph->in_ptr[0]!=0||graph->in_ptr[graph->neurons]!=graph->edges)
     return fail("Metal graph CSR bounds mismatch");
   std::vector<int32_t> edge_to_incoming(size_t(graph->edges),-1);
+  for(size_t neuron=0;neuron<n;neuron++){
+    if(graph->out_ptr[neuron]<0||graph->out_ptr[neuron]>graph->out_ptr[neuron+1]||
+        graph->out_ptr[neuron+1]>graph->edges||graph->in_ptr[neuron]<0||
+        graph->in_ptr[neuron]>graph->in_ptr[neuron+1]||graph->in_ptr[neuron+1]>graph->edges)
+      return fail("Metal graph CSR ordering is invalid");
+  }
   for(int64_t position=0;position<graph->edges;position++){
     int32_t edge=graph->in_edge[position];
     if(edge<0||int64_t(edge)>=graph->edges||edge_to_incoming[edge]!=-1)
       return fail("Metal incoming edge permutation is invalid");
     edge_to_incoming[edge]=int32_t(position);
+    if(graph->out_post[position]<0||graph->out_post[position]>=graph->neurons||
+        graph->in_pre[position]<0||graph->in_pre[position]>=graph->neurons)
+      return fail("Metal graph neuron index is invalid");
   }
   @autoreleasepool {
-    auto *backend=new Backend();
+    auto owner=std::make_unique<Backend>();
+    Backend *backend=owner.get();
     backend->device=MTLCreateSystemDefaultDevice();
     df_metal_device_info info;
     if(!set_device_info(backend->device,&info)){
-      delete backend;return fail("Metal requires unified memory and Apple GPU family 7");
+      return fail("Metal requires unified memory and Apple GPU family 7");
     }
     backend->command_queue=[backend->device newCommandQueue];
     NSError *error=nil;
@@ -174,7 +286,7 @@ extern "C" int df_metal_create(const df_metal_graph *graph,const char *metallib_
     backend->library=[backend->device newLibraryWithURL:[NSURL fileURLWithPath:path] error:&error];
     if(backend->command_queue==nil||backend->library==nil){
       std::string message=error==nil?"Metal command queue or library creation failed":error.localizedDescription.UTF8String;
-      delete backend;return fail(message.c_str());
+      return fail(message.c_str());
     }
     backend->drive_pipeline=make_pipeline(backend,@"df_drive_change",&error);
     backend->integrate_mark_pipeline=make_pipeline(backend,@"df_integrate_mark",&error);
@@ -185,13 +297,14 @@ extern "C" int df_metal_create(const df_metal_graph *graph,const char *metallib_
         backend->gather_finalize_pipeline==nil||
         backend->materialize_pipeline==nil||backend->weight_update_pipeline==nil){
       std::string message=error==nil?"Metal pipeline creation failed":error.localizedDescription.UTF8String;
-      delete backend;return fail(message.c_str());
+      return fail(message.c_str());
     }
     const uint64_t word_count=(uint64_t(graph->neurons)+31u)/32u;
     if(word_count>uint64_t(std::numeric_limits<int32_t>::max())){
-      delete backend;return fail("Metal neuron bitmap is too large");
+      return fail("Metal neuron bitmap is too large");
     }
     backend->neurons=graph->neurons;backend->edges=graph->edges;
+    backend->lanes=lanes;backend->cursors.assign(lanes,0);backend->uploaded.assign(lanes,0);
     backend->slots=graph->delay_slots;backend->words=int32_t(word_count);
     backend->edge_words=int32_t((graph->edges+31)/32);
     backend->dt=graph->dt_ms;backend->adaptation_jump=graph->adaptation_jump_mv;
@@ -199,7 +312,6 @@ extern "C" int df_metal_create(const df_metal_graph *graph,const char *metallib_
     const auto decay_tables=doomfly::metal::make_decay_tables(backend->dt,backend->adaptation_tau);
     backend->decay_tables=make_buffer(backend->device,decay_tables.data(),
       decay_tables.size()*sizeof(float));
-    const size_t n=graph->neurons,e=graph->edges;
     backend->out_ptr=make_buffer(backend->device,graph->out_ptr,(n+1)*sizeof(int64_t));
     backend->out_post=make_buffer(backend->device,graph->out_post,e*sizeof(int32_t));
     backend->in_ptr=make_buffer(backend->device,graph->in_ptr,(n+1)*sizeof(int64_t));
@@ -208,28 +320,27 @@ extern "C" int df_metal_create(const df_metal_graph *graph,const char *metallib_
     backend->edge_to_incoming=make_buffer(backend->device,edge_to_incoming.data(),
       e*sizeof(int32_t));
     backend->active_edge_bits=make_buffer(backend->device,nullptr,
-      size_t(backend->edge_words)*sizeof(uint32_t));
+      size_t(backend->edge_words)*size_t(lanes)*sizeof(uint32_t));
     backend->kc_mask=make_buffer(backend->device,graph->kc_mask,n);
     backend->modulation_mask=make_buffer(backend->device,graph->modulation_mask,n);
-    backend->weight=make_buffer(backend->device,nullptr,e*sizeof(float));
-    backend->v=make_buffer(backend->device,nullptr,n*sizeof(float));
-    backend->g=make_buffer(backend->device,nullptr,n*sizeof(float));
-    backend->refractory=make_buffer(backend->device,nullptr,n*sizeof(int16_t));
-    backend->drive=make_buffer(backend->device,nullptr,n*sizeof(float));
-    backend->previous_drive=make_buffer(backend->device,nullptr,n*sizeof(float));
-    backend->counts=make_buffer(backend->device,nullptr,n*sizeof(int32_t));
-    backend->active_flag=make_buffer(backend->device,nullptr,n);
-    backend->last=make_buffer(backend->device,nullptr,n*sizeof(int64_t));
-    backend->modulation=make_buffer(backend->device,nullptr,n*sizeof(float));
-    backend->modulation_last=make_buffer(backend->device,nullptr,n*sizeof(int64_t));
+    backend->weight=make_buffer(backend->device,nullptr,edge_cells*sizeof(float));
+    backend->v=make_buffer(backend->device,nullptr,neuron_cells*sizeof(float));
+    backend->g=make_buffer(backend->device,nullptr,neuron_cells*sizeof(float));
+    backend->refractory=make_buffer(backend->device,nullptr,neuron_cells*sizeof(int16_t));
+    backend->drive=make_buffer(backend->device,nullptr,neuron_cells*sizeof(float));
+    backend->previous_drive=make_buffer(backend->device,nullptr,neuron_cells*sizeof(float));
+    backend->counts=make_buffer(backend->device,nullptr,neuron_cells*sizeof(int32_t));
+    backend->active_flag=make_buffer(backend->device,nullptr,neuron_cells);
+    backend->last=make_buffer(backend->device,nullptr,neuron_cells*sizeof(int64_t));
+    backend->modulation=make_buffer(backend->device,nullptr,neuron_cells*sizeof(float));
+    backend->modulation_last=make_buffer(backend->device,nullptr,neuron_cells*sizeof(int64_t));
     backend->rest=make_buffer(backend->device,nullptr,n*sizeof(float));
-    backend->adaptation=make_buffer(backend->device,nullptr,n*sizeof(float));
-    const size_t ring_words=size_t(backend->slots)*size_t(backend->words);
+    backend->adaptation=make_buffer(backend->device,nullptr,neuron_cells*sizeof(float));
     backend->ring=make_buffer(backend->device,nullptr,ring_words*sizeof(uint32_t));
-    backend->touched=make_buffer(backend->device,nullptr,n*sizeof(uint32_t));
+    backend->touched=make_buffer(backend->device,nullptr,neuron_cells*sizeof(uint32_t));
     uint32_t kc_count=0;
     for(size_t i=0;i<n;i++)if(graph->kc_mask[i])kc_count++;
-    backend->event_capacity=std::max<uint32_t>(1,kc_count*5u);
+    backend->event_capacity=std::max<uint32_t>(1,kc_count*5u*uint32_t(lanes));
     backend->kc_events=make_buffer(backend->device,nullptr,
       size_t(backend->event_capacity)*sizeof(df_metal_kc_event));
     backend->event_count=make_buffer(backend->device,nullptr,sizeof(uint32_t));
@@ -242,21 +353,42 @@ extern "C" int df_metal_create(const df_metal_graph *graph,const char *metallib_
       backend->ring,backend->touched,backend->kc_events,backend->event_count,
       backend->decay_tables};
     for(id<MTLBuffer> buffer:required)if(buffer==nil){
-      delete backend;return fail("Metal shared buffer allocation failed");
+      return fail("Metal shared buffer allocation failed");
     }
     std::memset(backend->ring.contents,0,ring_words*sizeof(uint32_t));
-    std::memset(backend->touched.contents,0,n*sizeof(uint32_t));
+    std::memset(backend->touched.contents,0,neuron_cells*sizeof(uint32_t));
     std::memset(backend->active_edge_bits.contents,0,
-      size_t(backend->edge_words)*sizeof(uint32_t));
-    *handle=backend;
+      size_t(backend->edge_words)*size_t(lanes)*sizeof(uint32_t));
+    *handle=owner.release();
   }
   last_error.clear();return 0;
+  } catch(const std::exception &error) {
+    return fail(error.what());
+  }
 }
 
 extern "C" int df_metal_upload_state(df_metal_handle handle,const df_metal_state *s) {
+  return df_metal_upload_lane_state(handle,0,s);
+}
+
+extern "C" int df_metal_upload_lane_state(df_metal_handle handle,int32_t lane,
+    const df_metal_state *s) {
+  try {
   Backend *b=cast(handle);
   if(b==nullptr||!state_pointers_present(b,s))return fail("Metal state pointer is null");
+  if(!valid_lane(b,lane))return fail("Metal lane index out of bounds");
   const int32_t n=b->neurons,slots=b->slots,active_count=*s->nactive;
+  if(s->cursor<0)return fail("Invalid Metal lane cursor");
+  for(int64_t edge=0;edge<b->edges;edge++)
+    if(!std::isfinite(s->weight[edge]))return fail("Nonfinite Metal state weight");
+  for(int32_t neuron=0;neuron<n;neuron++){
+    for(const float *field:{s->v,s->g,s->drive,s->previous_drive,s->modulation,s->rest,s->adaptation})
+      if(!std::isfinite(field[neuron]))return fail("Nonfinite Metal neuron state");
+    if(s->refractory[neuron]<0||s->counts[neuron]<0||s->active_flag[neuron]>1||
+        s->last[neuron]<-1||s->last[neuron]>s->cursor||
+        s->modulation_last[neuron]<0||s->modulation_last[neuron]>s->cursor)
+      return fail("Invalid Metal discrete neuron state");
+  }
   if(active_count<0||active_count>n)return fail("Invalid active neuron count");
   std::vector<uint8_t> active_seen(n,0);
   for(int32_t k=0;k<active_count;k++){
@@ -279,34 +411,60 @@ extern "C" int df_metal_upload_state(df_metal_handle handle,const df_metal_state
     }
   }
   const size_t nf=size_t(n)*sizeof(float),ni=size_t(n)*sizeof(int32_t),nl=size_t(n)*sizeof(int64_t);
-  if(b->edges>0)std::memcpy(b->weight.contents,s->weight,size_t(b->edges)*sizeof(float));
-  std::memcpy(b->v.contents,s->v,nf);std::memcpy(b->g.contents,s->g,nf);
-  std::memcpy(b->refractory.contents,s->refractory,size_t(n)*sizeof(int16_t));
-  std::memcpy(b->drive.contents,s->drive,nf);std::memcpy(b->previous_drive.contents,s->previous_drive,nf);
-  std::memcpy(b->counts.contents,s->counts,ni);std::memcpy(b->active_flag.contents,s->active_flag,n);
-  std::memcpy(b->last.contents,s->last,nl);std::memcpy(b->modulation.contents,s->modulation,nf);
-  std::memcpy(b->modulation_last.contents,s->modulation_last,nl);std::memcpy(b->rest.contents,s->rest,nf);
-  std::memcpy(b->adaptation.contents,s->adaptation,nf);
-  std::memcpy(b->ring.contents,ring.data(),ring.size()*sizeof(uint32_t));
-  std::memset(b->touched.contents,0,size_t(n)*sizeof(uint32_t));b->cursor=s->cursor;
-  std::memset(b->active_edge_bits.contents,0,size_t(b->edge_words)*sizeof(uint32_t));
+  if(b->lanes>1&&b->rest_initialized&&std::memcmp(b->rest.contents,s->rest,nf)!=0)
+    return fail("Metal batch lanes require identical resting configuration");
+  if(b->edges>0)std::memcpy(lane_contents(b->weight,lane,size_t(b->edges)*sizeof(float)),
+    s->weight,size_t(b->edges)*sizeof(float));
+  std::memcpy(lane_contents(b->v,lane,nf),s->v,nf);
+  std::memcpy(lane_contents(b->g,lane,nf),s->g,nf);
+  std::memcpy(lane_contents(b->refractory,lane,size_t(n)*sizeof(int16_t)),s->refractory,size_t(n)*sizeof(int16_t));
+  std::memcpy(lane_contents(b->drive,lane,nf),s->drive,nf);
+  std::memcpy(lane_contents(b->previous_drive,lane,nf),s->previous_drive,nf);
+  std::memcpy(lane_contents(b->counts,lane,ni),s->counts,ni);
+  std::memcpy(lane_contents(b->active_flag,lane,size_t(n)),s->active_flag,n);
+  std::memcpy(lane_contents(b->last,lane,nl),s->last,nl);
+  std::memcpy(lane_contents(b->modulation,lane,nf),s->modulation,nf);
+  std::memcpy(lane_contents(b->modulation_last,lane,nl),s->modulation_last,nl);
+  std::memcpy(b->rest.contents,s->rest,nf);b->rest_initialized=true;
+  std::memcpy(lane_contents(b->adaptation,lane,nf),s->adaptation,nf);
+  std::memcpy(lane_contents(b->ring,lane,ring.size()*sizeof(uint32_t)),ring.data(),ring.size()*sizeof(uint32_t));
+  std::memset(lane_contents(b->touched,lane,ni),0,ni);b->cursors[lane]=s->cursor;
+  const size_t edge_bytes=size_t(b->edge_words)*sizeof(uint32_t);
+  std::memset(lane_contents(b->active_edge_bits,lane,edge_bytes),0,edge_bytes);
+  b->uploaded[lane]=1;b->last_event_count=0;
+  if(std::all_of(b->uploaded.begin(),b->uploaded.end(),[](uint8_t value){return value!=0;}))
+    b->poisoned=false;
   last_error.clear();return 0;
+  } catch(const std::exception &error) {
+    return fail(error.what());
+  }
 }
 
 extern "C" int df_metal_download_state(df_metal_handle handle,df_metal_state *s) {
+  return df_metal_download_lane_state(handle,0,s);
+}
+
+extern "C" int df_metal_download_lane_state(df_metal_handle handle,int32_t lane,
+    df_metal_state *s) {
   Backend *b=cast(handle);
   if(b==nullptr||!state_pointers_present(b,s))return fail("Metal state pointer is null");
+  if(!valid_lane(b,lane))return fail("Metal lane index out of bounds");
+  if(!b->uploaded[lane])return fail("Metal lane state is not uploaded");
   const int32_t n=b->neurons,slots=b->slots;
   const size_t nf=size_t(n)*sizeof(float),ni=size_t(n)*sizeof(int32_t),nl=size_t(n)*sizeof(int64_t);
-  if(b->edges>0)std::memcpy(s->weight,b->weight.contents,size_t(b->edges)*sizeof(float));
-  std::memcpy(s->v,b->v.contents,nf);std::memcpy(s->g,b->g.contents,nf);
-  std::memcpy(s->refractory,b->refractory.contents,size_t(n)*sizeof(int16_t));
-  std::memcpy(s->drive,b->drive.contents,nf);std::memcpy(s->previous_drive,b->previous_drive.contents,nf);
-  std::memcpy(s->counts,b->counts.contents,ni);std::memcpy(s->active_flag,b->active_flag.contents,n);
-  std::memcpy(s->last,b->last.contents,nl);std::memcpy(s->modulation,b->modulation.contents,nf);
-  std::memcpy(s->modulation_last,b->modulation_last.contents,nl);std::memcpy(s->rest,b->rest.contents,nf);
-  std::memcpy(s->adaptation,b->adaptation.contents,nf);
-  const uint32_t *ring=static_cast<const uint32_t *>(b->ring.contents);
+  if(b->edges>0)std::memcpy(s->weight,lane_contents(b->weight,lane,size_t(b->edges)*sizeof(float)),size_t(b->edges)*sizeof(float));
+  std::memcpy(s->v,lane_contents(b->v,lane,nf),nf);std::memcpy(s->g,lane_contents(b->g,lane,nf),nf);
+  std::memcpy(s->refractory,lane_contents(b->refractory,lane,size_t(n)*sizeof(int16_t)),size_t(n)*sizeof(int16_t));
+  std::memcpy(s->drive,lane_contents(b->drive,lane,nf),nf);
+  std::memcpy(s->previous_drive,lane_contents(b->previous_drive,lane,nf),nf);
+  std::memcpy(s->counts,lane_contents(b->counts,lane,ni),ni);
+  std::memcpy(s->active_flag,lane_contents(b->active_flag,lane,size_t(n)),n);
+  std::memcpy(s->last,lane_contents(b->last,lane,nl),nl);
+  std::memcpy(s->modulation,lane_contents(b->modulation,lane,nf),nf);
+  std::memcpy(s->modulation_last,lane_contents(b->modulation_last,lane,nl),nl);
+  std::memcpy(s->rest,b->rest.contents,nf);
+  std::memcpy(s->adaptation,lane_contents(b->adaptation,lane,nf),nf);
+  const uint32_t *ring=static_cast<const uint32_t *>(lane_contents(b->ring,lane,size_t(slots)*b->words*sizeof(uint32_t)));
   std::memset(s->queue,0,size_t(slots)*n*sizeof(int32_t));
   for(int32_t slot=0;slot<slots;slot++){
     int32_t count=0;
@@ -315,57 +473,84 @@ extern "C" int df_metal_download_state(df_metal_handle handle,df_metal_state *s)
     s->queue_count[slot]=count;
   }
   std::memset(s->active,0,ni);int32_t count=0;
-  const uint8_t *flags=static_cast<const uint8_t *>(b->active_flag.contents);
+  const uint8_t *flags=static_cast<const uint8_t *>(lane_contents(b->active_flag,lane,size_t(n)));
   for(int32_t id=0;id<n;id++)if(flags[id])s->active[count++]=id;
-  *s->nactive=count;s->cursor=b->cursor;
+  *s->nactive=count;s->cursor=b->cursors[lane];
   last_error.clear();return 0;
 }
 
 extern "C" int df_metal_upload_drive(df_metal_handle handle,const float *drive) {
+  return df_metal_upload_lane_drive(handle,0,drive);
+}
+
+extern "C" int df_metal_upload_lane_drive(df_metal_handle handle,int32_t lane,const float *drive) {
   Backend *b=cast(handle);
   if(b==nullptr||drive==nullptr)return fail("Metal drive pointer is null");
-  std::memcpy(b->drive.contents,drive,size_t(b->neurons)*sizeof(float));
+  if(!valid_lane(b,lane))return fail("Metal lane index out of bounds");
+  if(b->poisoned)return fail("Metal backend is poisoned");
+  for(int32_t neuron=0;neuron<b->neurons;neuron++)
+    if(!std::isfinite(drive[neuron]))return fail("Nonfinite Metal drive");
+  std::memcpy(lane_contents(b->drive,lane,size_t(b->neurons)*sizeof(float)),drive,size_t(b->neurons)*sizeof(float));
   last_error.clear();return 0;
 }
 
 extern "C" int df_metal_download_observation(df_metal_handle handle,int32_t *counts,
     int64_t *cursor) {
+  return df_metal_download_lane_observation(handle,0,counts,cursor);
+}
+
+extern "C" int df_metal_download_lane_observation(df_metal_handle handle,int32_t lane,
+    int32_t *counts,int64_t *cursor) {
   Backend *b=cast(handle);
   if(b==nullptr||counts==nullptr||cursor==nullptr)
     return fail("Metal observation pointer is null");
-  std::memcpy(counts,b->counts.contents,size_t(b->neurons)*sizeof(int32_t));
-  *cursor=b->cursor;
+  if(!valid_lane(b,lane))return fail("Metal lane index out of bounds");
+  if(!b->uploaded[lane])return fail("Metal lane state is not uploaded");
+  std::memcpy(counts,lane_contents(b->counts,lane,size_t(b->neurons)*sizeof(int32_t)),size_t(b->neurons)*sizeof(int32_t));
+  *cursor=b->cursors[lane];
   last_error.clear();return 0;
 }
 
 extern "C" int df_metal_update_weights(df_metal_handle handle,int32_t count,
     const int64_t *edge_ids,const float *values) {
+  return df_metal_update_lane_weights(handle,0,count,edge_ids,values);
+}
+
+extern "C" int df_metal_update_lane_weights(df_metal_handle handle,int32_t lane,int32_t count,
+    const int64_t *edge_ids,const float *values) {
   Backend *b=cast(handle);
   if(b==nullptr||count<0||(count>0&&(!present(edge_ids)||!present(values))))
     return fail("Invalid plastic weight update");
+  if(!valid_lane(b,lane))return fail("Metal lane index out of bounds");
+  if(b->poisoned)return fail("Metal backend is poisoned");
   for(int32_t i=0;i<count;i++)
-    if(edge_ids[i]<0||edge_ids[i]>=b->edges)return fail("Plastic edge out of bounds");
+    if(edge_ids[i]<0||edge_ids[i]>=b->edges||!std::isfinite(values[i]))
+      return fail("Plastic edge or value out of bounds");
   if(count==0){last_error.clear();return 0;}
   if(uint32_t(count)>b->weight_update_capacity){
-    b->weight_update_ids=make_buffer(b->device,nullptr,size_t(count)*sizeof(int64_t));
-    b->weight_update_values=make_buffer(b->device,nullptr,size_t(count)*sizeof(float));
-    if(b->weight_update_ids==nil||b->weight_update_values==nil)
+    if(!replacement_fits(b,{size_t(count)*sizeof(int64_t),size_t(count)*sizeof(float)}))
+      return fail("Metal plastic weight allocation exceeds device limits");
+    id<MTLBuffer> ids=make_buffer(b->device,nullptr,size_t(count)*sizeof(int64_t));
+    id<MTLBuffer> values_buffer=make_buffer(b->device,nullptr,size_t(count)*sizeof(float));
+    if(ids==nil||values_buffer==nil)
       return fail("Metal plastic weight buffer allocation failed");
+    b->weight_update_ids=ids;b->weight_update_values=values_buffer;
     b->weight_update_capacity=uint32_t(count);
   }
   std::memcpy(b->weight_update_ids.contents,edge_ids,size_t(count)*sizeof(int64_t));
   std::memcpy(b->weight_update_values.contents,values,size_t(count)*sizeof(float));
   @autoreleasepool {
     id<MTLCommandBuffer> command=[b->command_queue commandBuffer];
-    if(command==nil){b->poisoned=true;return fail("Metal weight command buffer creation failed");}
+    if(command==nil){poison(b);return fail("Metal weight command buffer creation failed");}
     id<MTLComputeCommandEncoder> encoder=[command computeCommandEncoder];
-    if(encoder==nil){b->poisoned=true;return fail("Metal weight encoder creation failed");}
-    KernelParams p{};p.neurons=uint32_t(count);uint32_t dispatch_count=0;
+    if(encoder==nil){poison(b);return fail("Metal weight encoder creation failed");}
+    KernelParams p{};p.neurons=uint32_t(count);p.lanes=1;
+    p.weight_lane=uint32_t(lane);p.edge_stride=uint64_t(b->edges);uint32_t dispatch_count=0;
     encode(encoder,b->weight_update_pipeline,
       {b->weight,b->weight_update_ids,b->weight_update_values},p,count,dispatch_count);
     [encoder endEncoding];[command commit];[command waitUntilCompleted];
     if(command.status!=MTLCommandBufferStatusCompleted){
-      b->poisoned=true;
+      poison(b);
       if(command.error==nil)return fail("Metal weight command failed");
       return fail(command.error.localizedDescription);
     }
@@ -380,31 +565,39 @@ extern "C" int df_metal_advance(df_metal_handle handle,int32_t steps,
   if(b==nullptr||event_count==nullptr||timing==nullptr||steps<1||steps>100||
       event_capacity<0||(event_capacity>0&&events==nullptr))return fail("Invalid Metal advance arguments");
   if(b->poisoned)return fail("Metal backend is poisoned");
+  if(!std::all_of(b->uploaded.begin(),b->uploaded.end(),[](uint8_t value){return value!=0;}))
+    return fail("Metal advance requires every lane state to be uploaded");
+  const int64_t cursor=b->cursors[0];
+  for(int64_t lane_cursor:b->cursors)
+    if(lane_cursor!=cursor)return fail("Metal batch lane cursors differ");
+  const int32_t delay=std::lround(1.8f/b->dt);
+  if(cursor>std::numeric_limits<int64_t>::max()-steps-delay)
+    return fail("Metal batch cursor overflow");
   std::memset(timing,0,sizeof(*timing));
   timing->edge_bitmap_words=uint32_t(b->edge_words);
   const uint32_t kernel_capacity=std::min<uint32_t>(b->event_capacity,event_capacity);
   *static_cast<uint32_t *>(b->event_count.contents)=0;
   const auto started=std::chrono::steady_clock::now();
   const auto clear_started=std::chrono::steady_clock::now();
-  std::memset(b->counts.contents,0,size_t(b->neurons)*sizeof(int32_t));
+  std::memset(b->counts.contents,0,size_t(b->neurons)*size_t(b->lanes)*sizeof(int32_t));
   timing->counts_clear_seconds=std::chrono::duration<double>(
     std::chrono::steady_clock::now()-clear_started).count();
   @autoreleasepool {
     const auto encode_started=std::chrono::steady_clock::now();
     id<MTLCommandBuffer> command=[b->command_queue commandBuffer];
-    if(command==nil){b->poisoned=true;return fail("Metal command buffer creation failed");}
+    if(command==nil){poison(b);return fail("Metal command buffer creation failed");}
     id<MTLComputeCommandEncoder> encoder=[command computeCommandEncoder];
-    if(encoder==nil){b->poisoned=true;return fail("Metal compute encoder creation failed");}
+    if(encoder==nil){poison(b);return fail("Metal compute encoder creation failed");}
     uint32_t dispatch_count=0;
     KernelParams p{uint32_t(b->neurons),uint32_t(b->words),uint32_t(b->edge_words),
-      0,0,0,b->cursor,b->dt,
+      0,0,0,cursor,b->dt,
       b->adaptation_jump,b->adaptation_tau,int32_t(std::lround(2.2f/b->dt)),kernel_capacity,
-      b->capture_all_spikes?1u:0u};
+      b->capture_all_spikes?1u:0u,uint32_t(b->lanes),0,uint64_t(b->edges),
+      uint64_t(b->slots)*uint64_t(b->words),uint64_t(b->edge_words)};
     encode(encoder,b->drive_pipeline,{b->v,b->g,b->refractory,b->drive,b->previous_drive,
       b->active_flag,b->last,b->rest,b->adaptation,b->decay_tables},p,b->neurons,dispatch_count);
-    const int32_t delay=std::lround(1.8f/b->dt);
     for(int32_t step=0;step<steps;step++){
-      p.clock=b->cursor+step;p.slot=uint32_t(p.clock%b->slots);
+      p.clock=cursor+step;p.slot=uint32_t(p.clock%b->slots);
       p.future=uint32_t((p.clock+delay)%b->slots);
       encode(encoder,b->integrate_mark_pipeline,{b->v,b->g,b->refractory,b->drive,
         b->active_flag,b->last,b->rest,b->adaptation,b->ring,b->counts,b->kc_mask,
@@ -416,7 +609,7 @@ extern "C" int df_metal_advance(df_metal_handle handle,int32_t steps,
         b->modulation_last,b->modulation_mask,b->rest,b->adaptation,b->ring,b->decay_tables},
         p,b->neurons,dispatch_count);
     }
-    p.clock=b->cursor+steps-1;
+    p.clock=cursor+steps-1;
     encode(encoder,b->materialize_pipeline,{b->v,b->g,b->refractory,b->drive,b->last,
       b->rest,b->adaptation,b->decay_tables},p,b->neurons,dispatch_count);
     [encoder endEncoding];
@@ -431,24 +624,25 @@ extern "C" int df_metal_advance(df_metal_handle handle,int32_t steps,
     timing->wait_call_seconds=std::chrono::duration<double>(
       std::chrono::steady_clock::now()-wait_started).count();
     if(command.status!=MTLCommandBufferStatusCompleted){
-      b->poisoned=true;
+      poison(b);
       if(command.error==nil)return fail("Metal command failed");
       return fail(command.error.localizedDescription);
     }
     const auto event_copy_started=std::chrono::steady_clock::now();
     const uint32_t produced=*static_cast<uint32_t *>(b->event_count.contents);
-    if(produced>kernel_capacity){b->poisoned=true;return fail("KC event capacity exceeded");}
+    if(produced>kernel_capacity){poison(b);return fail("KC event capacity exceeded");}
     if(produced>0)std::memcpy(events,b->kc_events.contents,size_t(produced)*sizeof(df_metal_kc_event));
     timing->native_event_copy_seconds=std::chrono::duration<double>(
       std::chrono::steady_clock::now()-event_copy_started).count();
     timing->native_event_copy_bytes=uint64_t(produced)*sizeof(df_metal_kc_event);
-    *event_count=int32_t(produced);b->last_event_count=produced;b->cursor+=steps;
+    *event_count=int32_t(produced);b->last_event_count=produced;
+    for(int64_t &lane_cursor:b->cursors)lane_cursor+=steps;
     timing->gpu_seconds=command.GPUEndTime>=command.GPUStartTime?
       command.GPUEndTime-command.GPUStartTime:0.0;
     timing->encoder_count=1;timing->dispatch_count=dispatch_count;
     timing->indirect_dispatch_count=0;
-    timing->mark_grid_threads=uint32_t(steps)*uint32_t(b->neurons);
-    timing->gather_grid_threads=uint32_t(steps)*uint32_t(b->neurons);
+    timing->mark_grid_threads=uint32_t(steps)*uint32_t(b->neurons)*uint32_t(b->lanes);
+    timing->gather_grid_threads=uint32_t(steps)*uint32_t(b->neurons)*uint32_t(b->lanes);
   }
   timing->native_total_seconds=std::chrono::duration<double>(
     std::chrono::steady_clock::now()-started).count();
@@ -457,15 +651,24 @@ extern "C" int df_metal_advance(df_metal_handle handle,int32_t steps,
 
 extern "C" int df_metal_apply_eligibility(df_metal_handle handle,double *eligibility,
     int64_t *eligibility_last,double tau_ms) {
+  return df_metal_apply_lane_eligibility(handle,0,eligibility,eligibility_last,tau_ms);
+}
+
+extern "C" int df_metal_apply_lane_eligibility(df_metal_handle handle,int32_t lane,
+    double *eligibility,int64_t *eligibility_last,double tau_ms) {
+  try {
   Backend *b=cast(handle);
   if(b==nullptr||eligibility==nullptr||eligibility_last==nullptr||
       !std::isfinite(tau_ms)||tau_ms<=0)return fail("Invalid eligibility update");
+  if(!valid_lane(b,lane))return fail("Metal lane index out of bounds");
+  if(b->poisoned)return fail("Metal backend is poisoned");
   const auto *stored=static_cast<const df_metal_kc_event *>(b->kc_events.contents);
   std::vector<df_metal_kc_event> events(stored,stored+b->last_event_count);
   std::sort(events.begin(),events.end(),[](const auto &left,const auto &right){
     return left.tick<right.tick||(left.tick==right.tick&&left.neuron<right.neuron);
   });
   for(const auto &event:events){
+    if(event.reserved!=lane)continue;
     if(event.neuron<0||event.neuron>=b->neurons)return fail("KC event neuron out of bounds");
     const auto *kc_mask=static_cast<const uint8_t *>(b->kc_mask.contents);
     if(!kc_mask[event.neuron])continue;
@@ -475,18 +678,33 @@ extern "C" int df_metal_apply_eligibility(df_metal_handle handle,double *eligibi
     eligibility[event.neuron]+=1.0;eligibility_last[event.neuron]=event.tick;
   }
   last_error.clear();return 0;
+  } catch(const std::exception &error) {
+    return fail(error.what());
+  }
 }
 
 extern "C" int df_metal_set_diagnostics(df_metal_handle handle,int32_t enabled) {
   Backend *b=cast(handle);
   if(b==nullptr||(enabled!=0&&enabled!=1))return fail("Invalid Metal diagnostic mode");
-  if(enabled&&b->event_capacity<uint32_t(b->neurons)*5u){
-    const uint32_t capacity=uint32_t(b->neurons)*5u;
+  if(b->poisoned)return fail("Metal backend is poisoned");
+  if(enabled&&b->event_capacity<uint32_t(b->neurons)*5u*uint32_t(b->lanes)){
+    const uint32_t capacity=uint32_t(b->neurons)*5u*uint32_t(b->lanes);
+    if(!replacement_fits(b,{size_t(capacity)*sizeof(df_metal_kc_event)}))
+      return fail("Metal diagnostic event allocation exceeds device limits");
     id<MTLBuffer> events=make_buffer(b->device,nullptr,size_t(capacity)*sizeof(df_metal_kc_event));
     if(events==nil)return fail("Metal diagnostic event allocation failed");
     b->kc_events=events;b->event_capacity=capacity;
   }
   b->capture_all_spikes=enabled!=0;last_error.clear();return 0;
+}
+
+extern "C" int df_metal_batch_memory_bytes(df_metal_handle handle,uint64_t *shared,
+    uint64_t *mutable_storage) {
+  Backend *b=cast(handle);
+  if(b==nullptr||shared==nullptr||mutable_storage==nullptr)
+    return fail("Metal memory accounting pointer is null");
+  *shared=shared_bytes(b);*mutable_storage=mutable_bytes(b);
+  last_error.clear();return 0;
 }
 
 extern "C" void df_metal_destroy(df_metal_handle handle) { delete cast(handle); }

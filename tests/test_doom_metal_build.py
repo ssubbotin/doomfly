@@ -87,7 +87,7 @@ def test_old_math_configuration_cannot_reuse_cache(metal_toolchain,tmp_path,lega
 
 
 @pytest.mark.parametrize('field,value',[
-    ('abi_version',3),('abi_version',99),('builder_sha256','0'*64),('library_compile_flags',['-O0'])])
+    ('abi_version',3),('abi_version',5),('abi_version',99),('builder_sha256','0'*64),('library_compile_flags',['-O0'])])
 def test_changed_build_identity_cannot_reuse_cache(metal_toolchain,tmp_path,field,value):
     module,compiled=metal_toolchain
     original=module.build(tmp_path)

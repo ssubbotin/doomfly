@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-#define DF_METAL_ABI_VERSION 5u
+#define DF_METAL_ABI_VERSION 7u
 
 typedef void *df_metal_handle;
 
@@ -84,6 +84,18 @@ typedef struct {
 int df_metal_probe(df_metal_device_info *info);
 int df_metal_create(const df_metal_graph *graph,const char *metallib_path,
     df_metal_handle *handle);
+int df_metal_create_batch(const df_metal_graph *graph,const char *metallib_path,
+    int32_t lanes,df_metal_handle *handle);
+int df_metal_upload_lane_state(df_metal_handle handle,int32_t lane,const df_metal_state *state);
+int df_metal_download_lane_state(df_metal_handle handle,int32_t lane,df_metal_state *state);
+int df_metal_upload_lane_drive(df_metal_handle handle,int32_t lane,const float *drive);
+int df_metal_download_lane_observation(df_metal_handle handle,int32_t lane,
+    int32_t *counts,int64_t *cursor);
+int df_metal_update_lane_weights(df_metal_handle handle,int32_t lane,int32_t count,
+    const int64_t *edge_ids,const float *values);
+int df_metal_apply_lane_eligibility(df_metal_handle handle,int32_t lane,
+    double *eligibility,int64_t *eligibility_last,double tau_ms);
+int df_metal_batch_memory_bytes(df_metal_handle handle,uint64_t *shared,uint64_t *mutable_bytes);
 int df_metal_upload_state(df_metal_handle handle,const df_metal_state *state);
 int df_metal_download_state(df_metal_handle handle,df_metal_state *state);
 int df_metal_upload_drive(df_metal_handle handle,const float *drive);

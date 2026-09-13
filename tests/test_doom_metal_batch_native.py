@@ -324,3 +324,46 @@ def test_native_event_overflow_poisons_whole_owner():
         assert 'poisoned' in library.df_metal_last_error().decode()
     finally:
         library.df_metal_destroy(handle)
+
+
+def test_native_shared_rest_mismatch_rejected_without_changing_existing_lane():
+    library = batch_library()
+    graph, keepalive = raw_empty_graph()
+    handle = create(library, graph, 2)
+    try:
+        original, original_arrays = raw_empty_state()
+        original_arrays[7][:] = 3
+        check(library, library.df_metal_upload_lane_state(handle, 0, C.byref(original)))
+        candidate, candidate_arrays = raw_empty_state()
+        candidate_arrays[14][:] = -51
+        assert library.df_metal_upload_lane_state(handle, 1, C.byref(candidate)) != 0
+        downloaded, arrays = raw_empty_state()
+        check(library, library.df_metal_download_lane_state(handle, 0, C.byref(downloaded)))
+        for actual, expected in zip(arrays, original_arrays):
+            np.testing.assert_array_equal(actual, expected)
+        candidate_arrays[14][:] = -52
+        check(library, library.df_metal_upload_lane_state(handle, 1, C.byref(candidate)))
+        advance(library, handle, 1, 2)
+    finally:
+        library.df_metal_destroy(handle)
+
+
+def test_native_advance_requires_validated_state_in_every_lane():
+    library = batch_library()
+    graph, keepalive = raw_empty_graph()
+    handle = create(library, graph, 2)
+    try:
+        state, arrays = raw_empty_state()
+        arrays[7][:] = 9
+        check(library, library.df_metal_upload_lane_state(handle, 0, C.byref(state)))
+        events, count, timing = (KCEvent * 2)(), C.c_int32(), Timing()
+        assert library.df_metal_advance(handle, 40, events, 2, C.byref(count), C.byref(timing)) != 0
+        downloaded, downloaded_arrays = raw_empty_state()
+        check(library, library.df_metal_download_lane_state(handle, 0, C.byref(downloaded)))
+        assert downloaded.cursor == 0
+        for actual, expected in zip(downloaded_arrays, arrays):
+            np.testing.assert_array_equal(actual, expected)
+        check(library, library.df_metal_upload_lane_state(handle, 1, C.byref(state)))
+        advance(library, handle, 1, 2)
+    finally:
+        library.df_metal_destroy(handle)
