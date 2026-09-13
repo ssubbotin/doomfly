@@ -103,3 +103,9 @@ or faster learning per frame. Extra lanes are execution duplicates.
 A lack of gain directs Metal profiling and refinement with fixed lanes.
 These engineering checks establish neither
 useful learning nor a public launch.
+
+The subsequent reset-isolation correction validates registered host bindings
+before any reset read/write. Its actual M4 verification passes 186 focused,
+86 serial and 521 full-suite tests; skips and the 50 existing warnings remain
+explicit in the experiment's separate correction report. The source080
+complete-workload timings above remain labeled with their original source.

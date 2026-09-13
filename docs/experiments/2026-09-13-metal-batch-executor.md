@@ -44,6 +44,18 @@ suite retains the existing 50 dependency deprecation warnings. Native ABI 7,
 strict Metal 2.4 compilation, binaries and device identity match the reviewed
 build. Independent native and Python task reviews approved their final code.
 
+Final whole-branch review identified a rejected-reset isolation gap: host
+arrays could change before binding validation. Correction source
+`eff6b74f8a0700ae2dedf76559c104338e8f14db` validates under the existing lock
+before any saved-memory read or reset write. Seven genuine regression failures
+become passes; actual M4 verification reports 186 focused passes, 86 serial
+passes with one skip, and 521 full-suite passes with three skips and the same
+50 baseline warnings. Real owned reset/restore and independent continuation
+are covered. See the separate
+[correction verification](../../outputs/doom-learning/metal-batch-executor-20260913/reset-guard-verification.json).
+The complete controls and timings below retain their source080 identity;
+they were not relabeled or rerun as correction-source measurements.
+
 Fresh serial CPU/Metal gates pass over 40 and 80 ms: exact recorded spike
 events, counts, fixed decisions and plastic weights, with bitwise repeated
 Metal state. CPU and Metal complete-state digests still differ. These short

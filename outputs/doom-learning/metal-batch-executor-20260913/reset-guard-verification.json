@@ -1,0 +1,96 @@
+{
+  "schema": 1,
+  "source_commit": "eff6b74f8a0700ae2dedf76559c104338e8f14db",
+  "reviewed_fix_base": "2f87b5bdb72671f9598de633f3f77b71301a9cd5",
+  "retained_runtime_source_commit": "08015d7101778e6aa3fc88103418d811db1481e5",
+  "numerical_parent": "b24249ecfee12aa84b55ed803ffe47bd09c487ad",
+  "abi_version": 7,
+  "device": "Apple M4 Pro",
+  "correction": "Validate attached-owner array bindings under the existing reset lock before reading or assigning host state.",
+  "source_hashes": {
+    "doom_learning_v6/brain.py": "3fb45f825e3ae02b778cd221f1fdabacfb78acb177326e056944c4977faf81f7",
+    "doom_learning_v6/metal/batch.py": "cab1c0a69148c6e92d2505e408aab5d6b46402a0ed7bce84817cb002f215386a",
+    "tests/test_doom_metal_batch.py": "1ea171a49926d01061d39136da59a47d9378c3bec1d202c30f2be0da89d2e45c",
+    "doom_learning_v6/metal/kernels.metal": "03b2ef8c5c13feac8695d952fa59ef404a33552f0b48211f0b52ba847ceab8bc",
+    "doom_learning_v6/metal/backend.mm": "a1a6635dc565638b2cac858bee28c2f79e0fd126c17d603c97d13aa4fd7c003f"
+  },
+  "portable_regression": {
+    "rejection_cases": "Aliased learning memory, reallocated and undersized reset fields, both keep_memory modes, and validation before saved-memory reads.",
+    "red": {
+      "source_commit": "2f87b5bdb72671f9598de633f3f77b71301a9cd5",
+      "failed": 7,
+      "exit_code": 1,
+      "pytest_seconds": 0.51,
+      "log_bytes": 19013,
+      "log_sha256": "ee7a8123eef8cde2746071ec193c12a74299c11026c1e0fb4e169d0632b1d93d"
+    },
+    "green": {
+      "passed": 7,
+      "failed": 0,
+      "exit_code": 0,
+      "pytest_seconds": 0.39,
+      "log_bytes": 114,
+      "log_sha256": "c3ace312b922f2c18226dc9ee7efca27387cc672cc30a339b36bb86ecd928aae"
+    },
+    "covering": {
+      "passed": 133,
+      "skipped": 53,
+      "failed": 0,
+      "exit_code": 0,
+      "pytest_seconds": 3.98,
+      "log_bytes": 272,
+      "log_sha256": "0e87f153d8ce76ee61d206063f49f6105b40e4f4bb41cd9d20e728139cb4fefe"
+    },
+    "interpretation": "Actual production reset and binding guards with failing native boundary traps; platform skips are not Metal passes."
+  },
+  "actual_m4_verification": {
+    "probe": {
+      "exit_code": 0,
+      "process_seconds": 0.03609141699416796,
+      "log_bytes": 2844,
+      "log_sha256": "5cd3cd26e40c68d44c968442467b9244e71a79160a3027b5f9cdde77d6eaa8f0",
+      "native_binary_identity_equal_to_source080": true
+    },
+    "focused": {
+      "passed": 186,
+      "failed": 0,
+      "exit_code": 0,
+      "pytest_seconds": 3.25,
+      "process_seconds": 3.414198459002364,
+      "log_bytes": 260,
+      "log_sha256": "22115237b282642ca9acdd8b6bc8738cfcb2016a1fe357478e0c1860a2b31787"
+    },
+    "unchanged_serial": {
+      "passed": 86,
+      "skipped": 1,
+      "failed": 0,
+      "exit_code": 0,
+      "pytest_seconds": 2.35,
+      "process_seconds": 2.456063917001302,
+      "log_bytes": 190,
+      "log_sha256": "40ab4fc782740c85d3593b121b0023e00ddf0d384e7579f41ee3d09f4a5a2bf5"
+    },
+    "full_suite": {
+      "passed": 521,
+      "skipped": 3,
+      "failed": 0,
+      "exit_code": 0,
+      "baseline_deprecation_warnings": 50,
+      "pytest_seconds": 19.20,
+      "process_seconds": 19.59489958299673,
+      "log_bytes": 10098,
+      "log_sha256": "e438da0e1e84703e9ae6cace4285f723ee00d7992924fe15196803537efb685f"
+    },
+    "interpretation": "Genuine fixed-source M4 tests include six healthy owned reset/restore and independent serial-Metal continuation cases. Original logs were copied after natural completion and byte/SHA256 matched."
+  },
+  "provenance": {
+    "target_source_hashes_match_local": true,
+    "target_source_diff_clean": true,
+    "source080_artifacts_preserved": true,
+    "complete_timing_campaign_repeated_for_correction": false,
+    "interpretation": "Existing source080 timings and controls remain evidence for their executed source; this record adds correction verification only."
+  },
+  "learning_demonstrated": false,
+  "biologically_validated": false,
+  "announcement_ready": false
+}
