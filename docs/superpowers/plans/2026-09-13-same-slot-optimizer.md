@@ -210,10 +210,12 @@ Draw/pin both randoms independently, then freeze baseline+4terminals+2randoms.
 Held wave1 is first4roles; wave2 remaining3+baseline filler, bothepisodes.
 Allattempts including fillers/no-update waves charged; no retry or masking.
 
-CLI requires Darwin, exact clean HEAD, immutable committed protocol SHA and
+CLI requires Darwin, exact HEAD with clean model/test sources, immutable committed protocol SHA and
 trusted physical pins before native allocation. Validate source/CPU/native
 relationships using existing pin helpers, graph/config/calibration and initial
 all24CP baseline. No historical replay/_check_reference old episode requirement.
+Preserved generated CPU metadata and native build products may differ from Git;
+their exact byte pins and build relationships must still match trusted inputs.
 Verify fresh split's complete lengths/identities/source contract. Acquire existing
 nonblocking GPU lease. Register resources immediately; pressure/disk checks at
 everywave; preserve failures and releaselease without replacing primarycause.
