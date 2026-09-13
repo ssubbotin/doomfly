@@ -18,7 +18,9 @@ approval.
 The model retains MaleCNS v1.0's 166,700 modeled neurons, all 25,582,938
 released connections between retained entries, and 4,184 existing KC-to-MBON11
 plastic slots. It used `adaptive-centered-v6`, `eta=0.001`, Metal window width
-18, and source `41d20761f5a3b6a7139a219c9fc6cb72b223b8a3`.
+18, and source `41d20761f5a3b6a7139a219c9fc6cb72b223b8a3`. The immutable
+[protocol](2026-09-13-metal-live-transfer-protocol.json) is SHA-256
+`757a424568027aea9852b80b75c50dc1b6ce2a66bb05d26e8ce53cf2497b1071`.
 
 At each live 35 Hz engine frame, RGB pixels supplied sensory neurons. Modeled
 neural propagation then ran through the retained graph and the existing fixed
@@ -26,7 +28,9 @@ DNp20/DNpe017 decoding converted activity to game controls. RGB input,
 propagation, reinforcement, plasticity, and decoding remained distinct
 operations. This is a frozen evaluation: weights, `memory_u`, and `memory_w`
 were frozen, learning was disabled, and imposed reinforcement current was zero.
-The two-second dark warmup has setup-only epochs. It did not train a vector.
+Setup-only upload epoch changes occurred before the two-second dark warmup. No
+uploads occurred during warmup, live gameplay, or dark padding. None trained a
+vector.
 
 ViZDoom 1.3.0 clamps requested episode tic 0 to tic 1. Gameplay clocks use
 observed one-tic differences from that effective origin. The pre-control health
@@ -45,7 +49,7 @@ record.
 
 ## Per-seed outcomes
 
-All 32 blue-floor rows died at tic 128, with restricted survival
+All 32 blue-floor rows died after 128 active gameplay tics, with restricted survival
 3.657142857142857 s, zero kills, 80.0 damage, and final health 0.0. They are
 therefore flat relative to their same-seed baselines on each reported metric.
 The evaluated role/lane schedule, including every filler, was:
@@ -165,10 +169,12 @@ reported by the separate `...201` and `...202` rows in each environment.
 
 The audited model hashes cover the nonplastic weights, graph pointers,
 postsynaptic indices, neuron IDs, and plastic-slot map. Three connectome inputs,
-15 reference files, four native products, five CPU metadata/binary pairs, and
-five game assets were independently rehashed. The compact record retains every
-relative path, byte count, and SHA-256 value. It records the blue-floor WAD pin
-and the ViZDoom/FreeDoom/`defend_the_center` pins per wave.
+15 named reference files, four native products, five safe CPU
+metadata/binary pin pairs, and five game assets were independently rehashed.
+The compact record publishes their relative filenames, byte counts, and SHA-256
+values. CPU metadata record contents remain private because they can contain
+machine origins. It records the blue-floor WAD pin and the
+ViZDoom/FreeDoom/`defend_the_center` pins per wave.
 
 The 72 terminal all-24 checkpoints and four initial checkpoints provide all 76
 artifact pins. A read-only initial audit compared every lane's 126,308,136-byte
@@ -181,16 +187,20 @@ bytes; 139,511,361,536 bytes were free afterward.
 Measured free memory reached at least 86%, with 0.0 MiB maximum swap use.
 Each four-lane wave recorded 413,006,712 shared resident bytes and
 737,265,700 mutable resident bytes.
-Raw traces, checkpoints, pixels, runtime scripts, and machine-specific origins
-remain ignored; no RGB video was stored.
+Raw traces, checkpoints, runtime scripts, and machine-specific origins remain
+ignored. RGB pixels and RGB video were not retained.
 
 Final native-full validation at the same source completed with exit 0, 1,647
 passes, three skips, 50 warnings, no failures, and no full-connectome study
 attempts. Its printed pytest time was 45.71 s. The final native-boundary proof
 completed with exit 0 and two passes. The ordinary portable suite belongs to
-initial source `04c42dd4b4519001a6929d4d2155afc00bcd3f93`: 868 passes, 761
-skips, and 50 warnings. It is retained as a separate portable proof. The final
-bounded covering record reports 473 passes and 36 skips.
+initial source `04c42dd4b4519001a6929d4d2155afc00bcd3f93`: exit 0, 868
+passes, 761 skips, and 50 warnings. It is retained as a separate portable
+proof. The final bounded covering record at source
+`d0f00731d0c8136f5cb5e38d61003c4c7133bfdf` reports exit 0, 473 passes,
+and 36 skips. The earlier native-focused fixture at source
+`06fc43256a854b77aa451e53c3478ec9b36055c4` is preserved separately: exit 1,
+508 passes, one failure, and 23.51 printed pytest seconds.
 
 The original audit helper failed with exit 1 because it compared a checkpoint
 metadata dictionary to a separate reference-model identity digest. The retained
@@ -224,6 +234,25 @@ native scopes. These clocks overlap and must not be summed, treated as one
 outer elapsed time, or described as a GPU-only speed. No 1000x multiplier is
 used.
 
+## Circuit evidence and scientific boundaries
+
+Measured released connectivity: MaleCNS v1.0 supplies the 166,700 retained
+neuronal entries and 25,582,938 released connections reported here. Duplicate,
+self, weak, and modulatory released edges remain retained.
+
+Inferred mappings: live RGB-to-sensory-neuron conversion and the fixed
+DNp20/DNpe017 activity-to-control decoder are traceable engineering mappings.
+They are not measurements of a fly's visual or motor mapping.
+
+Chosen dynamics: `adaptive-centered-v6`, `eta=0.001`, Metal window width 18,
+and the existing 4,184 KC-to-MBON11 plastic slots define the modeled dynamics.
+This particular evaluation freezes mutable state and supplies zero imposed
+reinforcement current.
+
+Unresolved biological mechanisms: the sensory and angular/control mappings,
+dynamics, reinforcement placement, and their biological correspondence remain
+unresolved. This study establishes neither fly learning nor useful Doom skill.
+
 ## Limits and reproducibility
 
 Live RGB pixels were checked through their fresh source path, hashes, fixtures,
@@ -232,17 +261,32 @@ The durable final records and source contracts check setup ordering and charging
 the final ledger alone cannot replay every write. Four seeds and two fitting
 replicas are exploratory.
 
-The retained connectome, sensory mapping, dynamics, fixed decoder, reinforcement
-placement, and control/angular mappings are engineering hypotheses. This
-experiment contains no human or independent hazard demonstration, no spatial
-trajectory or position record, and no biological validation. Longer survival,
-changed weights, numerical validation, and a control difference do not establish
-fly learning or useful Doom skill.
+This experiment contains no human or independent hazard demonstration, no
+spatial trajectory or position record, and no biological validation. Longer
+survival, changed weights, numerical validation, and a control difference do
+not establish fly learning or useful Doom skill.
 
 Exact private paths, credentials, and raw-output origins remain only in ignored
-configuration. To reproduce on an authorized machine, supply
-`DOOMFLY_METAL_LIVE_TRANSFER_COMMAND`,
-`DOOMFLY_METAL_LIVE_TRANSFER_EXPECTED_PINS`, and
-`DOOMFLY_METAL_LIVE_TRANSFER_OUTPUT_ROOT` from that ignored configuration, then
-use the committed protocol and expected pins at source
-`41d20761f5a3b6a7139a219c9fc6cb72b223b8a3`.
+configuration. On an authorized machine, that configuration must provide
+`DOOMFLY_LIVE_TRANSFER_PYTHON`, `DOOMFLY_LIVE_TRANSFER_KERNEL`,
+`DOOMFLY_LIVE_TRANSFER_REFERENCE`, `DOOMFLY_LIVE_TRANSFER_EXPECTED_PINS`,
+`DOOMFLY_LIVE_TRANSFER_CANDIDATES_ROOT`, and
+`DOOMFLY_LIVE_TRANSFER_OUTPUT_ROOT`. The reviewed invocation template is:
+
+```sh
+env PYTHONPATH=. OPENBLAS_NUM_THREADS=1 \
+  DOOM_KERNEL_PATH="$DOOMFLY_LIVE_TRANSFER_KERNEL" \
+  caffeinate -is /usr/bin/time -p "$DOOMFLY_LIVE_TRANSFER_PYTHON" \
+  -m doom_learning_v6.live_transfer \
+  --protocol docs/experiments/2026-09-13-metal-live-transfer-protocol.json \
+  --protocol-sha256 757a424568027aea9852b80b75c50dc1b6ce2a66bb05d26e8ce53cf2497b1071 \
+  --reference "$DOOMFLY_LIVE_TRANSFER_REFERENCE" \
+  --expected-pins "$DOOMFLY_LIVE_TRANSFER_EXPECTED_PINS" \
+  --source-commit 41d20761f5a3b6a7139a219c9fc6cb72b223b8a3 \
+  --candidates-root "$DOOMFLY_LIVE_TRANSFER_CANDIDATES_ROOT" \
+  --out "$DOOMFLY_LIVE_TRANSFER_OUTPUT_ROOT"
+```
+
+`PYTHONPATH=.`, the one OpenBLAS thread, `DOOM_KERNEL_PATH`, AC-only
+`caffeinate -is`, and `time -p` apply to this command only. The template is a reproduction
+instruction, not authorization to repeat the private study.
