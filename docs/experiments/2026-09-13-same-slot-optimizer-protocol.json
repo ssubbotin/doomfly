@@ -1,0 +1,116 @@
+{
+  "schema": 1,
+  "kind": "frozen_same_slot_numerical_fitting",
+  "connectome": "MaleCNS v1.0",
+  "neurons": 166700,
+  "retained_edges": 25582938,
+  "plastic_slots": 4184,
+  "dataset": "Yunncheng/gamewam-vizdoom",
+  "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+  "scenario": "defend_the_center",
+  "metadata_qualification": "Publisher metadata including quality scores inspected before mechanical index selection; later artifact contract validation only, no held model scoring.",
+  "episodes": [
+    {
+      "role": "training",
+      "index": 2,
+      "frames": 948,
+      "rollout_seed": 200000046,
+      "video_sha256": "e4e7d4ce08f2f12a9cdd81af99b5b964ee3cd63142e27ea1002c7997029f4973",
+      "control_sha256": "5e8b30f7121ba2632ed460be940000085b908e32097100ce8e8a64d946b00588"
+    },
+    {
+      "role": "training",
+      "index": 3,
+      "frames": 897,
+      "rollout_seed": 200000055,
+      "video_sha256": "840e851c63d95f04b9725921323aae9c69448af36a6a9e210fc10081dae29bfa",
+      "control_sha256": "54a23dfc5c52854a26e66705306b0a821d6be8136d1ccb5e2eadd9fbc1d2fca8"
+    },
+    {
+      "role": "held",
+      "index": 4,
+      "frames": 1036,
+      "rollout_seed": 200000051,
+      "video_sha256": "e9be57640dc890b4d521d643fd8a7b8f9ddbc05869507c78c42165a14cb5256b",
+      "control_sha256": "402ff59cda5d7afe4fc1350138faa4b8fec5904a2478a2e371bf15297eeee293"
+    },
+    {
+      "role": "held",
+      "index": 5,
+      "frames": 990,
+      "rollout_seed": 200000067,
+      "video_sha256": "90bebfd3f9e8f34f99902cb57512ec5f242f6e1998212c75dc80878675346884",
+      "control_sha256": "0f24b3740abb4b6ea8490bf5b7731160197f917abd3ddb0cf3cef787962c09fe"
+    }
+  ],
+  "historical_indices": [
+    0,
+    1
+  ],
+  "methods": [
+    "spsa",
+    "gaussian_es"
+  ],
+  "optimizer_seeds": [
+    200000201,
+    200000202
+  ],
+  "random_control_seeds": [
+    200000301,
+    200000302
+  ],
+  "generator": "numpy.random.PCG64",
+  "stream_derivation": "SeedSequence([replica_seed, method_index]); spsa=0, gaussian_es=1",
+  "generations": 4,
+  "pairs_per_update": 1,
+  "probe_scales": [
+    0.5,
+    0.35,
+    0.25,
+    0.2
+  ],
+  "step_lengths": [
+    0.2,
+    0.15,
+    0.1,
+    0.1
+  ],
+  "fraction_mapping": "1 + 0.1*tanh(theta)",
+  "fraction_bounds": [
+    0.1,
+    2
+  ],
+  "random_control_bounds": [
+    0.9,
+    1.1
+  ],
+  "objective": "equal episode mean of diagnostic_score balanced_mae_degrees",
+  "dead_zone_degrees": 0.1,
+  "acceptance": "strict lower training bank mean; ties keep incumbent; probes not eligible",
+  "learning": false,
+  "frozen": true,
+  "teacher_current": 0,
+  "eta": 0.001,
+  "source_hz": 35,
+  "neural_dt_ms": 0.1,
+  "warmup_ms": 2000,
+  "window_ticks": 18,
+  "resident_lanes": 4,
+  "budget": {
+    "baseline": 8,
+    "probes": 64,
+    "proposals": 32,
+    "held_including_padding": 16,
+    "planned": 120,
+    "reserved": 8,
+    "maximum": 128
+  },
+  "random_training_scoring": false,
+  "held_candidates": 7,
+  "held_baseline_fillers": 2,
+  "minimum_disk_gib": 15,
+  "minimum_free_memory_percent": 25,
+  "retry_policy": "abort; no automatic retry or budget repurposing",
+  "learning_demonstrated": false,
+  "announcement_ready": false
+}
