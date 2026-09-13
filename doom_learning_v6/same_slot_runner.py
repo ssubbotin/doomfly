@@ -368,8 +368,36 @@ def fit(executor, train, held, readouts, protocol, out, *, replay=replay_episode
         raise
 
 
-def _initial_reference(reference, observed):
+def _boundary_sources(observed, declaration):
+    if declaration is None:
+        return set()
+    names = {'doom/game.py', 'doom_learning/survival_arena.py'}
+    if (type(declaration) is not dict or set(declaration) != names or
+            any(type(name) is not str for name in declaration) or
+            any(type(value) is not str or re.fullmatch(r'[0-9a-f]{64}', value) is None or
+                value != observed.get('sources', {}).get(name, {}).get('sha256')
+                for name, value in declaration.items())):
+        raise ValueError('Exactly two declared observed game-boundary SHA256 pins required')
+    return names
+
+
+def _reference_source_transitions(previous_sources, observed, *, boundary_sources=None):
+    allowed = {'doom_learning_v6/brain.py', 'doom_learning_v6/visual.py', 'doom_learning_v6/metal/api.h',
+               'doom_learning_v6/metal/backend.mm', 'doom_learning_v6/metal/build.py', 'doom_learning_v6/metal/kernels.metal'}
+    allowed.update(_boundary_sources(observed, boundary_sources))
+    transitions = {}
+    for name, previous in previous_sources.items():
+        current = observed['sources'].get(name, {}).get('sha256')
+        if previous != current:
+            if name not in allowed or current is None:
+                raise ValueError(f'Original measured rule/sensory/calibration source differs: {name}')
+            transitions[name] = {'original': previous, 'current': current}
+    return transitions
+
+
+def _initial_reference(reference, observed, *, boundary_sources=None):
     """Validate original static model relationships without historical replay."""
+    _boundary_sources(observed, boundary_sources)
     root = Path(reference)
     original = json.loads((root / 'protocol.json').read_text())
     provenance = json.loads((root / 'provenance.json').read_text())
@@ -383,15 +411,8 @@ def _initial_reference(reference, observed):
                 raise ValueError('Original released graph array identity differs')
         if len(graph['ids']) != 166700 or len(graph['weight']) != 25582938:
             raise ValueError('Full retained graph required')
-    allowed = {'doom_learning_v6/brain.py', 'doom_learning_v6/visual.py', 'doom_learning_v6/metal/api.h',
-               'doom_learning_v6/metal/backend.mm', 'doom_learning_v6/metal/build.py', 'doom_learning_v6/metal/kernels.metal'}
-    transitions = {}
-    for name, previous in provenance['source_sha256'].items():
-        current = observed['sources'].get(name, {}).get('sha256')
-        if previous != current:
-            if name not in allowed or current is None:
-                raise ValueError(f'Original measured rule/sensory/calibration source differs: {name}')
-            transitions[name] = {'original': previous, 'current': current}
+    transitions = _reference_source_transitions(provenance['source_sha256'], observed,
+                                               boundary_sources=boundary_sources)
     with np.load(root / 'initial.npz', allow_pickle=False) as checkpoint:
         metadata = json.loads(str(checkpoint['metadata']))
         if len(set(checkpoint.files) - {'metadata'}) != 24:
