@@ -526,23 +526,33 @@ def test_round2_cli_preserves_all_manifest_readouts_for_original_trace(tmp_path,
     assert pilot._readouts() == rows
 
 
+class _SerialCpuExecutor:
+    """Exercise real CPU RGB/state/checkpoints without requiring Metal."""
+    def __init__(self, brains):
+        self.brains = tuple(brains)
+
+    def metadata(self):
+        return {'shared_resident_bytes': 0, 'mutable_resident_bytes': 0}
+
+    def rgb_step(self, images, duration, *, learning, stimulations=None):
+        counts, elapsed = [], 0.
+        for index, (brain, image) in enumerate(zip(self.brains, images)):
+            flag = learning[index] if isinstance(learning, list) else learning
+            spikes, interval = brain.rgb_step(image, duration, learning=flag,
+                stimulation=None if stimulations is None else stimulations[index])
+            counts.append(spikes)
+            elapsed += interval
+        return counts, elapsed
+
+
 def test_round2_replay_records_separate_actual_wall_intervals_using_real_cpu_rgb(tmp_path, monkeypatch):
     from doom_learning_v6 import causal_pilot as pilot
     from test_doom_metal_batch_rgb import visual_brain
     brain = visual_brain(tmp_path)
-    class SerialCpuExecutor:
-        brains = (brain,)
-        def metadata(self):
-            return {'shared_resident_bytes': 0, 'mutable_resident_bytes': 0}
-        def rgb_step(self, images, duration, *, learning, stimulations=None):
-            flag = learning[0] if isinstance(learning, list) else learning
-            counts, elapsed = brain.rgb_step(images[0], duration, learning=flag,
-                stimulation=None if stimulations is None else stimulations[0])
-            return [counts], elapsed
     ticks = iter(range(100))
     monkeypatch.setattr(pilot, 'time', SimpleNamespace(perf_counter=lambda: float(next(ticks))))
     try:
-        result = pilot.replay_episode([brain], SerialCpuExecutor(), _ThreeFrames(), READOUTS,
+        result = pilot.replay_episode([brain], _SerialCpuExecutor([brain]), _ThreeFrames(), READOUTS,
             np.zeros((1, 3)), learning=[False], frozen=[True], directory=tmp_path / 'timed', warmup_ms=.1)
     finally:
         brain.backend.close()
@@ -568,8 +578,9 @@ class _ThreeFrames:
     height = 3
     width = 4
 
-    def __init__(self, *, fail_after=None):
+    def __init__(self, *, fail_after=None, failure=None):
         self.fail_after = fail_after
+        self.failure = failure
         self.closed = False
         self.actions = np.zeros((self.frame_count, 9), dtype=np.float32)
         self.identity = {'dataset': 'synthetic', 'dataset_revision': 'native-test',
@@ -583,7 +594,7 @@ class _ThreeFrames:
         try:
             for index, interval in enumerate((28.6, 28.5, 28.6)):
                 if self.fail_after is not None and index > self.fail_after:
-                    raise RuntimeError('controlled frame iterator failure')
+                    raise self.failure if self.failure is not None else RuntimeError('controlled frame iterator failure')
                 image = np.zeros((self.height, self.width, 3), dtype=np.uint8)
                 image[0, 0, 2] = (255, 128, 64)[index]
                 image[2, 3, 1] = (64, 128, 255)[index]
@@ -592,6 +603,84 @@ class _ThreeFrames:
                                       rgb=image, action=self.actions[index], interval_ms=interval)
         finally:
             self.closed = True
+
+
+@pytest.mark.parametrize('interrupt', [KeyboardInterrupt, SystemExit])
+@pytest.mark.parametrize('secondary_at', [None, 'close', 'record', 'evidence', 'json', 'checkpoint'])
+def test_replay_interruption_preserves_partial_evidence_and_original_exception(
+        tmp_path, monkeypatch, interrupt, secondary_at):
+    """Process interruptions must follow the same recoverable evidence path."""
+    from doom_learning_v6 import causal_pilot as pilot
+    from doom_learning import common
+    from test_doom_metal_batch_rgb import visual_brain
+
+    original = interrupt('controlled interruption after frame zero')
+    secondary = SystemExit('controlled secondary failure')
+    data = _ThreeFrames(fail_after=0, failure=original)
+    brains = [visual_brain(tmp_path), visual_brain(tmp_path)]
+    phase = tmp_path / 'interrupted'
+    if secondary_at == 'close':
+        iterator = data.iter_frames()
+        class CloseFailureIterator:
+            def __iter__(self):
+                return self
+            def __next__(self):
+                return next(iterator)
+            def close(self):
+                iterator.close()
+                raise secondary
+        monkeypatch.setattr(data, 'iter_frames', CloseFailureIterator)
+    elif secondary_at in ('record', 'evidence'):
+        def fail(*args, **kwargs):
+            raise secondary
+        monkeypatch.setattr(pilot, '_lane_record' if secondary_at == 'record' else '_write_phase', fail)
+    elif secondary_at == 'json':
+        save_json = common.save_json
+        def fail_first_lane(path, value):
+            if path == phase / 'lane-0/episode.json':
+                raise secondary
+            return save_json(path, value)
+        monkeypatch.setattr(common, 'save_json', fail_first_lane)
+    elif secondary_at == 'checkpoint':
+        def fail(path):
+            raise secondary
+        monkeypatch.setattr(brains[0], 'checkpoint', fail)
+
+    try:
+        with pytest.raises(interrupt) as caught:
+            pilot.replay_episode(brains, _SerialCpuExecutor(brains), data, READOUTS,
+                np.zeros((2, 3)), learning=[False, False], frozen=[True, True],
+                directory=phase, warmup_ms=0)
+        assert caught.value is original
+        assert data.closed
+        if secondary_at is not None and secondary_at != 'close':
+            assert any('SystemExit' in note for note in original.__notes__)
+        if secondary_at in ('record', 'evidence'):
+            return
+        summary = json.loads((phase / 'summary.json').read_text())
+        progress = json.loads((phase / 'progress.json').read_text())
+        assert summary['complete'] is False and progress['complete'] is False
+        assert summary['failure']['type'] == interrupt.__name__
+        assert progress['frames'] == [1, 1]
+        assert [len(lane['trace']) for lane in summary['lanes']] == [1, 1]
+        for index, brain in enumerate(brains):
+            record = summary['lanes'][index]
+            assert record['complete'] is False and record['frames'] == 1
+            assert record['failure']['type'] == interrupt.__name__
+            assert record['trace'][0]['index'] == 0
+            if secondary_at == 'close':
+                assert record['failure']['close_type'] == 'SystemExit'
+            if secondary_at != 'json' or index != 0:
+                assert json.loads((phase / f'lane-{index}/episode.json').read_text()) == record
+            if secondary_at != 'checkpoint' or index != 0:
+                with np.load(phase / f'lane-{index}/failure.npz', allow_pickle=False) as saved:
+                    assert json.loads(str(saved['metadata']))['cursor'] == 286
+                    for name in ['weight', *brain.fields]:
+                        np.testing.assert_array_equal(saved[name], getattr(brain, name))
+            assert not (phase / f'lane-{index}/final.npz').exists()
+    finally:
+        for brain in brains:
+            brain.backend.close()
 
 
 def _native_serial(tmp_path, data, currents, checkpoint, *, frozen):

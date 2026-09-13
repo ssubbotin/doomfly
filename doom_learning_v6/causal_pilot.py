@@ -238,7 +238,7 @@ def _write_phase(phase, lanes, records, *, failure=None, resident_bytes=None):
         nonlocal failure
         try:
             function(*args)
-        except Exception as secondary:
+        except BaseException as secondary:
             if failure is None:
                 failure = secondary
             else:
@@ -267,7 +267,8 @@ def replay_episode(brains, executor, data, readouts, currents, *, learning, froz
     """Replay every original RGB frame through one already-resident executor.
 
     Validation completes before lane reset.  Any failure writes only evidence
-    already produced, then raises that original exception unchanged.
+    already produced, then raises that original exception unchanged. Recoverable
+    process interruptions use this path; forced termination cannot recover state.
     """
     import numpy as np
     from doom_learning.common import digest
@@ -368,7 +369,7 @@ def replay_episode(brains, executor, data, readouts, currents, *, learning, froz
             if value and any(not np.array_equal(actual, wanted) for actual, wanted in zip(
                     (brain.memory_u, brain.memory_w, brain.weight[brain.circuit['edges']]), expected)):
                 raise ValueError('Frozen plastic state changed')
-    except Exception as error:
+    except BaseException as error:
         failure = error
     finally:
         if warmup_started is None:
@@ -378,23 +379,24 @@ def replay_episode(brains, executor, data, readouts, currents, *, learning, froz
         if frames is not None and hasattr(frames, 'close'):
             try:
                 frames.close()
-            except Exception as error:
+            except BaseException as error:
                 if failure is None:
                     failure = error
                 else:
                     close_failure = error
+                    failure.add_note(f'Secondary iterator cleanup failure: {type(error).__name__}: {error}')
     try:
         records = [_lane_record(brain, data, value, item_before, trace, origin, started, warmup,
                                 failure, close_failure, timing)
                    for brain, value, item_before, trace, origin in zip(lanes, freeze, before, traces, origins)]
-    except Exception as evidence_failure:
+    except BaseException as evidence_failure:
         if failure is None:
             raise
         failure.add_note(f'Secondary record failure: {type(evidence_failure).__name__}')
         raise failure
     try:
         summary = _write_phase(phase, lanes, records, failure=failure, resident_bytes=resident_bytes)
-    except Exception as evidence_failure:
+    except BaseException as evidence_failure:
         if failure is None:
             raise
         failure.add_note(f'Secondary evidence failure: {type(evidence_failure).__name__}')

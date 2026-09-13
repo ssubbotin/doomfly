@@ -247,6 +247,7 @@ Write complete final `results.json` only after all expected phases/frames, origi
 
 **Interfaces:**
 - Consumes: reviewed Task2 CLI/results and exact physical M4 artifacts; fixed eight original control traces/three checkpoints remain source controls, not independent learners.
+- Dated clarification (2026-09-13): the historical interface count above is preserved as preregistration history. The implemented and validated reference consumes eight original control traces, four checkpoints and three metadata files. Those eight original anchors remain historical controls; they supply no independent learner replicas. This count correction changes no scientific measurement or protocol.
 - Produces: a reviewed report of sensitivity and A/Z/S/F contrasts with explicit next-action decision, raw artifact hashes and measured time/pressure. Native goal remains active unless actual general learning criteria are met elsewhere.
 
 - [ ] **Step 1: Controller completes target RED/GREEN and full suite.** Use fresh ignored tests-only staging against missing Task2 API for authentic native RED, then exact owned committed source for GREEN. Record actual target source/build/reference/input hashes and clean user checkout unchanged. Explicit target paths/hostnames belong only to ignored runtime configuration. The target worktree is owned; synchronize through non-destructive fast-forward bundle/import. Recheck GPU ownership/pressure before any job.

@@ -99,9 +99,12 @@ def test_mismatched_schedule_lengths_are_rejected():
 
 
 @pytest.mark.parametrize('baseline,learned', [([0, 1], [1, 1]), ([-1, 1], [1, 2]),
+                                               pytest.param([np.nan, 1], [1, 2], id='existing-guard-nan-baseline'),
+                                               pytest.param([np.inf, 1], [1, 2], id='existing-guard-inf-baseline'),
                                                ([1, 1], [np.nan, 2]), ([1, 1], [np.inf, 2]),
                                                ([1], [1, 2]), ([1, 1], [1, 1])])
 def test_invalid_direction_vectors_are_rejected(baseline, learned):
+    """Characterize the existing finite-baseline and direction guards."""
     from doom_learning_v6.causal_controls import learned_direction
     with pytest.raises(ValueError):
         learned_direction(baseline, learned)
