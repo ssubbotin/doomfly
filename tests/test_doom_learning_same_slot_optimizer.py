@@ -88,6 +88,14 @@ def test_propose_rejects_overflowing_gradient():
         )
 
 
+def test_propose_rejects_overflowing_denominator():
+    with pytest.raises(ValueError):
+        propose(
+            np.array([0.0]), np.array([1.0]), 2.0, 1.0,
+            probe_scale=float(np.finfo(np.float64).max), step_length=0.2,
+        )
+
+
 def test_training_mean_requires_two_finite_episode_losses():
     assert training_mean([2.0, 4.0]) == 3.0
     for losses in ([], [1.0], [1.0, 2.0, 3.0], [np.nan, 1.0], [-1.0, 1.0]):
@@ -152,6 +160,15 @@ def test_budget_keeps_final_eight_attempts_after_120_charges():
     with pytest.raises(ValueError):
         budget.charge(4, reserve_after=8)
     assert budget.used == 120
+
+
+def test_budget_rejects_direct_over_capacity_without_mutating():
+    budget = AttemptBudget(maximum=8)
+    budget.charge(6)
+    with pytest.raises(ValueError):
+        budget.charge(3)
+    assert budget.used == 6
+    assert budget.remaining == 2
 
 
 @pytest.mark.parametrize("maximum", [0, -1, True, 1.5])

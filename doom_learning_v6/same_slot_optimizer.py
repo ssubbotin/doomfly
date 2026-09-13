@@ -166,7 +166,10 @@ def propose(
     try:
         with np.errstate(over="raise", divide="raise", invalid="raise"):
             contrast = plus - minus
-            gradient = contrast * perturbation / (2.0 * scale)
+            denominator = np.float64(2.0) * np.float64(scale)
+            if not np.isfinite(denominator):
+                raise FloatingPointError
+            gradient = contrast * perturbation / denominator
             gradient_norm = float(np.max(np.abs(gradient)))
             if not np.isfinite(gradient_norm):
                 raise FloatingPointError
