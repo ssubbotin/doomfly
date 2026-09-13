@@ -1,0 +1,163 @@
+{
+  "schema": 1,
+  "kind": "frozen_metal_live_transfer",
+  "connectome": "MaleCNS v1.0",
+  "neurons": 166700,
+  "retained_edges": 25582938,
+  "plastic_slots": 4184,
+  "model": "adaptive-centered-v6",
+  "eta": 0.001,
+  "window_ticks": 18,
+  "source_study_commit": "cec94940e370477bf21f0975725ecd2345bf9cba",
+  "source_study_protocol_sha256": "fae8309b51cbc24b63b23fcfaf9c4a5e5f5d141a0ce060bee3d2913821fe9c03",
+  "learning": false,
+  "frozen": true,
+  "reinforcement_current": 0,
+  "warmup_ms": 2000,
+  "engine_hz": 35,
+  "neural_dt_ms": 0.1,
+  "horizon_tics": 2100,
+  "episode_start_tics": 0,
+  "candidates": [
+    {
+      "role": "baseline",
+      "path": "finals/baseline/fractions.npy",
+      "pin": {
+        "bytes": 33600,
+        "sha256": "16add0823da69b593476d07e5ebe47c21fef467b73bdd16867ec7cc653d37ec6"
+      }
+    },
+    {
+      "role": "spsa-200000201",
+      "path": "finals/spsa-200000201/fractions.npy",
+      "pin": {
+        "bytes": 33600,
+        "sha256": "eeb94c077b6c7249933d03449c541448ed6baf2f8a39bc5facdf7551cec8e688"
+      }
+    },
+    {
+      "role": "spsa-200000202",
+      "path": "finals/spsa-200000202/fractions.npy",
+      "pin": {
+        "bytes": 33600,
+        "sha256": "107420bc9df47fc2cf17087968163054990e5fabc1bdbdd5db9e235a4b227787"
+      }
+    },
+    {
+      "role": "gaussian_es-200000201",
+      "path": "finals/gaussian_es-200000201/fractions.npy",
+      "pin": {
+        "bytes": 33600,
+        "sha256": "e34d171abc2badf4237f297f32d70ad37ed8cb4bf3267aa29882db25a05cfef1"
+      }
+    },
+    {
+      "role": "gaussian_es-200000202",
+      "path": "finals/gaussian_es-200000202/fractions.npy",
+      "pin": {
+        "bytes": 33600,
+        "sha256": "517452cb6852426833d98d69ccf0c4bc45a2b8320e5c91112ee6c018345ab717"
+      }
+    },
+    {
+      "role": "random-200000301",
+      "path": "finals/random-200000301/fractions.npy",
+      "pin": {
+        "bytes": 33600,
+        "sha256": "ce8d59979c50112ce78e9deefc4346b607baac4fc76473f44afbffb82ae7ca5a"
+      }
+    },
+    {
+      "role": "random-200000302",
+      "path": "finals/random-200000302/fractions.npy",
+      "pin": {
+        "bytes": 33600,
+        "sha256": "3c541d868633d9e73591b43ba419a62ce086211eb730146825b1fb331bd1911f"
+      }
+    }
+  ],
+  "environments": [
+    {
+      "scenario": "blue-floor-survival-v1",
+      "primary_metric": "restricted_survival_seconds",
+      "seeds": [
+        {
+          "seed": 202609135,
+          "hazard_left": true
+        },
+        {
+          "seed": 202609136,
+          "hazard_left": false
+        },
+        {
+          "seed": 202609137,
+          "hazard_left": true
+        },
+        {
+          "seed": 202609138,
+          "hazard_left": false
+        }
+      ],
+      "baseline_check_seed": 202609135
+    },
+    {
+      "scenario": "defend_the_center",
+      "primary_metric": "kills_at_fixed_horizon",
+      "seeds": [
+        {
+          "seed": 202609131
+        },
+        {
+          "seed": 202609132
+        },
+        {
+          "seed": 202609133
+        },
+        {
+          "seed": 202609134
+        }
+      ],
+      "baseline_check_seed": 202609131
+    }
+  ],
+  "baseline_calibration_waves": 2,
+  "budget": {
+    "planned": 72,
+    "reserved": 8,
+    "maximum": 80
+  },
+  "schedule": "Two four-lane baseline calibration waves first, one per environment. Then environment order, seed order, and two candidate groups per seed. Rotate the seven-role order by seed ordinal modulo seven; append one baseline filler to the last group. Every lane is charged.",
+  "post_terminal": "No respawn or further game action. Advance every resident neural lane through the remaining fixed horizon on dark RGB; label padding separately and exclude it from gameplay metrics. All24 wave-final checkpoints explicitly include padding.",
+  "evaluation": "No updates or winner selection; report every role/seed, same-seed baseline contrasts and fitting-replica variation separately for each task.",
+  "primary_question": "Hazard survival transfer; source-scenario kills and survival are separate concordance results, never pooled.",
+  "game_assets": {
+    "vizdoom": {
+      "bytes": 5450528,
+      "sha256": "367181e34881f8a76f3fe7df4c2dd3501d162c503e0aa220b25e7061939c4554"
+    },
+    "freedoom2.wad": {
+      "bytes": 28787748,
+      "sha256": "a8772e088847032510d97ba2312406a6998f21cbab44d4ff10696faa9c0ecd4b"
+    },
+    "defend_the_center.cfg": {
+      "bytes": 819,
+      "sha256": "f9661ee9cac79fc1e90c971ff9ad030c648a5205a8fdd8b9dce7e81b5bba40d1"
+    },
+    "defend_the_center.wad": {
+      "bytes": 6478,
+      "sha256": "eb3f8d3b3f456bbef32a1d41f847189dd83cc1d4e320157ba92b75a9b0d8d5bb"
+    },
+    "vizdoom.cpython-311-darwin.so": {
+      "bytes": 901280,
+      "sha256": "dbfe7405bed59e7c23acd458fb3d4f12cffffefbfd34a24d7bbfe494d434c958"
+    }
+  },
+  "minimum_disk_gib": 15,
+  "minimum_free_memory_percent": 25,
+  "swap_growth_allowed": false,
+  "claim_flags": {
+    "learning_demonstrated": false,
+    "doom_skill_demonstrated": false,
+    "announcement_ready": false
+  }
+}
