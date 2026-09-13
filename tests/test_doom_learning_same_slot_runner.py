@@ -315,14 +315,14 @@ def test_cli_preflight_rejects_altered_contract_before_lease_or_native(study, tm
                            expected_pins=str(expected), train=['2', '3'], eval=['4', '5'])
     monkeypatch.setattr(module.sys, 'platform', 'darwin')
     monkeypatch.setattr(module.platform, 'system', lambda: 'Darwin')
-    monkeypatch.setattr(module, '_source_clean', lambda: None)
     def git(*arguments):
         if arguments[0] == 'rev-parse':
             return 'b' * 40
         if arguments[0] == 'status':
-            return ' M docs/file' if change == 'dirty' else ''
+            return ' M doom_learning_v6/brain.py' if change == 'dirty' else ''
         return '{}' if change == 'committed-protocol' else PROTOCOL_PATH.read_text().strip()
     monkeypatch.setattr(module, '_git_output', git)
+    monkeypatch.setattr(causal_pilot, '_git_output', git)
     monkeypatch.setattr(module, '_readouts', lambda: READOUTS)
     monkeypatch.setattr(demonstrations, 'OfflineEpisode', lambda path: [*train, *held][int(path) - 2])
     monkeypatch.setattr(module, '_physical_pins', lambda reference: observed)
@@ -350,6 +350,8 @@ def test_cli_preflight_rejects_altered_contract_before_lease_or_native(study, tm
     with pytest.raises(ValueError):
         module.run(args)
     assert all(b.backend._host_weight_epoch == 0 for b in ex.brains)
+    if change != 'fresh':
+        assert not out.exists()
 
 
 def test_runtime_rejects_new_native_buffer_storage(study):
@@ -404,8 +406,11 @@ def test_in_repository_unignored_output_rejects_before_native(study, monkeypatch
         module.run(args)
 
 
-@pytest.mark.parametrize('interrupted', [True, False])
-def test_cli_real_fit_keeps_primary_through_resource_and_lease_cleanup(study, tmp_path, monkeypatch, interrupted):
+@pytest.mark.parametrize('interrupted,generated_products', [
+    (True, False), (False, False),
+    pytest.param(False, True, id='validated-generated-products-dirty'),
+])
+def test_cli_real_fit_keeps_primary_through_resource_and_lease_cleanup(study, tmp_path, monkeypatch, interrupted, generated_products):
     module, ex, train, held, protocol, out = study
     from doom_learning_v6 import causal_pilot, demonstrations
     from doom_learning_v6.metal import batch
@@ -425,9 +430,20 @@ def test_cli_real_fit_keeps_primary_through_resource_and_lease_cleanup(study, tm
                            expected_pins=str(expected), train=['2', '3'], eval=['4', '5'])
     monkeypatch.setattr(module.sys, 'platform', 'darwin')
     monkeypatch.setattr(module.platform, 'system', lambda: 'Darwin')
-    monkeypatch.setattr(module, '_source_clean', lambda: None)
-    monkeypatch.setattr(module, '_git_output', lambda *args: 'b' * 40 if args[0] == 'rev-parse' else
-                        PROTOCOL_PATH.read_text().strip() if args[0] == 'show' else '')
+    def git(*arguments):
+        if arguments[0] == 'rev-parse':
+            return 'b' * 40
+        if arguments[0] == 'show':
+            return PROTOCOL_PATH.read_text().strip()
+        if arguments == ('status', '--porcelain') and generated_products:
+            return '\n'.join([
+                ' M outputs/doom-learning/libmemory.dylib.json',
+                *[f' M outputs/doom-learning/physiology-v{version}/libmemory.dylib.json' for version in (2, 4, 5, 6)],
+                '?? outputs/doom-learning/metal/',
+            ])
+        return ''  # The actual scoped model/test source query is clean.
+    monkeypatch.setattr(module, '_git_output', git)
+    monkeypatch.setattr(causal_pilot, '_git_output', git)
     monkeypatch.setattr(module, '_readouts', lambda: READOUTS)
     monkeypatch.setattr(demonstrations, 'OfflineEpisode', lambda path: [*train, *held][int(path) - 2])
     monkeypatch.setattr(module, '_physical_pins', lambda reference: observed)

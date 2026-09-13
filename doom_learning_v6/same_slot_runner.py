@@ -423,8 +423,6 @@ def run(args):
     if sys.platform != 'darwin' or platform.system() != 'Darwin':
         raise ValueError('Resident same-slot fitting requires macOS Metal')
     _source_clean()
-    if _git_output('status', '--porcelain'):
-        raise ValueError('Exact clean source HEAD required')
     protocol = load_protocol(args.protocol, args.protocol_sha256)
     committed = _git_output('show', args.source_commit + ':docs/experiments/2026-09-13-same-slot-optimizer-protocol.json')
     if hashlib.sha256((committed + '\n').encode()).hexdigest() != args.protocol_sha256:
