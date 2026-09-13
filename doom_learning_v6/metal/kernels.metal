@@ -138,7 +138,8 @@ kernel void df_gather_finalize(device const long *in_ptr [[buffer(0)]],
   modulation+=offset;modulation_last+=offset;adaptation+=offset;touched+=offset;
   weight+=ulong(lane)*p.edge_stride;
   active_edge_bits+=ulong(lane)*p.edge_bitmap_stride;ring+=ulong(lane)*p.ring_stride;
-  if(atomic_exchange_explicit(&touched[target],0u,memory_order_relaxed)!=0){
+  if(atomic_load_explicit(&touched[target],memory_order_relaxed)!=0&&
+      atomic_exchange_explicit(&touched[target],0u,memory_order_relaxed)!=0){
     evolve(target,p.clock,drive[target],v,g,refractory,last,rest,adaptation,decay,p.dt,p.adaptation_tau);
     float conductance=0.0f,modulatory=0.0f;bool has_fast=false,has_modulatory=false;
     long start=in_ptr[target],end=in_ptr[target+1];
@@ -150,8 +151,10 @@ kernel void df_gather_finalize(device const long *in_ptr [[buffer(0)]],
         uint mask=0xffffffffu;
         if(low>0)mask&=0xffffffffu<<low;
         if(high<32)mask&=(1u<<high)-1;
-        uint bits=atomic_fetch_and_explicit(&active_edge_bits[word],~mask,
-          memory_order_relaxed)&mask;
+        uint bits=0u;
+        if((atomic_load_explicit(&active_edge_bits[word],memory_order_relaxed)&mask)!=0)
+          bits=atomic_fetch_and_explicit(&active_edge_bits[word],~mask,
+            memory_order_relaxed)&mask;
         while(bits!=0){
           uint bit=ctz(bits);uint position=(word<<5)+bit;
           int pre=in_pre[position];float value=weight[in_edge[position]];
