@@ -201,14 +201,19 @@ class MemoryBrain(NativeBrain):
         with self._owned_state_operation(restore=True):
             with np.load(path,allow_pickle=False) as a:
                 m=json.loads(str(a['metadata']))
+                owner=getattr(self,'_metal_batch_owner',None)
+                if owner is not None and not isinstance(m,dict):raise ValueError('Invalid checkpoint metadata')
                 expected={'model':MODEL,'eta':self.eta,'parameters':PARAMETERS,
                     'graph_ids_sha256':digest(self.ids),'graph_ptr_sha256':digest(self.ptr),'graph_post_sha256':digest(self.post),
                     'plastic_edges_sha256':digest(self.circuit['edges']),
                     'configuration_sha256':self.configuration_signature()}
                 if any(m.get(k)!=v for k,v in expected.items()):raise ValueError('Checkpoint provenance mismatch')
-                for k in ['weight',*self.fields]:
-                    if a[k].shape!=getattr(self,k).shape or a[k].dtype!=getattr(self,k).dtype:raise ValueError('Checkpoint array mismatch')
-                for k in ['weight',*self.fields]:getattr(self,k)[:]=a[k]
+                if owner is not None:arrays=owner._validate_restore_candidate(self,a,m)
+                else:
+                    for k in ['weight',*self.fields]:
+                        if a[k].shape!=getattr(self,k).shape or a[k].dtype!=getattr(self,k).dtype:raise ValueError('Checkpoint array mismatch')
+                    arrays=a
+                for k in ['weight',*self.fields]:getattr(self,k)[:]=arrays[k]
                 self.cursor=int(m['cursor']);self.sim_ms=self.cursor*self.dt;self.total_spikes=int(m['total_spikes'])
                 self.weights_frozen=bool(m['weights_frozen'])
                 self.backend.restore_from_host(reason='restore')

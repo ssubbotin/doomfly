@@ -2,6 +2,9 @@
 import sys
 import threading
 import ctypes as C
+from contextlib import contextmanager
+import json
+from types import SimpleNamespace
 
 import numpy as np
 import pytest
@@ -50,6 +53,193 @@ def assert_equal(a, e):
     a.backend.materialize('batch-test')
     e.backend.materialize('batch-test')
     assert snapshot(a) == snapshot(e)
+
+
+@contextmanager
+def guarded_portable_owner(lanes, monkeypatch):
+    """Real owner validation/guards, with native support denied before creation.
+
+    Tests arm raw-call traps afterwards. They never supply GPU results and may
+    replace undersized pointers safely because every download trap raises.
+    """
+    import doom_learning_v6.metal.batch as batch
+    owner = executor_type().__new__(executor_type())
+    def unavailable(output): raise RuntimeError('Portable native boundary')
+    with monkeypatch.context() as context:
+        context.setattr(batch, 'probe', unavailable)
+        with pytest.raises(RuntimeError, match='Portable native boundary'): owner.__init__(lanes)
+    owner.closed = False
+    seen = set()
+    for config in owner._configuration:
+        for array in config.values():
+            if id(array) not in seen:
+                seen.add(id(array)); owner._frozen.append((array, array.flags.writeable))
+                array.flags.writeable = False
+    owner.adapters = [batch._LaneBackend(owner, i) for i in range(len(lanes))]
+    for b, adapter in zip(lanes, owner.adapters):
+        b.backend = adapter; b._metal_batch_owner = owner
+    calls = []
+    def download(*args):
+        calls.append('download')
+        raise AssertionError('Unchecked native download boundary reached')
+    def upload(*args):
+        calls.append('upload')
+        raise AssertionError('Unexpected native upload boundary reached')
+    def destroy(handle): calls.append(('destroy', handle.value))
+    owner.library = SimpleNamespace(df_metal_download_lane_state=download,
+        df_metal_upload_lane_state=upload, df_metal_destroy=destroy)
+    owner.handle = C.c_void_p(1)
+    try: yield owner, calls
+    finally:
+        # No handle was created; disarm the sentinel and undo test-only binding.
+        owner.handle = C.c_void_p(); owner.closed = True
+        owner._unfreeze()
+        for i in range(len(lanes)): owner._release_lane(i)
+
+
+@pytest.mark.parametrize('replacement', ['undersized', 'reallocated', 'alias'])
+def test_stop_diagnostics_rejects_unsafe_bindings_before_native_download(tmp_path, monkeypatch, replacement):
+    lanes = [brain(tmp_path), brain(tmp_path)]
+    with guarded_portable_owner(lanes, monkeypatch) as (owner, calls):
+        original = lanes[0].v
+        if replacement == 'undersized': lanes[0].v = np.zeros(1, dtype=np.float32)
+        elif replacement == 'reallocated': lanes[0].v = original.copy()
+        else: lanes[0].v = lanes[1].v
+        lanes[0].backend.capture_spikes = True
+        before = [snapshot(b) for b in lanes]
+        with pytest.raises(ValueError, match='binding'): lanes[0].backend.stop_diagnostics()
+        assert calls == [] and lanes[0].backend.capture_spikes
+        assert [snapshot(b) for b in lanes] == before
+
+
+BAD_CHECKPOINTS = ('queue-count', 'queue-index', 'history', 'eligibility', 'counts',
+                   'active', 'weight', 'frozen', 'cursor', 'total', 'binding')
+BAD_METADATA = ('cursor-bool', 'cursor-overflow', 'total-bool', 'total-float',
+    'metadata-list', 'metadata:model', 'metadata:eta', 'metadata:parameters',
+    'metadata:graph_ids_sha256', 'metadata:graph_ptr_sha256', 'metadata:graph_post_sha256',
+    'metadata:plastic_edges_sha256', 'metadata:configuration_sha256')
+CHECKPOINT_FIELDS = ('weight', 'v', 'g', 'refractory', 'drive', 'previous_drive',
+    'queue', 'queue_count', 'counts', 'active', 'active_flag', 'nactive', 'last',
+    'modulation', 'modulation_last', 'adaptation', 'luminance', 'eligibility',
+    'eligibility_last', 'rate_kc', 'rate_dan', 'memory_u', 'memory_w')
+
+
+def invalid_checkpoint(source, destination, b, problem):
+    with np.load(source, allow_pickle=False) as archive:
+        arrays = {k: archive[k].copy() for k in archive.files}
+    metadata = json.loads(str(arrays['metadata']))
+    arrays['memory_u'][0] = -.2
+    metadata['weights_frozen'] = True
+    metadata['total_spikes'] = int(metadata['total_spikes']) + 7
+    if problem == 'queue-count': arrays['queue_count'][0] = b.n + 1
+    if problem == 'queue-index':
+        arrays['queue_count'][0] = 1; arrays['queue'][0, 0] = b.n
+    if problem == 'history': arrays['last'][0] = metadata['cursor'] + 1
+    if problem == 'eligibility': arrays['eligibility'][0] = np.nan
+    if problem == 'counts': arrays['counts'][0] = -1
+    if problem == 'active': arrays['nactive'][0] = b.n + 1
+    if problem == 'weight': arrays['weight'][0] = np.nan
+    if problem == 'frozen': metadata['weights_frozen'] = 'true'
+    if problem == 'cursor': metadata['cursor'] = float(metadata['cursor']) + .5
+    if problem == 'total': metadata['total_spikes'] = -1
+    if problem == 'cursor-bool': metadata['cursor'] = True
+    if problem == 'cursor-overflow': metadata['cursor'] = 2**63
+    if problem == 'total-bool': metadata['total_spikes'] = True
+    if problem == 'total-float': metadata['total_spikes'] = .5
+    if problem.startswith('metadata:'): metadata[problem.split(':')[1]] = 'invalid'
+    if problem.startswith('schema:'):
+        name = problem.split(':')[1]
+        arrays[name] = np.empty(arrays[name].size + 1, dtype=arrays[name].dtype)
+    if problem.startswith('finite:'): arrays[problem.split(':')[1]].flat[0] = np.nan
+    arrays['metadata'] = json.dumps([] if problem == 'metadata-list' else metadata)
+    np.savez(destination, **arrays)
+
+
+@pytest.mark.parametrize('problem', BAD_CHECKPOINTS + BAD_METADATA + tuple('schema:' + k for k in CHECKPOINT_FIELDS)
+    + tuple('finite:' + k for k in CHECKPOINT_FIELDS if k in ('weight', 'v', 'g', 'drive',
+        'previous_drive', 'modulation', 'adaptation', 'eligibility',
+        'rate_kc', 'rate_dan', 'memory_u', 'memory_w')))
+def test_rejected_restore_preserves_all_host_fields_counters_and_cpu_continuation(tmp_path, monkeypatch, problem):
+    lanes = [brain(tmp_path), brain(tmp_path)]
+    references = [brain(tmp_path), brain(tmp_path)]
+    source, bad = tmp_path / 'source.npz', tmp_path / 'bad.npz'
+    lanes[0].checkpoint(source)
+    invalid_checkpoint(source, bad, lanes[0], problem)
+    with guarded_portable_owner(lanes, monkeypatch) as (owner, calls):
+        if problem == 'binding': lanes[0].v = lanes[0].v.copy()
+        before = [snapshot(b) for b in lanes]
+        flags = [b.weights_frozen for b in lanes]
+        with pytest.raises(ValueError): lanes[0].restore(bad)
+        assert calls == [] and not owner.poisoned
+        assert [snapshot(b) for b in lanes] == before
+        assert [b.weights_frozen for b in lanes] == flags
+    for actual, expected in zip(lanes, references):
+        counts, _ = actual.step([], 28.6, learning=True, stimulation=([0, 2], 20), lamina_bias=0)
+        wanted, _ = expected.step([], 28.6, learning=True, stimulation=([0, 2], 20), lamina_bias=0)
+        np.testing.assert_array_equal(counts, wanted)
+        assert_equal(actual, expected)
+
+
+@pytest.mark.parametrize('failure', ['binding', 'materialization'])
+def test_failed_close_destroys_once_unfreezes_and_requires_explicit_lane_recovery(tmp_path, monkeypatch, failure):
+    lanes = [brain(tmp_path), brain(tmp_path)]
+    with guarded_portable_owner(lanes, monkeypatch) as (owner, calls):
+        original = lanes[0].v
+        if failure == 'binding': lanes[0].v = np.zeros(1, dtype=np.float32)
+        else:
+            def download(*args): raise BackendError('Deliberate materialization failure')
+            owner.library.df_metal_download_lane_state = download
+        error = ValueError if failure == 'binding' else BackendError
+        with pytest.raises(error, match='binding|Deliberate materialization failure'):
+            owner.close()
+        assert calls == [('destroy', 1)]
+        assert owner.closed and owner.poisoned and not owner.handle.value
+        assert not owner._frozen
+        assert all(a.flags.writeable for config in owner._configuration for a in config.values())
+        for b in lanes:
+            with pytest.raises(BackendError): b.step([], 1)
+        owner.close()
+        assert calls == [('destroy', 1)]
+        lanes[0].v = original
+        lanes[0].reset()
+        assert lanes[0]._metal_batch_owner is None
+        assert lanes[1]._metal_batch_owner is owner
+        lanes[0].step([], 1)
+        lanes[1].reset()
+        assert lanes[1]._metal_batch_owner is None
+        assert calls == [('destroy', 1)]
+
+
+def test_failed_destructor_reports_error_and_still_destroys_native_resource(tmp_path, monkeypatch):
+    lanes = [brain(tmp_path)]
+    with guarded_portable_owner(lanes, monkeypatch) as (owner, calls):
+        lanes[0].v = np.zeros(1, dtype=np.float32)
+        with pytest.warns(RuntimeWarning, match='cleanup failed.*binding'):
+            owner.__del__()
+        assert calls == [('destroy', 1)] and owner.closed and owner.poisoned
+        owner.close()
+        assert calls == [('destroy', 1)]
+
+
+@pytest.mark.parametrize('binding_failure', [False, True])
+def test_cleanup_failure_unfreezes_and_preserves_original_error_without_retry(tmp_path, monkeypatch, binding_failure):
+    lanes = [brain(tmp_path)]
+    with guarded_portable_owner(lanes, monkeypatch) as (owner, calls):
+        if binding_failure: lanes[0].v = np.zeros(1, dtype=np.float32)
+        else: owner.poisoned = True
+        def destroy(handle):
+            calls.append(('destroy', handle.value))
+            raise BackendError('Deliberate destroy failure')
+        owner.library.df_metal_destroy = destroy
+        with pytest.raises(ValueError if binding_failure else BackendError) as captured: owner.close()
+        if binding_failure:
+            assert 'binding' in str(captured.value)
+            assert any('Deliberate destroy failure' in note for note in captured.value.__notes__)
+        else: assert 'Deliberate destroy failure' in str(captured.value)
+        assert owner.closed and owner.poisoned and not owner.handle.value and not owner._frozen
+        assert all(a.flags.writeable for config in owner._configuration for a in config.values())
+        owner.close()
+        assert calls == [('destroy', 1)]
 
 
 def test_owner_rejects_empty_duplicate_and_nonbrain_lanes_before_loading_native(tmp_path):
@@ -166,6 +356,96 @@ def test_finite_overflow_preflight_leaves_all_real_lane_inputs_and_state_unchang
 
 
 mac = pytest.mark.skipif(sys.platform != 'darwin', reason='Real Metal requires macOS')
+
+
+@mac
+@pytest.mark.parametrize('replacement', ['undersized', 'reallocated', 'alias'])
+def test_native_stop_diagnostics_rejects_unsafe_bindings_before_download(tmp_path, monkeypatch, replacement):
+    lanes = [brain(tmp_path), brain(tmp_path)]
+    with executor_type()(lanes) as owner:
+        lanes[0].backend.start_diagnostics()
+        original = lanes[0].v
+        if replacement == 'undersized': lanes[0].v = np.zeros(1, dtype=np.float32)
+        elif replacement == 'reallocated': lanes[0].v = original.copy()
+        else: lanes[0].v = lanes[1].v
+        before = [snapshot(b) for b in lanes]
+        def forbidden(*args): pytest.fail('Unsafe diagnostics reached native download')
+        try:
+            with monkeypatch.context() as context:
+                context.setattr(owner.library, 'df_metal_download_lane_state', forbidden)
+                with pytest.raises(ValueError, match='binding'): lanes[0].backend.stop_diagnostics()
+            assert [snapshot(b) for b in lanes] == before
+            assert lanes[0].backend.capture_spikes
+        finally: lanes[0].v = original
+
+
+@mac
+@pytest.mark.parametrize('problem', BAD_CHECKPOINTS)
+def test_native_rejected_restore_preserves_later_serial_trajectory(tmp_path, monkeypatch, problem):
+    lanes = [brain(tmp_path), brain(tmp_path)]
+    serial = [brain(tmp_path, backend='metal'), brain(tmp_path, backend='metal')]
+    source, bad = tmp_path / 'source.npz', tmp_path / 'bad.npz'
+    try:
+        with executor_type()(lanes) as owner:
+            owner.step([[], []], 28.6, stimulations=[([0, 2], 20)] * 2, lamina_bias=0)
+            for b in serial: b.step([], 28.6, stimulation=([0, 2], 20), lamina_bias=0)
+            for a, e in zip(lanes, serial): assert_equal(a, e)
+            lanes[0].checkpoint(source)
+            invalid_checkpoint(source, bad, lanes[0], problem)
+            original = lanes[0].v
+            if problem == 'binding': lanes[0].v = original.copy()
+            before = [snapshot(b) for b in lanes]
+            flags = [b.weights_frozen for b in lanes]
+            def forbidden(*args): pytest.fail('Rejected checkpoint reached native upload')
+            try:
+                with monkeypatch.context() as context:
+                    context.setattr(owner.library, 'df_metal_upload_lane_state', forbidden)
+                    with pytest.raises(ValueError): lanes[0].restore(bad)
+                assert [snapshot(b) for b in lanes] == before
+                assert [b.weights_frozen for b in lanes] == flags and not owner.poisoned
+            finally: lanes[0].v = original
+            actual, _ = owner.step([[], []], 28.6, stimulations=[([0, 2], 20)] * 2, lamina_bias=0)
+            for a, e, counts in zip(lanes, serial, actual):
+                expected, _ = e.step([], 28.6, stimulation=([0, 2], 20), lamina_bias=0)
+                np.testing.assert_array_equal(counts, expected)
+                assert_equal(a, e)
+    finally:
+        for b in serial: b.backend.close()
+
+
+@mac
+@pytest.mark.parametrize('failure', ['binding', 'materialization'])
+def test_native_failed_close_destroys_once_and_keeps_recovery_guards(tmp_path, monkeypatch, failure):
+    lanes = [brain(tmp_path), brain(tmp_path)]
+    owner = executor_type()(lanes)
+    original = lanes[0].v
+    raw_destroy = owner.library.df_metal_destroy
+    destroyed = []
+    def destroy(handle):
+        destroyed.append(handle.value)
+        raw_destroy(handle)
+    try:
+        with monkeypatch.context() as context:
+            context.setattr(owner.library, 'df_metal_destroy', destroy)
+            if failure == 'binding': lanes[0].v = np.zeros(1, dtype=np.float32)
+            else:
+                def download(*args): raise BackendError('Deliberate materialization failure')
+                context.setattr(owner.library, 'df_metal_download_lane_state', download)
+            error = ValueError if failure == 'binding' else BackendError
+            with pytest.raises(error, match='binding|Deliberate materialization failure'): owner.close()
+            owner.close()
+        assert len(destroyed) == 1 and not owner.handle.value
+        assert owner.closed and owner.poisoned and not owner._frozen
+        for b in lanes:
+            with pytest.raises(BackendError): b.step([], 1)
+        lanes[0].v = original
+        for b in lanes:
+            b.reset()
+            assert b._metal_batch_owner is None
+            b.step([], 1)
+    finally:
+        lanes[0].v = original
+        owner.close()
 
 
 @mac

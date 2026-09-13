@@ -8,6 +8,7 @@ import math
 from pathlib import Path
 import threading
 import time
+import warnings
 
 import numpy as np
 
@@ -390,6 +391,26 @@ class MetalBatchExecutor:
         for name, (dtype, shape) in _mutable_schema(b).items(): _array(name, getattr(b, name), dtype, shape, mutable=True)
         _validate_state(b)
 
+    def _validate_restore_candidate(self, brain, archive, metadata):
+        self._validate_bindings()
+        if not any(brain is b for b in self.brains): raise ValueError('Unknown checkpoint lane')
+        cursor, total, frozen = (metadata.get(k) for k in ('cursor', 'total_spikes', 'weights_frozen'))
+        if isinstance(cursor, bool) or not isinstance(cursor, int) or not 0 <= cursor <= np.iinfo(np.int64).max:
+            raise ValueError('Invalid checkpoint cursor')
+        if isinstance(total, bool) or not isinstance(total, int) or total < 0:
+            raise ValueError('Invalid checkpoint total_spikes')
+        if not isinstance(frozen, bool): raise ValueError('Invalid checkpoint weights_frozen')
+        candidate = copy.copy(brain)
+        candidate.cursor = cursor; candidate.total_spikes = total; candidate.weights_frozen = frozen
+        arrays = {}
+        for name, (dtype, shape) in _mutable_schema(brain).items():
+            try: value = archive[name]
+            except KeyError as error: raise ValueError(f'Missing checkpoint {name} array') from error
+            arrays[name] = _array(f'checkpoint {name}', value, dtype, shape, mutable=True)
+            setattr(candidate, name, value)
+        _validate_state(candidate)
+        return arrays
+
     def _validate_cursors(self, steps):
         cursors = [b.cursor for b in self.brains]
         delay = round(1.8 / self.brains[0].dt)
@@ -572,6 +593,7 @@ class MetalBatchExecutor:
                 'lane_count': len(self.brains), **self._memory}
 
     def _materialize_lane(self, lane, reason):
+        self._validate_bindings()
         adapter = self.adapters[lane]
         if adapter._host_weight_epoch != adapter._device_weight_epoch: raise BackendError('Metal lane weight epochs disagree')
         state = self._state(lane)
@@ -585,30 +607,50 @@ class MetalBatchExecutor:
         self._released.add(lane)
 
     def _unfreeze(self):
-        for array, writeable in self._frozen: array.flags.writeable = writeable
-        self._frozen = []
+        frozen, self._frozen = self._frozen, []
+        error = None
+        for array, writeable in frozen:
+            try: array.flags.writeable = writeable
+            except Exception as failure:
+                if error is None: error = failure
+        if error is not None: raise error
 
     def _destroy(self):
         if self.library is not None and self.handle.value:
-            self.library.df_metal_destroy(self.handle); self.handle = C.c_void_p()
+            handle, self.handle = self.handle, C.c_void_p()
+            self.library.df_metal_destroy(handle)
 
     def close(self):
         if self._thread == threading.get_ident(): raise BackendError('Reentrant close during in-flight Metal batch work')
         with self._lock:
             if self.closed: return
             self._thread = threading.get_ident()
+            error = None
             try:
-                if self.adapters:
-                    self._validate_bindings()
-                    if not self.poisoned:
-                        for lane in range(len(self.brains)): self._materialize_lane(lane, 'close')
-                        for lane in range(len(self.brains)): self._release_lane(lane)
-                self._destroy(); self.closed = True; self._unfreeze()
+                try:
+                    if self.adapters:
+                        self._validate_bindings()
+                        if not self.poisoned:
+                            for lane in range(len(self.brains)): self._materialize_lane(lane, 'close')
+                except Exception as failure: error = failure
+                self.closed = True
+                for cleanup in (self._destroy, self._unfreeze):
+                    try: cleanup()
+                    except Exception as failure:
+                        if error is None: error = failure
+                        else: error.add_note(f'Additional Metal cleanup failure: {failure!r}')
+                if error is not None:
+                    self.poisoned = True; self._restored_lanes.clear()
+                    raise error
+                if not self.poisoned:
+                    for lane in range(len(self.brains)): self._release_lane(lane)
             finally:
                 self._thread = None
 
     def __enter__(self): self._check_open(); return self
     def __exit__(self, *exc): self.close()
     def __del__(self):
+        if not getattr(self, 'handle', C.c_void_p()).value: return
         try: self.close()
-        except Exception: pass
+        except Exception as error:
+            warnings.warn(f'Metal batch cleanup failed: {error!r}', RuntimeWarning, stacklevel=2)
