@@ -1,0 +1,174 @@
+{
+  "CPU_build_provenance": {
+    "current_sha256": "d315762114273fcd54ff88dd9a03b186668eadafcc2b5d3f6ac4bb76ec61af44",
+    "instruction_dump_identity_established": false,
+    "original_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+    "source_flags_equal": true
+  },
+  "all_learned_arrays_bitwise_original": true,
+  "all_original_canonical_traces_equal": true,
+  "announcement_ready": false,
+  "audit_script_sha256": "73415bd4dba1af60e3999e304aa9d1f8d7bdcc116b32a6327c765c7f35902f89",
+  "checkpoints": [
+    {
+      "all_arrays_bitwise": true,
+      "lane": 0,
+      "original": "plastic/learned.npz",
+      "repeat": 0
+    },
+    {
+      "all_arrays_bitwise": true,
+      "lane": 1,
+      "original": "frozen/learned.npz",
+      "repeat": 0
+    },
+    {
+      "all_arrays_bitwise": true,
+      "lane": 0,
+      "original": "plastic/learned.npz",
+      "repeat": 1
+    },
+    {
+      "all_arrays_bitwise": true,
+      "lane": 1,
+      "original": "frozen/learned.npz",
+      "repeat": 1
+    },
+    {
+      "all_arrays_bitwise": true,
+      "lane": 0,
+      "original": "plastic/learned.npz",
+      "repeat": 2
+    },
+    {
+      "all_arrays_bitwise": true,
+      "lane": 1,
+      "original": "frozen/learned.npz",
+      "repeat": 2
+    }
+  ],
+  "copied_artifacts_byte_sha_match": 24,
+  "execution": "serial",
+  "frozen_memory_exact": true,
+  "identity_sha256": "d5c51bf436293e43b204dc626e7f8f2d1466333b83dfff1a535279369e31f5a9",
+  "interpretation": "Fresh execution repeats reproduce the original one-pair controls. N4 extra lanes are declared duplicates. Current ABI7 serial baseline is not a fresh ABI5 parent measurement. Useful learning and public launch remain unestablished.",
+  "lanes": 2,
+  "learning_demonstrated": false,
+  "original_artifacts_pinned": 15,
+  "phases": [
+    {
+      "canonical_trace_equal": true,
+      "lane": 0,
+      "original": "plastic/train-0-0/episode.json",
+      "phase": "training",
+      "repeat": 0
+    },
+    {
+      "canonical_trace_equal": true,
+      "lane": 1,
+      "original": "frozen/train-0-0/episode.json",
+      "phase": "training",
+      "repeat": 0
+    },
+    {
+      "canonical_trace_equal": true,
+      "lane": 0,
+      "original": "plastic/eval-0/episode.json",
+      "phase": "held-out",
+      "repeat": 0
+    },
+    {
+      "canonical_trace_equal": true,
+      "lane": 1,
+      "original": "frozen/eval-0/episode.json",
+      "phase": "held-out",
+      "repeat": 0
+    },
+    {
+      "canonical_trace_equal": true,
+      "lane": 0,
+      "original": "plastic/train-0-0/episode.json",
+      "phase": "training",
+      "repeat": 1
+    },
+    {
+      "canonical_trace_equal": true,
+      "lane": 1,
+      "original": "frozen/train-0-0/episode.json",
+      "phase": "training",
+      "repeat": 1
+    },
+    {
+      "canonical_trace_equal": true,
+      "lane": 0,
+      "original": "plastic/eval-0/episode.json",
+      "phase": "held-out",
+      "repeat": 1
+    },
+    {
+      "canonical_trace_equal": true,
+      "lane": 1,
+      "original": "frozen/eval-0/episode.json",
+      "phase": "held-out",
+      "repeat": 1
+    },
+    {
+      "canonical_trace_equal": true,
+      "lane": 0,
+      "original": "plastic/train-0-0/episode.json",
+      "phase": "training",
+      "repeat": 2
+    },
+    {
+      "canonical_trace_equal": true,
+      "lane": 1,
+      "original": "frozen/train-0-0/episode.json",
+      "phase": "training",
+      "repeat": 2
+    },
+    {
+      "canonical_trace_equal": true,
+      "lane": 0,
+      "original": "plastic/eval-0/episode.json",
+      "phase": "held-out",
+      "repeat": 2
+    },
+    {
+      "canonical_trace_equal": true,
+      "lane": 1,
+      "original": "frozen/eval-0/episode.json",
+      "phase": "held-out",
+      "repeat": 2
+    }
+  ],
+  "repetitions": 3,
+  "samples": [
+    {
+      "RGB_wall_seconds": 746.2443844180016,
+      "aggregate_RGB_brain_seconds": 112.57140000000001,
+      "aggregate_RGB_brain_seconds_per_wall_second": 0.150850582397072,
+      "repeat": 0
+    },
+    {
+      "RGB_wall_seconds": 746.1097662510001,
+      "aggregate_RGB_brain_seconds": 112.57140000000001,
+      "aggregate_RGB_brain_seconds_per_wall_second": 0.1508777998787509,
+      "repeat": 1
+    },
+    {
+      "RGB_wall_seconds": 746.545579665988,
+      "aggregate_RGB_brain_seconds": 112.57140000000001,
+      "aggregate_RGB_brain_seconds_per_wall_second": 0.15078972143986918,
+      "repeat": 2
+    }
+  ],
+  "schema": 1,
+  "source_commit": "08015d7101778e6aa3fc88103418d811db1481e5",
+  "teacher_causality_exact": true,
+  "throughput_range": {
+    "maximum": 0.1508777998787509,
+    "median": 0.150850582397072,
+    "minimum": 0.15078972143986918
+  },
+  "verified": true
+}

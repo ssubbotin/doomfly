@@ -1,0 +1,2854 @@
+{
+  "schema": 1,
+  "source_commit": "08015d7101778e6aa3fc88103418d811db1481e5",
+  "script_sha256": "2c1b48a4161649df160923dc6bf4b2cdba58c3e277c917dbb6379a265a45a855",
+  "numerical_parent": "b24249ecfee12aa84b55ed803ffe47bd09c487ad",
+  "mode": "timing",
+  "execution": "batch",
+  "lanes": 4,
+  "serial_active_concurrency": null,
+  "repetitions": 3,
+  "datasets": [
+    {
+      "dataset": "Yunncheng/gamewam-vizdoom",
+      "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+      "scenario": "defend_the_center",
+      "episode_index": 0,
+      "video_sha256": "4fb2a7b08d2a3e91244073ff9b7dc0b848eefcb9e6235d8a357a0330af4f5efe",
+      "control_sha256": "fe6a070d684a8e72beb1e36a0cec30e1e4a6ab2409bfc039ba4460e39212c54a"
+    },
+    {
+      "dataset": "Yunncheng/gamewam-vizdoom",
+      "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+      "scenario": "defend_the_center",
+      "episode_index": 1,
+      "video_sha256": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501",
+      "control_sha256": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+    }
+  ],
+  "validation_sources": {
+    "doom_learning_v6/brain.py": "9b57f539fc806c0511e00903f105b53b7a0de5c80ac7144776ebd9be1c0d40c7",
+    "doom_learning_v6/kernel.cpp": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+    "doom_learning_v6/rule.py": "0df2ae1bf10b97a213064b3ac3934227539d08e51521a99cdb56fe7f5b44b725",
+    "doom_learning_v6/visual.py": "1ed714224c119e7b5252a5e8b407ab8eed4dc32826dd11c757e1543246021437",
+    "doom_learning_v6/calibration.py": "c9006ef72436c74453209f896e4f1d9371179311e33fa1ae734ad52fc26408b9",
+    "doom_learning_v6/survival.py": "1c85e94e0a1fb9bc1f500c167a861ca91975a61e0716abce52eaea8801b7f568",
+    "doom_learning/common.py": "79de9a34c3d53db399ce67b12df084ab000d6b66123b658e5c2bfb5c6d108d12",
+    "doom_learning_v2/vision.py": "20279cdc14352b23fcbb76db2ee4bdebcc26394bccc04a1ad5fcedc5e3accdeb",
+    "doom/engine.py": "5fc0ce73c05a49ff58af01729a9169018080bb5b913cedb2268116a95c04aeb3",
+    "doom_learning_v6/metal/api.h": "afff60bf395de9a639d4f77c15e2bcfefa5c45d7df0082e2b8e51dd618f872bd",
+    "doom_learning_v6/metal/decay_tables.h": "85702606729011f942be2174e4ba074d1ca90066f586d6980025458862570065",
+    "doom_learning_v6/metal/backend.mm": "a1a6635dc565638b2cac858bee28c2f79e0fd126c17d603c97d13aa4fd7c003f",
+    "doom_learning_v6/metal/backend.py": "9797b8bcd1e8a49ffb6e6133ff42dd42c7abfcdfa762ac96da9f00e2b41f71e7",
+    "doom_learning_v6/metal/build.py": "585d555601d2ce3749aebac55fd6fcd7e8aa851ad3c6d36892c09fc28060d3b3",
+    "doom_learning_v6/metal/graph.py": "79286a9a37f606ace87218a1cb0ba6fb9bfc1a05526b46963c3564d146681f49",
+    "doom_learning_v6/metal/kernels.metal": "03b2ef8c5c13feac8695d952fa59ef404a33552f0b48211f0b52ba847ceab8bc",
+    "doom_learning_v6/metal/validate.py": "8a573e1cc1e28a7a14451cf3dfc6e72bba5974f82a1b4c3d0d5cc5d1817e95de",
+    "doom_learning_v6/metal/benchmark.py": "28dc9a0d0a7a34b12338dab6a7a4f4d9ee00a9712fc8c88773ce5e443f968604"
+  },
+  "batch_owner_sha256": "cab1c0a69148c6e92d2505e408aab5d6b46402a0ed7bce84817cb002f215386a",
+  "reference_identities": {
+    "results.json": {
+      "bytes": 46547,
+      "sha256": "084291bbec53fc6418a97706907358e8d2d3a861a8b522bed470a2552add967e"
+    },
+    "protocol.json": {
+      "bytes": 8798,
+      "sha256": "b5362dae9e14e8a8b92c5b7526b9f0d0283416c036b49ad6249f71b775f7033e"
+    },
+    "provenance.json": {
+      "bytes": 8299,
+      "sha256": "96ba97a62b0a87f5f748a7c5627e17b4f0c74f8ee2b3ddf41eb09b59d7df6a2c"
+    },
+    "initial.npz": {
+      "bytes": 126316356,
+      "sha256": "8aa5870fd67cd22e7dbb9768ef57f441849996d380805f97faced196708bbad7"
+    },
+    "plastic/learned.npz": {
+      "bytes": 126316404,
+      "sha256": "96339fdccd6873f0d1da870dcc81f6f14f6c6314dcb88f1a84f792edb1aea67c"
+    },
+    "frozen/learned.npz": {
+      "bytes": 126316400,
+      "sha256": "10d1217b11d0c7593181b7f4617a93d14c762ba9b011ce5f4c089b19eeebe864"
+    },
+    "shifted/learned.npz": {
+      "bytes": 126316404,
+      "sha256": "4bfbe7b631908b05c654524379afa25d764251aaf3702ed3188b17ffa92425f5"
+    },
+    "plastic/train-0-0/episode.json": {
+      "bytes": 4232305,
+      "sha256": "b57c0d6ad7fad05d020cb1ceb87e1337e15f89f0684465beab646d5ee73f60fa"
+    },
+    "frozen/train-0-0/episode.json": {
+      "bytes": 4200874,
+      "sha256": "9fb91d87a1ad63487c2675687a569f94bb72e71b871ca30fe2a221ce23e1086a"
+    },
+    "shifted/train-0-0/episode.json": {
+      "bytes": 4234064,
+      "sha256": "d9311129674d642aa47913052b08682b7082c28e1f4346bc20ee0042defd205b"
+    },
+    "plastic/eval-0/episode.json": {
+      "bytes": 4231256,
+      "sha256": "6750a383d296b80a56a7e17519b4400423126cafc7b27940e51f28abb0bd6843"
+    },
+    "frozen/eval-0/episode.json": {
+      "bytes": 4199940,
+      "sha256": "3440450fbb6df32c9b2465a62cea0839d2f02435f24392f3530e2826417acdd4"
+    },
+    "shifted/eval-0/episode.json": {
+      "bytes": 4232062,
+      "sha256": "4c7766285f65f12f14c8c21a4b636ede328af681bee59c94f8e83c507e0463fd"
+    },
+    "plastic/retention-0/episode.json": {
+      "bytes": 4232409,
+      "sha256": "42ff1d100689c81aa1de40b3675543ba34812cf21c21e565f092a2e0ffea3996"
+    },
+    "plastic/erased-0/episode.json": {
+      "bytes": 4199928,
+      "sha256": "060bb8cfe68a304ad52dd7564ae42e0cb37e2b59653ba046dbdd8cf0677bccfb"
+    }
+  },
+  "phases": [
+    {
+      "complete": true,
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 0,
+        "video_sha256": "4fb2a7b08d2a3e91244073ff9b7dc0b848eefcb9e6235d8a357a0330af4f5efe",
+        "control_sha256": "fe6a070d684a8e72beb1e36a0cec30e1e4a6ab2409bfc039ba4460e39212c54a"
+      },
+      "frames": 982,
+      "lanes": 4,
+      "training": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "frozen": [
+        false,
+        true,
+        false,
+        true
+      ],
+      "shifts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "RGB_ticks_per_lane": 280571,
+      "RGB_brain_seconds_per_lane": 28.057100000000002,
+      "aggregate_RGB_brain_seconds": 112.22840000000001,
+      "RGB_wall_seconds": 301.40406612500374,
+      "aggregate_RGB_brain_seconds_per_wall_second": 0.3723519773401286,
+      "per_lane_completion_seconds": [
+        301.4021003750022,
+        301.402726584005,
+        301.4033612500061,
+        301.40398562500195
+      ],
+      "completion_definition": "Elapsed RGB phase time through each lane's final decode/teacher/record; decoder close follows separately in phase wall.",
+      "backend_seconds": 280.62651252606884,
+      "host_rule_seconds_per_lane": [
+        1.6044631387485424,
+        0.06488862291735131,
+        1.4861124848102918,
+        0.06299548322567716
+      ],
+      "host_rule_seconds": 3.2184597297018627,
+      "timing": {
+        "shared_resident_bytes": 413006712,
+        "mutable_resident_bytes": 459009604,
+        "full_upload_seconds": 0.0,
+        "full_upload_bytes": 0,
+        "materialize_seconds": 0.0,
+        "materialize_bytes": 0,
+        "sparse_weight_update_seconds": 0.9031535090980469,
+        "sparse_weight_update_bytes": 295825536,
+        "host_rule_seconds": 3.2015462354174815,
+        "drive_copy_seconds": 0.6179255359820672,
+        "drive_copy_bytes": 7857571200,
+        "native_total_seconds": 278.99927118800065,
+        "gpu_seconds": 276.6977874999502,
+        "counts_clear_seconds": 0.032629415000000064,
+        "encode_seconds": 0.272804974,
+        "commit_call_seconds": 0.019124689000000007,
+        "wait_call_seconds": 278.663330456,
+        "native_event_copy_seconds": 0.0029439679999999934,
+        "native_event_copy_bytes": 15861024,
+        "encoder_count": 2946,
+        "dispatch_count": 567034,
+        "mark_grid_threads": 187084742800,
+        "gather_grid_threads": 187084742800,
+        "indirect_dispatch_count": 0,
+        "edge_bitmap_words": 799467,
+        "event_conversion_sort_seconds": 0.35472689521702705,
+        "eligibility_seconds": 0.05467925408447627,
+        "counts_copy_seconds": 0.13010406384273665,
+        "counts_copy_bytes": 7857571200,
+        "backend_seconds": 280.62651252606884,
+        "input_preflight_seconds": 6.212400912976591,
+        "input_preparation_seconds": 5.598782691071392
+      },
+      "warmup_wall_seconds": 6.526755083003081,
+      "warmup_brain_seconds_per_lane": 2.0,
+      "measured_trace_hash_record_seconds": 2.203895271952206,
+      "measured_observer_seconds": 0.008562734299630392,
+      "full_state_or_spike_capture": false,
+      "before": [
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        }
+      ],
+      "after": [
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "016f8c049d4c3556d34f68760396954c5c9eaae6055d8deda234df3e5227d920",
+          "rate_dan_sha256": "c7e7911ad89b3b683f53be50122b60ea2ae1d514dfa83c5975a488a71d700045"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "866e6bf658d575de8687036365177401d003dd1a9dc64554d24dabe9cc2552d9",
+          "rate_dan_sha256": "a387e10b5cb7f2792051016ff5cf1f9d008622a827a66ef13eabfdafcd18907b"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "016f8c049d4c3556d34f68760396954c5c9eaae6055d8deda234df3e5227d920",
+          "rate_dan_sha256": "c7e7911ad89b3b683f53be50122b60ea2ae1d514dfa83c5975a488a71d700045"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "866e6bf658d575de8687036365177401d003dd1a9dc64554d24dabe9cc2552d9",
+          "rate_dan_sha256": "a387e10b5cb7f2792051016ff5cf1f9d008622a827a66ef13eabfdafcd18907b"
+        }
+      ],
+      "scores": [
+        {
+          "mae_degrees": 3.417838675920911,
+          "direction_support": {
+            "left": 618,
+            "idle": 96,
+            "right": 268
+          },
+          "direction_recall": {
+            "left": 0.22815533980582525,
+            "idle": 0.125,
+            "right": 0.6753731343283582
+          },
+          "balanced_direction_recall": 0.34284282471139454,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -3.014415733197556,
+              "mae_degrees": 2.372920369606066,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 3.014415733197556,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 3.014415733197556,
+              "mae_degrees": 4.470503754443526,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        },
+        {
+          "mae_degrees": 3.318367753044691,
+          "direction_support": {
+            "left": 618,
+            "idle": 96,
+            "right": 268
+          },
+          "direction_recall": {
+            "left": 0.2669902912621359,
+            "idle": 0.08333333333333333,
+            "right": 0.6716417910447762
+          },
+          "balanced_direction_recall": 0.34065513854674845,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -3.014415733197556,
+              "mae_degrees": 2.372920369606066,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 3.014415733197556,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 3.014415733197556,
+              "mae_degrees": 4.470503754443526,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        },
+        {
+          "mae_degrees": 3.417838675920911,
+          "direction_support": {
+            "left": 618,
+            "idle": 96,
+            "right": 268
+          },
+          "direction_recall": {
+            "left": 0.22815533980582525,
+            "idle": 0.125,
+            "right": 0.6753731343283582
+          },
+          "balanced_direction_recall": 0.34284282471139454,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -3.014415733197556,
+              "mae_degrees": 2.372920369606066,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 3.014415733197556,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 3.014415733197556,
+              "mae_degrees": 4.470503754443526,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        },
+        {
+          "mae_degrees": 3.318367753044691,
+          "direction_support": {
+            "left": 618,
+            "idle": 96,
+            "right": 268
+          },
+          "direction_recall": {
+            "left": 0.2669902912621359,
+            "idle": 0.08333333333333333,
+            "right": 0.6716417910447762
+          },
+          "balanced_direction_recall": 0.34065513854674845,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -3.014415733197556,
+              "mae_degrees": 2.372920369606066,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 3.014415733197556,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 3.014415733197556,
+              "mae_degrees": 4.470503754443526,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        }
+      ],
+      "resident": {
+        "shared_bytes": 413006712,
+        "mutable_bytes": 459059812,
+        "total_bytes": 872066524,
+        "native_owner_count": 1
+      },
+      "memory_status": {
+        "free_percent": 82,
+        "swap_used_mib": 0.0
+      },
+      "instrumentation": "Canonical per-frame hashes and actual-call timing observation enabled. Measured instrumentation stages reported; counter-call overhead remains inside actual wall. GPU/native/wait/rule stages overlap and are not added as wall.",
+      "trace_sha256": "cf3eca6a52e6ca76018ab71697e1914c973bde6bc1b1dbeb5653ffbef662e29d"
+    },
+    {
+      "complete": true,
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 1,
+        "video_sha256": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501",
+        "control_sha256": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+      },
+      "frames": 988,
+      "lanes": 4,
+      "training": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "frozen": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "shifts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "RGB_ticks_per_lane": 282286,
+      "RGB_brain_seconds_per_lane": 28.2286,
+      "aggregate_RGB_brain_seconds": 112.9144,
+      "RGB_wall_seconds": 299.4928290829994,
+      "aggregate_RGB_brain_seconds_per_wall_second": 0.37701870974916624,
+      "per_lane_completion_seconds": [
+        299.4908050829981,
+        299.4914605419981,
+        299.4921031249978,
+        299.49274737499945
+      ],
+      "completion_definition": "Elapsed RGB phase time through each lane's final decode/teacher/record; decoder close follows separately in phase wall.",
+      "backend_seconds": 281.28996768222714,
+      "host_rule_seconds_per_lane": [
+        0.0848406319564674,
+        0.06382706588919973,
+        0.06293769408512162,
+        0.06193754024570808
+      ],
+      "host_rule_seconds": 0.27354293217649683,
+      "timing": {
+        "shared_resident_bytes": 413006712,
+        "mutable_resident_bytes": 459009604,
+        "full_upload_seconds": 0.0,
+        "full_upload_bytes": 0,
+        "materialize_seconds": 0.0,
+        "materialize_bytes": 0,
+        "sparse_weight_update_seconds": 0.0,
+        "sparse_weight_update_bytes": 0,
+        "host_rule_seconds": 0.25726743984705536,
+        "drive_copy_seconds": 0.6260960221625282,
+        "drive_copy_bytes": 7905580800,
+        "native_total_seconds": 279.643760083,
+        "gpu_seconds": 277.2779383333909,
+        "counts_clear_seconds": 0.03359971600000002,
+        "encode_seconds": 0.27995434799999963,
+        "commit_call_seconds": 0.021920905999999993,
+        "wait_call_seconds": 279.2974478359997,
+        "native_event_copy_seconds": 0.0026815169999999983,
+        "native_event_copy_bytes": 15721504,
+        "encoder_count": 2964,
+        "dispatch_count": 570500,
+        "mark_grid_threads": 188228304800,
+        "gather_grid_threads": 188228304800,
+        "indirect_dispatch_count": 0,
+        "edge_bitmap_words": 799467,
+        "event_conversion_sort_seconds": 0.34422281094884966,
+        "eligibility_seconds": 0.05583119768562028,
+        "counts_copy_seconds": 0.1330924565991154,
+        "counts_copy_bytes": 7905580800,
+        "backend_seconds": 281.28996768222714,
+        "input_preflight_seconds": 6.240190372947836,
+        "input_preparation_seconds": 5.6976315898646135
+      },
+      "warmup_wall_seconds": 6.322628125002666,
+      "warmup_brain_seconds_per_lane": 2.0,
+      "measured_trace_hash_record_seconds": 2.3795815419143764,
+      "measured_observer_seconds": 0.009574092917318922,
+      "full_state_or_spike_capture": false,
+      "before": [
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        }
+      ],
+      "after": [
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "7232519aa1ab54cffe5a845ff493c4a1c3f9bcc57bdd0b002cf1e3508d4b7b91",
+          "rate_dan_sha256": "f3fa0ca35405925dea13353208bb68db564557713338e167219b2309ccaae452"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "ab060078ba6b671441972d1fd1f5d27fe66ab6a4bcf82c67ba690aad2153a593",
+          "rate_dan_sha256": "dbce010483d8c6b665756df830071245222d15901ef589b1e9e118ed5313f9ad"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "7232519aa1ab54cffe5a845ff493c4a1c3f9bcc57bdd0b002cf1e3508d4b7b91",
+          "rate_dan_sha256": "f3fa0ca35405925dea13353208bb68db564557713338e167219b2309ccaae452"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "ab060078ba6b671441972d1fd1f5d27fe66ab6a4bcf82c67ba690aad2153a593",
+          "rate_dan_sha256": "dbce010483d8c6b665756df830071245222d15901ef589b1e9e118ed5313f9ad"
+        }
+      ],
+      "scores": [
+        {
+          "mae_degrees": 3.2029875211602943,
+          "direction_support": {
+            "left": 624,
+            "idle": 176,
+            "right": 188
+          },
+          "direction_recall": {
+            "left": 0.2644230769230769,
+            "idle": 0.045454545454545456,
+            "right": 0.7074468085106383
+          },
+          "balanced_direction_recall": 0.33910814362942027,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -2.709664410425101,
+              "mae_degrees": 2.168082318669172,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 2.709664410425101,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 2.709664410425101,
+              "mae_degrees": 4.41124241146798,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        },
+        {
+          "mae_degrees": 3.153095521525519,
+          "direction_support": {
+            "left": 624,
+            "idle": 176,
+            "right": 188
+          },
+          "direction_recall": {
+            "left": 0.2419871794871795,
+            "idle": 0.028409090909090908,
+            "right": 0.7074468085106383
+          },
+          "balanced_direction_recall": 0.3259476929689696,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -2.709664410425101,
+              "mae_degrees": 2.168082318669172,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 2.709664410425101,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 2.709664410425101,
+              "mae_degrees": 4.41124241146798,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        },
+        {
+          "mae_degrees": 3.2029875211602943,
+          "direction_support": {
+            "left": 624,
+            "idle": 176,
+            "right": 188
+          },
+          "direction_recall": {
+            "left": 0.2644230769230769,
+            "idle": 0.045454545454545456,
+            "right": 0.7074468085106383
+          },
+          "balanced_direction_recall": 0.33910814362942027,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -2.709664410425101,
+              "mae_degrees": 2.168082318669172,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 2.709664410425101,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 2.709664410425101,
+              "mae_degrees": 4.41124241146798,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        },
+        {
+          "mae_degrees": 3.153095521525519,
+          "direction_support": {
+            "left": 624,
+            "idle": 176,
+            "right": 188
+          },
+          "direction_recall": {
+            "left": 0.2419871794871795,
+            "idle": 0.028409090909090908,
+            "right": 0.7074468085106383
+          },
+          "balanced_direction_recall": 0.3259476929689696,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -2.709664410425101,
+              "mae_degrees": 2.168082318669172,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 2.709664410425101,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 2.709664410425101,
+              "mae_degrees": 4.41124241146798,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        }
+      ],
+      "resident": {
+        "shared_bytes": 413006712,
+        "mutable_bytes": 459059812,
+        "total_bytes": 872066524,
+        "native_owner_count": 1
+      },
+      "memory_status": {
+        "free_percent": 82,
+        "swap_used_mib": 0.0
+      },
+      "instrumentation": "Canonical per-frame hashes and actual-call timing observation enabled. Measured instrumentation stages reported; counter-call overhead remains inside actual wall. GPU/native/wait/rule stages overlap and are not added as wall.",
+      "trace_sha256": "3e3e3ee90d5ff486fa24c535c68972e3896768341e99d25ff4ac250854b8ea80"
+    },
+    {
+      "complete": true,
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 0,
+        "video_sha256": "4fb2a7b08d2a3e91244073ff9b7dc0b848eefcb9e6235d8a357a0330af4f5efe",
+        "control_sha256": "fe6a070d684a8e72beb1e36a0cec30e1e4a6ab2409bfc039ba4460e39212c54a"
+      },
+      "frames": 982,
+      "lanes": 4,
+      "training": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "frozen": [
+        false,
+        true,
+        false,
+        true
+      ],
+      "shifts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "RGB_ticks_per_lane": 280571,
+      "RGB_brain_seconds_per_lane": 28.057100000000002,
+      "aggregate_RGB_brain_seconds": 112.22840000000001,
+      "RGB_wall_seconds": 302.29717675000575,
+      "aggregate_RGB_brain_seconds_per_wall_second": 0.37125189592098257,
+      "per_lane_completion_seconds": [
+        302.2951295830062,
+        302.29579383300006,
+        302.29643616700196,
+        302.2970951669995
+      ],
+      "completion_definition": "Elapsed RGB phase time through each lane's final decode/teacher/record; decoder close follows separately in phase wall.",
+      "backend_seconds": 280.8305004941212,
+      "host_rule_seconds_per_lane": [
+        1.6969649579405086,
+        0.07048592637875117,
+        1.560301316967525,
+        0.06844505022309022
+      ],
+      "host_rule_seconds": 3.396197251509875,
+      "timing": {
+        "shared_resident_bytes": 413006712,
+        "mutable_resident_bytes": 459009604,
+        "full_upload_seconds": 0.0,
+        "full_upload_bytes": 0,
+        "materialize_seconds": 0.0,
+        "materialize_bytes": 0,
+        "sparse_weight_update_seconds": 0.91748578815168,
+        "sparse_weight_update_bytes": 295825536,
+        "host_rule_seconds": 3.3784105448576156,
+        "drive_copy_seconds": 0.6253330306863063,
+        "drive_copy_bytes": 7857571200,
+        "native_total_seconds": 279.14407592000026,
+        "gpu_seconds": 276.8367762499911,
+        "counts_clear_seconds": 0.03259766499999999,
+        "encode_seconds": 0.27560734900000033,
+        "commit_call_seconds": 0.018750877000000016,
+        "wait_call_seconds": 278.80651135500017,
+        "native_event_copy_seconds": 0.0029917989999999955,
+        "native_event_copy_bytes": 15861024,
+        "encoder_count": 2946,
+        "dispatch_count": 567034,
+        "mark_grid_threads": 187084742800,
+        "gather_grid_threads": 187084742800,
+        "indirect_dispatch_count": 0,
+        "edge_bitmap_words": 799467,
+        "event_conversion_sort_seconds": 0.35223044834128814,
+        "eligibility_seconds": 0.05870223308011191,
+        "counts_copy_seconds": 0.13282516140316147,
+        "counts_copy_bytes": 7857571200,
+        "backend_seconds": 280.8305004941212,
+        "input_preflight_seconds": 6.2832659209598205,
+        "input_preparation_seconds": 5.738770001116791
+      },
+      "warmup_wall_seconds": 6.520136041996011,
+      "warmup_brain_seconds_per_lane": 2.0,
+      "measured_trace_hash_record_seconds": 2.407872943855182,
+      "measured_observer_seconds": 0.008808772348857019,
+      "full_state_or_spike_capture": false,
+      "before": [
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        }
+      ],
+      "after": [
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "016f8c049d4c3556d34f68760396954c5c9eaae6055d8deda234df3e5227d920",
+          "rate_dan_sha256": "c7e7911ad89b3b683f53be50122b60ea2ae1d514dfa83c5975a488a71d700045"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "866e6bf658d575de8687036365177401d003dd1a9dc64554d24dabe9cc2552d9",
+          "rate_dan_sha256": "a387e10b5cb7f2792051016ff5cf1f9d008622a827a66ef13eabfdafcd18907b"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "016f8c049d4c3556d34f68760396954c5c9eaae6055d8deda234df3e5227d920",
+          "rate_dan_sha256": "c7e7911ad89b3b683f53be50122b60ea2ae1d514dfa83c5975a488a71d700045"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "866e6bf658d575de8687036365177401d003dd1a9dc64554d24dabe9cc2552d9",
+          "rate_dan_sha256": "a387e10b5cb7f2792051016ff5cf1f9d008622a827a66ef13eabfdafcd18907b"
+        }
+      ],
+      "scores": [
+        {
+          "mae_degrees": 3.417838675920911,
+          "direction_support": {
+            "left": 618,
+            "idle": 96,
+            "right": 268
+          },
+          "direction_recall": {
+            "left": 0.22815533980582525,
+            "idle": 0.125,
+            "right": 0.6753731343283582
+          },
+          "balanced_direction_recall": 0.34284282471139454,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -3.014415733197556,
+              "mae_degrees": 2.372920369606066,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 3.014415733197556,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 3.014415733197556,
+              "mae_degrees": 4.470503754443526,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        },
+        {
+          "mae_degrees": 3.318367753044691,
+          "direction_support": {
+            "left": 618,
+            "idle": 96,
+            "right": 268
+          },
+          "direction_recall": {
+            "left": 0.2669902912621359,
+            "idle": 0.08333333333333333,
+            "right": 0.6716417910447762
+          },
+          "balanced_direction_recall": 0.34065513854674845,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -3.014415733197556,
+              "mae_degrees": 2.372920369606066,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 3.014415733197556,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 3.014415733197556,
+              "mae_degrees": 4.470503754443526,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        },
+        {
+          "mae_degrees": 3.417838675920911,
+          "direction_support": {
+            "left": 618,
+            "idle": 96,
+            "right": 268
+          },
+          "direction_recall": {
+            "left": 0.22815533980582525,
+            "idle": 0.125,
+            "right": 0.6753731343283582
+          },
+          "balanced_direction_recall": 0.34284282471139454,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -3.014415733197556,
+              "mae_degrees": 2.372920369606066,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 3.014415733197556,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 3.014415733197556,
+              "mae_degrees": 4.470503754443526,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        },
+        {
+          "mae_degrees": 3.318367753044691,
+          "direction_support": {
+            "left": 618,
+            "idle": 96,
+            "right": 268
+          },
+          "direction_recall": {
+            "left": 0.2669902912621359,
+            "idle": 0.08333333333333333,
+            "right": 0.6716417910447762
+          },
+          "balanced_direction_recall": 0.34065513854674845,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -3.014415733197556,
+              "mae_degrees": 2.372920369606066,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 3.014415733197556,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 3.014415733197556,
+              "mae_degrees": 4.470503754443526,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        }
+      ],
+      "resident": {
+        "shared_bytes": 413006712,
+        "mutable_bytes": 459059812,
+        "total_bytes": 872066524,
+        "native_owner_count": 1
+      },
+      "memory_status": {
+        "free_percent": 82,
+        "swap_used_mib": 0.0
+      },
+      "instrumentation": "Canonical per-frame hashes and actual-call timing observation enabled. Measured instrumentation stages reported; counter-call overhead remains inside actual wall. GPU/native/wait/rule stages overlap and are not added as wall.",
+      "trace_sha256": "cf3eca6a52e6ca76018ab71697e1914c973bde6bc1b1dbeb5653ffbef662e29d"
+    },
+    {
+      "complete": true,
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 1,
+        "video_sha256": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501",
+        "control_sha256": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+      },
+      "frames": 988,
+      "lanes": 4,
+      "training": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "frozen": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "shifts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "RGB_ticks_per_lane": 282286,
+      "RGB_brain_seconds_per_lane": 28.2286,
+      "aggregate_RGB_brain_seconds": 112.9144,
+      "RGB_wall_seconds": 299.9339013330027,
+      "aggregate_RGB_brain_seconds_per_wall_second": 0.37646427929011056,
+      "per_lane_completion_seconds": [
+        299.931811208,
+        299.9324831249978,
+        299.9331541249994,
+        299.93382470800134
+      ],
+      "completion_definition": "Elapsed RGB phase time through each lane's final decode/teacher/record; decoder close follows separately in phase wall.",
+      "backend_seconds": 281.59513340170815,
+      "host_rule_seconds_per_lane": [
+        0.08614090302580735,
+        0.06611210598202888,
+        0.06426464819378452,
+        0.06260969708819175
+      ],
+      "host_rule_seconds": 0.2791273542898125,
+      "timing": {
+        "shared_resident_bytes": 413006712,
+        "mutable_resident_bytes": 459009604,
+        "full_upload_seconds": 0.0,
+        "full_upload_bytes": 0,
+        "materialize_seconds": 0.0,
+        "materialize_bytes": 0,
+        "sparse_weight_update_seconds": 0.0,
+        "sparse_weight_update_bytes": 0,
+        "host_rule_seconds": 0.26226117146143224,
+        "drive_copy_seconds": 0.6276336772789364,
+        "drive_copy_bytes": 7905580800,
+        "native_total_seconds": 279.90805009699983,
+        "gpu_seconds": 277.53879829166544,
+        "counts_clear_seconds": 0.032955109,
+        "encode_seconds": 0.2813865910000002,
+        "commit_call_seconds": 0.02178643600000001,
+        "wait_call_seconds": 279.5613892349998,
+        "native_event_copy_seconds": 0.0026756980000000024,
+        "native_event_copy_bytes": 15721504,
+        "encoder_count": 2964,
+        "dispatch_count": 570500,
+        "mark_grid_threads": 188228304800,
+        "gather_grid_threads": 188228304800,
+        "indirect_dispatch_count": 0,
+        "edge_bitmap_words": 799467,
+        "event_conversion_sort_seconds": 0.353182316175662,
+        "eligibility_seconds": 0.05918884820130188,
+        "counts_copy_seconds": 0.13497859703784343,
+        "counts_copy_bytes": 7905580800,
+        "backend_seconds": 281.59513340170815,
+        "input_preflight_seconds": 6.230627701042977,
+        "input_preparation_seconds": 5.700670230704418
+      },
+      "warmup_wall_seconds": 6.3267155830035335,
+      "warmup_brain_seconds_per_lane": 2.0,
+      "measured_trace_hash_record_seconds": 2.4828280307046953,
+      "measured_observer_seconds": 0.009174309896479826,
+      "full_state_or_spike_capture": false,
+      "before": [
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        }
+      ],
+      "after": [
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "7232519aa1ab54cffe5a845ff493c4a1c3f9bcc57bdd0b002cf1e3508d4b7b91",
+          "rate_dan_sha256": "f3fa0ca35405925dea13353208bb68db564557713338e167219b2309ccaae452"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "ab060078ba6b671441972d1fd1f5d27fe66ab6a4bcf82c67ba690aad2153a593",
+          "rate_dan_sha256": "dbce010483d8c6b665756df830071245222d15901ef589b1e9e118ed5313f9ad"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "7232519aa1ab54cffe5a845ff493c4a1c3f9bcc57bdd0b002cf1e3508d4b7b91",
+          "rate_dan_sha256": "f3fa0ca35405925dea13353208bb68db564557713338e167219b2309ccaae452"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "ab060078ba6b671441972d1fd1f5d27fe66ab6a4bcf82c67ba690aad2153a593",
+          "rate_dan_sha256": "dbce010483d8c6b665756df830071245222d15901ef589b1e9e118ed5313f9ad"
+        }
+      ],
+      "scores": [
+        {
+          "mae_degrees": 3.2029875211602943,
+          "direction_support": {
+            "left": 624,
+            "idle": 176,
+            "right": 188
+          },
+          "direction_recall": {
+            "left": 0.2644230769230769,
+            "idle": 0.045454545454545456,
+            "right": 0.7074468085106383
+          },
+          "balanced_direction_recall": 0.33910814362942027,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -2.709664410425101,
+              "mae_degrees": 2.168082318669172,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 2.709664410425101,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 2.709664410425101,
+              "mae_degrees": 4.41124241146798,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        },
+        {
+          "mae_degrees": 3.153095521525519,
+          "direction_support": {
+            "left": 624,
+            "idle": 176,
+            "right": 188
+          },
+          "direction_recall": {
+            "left": 0.2419871794871795,
+            "idle": 0.028409090909090908,
+            "right": 0.7074468085106383
+          },
+          "balanced_direction_recall": 0.3259476929689696,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -2.709664410425101,
+              "mae_degrees": 2.168082318669172,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 2.709664410425101,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 2.709664410425101,
+              "mae_degrees": 4.41124241146798,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        },
+        {
+          "mae_degrees": 3.2029875211602943,
+          "direction_support": {
+            "left": 624,
+            "idle": 176,
+            "right": 188
+          },
+          "direction_recall": {
+            "left": 0.2644230769230769,
+            "idle": 0.045454545454545456,
+            "right": 0.7074468085106383
+          },
+          "balanced_direction_recall": 0.33910814362942027,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -2.709664410425101,
+              "mae_degrees": 2.168082318669172,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 2.709664410425101,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 2.709664410425101,
+              "mae_degrees": 4.41124241146798,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        },
+        {
+          "mae_degrees": 3.153095521525519,
+          "direction_support": {
+            "left": 624,
+            "idle": 176,
+            "right": 188
+          },
+          "direction_recall": {
+            "left": 0.2419871794871795,
+            "idle": 0.028409090909090908,
+            "right": 0.7074468085106383
+          },
+          "balanced_direction_recall": 0.3259476929689696,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -2.709664410425101,
+              "mae_degrees": 2.168082318669172,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 2.709664410425101,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 2.709664410425101,
+              "mae_degrees": 4.41124241146798,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        }
+      ],
+      "resident": {
+        "shared_bytes": 413006712,
+        "mutable_bytes": 459059812,
+        "total_bytes": 872066524,
+        "native_owner_count": 1
+      },
+      "memory_status": {
+        "free_percent": 82,
+        "swap_used_mib": 0.0
+      },
+      "instrumentation": "Canonical per-frame hashes and actual-call timing observation enabled. Measured instrumentation stages reported; counter-call overhead remains inside actual wall. GPU/native/wait/rule stages overlap and are not added as wall.",
+      "trace_sha256": "3e3e3ee90d5ff486fa24c535c68972e3896768341e99d25ff4ac250854b8ea80"
+    },
+    {
+      "complete": true,
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 0,
+        "video_sha256": "4fb2a7b08d2a3e91244073ff9b7dc0b848eefcb9e6235d8a357a0330af4f5efe",
+        "control_sha256": "fe6a070d684a8e72beb1e36a0cec30e1e4a6ab2409bfc039ba4460e39212c54a"
+      },
+      "frames": 982,
+      "lanes": 4,
+      "training": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "frozen": [
+        false,
+        true,
+        false,
+        true
+      ],
+      "shifts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "RGB_ticks_per_lane": 280571,
+      "RGB_brain_seconds_per_lane": 28.057100000000002,
+      "aggregate_RGB_brain_seconds": 112.22840000000001,
+      "RGB_wall_seconds": 302.5410627079982,
+      "aggregate_RGB_brain_seconds_per_wall_second": 0.3709526204326149,
+      "per_lane_completion_seconds": [
+        302.53901350000524,
+        302.539679542002,
+        302.54032312500203,
+        302.5409842080044
+      ],
+      "completion_definition": "Elapsed RGB phase time through each lane's final decode/teacher/record; decoder close follows separately in phase wall.",
+      "backend_seconds": 281.0344283011509,
+      "host_rule_seconds_per_lane": [
+        1.7080853429506533,
+        0.07148585595132317,
+        1.5561949818365974,
+        0.06920447514858097
+      ],
+      "host_rule_seconds": 3.404970655887155,
+      "timing": {
+        "shared_resident_bytes": 413006712,
+        "mutable_resident_bytes": 459009604,
+        "full_upload_seconds": 0.0,
+        "full_upload_bytes": 0,
+        "materialize_seconds": 0.0,
+        "materialize_bytes": 0,
+        "sparse_weight_update_seconds": 0.916875371025526,
+        "sparse_weight_update_bytes": 295825536,
+        "host_rule_seconds": 3.386948645056691,
+        "drive_copy_seconds": 0.6257452595746145,
+        "drive_copy_bytes": 7857571200,
+        "native_total_seconds": 279.33713090999964,
+        "gpu_seconds": 277.04034375007177,
+        "counts_clear_seconds": 0.033278467000000006,
+        "encode_seconds": 0.272939866,
+        "commit_call_seconds": 0.019323874000000008,
+        "wait_call_seconds": 279.0009618080002,
+        "native_event_copy_seconds": 0.002782621999999999,
+        "native_event_copy_bytes": 15861024,
+        "encoder_count": 2946,
+        "dispatch_count": 567034,
+        "mark_grid_threads": 187084742800,
+        "gather_grid_threads": 187084742800,
+        "indirect_dispatch_count": 0,
+        "edge_bitmap_words": 799467,
+        "event_conversion_sort_seconds": 0.3585679719762993,
+        "eligibility_seconds": 0.05903456810483476,
+        "counts_copy_seconds": 0.13394701532524778,
+        "counts_copy_bytes": 7857571200,
+        "backend_seconds": 281.0344283011509,
+        "input_preflight_seconds": 6.28713471199444,
+        "input_preparation_seconds": 5.73330827364407
+      },
+      "warmup_wall_seconds": 6.534152458996687,
+      "warmup_brain_seconds_per_lane": 2.0,
+      "measured_trace_hash_record_seconds": 2.4229432039137464,
+      "measured_observer_seconds": 0.00895542975194985,
+      "full_state_or_spike_capture": false,
+      "before": [
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        }
+      ],
+      "after": [
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "016f8c049d4c3556d34f68760396954c5c9eaae6055d8deda234df3e5227d920",
+          "rate_dan_sha256": "c7e7911ad89b3b683f53be50122b60ea2ae1d514dfa83c5975a488a71d700045"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "866e6bf658d575de8687036365177401d003dd1a9dc64554d24dabe9cc2552d9",
+          "rate_dan_sha256": "a387e10b5cb7f2792051016ff5cf1f9d008622a827a66ef13eabfdafcd18907b"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "016f8c049d4c3556d34f68760396954c5c9eaae6055d8deda234df3e5227d920",
+          "rate_dan_sha256": "c7e7911ad89b3b683f53be50122b60ea2ae1d514dfa83c5975a488a71d700045"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "866e6bf658d575de8687036365177401d003dd1a9dc64554d24dabe9cc2552d9",
+          "rate_dan_sha256": "a387e10b5cb7f2792051016ff5cf1f9d008622a827a66ef13eabfdafcd18907b"
+        }
+      ],
+      "scores": [
+        {
+          "mae_degrees": 3.417838675920911,
+          "direction_support": {
+            "left": 618,
+            "idle": 96,
+            "right": 268
+          },
+          "direction_recall": {
+            "left": 0.22815533980582525,
+            "idle": 0.125,
+            "right": 0.6753731343283582
+          },
+          "balanced_direction_recall": 0.34284282471139454,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -3.014415733197556,
+              "mae_degrees": 2.372920369606066,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 3.014415733197556,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 3.014415733197556,
+              "mae_degrees": 4.470503754443526,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        },
+        {
+          "mae_degrees": 3.318367753044691,
+          "direction_support": {
+            "left": 618,
+            "idle": 96,
+            "right": 268
+          },
+          "direction_recall": {
+            "left": 0.2669902912621359,
+            "idle": 0.08333333333333333,
+            "right": 0.6716417910447762
+          },
+          "balanced_direction_recall": 0.34065513854674845,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -3.014415733197556,
+              "mae_degrees": 2.372920369606066,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 3.014415733197556,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 3.014415733197556,
+              "mae_degrees": 4.470503754443526,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        },
+        {
+          "mae_degrees": 3.417838675920911,
+          "direction_support": {
+            "left": 618,
+            "idle": 96,
+            "right": 268
+          },
+          "direction_recall": {
+            "left": 0.22815533980582525,
+            "idle": 0.125,
+            "right": 0.6753731343283582
+          },
+          "balanced_direction_recall": 0.34284282471139454,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -3.014415733197556,
+              "mae_degrees": 2.372920369606066,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 3.014415733197556,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 3.014415733197556,
+              "mae_degrees": 4.470503754443526,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        },
+        {
+          "mae_degrees": 3.318367753044691,
+          "direction_support": {
+            "left": 618,
+            "idle": 96,
+            "right": 268
+          },
+          "direction_recall": {
+            "left": 0.2669902912621359,
+            "idle": 0.08333333333333333,
+            "right": 0.6716417910447762
+          },
+          "balanced_direction_recall": 0.34065513854674845,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -3.014415733197556,
+              "mae_degrees": 2.372920369606066,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 3.014415733197556,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 3.014415733197556,
+              "mae_degrees": 4.470503754443526,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        }
+      ],
+      "resident": {
+        "shared_bytes": 413006712,
+        "mutable_bytes": 459059812,
+        "total_bytes": 872066524,
+        "native_owner_count": 1
+      },
+      "memory_status": {
+        "free_percent": 82,
+        "swap_used_mib": 0.0
+      },
+      "instrumentation": "Canonical per-frame hashes and actual-call timing observation enabled. Measured instrumentation stages reported; counter-call overhead remains inside actual wall. GPU/native/wait/rule stages overlap and are not added as wall.",
+      "trace_sha256": "cf3eca6a52e6ca76018ab71697e1914c973bde6bc1b1dbeb5653ffbef662e29d"
+    },
+    {
+      "complete": true,
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 1,
+        "video_sha256": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501",
+        "control_sha256": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+      },
+      "frames": 988,
+      "lanes": 4,
+      "training": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "frozen": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "shifts": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "RGB_ticks_per_lane": 282286,
+      "RGB_brain_seconds_per_lane": 28.2286,
+      "aggregate_RGB_brain_seconds": 112.9144,
+      "RGB_wall_seconds": 300.0358986249994,
+      "aggregate_RGB_brain_seconds_per_wall_second": 0.3763363001476245,
+      "per_lane_completion_seconds": [
+        300.0338265419996,
+        300.0344955000037,
+        300.0351594169988,
+        300.0358217079993
+      ],
+      "completion_definition": "Elapsed RGB phase time through each lane's final decode/teacher/record; decoder close follows separately in phase wall.",
+      "backend_seconds": 281.69678359998943,
+      "host_rule_seconds_per_lane": [
+        0.084150164075254,
+        0.06574312585871667,
+        0.06326938787969993,
+        0.06277386887086323
+      ],
+      "host_rule_seconds": 0.2759365466845338,
+      "timing": {
+        "shared_resident_bytes": 413006712,
+        "mutable_resident_bytes": 459009604,
+        "full_upload_seconds": 0.0,
+        "full_upload_bytes": 0,
+        "materialize_seconds": 0.0,
+        "materialize_bytes": 0,
+        "sparse_weight_update_seconds": 0.0,
+        "sparse_weight_update_bytes": 0,
+        "host_rule_seconds": 0.2593584710266441,
+        "drive_copy_seconds": 0.6271458427945618,
+        "drive_copy_bytes": 7905580800,
+        "native_total_seconds": 280.00584631700036,
+        "gpu_seconds": 277.65309258348134,
+        "counts_clear_seconds": 0.033744693,
+        "encode_seconds": 0.27863485000000016,
+        "commit_call_seconds": 0.02258522600000001,
+        "wait_call_seconds": 279.6606344519999,
+        "native_event_copy_seconds": 0.0025496189999999978,
+        "native_event_copy_bytes": 15721504,
+        "encoder_count": 2964,
+        "dispatch_count": 570500,
+        "mark_grid_threads": 188228304800,
+        "gather_grid_threads": 188228304800,
+        "indirect_dispatch_count": 0,
+        "edge_bitmap_words": 799467,
+        "event_conversion_sort_seconds": 0.35686984992207726,
+        "eligibility_seconds": 0.05795885030966019,
+        "counts_copy_seconds": 0.13519224969058996,
+        "counts_copy_bytes": 7905580800,
+        "backend_seconds": 281.69678359998943,
+        "input_preflight_seconds": 6.231631740032753,
+        "input_preparation_seconds": 5.695072123889986
+      },
+      "warmup_wall_seconds": 6.331036499999755,
+      "warmup_brain_seconds_per_lane": 2.0,
+      "measured_trace_hash_record_seconds": 2.482463684027607,
+      "measured_observer_seconds": 0.009189525961119216,
+      "full_state_or_spike_capture": false,
+      "before": [
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        }
+      ],
+      "after": [
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "7232519aa1ab54cffe5a845ff493c4a1c3f9bcc57bdd0b002cf1e3508d4b7b91",
+          "rate_dan_sha256": "f3fa0ca35405925dea13353208bb68db564557713338e167219b2309ccaae452"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "ab060078ba6b671441972d1fd1f5d27fe66ab6a4bcf82c67ba690aad2153a593",
+          "rate_dan_sha256": "dbce010483d8c6b665756df830071245222d15901ef589b1e9e118ed5313f9ad"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "7232519aa1ab54cffe5a845ff493c4a1c3f9bcc57bdd0b002cf1e3508d4b7b91",
+          "rate_dan_sha256": "f3fa0ca35405925dea13353208bb68db564557713338e167219b2309ccaae452"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "ab060078ba6b671441972d1fd1f5d27fe66ab6a4bcf82c67ba690aad2153a593",
+          "rate_dan_sha256": "dbce010483d8c6b665756df830071245222d15901ef589b1e9e118ed5313f9ad"
+        }
+      ],
+      "scores": [
+        {
+          "mae_degrees": 3.2029875211602943,
+          "direction_support": {
+            "left": 624,
+            "idle": 176,
+            "right": 188
+          },
+          "direction_recall": {
+            "left": 0.2644230769230769,
+            "idle": 0.045454545454545456,
+            "right": 0.7074468085106383
+          },
+          "balanced_direction_recall": 0.33910814362942027,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -2.709664410425101,
+              "mae_degrees": 2.168082318669172,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 2.709664410425101,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 2.709664410425101,
+              "mae_degrees": 4.41124241146798,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        },
+        {
+          "mae_degrees": 3.153095521525519,
+          "direction_support": {
+            "left": 624,
+            "idle": 176,
+            "right": 188
+          },
+          "direction_recall": {
+            "left": 0.2419871794871795,
+            "idle": 0.028409090909090908,
+            "right": 0.7074468085106383
+          },
+          "balanced_direction_recall": 0.3259476929689696,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -2.709664410425101,
+              "mae_degrees": 2.168082318669172,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 2.709664410425101,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 2.709664410425101,
+              "mae_degrees": 4.41124241146798,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        },
+        {
+          "mae_degrees": 3.2029875211602943,
+          "direction_support": {
+            "left": 624,
+            "idle": 176,
+            "right": 188
+          },
+          "direction_recall": {
+            "left": 0.2644230769230769,
+            "idle": 0.045454545454545456,
+            "right": 0.7074468085106383
+          },
+          "balanced_direction_recall": 0.33910814362942027,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -2.709664410425101,
+              "mae_degrees": 2.168082318669172,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 2.709664410425101,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 2.709664410425101,
+              "mae_degrees": 4.41124241146798,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        },
+        {
+          "mae_degrees": 3.153095521525519,
+          "direction_support": {
+            "left": 624,
+            "idle": 176,
+            "right": 188
+          },
+          "direction_recall": {
+            "left": 0.2419871794871795,
+            "idle": 0.028409090909090908,
+            "right": 0.7074468085106383
+          },
+          "balanced_direction_recall": 0.3259476929689696,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -2.709664410425101,
+              "mae_degrees": 2.168082318669172,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 2.709664410425101,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 2.709664410425101,
+              "mae_degrees": 4.41124241146798,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        }
+      ],
+      "resident": {
+        "shared_bytes": 413006712,
+        "mutable_bytes": 459059812,
+        "total_bytes": 872066524,
+        "native_owner_count": 1
+      },
+      "memory_status": {
+        "free_percent": 82,
+        "swap_used_mib": 0.0
+      },
+      "instrumentation": "Canonical per-frame hashes and actual-call timing observation enabled. Measured instrumentation stages reported; counter-call overhead remains inside actual wall. GPU/native/wait/rule stages overlap and are not added as wall.",
+      "trace_sha256": "3e3e3ee90d5ff486fa24c535c68972e3896768341e99d25ff4ac250854b8ea80"
+    }
+  ],
+  "complete": true,
+  "duplicate_controls": "Alternating plastic/frozen lanes. N4 lanes2/3 duplicate0/1; matched controls are execution/timing controls, not independent learning replicas.",
+  "learning_demonstrated": false,
+  "announcement_ready": false
+}

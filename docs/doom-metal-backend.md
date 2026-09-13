@@ -53,3 +53,53 @@ The dispatch lower-bound diagnostic predicted `0.01747 s` total savings. The imp
 The planned one-second offline smoke was attempted while the machine's one-minute load average was 19.87. Plastic training, held-out frozen evaluation, and the black-vision control completed with exact validation provenance. The next warmup exceeded four wall minutes, so the smoke process was stopped and its completed records preserved. Retention, erasure, frozen-arm, and shuffled-arm controls remain unrun in that earlier smoke. This partial smoke is not an end-to-end pass.
 
 The [explicit voltage-FMA experiment](experiments/2026-09-13-metal-arithmetic.md) advances arithmetic epoch to 5 while keeping strict Metal 2.4 flags and CPU/incoming propagation fixed. Both 40/80 ms gates have exact events/controls/weights and repeated Metal state. A two-second dark warmup has exact spikes and equal first-original-RGB controls, although small incoming-related state differences remain. All three original 35-frame training prefixes and the learned plastic held-out prefix match CPU exactly; other held-out controls diverge late. The actual M4 suite passes 371 tests, with three platform skips and 50 baseline deprecations. A documented edgeless-fixture conductance-underflow limit reflects permitted Metal flushing; full-graph gates remain unchanged. The complete original exploratory cohort finished eight phases and 7,886 RGB frames at fixed source. Its source/timing/teacher/frozen/invariant audit passes, but complete CPU trajectory equivalence fails. Held-out MAE worsens against frozen weights while direction recall improves slightly; useful learning remains unestablished. Eight phase walls total 1,516.26 seconds versus CPU 968.55, without speedup. Incoming carry and ordering/modulatory mechanisms are separately scoped next work. Previous failed evidence remains retained; the public service is unchanged.
+
+## Resident multi-trajectory execution
+
+The [resident lane experiment](experiments/2026-09-13-metal-batch-executor.md)
+adds `MetalBatchExecutor(brains)` on an isolated experimental branch. Execution
+ABI 7 retains epoch-5 arithmetic while sharing immutable topology and keeping
+each lane's full weights, state, queues, eligibility, plasticity and fixed
+decoder independent. The owner synchronizes equal-duration lanes; completed
+lanes are never advanced merely to fill a batch. This API is not connected to
+the live service.
+
+At fixed source `08015d7101778e6aa3fc88103418d811db1481e5`, the actual M4 Pro
+full suite reports 508 passes, three platform skips and 50 existing dependency
+deprecations. Fresh serial 40/80 ms gates pass exact spike/control/weight
+comparisons and Metal repeats; complete CPU/Metal state digests still differ.
+Two original carry-cancellation failures are separately reproduced and kept.
+N=2 matches each independent serial Metal lane's full state, spikes and fixed
+controls through two-second dark input and 35 original RGB frames. All six
+baseline/repeat/permutation/pixel/teacher/state diagnostic trials pass, including
+unchanged neighboring traces under interventions. The complete original eight
+controls also match all canonical traces and all three learned checkpoints'
+numeric arrays, with exact teacher/frozen/erasure/retention/source checks.
+Three fresh serial-two pairs complete with median aggregate throughput
+0.15085 brain-seconds per wall-second; every trace and learned numeric array
+matches the original reference. This is a current ABI 7 interleaved-serial
+baseline, not a fresh ABI 5 parent measurement. Three fresh N=2 pairs reproduce
+every original trace and learned numeric array, with median aggregate throughput
+0.22335 brain-seconds per wall-second: a measured 1.48058x gain over the current
+serial baseline. Pair walls span 503.81-504.59 seconds; serial spans 746.11-746.55.
+Diagnostic walls are excluded. The
+five matched pairs process two declared duplicate controls, so their 1,254.43
+RGB wall seconds cannot directly be compared with the original eight-phase
+CPU wall. Actual native allocations are about 643 MB; the first complete pair
+records 239.48 GPU seconds and 0.23 encoding seconds. GPU-side profiling is
+needed to separate kernel work from dispatch cost within that timeline.
+All six fresh N=4 full-state/spike/isolation trials also pass, and every copied
+artifact and final-state hash is independently checked against the original
+N=2 records. A fresh full-graph allocation probe reports 872 MB native storage
+and zero swap. Three fresh complete N=4 timing pairs also match every original
+canonical trace and learned numeric array, with median aggregate throughput
+0.37385 brain-seconds per wall-second: 2.47827x the current serial baseline
+and 1.67385x N=2. Pair walls span 600.90-602.58 seconds, each processing
+225.1428 aggregate RGB brain seconds. Actual phase allocations are 872,066,524
+bytes; all six phase samples report zero swap. N=4 improves aggregate throughput
+while increasing pair latency by 19.49% over N=2. Four lanes are selected for
+the next fixed-lane acceleration experiments, without claiming optimal width
+or faster learning per frame. Extra lanes are execution duplicates.
+A lack of gain directs Metal profiling and refinement with fixed lanes.
+These engineering checks establish neither
+useful learning nor a public launch.

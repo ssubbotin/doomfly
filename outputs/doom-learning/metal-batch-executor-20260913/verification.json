@@ -1,0 +1,117 @@
+{
+  "schema": 1,
+  "source_commit": "08015d7101778e6aa3fc88103418d811db1481e5",
+  "numerical_parent": "b24249ecfee12aa84b55ed803ffe47bd09c487ad",
+  "abi_version": 7,
+  "device": "Apple M4 Pro",
+  "native_language": "macos-metal2.4",
+  "native_micrograph_controls": {
+    "source_commit": "b13e40b5e7449a8c211b46b789cd5fe89ea85f35",
+    "passed": 13,
+    "validation_scope": "Native multi-lane state, events, eligibility, isolation, safe-history and lifetime controls"
+  },
+  "reviewed_source_tests": {
+    "focused": {
+      "passed": 173,
+      "failed": 0,
+      "seconds": 2.87,
+      "log_bytes": 260,
+      "log_sha256": "18e9bbd25c111d50700b2a3ae402d327efbc39bf71f7d713f4cc4cc85b48ae6a"
+    },
+    "unchanged_serial": {
+      "passed": 86,
+      "skipped": 1,
+      "failed": 0,
+      "seconds": 2.35,
+      "log_bytes": 190,
+      "log_sha256": "40ab4fc782740c85d3593b121b0023e00ddf0d384e7579f41ee3d09f4a5a2bf5"
+    },
+    "full_suite": {
+      "passed": 508,
+      "skipped": 3,
+      "failed": 0,
+      "baseline_deprecation_warnings": 50,
+      "seconds": 18.70,
+      "log_bytes": 10098,
+      "log_sha256": "0fca49e1be5763aa8698e4ba168f352c4e1e59f54a9d1452bc10362260549a09"
+    }
+  },
+  "portable_full_suite_repeat": {
+    "passed": 409,
+    "skipped": 102,
+    "failed": 0,
+    "exit_code": 0,
+    "baseline_deprecation_warnings": 50,
+    "seconds": 30.79,
+    "command": "OPENBLAS_NUM_THREADS=1 python -m pytest -q",
+    "environment": "Configured Python 3.11 environment, LLVM 21 and previously verified CPU bootstrap library",
+    "interpretation": "Fresh controller portable/CPU verification on the same source; Metal-only tests are platform skips, not device passes."
+  },
+  "final_same_source_m4_repeat": {
+    "source_commit": "08015d7101778e6aa3fc88103418d811db1481e5",
+    "probe": {
+      "exit_code": 0,
+      "process_seconds": 0.0384676670000772,
+      "log_bytes": 2844,
+      "log_sha256": "5cd3cd26e40c68d44c968442467b9244e71a79160a3027b5f9cdde77d6eaa8f0",
+      "native_binary_identity_equal_to_reviewed": true
+    },
+    "focused": {
+      "passed": 173,
+      "failed": 0,
+      "exit_code": 0,
+      "pytest_seconds": 3.06,
+      "process_seconds": 3.243868209006905,
+      "log_bytes": 260,
+      "log_sha256": "ab6f4db539f4e72a1fe4aaa7896dbaabb6cd46f37c341d9531d84f1ec7a88b29"
+    },
+    "unchanged_serial": {
+      "passed": 86,
+      "skipped": 1,
+      "failed": 0,
+      "exit_code": 0,
+      "pytest_seconds": 2.74,
+      "process_seconds": 2.945326749999367,
+      "log_bytes": 190,
+      "log_sha256": "488bdf368f99bd17debd2a22ac61294dadd9d727ff102508feef8afcd1493df4"
+    },
+    "full_suite": {
+      "passed": 508,
+      "skipped": 3,
+      "failed": 0,
+      "exit_code": 0,
+      "baseline_deprecation_warnings": 50,
+      "pytest_seconds": 20.06,
+      "process_seconds": 20.378359207999893,
+      "log_bytes": 10098,
+      "log_sha256": "317b2edca9bd7a805b342ca6c9f8f9457be6ebc21f8be4117d4b12801d89598a"
+    },
+    "interpretation": "Fresh M4 verification after all complete timing jobs and copied-artifact audits, before publication commit. Test process durations and pytest durations are distinct; baseline warnings and platform skips remain explicit."
+  },
+  "retained_serial_gates": {
+    "horizons_ms": [40, 80],
+    "exit_code": 0,
+    "process_seconds": 18.425384,
+    "log_bytes": 2797,
+    "log_sha256": "8efea950d011141939acc27f33e048a7e04b00b54f25935490406f6590ab40b4",
+    "full_cpu_state_bitwise": false,
+    "batch_or_long_horizon_validation": false
+  },
+  "preserved_historical_carry_controls": {
+    "test_source_commit": "71df231ee87d28cf0b55dd20695d0deaf64e3a04",
+    "test_sha256": "0381288e216bb0302be679228c06eb844f79c92ead72de95778e8f275d93c470",
+    "exit_code": 1,
+    "passed": 5,
+    "failed": 2,
+    "failed_cases": ["catastrophic-carry", "duplicate-edges"],
+    "passing_cases": ["ordinary-carry", "zero-carry", "refractory-rejection", "modulatory-only-one-tick", "empty-topology"],
+    "process_seconds": 0.283159,
+    "log_bytes": 7613,
+    "log_sha256": "6164040d7d1d8005a72c2aea25c46d59af2873297b79e0ec89f62960bf600c68",
+    "interpretation": "Original epoch-5 failures reproduced and preserved; actual test exit remains nonzero. Epoch-6 arithmetic is not used."
+  },
+  "artifact_copy_check": "Original logs and retained reports independently copied, read and byte/SHA256 matched",
+  "learning_demonstrated": false,
+  "biologically_validated": false,
+  "announcement_ready": false
+}

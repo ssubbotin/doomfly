@@ -1,0 +1,153 @@
+{
+  "CPU_build_provenance": {
+    "current_sha256": "d315762114273fcd54ff88dd9a03b186668eadafcc2b5d3f6ac4bb76ec61af44",
+    "instruction_dump_identity_established": false,
+    "original_sha256": "7fdfefd7b01122fb63846ad2d3af6bfa55a2a3078adacc1a1ccc08237d12924d",
+    "source_flags_equal": true
+  },
+  "RGB_wall_seconds_including_duplicates": 1254.4262161250008,
+  "all_eight_canonical_traces_equal": true,
+  "announcement_ready": false,
+  "audit_script_sha256": "2b0865bc6f8fcf4b7496ac420b51ac196ea3838fd90f8ccdc09265b890985921",
+  "checkpoints": [
+    {
+      "actual": "learned-0.npz",
+      "all_arrays_bitwise": true,
+      "original": "plastic/learned.npz"
+    },
+    {
+      "actual": "learned-1.npz",
+      "all_arrays_bitwise": true,
+      "original": "frozen/learned.npz"
+    },
+    {
+      "actual": "shifted.npz",
+      "all_arrays_bitwise": true,
+      "original": "shifted/learned.npz"
+    }
+  ],
+  "erased_frozen_exact": true,
+  "frozen_memory_exact": true,
+  "identity_sha256": "50e158070ae167ad24402ef8dbda68aaf6e41f19521be250061c1fcb3dbc5bd8",
+  "interpretation": "Executor reproduction of original epoch-5 controls. Declared duplicates are not learning replications. Single workload walls are not repeated speed evidence. Original mixed/negative learning and long CPU failures remain.",
+  "learning_demonstrated": false,
+  "log_sha256": "ccb49ea8f974c2478be1e7eb1ab945e47ae7f515edf8f02e99a01694021af8b0",
+  "original_RGB_frames": 7886,
+  "original_RGB_ticks": 2253143,
+  "original_artifacts_pinned": 15,
+  "original_controls": 8,
+  "phases": [
+    {
+      "RGB_wall_seconds": 251.29735749999963,
+      "frames_per_lane": 982,
+      "original_references": [
+        "plastic/train-0-0",
+        "frozen/train-0-0"
+      ],
+      "phase": "A",
+      "resident": {
+        "mutable_bytes": 229555012,
+        "native_owner_count": 1,
+        "shared_bytes": 413006712,
+        "total_bytes": 642561724
+      }
+    },
+    {
+      "RGB_wall_seconds": 252.20813633299986,
+      "frames_per_lane": 988,
+      "original_references": [
+        "plastic/eval-0",
+        "frozen/eval-0"
+      ],
+      "phase": "B",
+      "resident": {
+        "mutable_bytes": 229555012,
+        "native_owner_count": 1,
+        "shared_bytes": 413006712,
+        "total_bytes": 642561724
+      }
+    },
+    {
+      "RGB_wall_seconds": 250.9696484169981,
+      "frames_per_lane": 982,
+      "original_references": [
+        "shifted/train-0-0",
+        "frozen/train-0-0"
+      ],
+      "phase": "C",
+      "resident": {
+        "mutable_bytes": 229555012,
+        "native_owner_count": 1,
+        "shared_bytes": 413006712,
+        "total_bytes": 642561724
+      }
+    },
+    {
+      "RGB_wall_seconds": 251.5682063330023,
+      "frames_per_lane": 988,
+      "original_references": [
+        "shifted/eval-0",
+        "plastic/erased-0"
+      ],
+      "phase": "D",
+      "resident": {
+        "mutable_bytes": 229555012,
+        "native_owner_count": 1,
+        "shared_bytes": 413006712,
+        "total_bytes": 642561724
+      }
+    },
+    {
+      "RGB_wall_seconds": 248.3828675420009,
+      "frames_per_lane": 988,
+      "original_references": [
+        "plastic/retention-0",
+        "frozen/eval-0"
+      ],
+      "phase": "F",
+      "resident": {
+        "mutable_bytes": 229504804,
+        "native_owner_count": 1,
+        "shared_bytes": 413006712,
+        "total_bytes": 642511516
+      }
+    }
+  ],
+  "processed_RGB_ticks_including_duplicates": 2816000,
+  "raw_artifacts_byte_sha_match": 18,
+  "retention": {
+    "after": {
+      "changed_edges": 1953,
+      "mean_efficacy": 0.9326412677764893,
+      "memory_u_sha256": "9ec372f0336f65a2d442b18f8f81d48400179aa1a9b658c2830c9ff3dbe9c8b3",
+      "memory_w_sha256": "ef71aa4f97b518a4e573b2a47b7a7cc2b59067020591ff4ce22645e1a3fda5e8",
+      "minimum_efficacy": 0.4348071217536926,
+      "model": "adaptive-centered-v6",
+      "plastic_edges": 4184,
+      "rate_dan_sha256": "c6a69b29d4343df1c3a1c699085bed6264cb3c69d25aaccbe77e040925cfaabd",
+      "rate_kc_sha256": "ae8bdc0c2cb983fe416b9d17d2bc45454c93de86a7b747199488930753b25537",
+      "sha256": "0202933ac1a15eb9f0430431f620cd848690be38a9d3c2e4630e6ff52227127b"
+    },
+    "before": {
+      "changed_edges": 1953,
+      "mean_efficacy": 0.9321745038032532,
+      "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+      "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+      "minimum_efficacy": 0.45040401816368103,
+      "model": "adaptive-centered-v6",
+      "plastic_edges": 4184,
+      "rate_dan_sha256": "c7e7911ad89b3b683f53be50122b60ea2ae1d514dfa83c5975a488a71d700045",
+      "rate_kc_sha256": "016f8c049d4c3556d34f68760396954c5c9eaae6055d8deda234df3e5227d920",
+      "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724"
+    },
+    "brain_steps": 50000,
+    "learning": false,
+    "teacher_current": 0,
+    "wall_seconds": 34.085939708995284,
+    "weights_frozen": false
+  },
+  "schema": 1,
+  "source_commit": "08015d7101778e6aa3fc88103418d811db1481e5",
+  "teacher_causality_exact": true,
+  "verified": true
+}

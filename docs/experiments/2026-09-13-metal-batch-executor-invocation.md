@@ -48,17 +48,36 @@ implementation's fourteen existing decay failures occurred before dispatch;
 the correction accepts safe int32 elapsed histories while rejecting overflow.
 Keep those failures, test-only missing-symbol RED and corrected GREEN separate.
 
-Tiny CPU fixtures regenerate the owned runtime library manifest. Require clean
-code/tests; permit only that exact generated-manifest delta after verifying
-current CPU source, actual binary and unchanged -O3/-std=c++17/-shared/-fPIC
-flags. Preserve it unstaged. Any other tracked delta stops the job.
+CPU fixtures regenerate five owned runtime library manifests under
+`outputs/doom-learning/` (original, `physiology-v2`, `physiology-v4`,
+`physiology-v5`, `physiology-v6`). Require clean code/tests; permit only these
+exact generated-manifest paths after verifying each against its own current
+`kernel.cpp`, actual binary and unchanged -O3/-std=c++17/-shared/-fPIC flags.
+Preserve them unstaged. Any other tracked delta stops the job. An overly narrow
+single-manifest guard stopped the first Task2 launch before checkout or tests;
+retain that prerequisite failure separately from subsequent test failures.
 
 ## Training-boundary and retained evidence
 
-After Task2 review, run actual batch Python/RGB training tests and the complete
-suite on its exact committed source. Save the separate retained/prefix/full-RGB
+Run actual batch Python/RGB training tests and the complete suite on Task2's
+exact committed source before its completion/review gate. After Task2 review,
+save the separate retained/prefix/full-RGB
 script before running it. Require fresh source-matching 40/80 ms reports and
 unchanged scientific thresholds; record their horizon and batch-lane scope.
+
+The actual Task2 focused command is:
+
+```sh
+OPENBLAS_NUM_THREADS=1 python -m pytest -q \
+  tests/test_doom_metal_batch.py tests/test_doom_metal_batch_rgb.py \
+  tests/test_doom_learning_v6.py tests/test_doom_imitation.py \
+  tests/test_doom_metal_checkpoint.py tests/test_doom_metal_batch_native.py
+```
+
+At source08015d7101778e6aa3fc88103418d811db1481e5 it reports173passes on
+the M4 Pro. The unchanged serial command above reports86passes/one platform
+skip; the full suite reports508passes/three platform skips/50baseline warnings.
+These test times are not complete training throughput.
 
 Compare two-second dark and each original RGB lane against its serial epoch-5
 reference, not just another batch lane. Known carry cancellation failures,

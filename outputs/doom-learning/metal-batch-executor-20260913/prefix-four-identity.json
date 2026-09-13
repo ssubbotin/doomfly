@@ -1,0 +1,232 @@
+{
+  "schema": 1,
+  "source_commit": "08015d7101778e6aa3fc88103418d811db1481e5",
+  "numerical_parent": "b24249ecfee12aa84b55ed803ffe47bd09c487ad",
+  "script_sha256": "eebe23fcdc6546fb8f8dee96633133cc2698e1a42146c1c67782576006edb2b5",
+  "lanes": 4,
+  "datasets": [
+    {
+      "dataset": "Yunncheng/gamewam-vizdoom",
+      "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+      "scenario": "defend_the_center",
+      "episode_index": 0,
+      "video_sha256": "4fb2a7b08d2a3e91244073ff9b7dc0b848eefcb9e6235d8a357a0330af4f5efe",
+      "control_sha256": "fe6a070d684a8e72beb1e36a0cec30e1e4a6ab2409bfc039ba4460e39212c54a"
+    },
+    {
+      "dataset": "Yunncheng/gamewam-vizdoom",
+      "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+      "scenario": "defend_the_center",
+      "episode_index": 1,
+      "video_sha256": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501",
+      "control_sha256": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+    }
+  ],
+  "validation_sources": {
+    "doom_learning_v6/brain.py": "9b57f539fc806c0511e00903f105b53b7a0de5c80ac7144776ebd9be1c0d40c7",
+    "doom_learning_v6/kernel.cpp": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+    "doom_learning_v6/rule.py": "0df2ae1bf10b97a213064b3ac3934227539d08e51521a99cdb56fe7f5b44b725",
+    "doom_learning_v6/visual.py": "1ed714224c119e7b5252a5e8b407ab8eed4dc32826dd11c757e1543246021437",
+    "doom_learning_v6/calibration.py": "c9006ef72436c74453209f896e4f1d9371179311e33fa1ae734ad52fc26408b9",
+    "doom_learning_v6/survival.py": "1c85e94e0a1fb9bc1f500c167a861ca91975a61e0716abce52eaea8801b7f568",
+    "doom_learning/common.py": "79de9a34c3d53db399ce67b12df084ab000d6b66123b658e5c2bfb5c6d108d12",
+    "doom_learning_v2/vision.py": "20279cdc14352b23fcbb76db2ee4bdebcc26394bccc04a1ad5fcedc5e3accdeb",
+    "doom/engine.py": "5fc0ce73c05a49ff58af01729a9169018080bb5b913cedb2268116a95c04aeb3",
+    "doom_learning_v6/metal/api.h": "afff60bf395de9a639d4f77c15e2bcfefa5c45d7df0082e2b8e51dd618f872bd",
+    "doom_learning_v6/metal/decay_tables.h": "85702606729011f942be2174e4ba074d1ca90066f586d6980025458862570065",
+    "doom_learning_v6/metal/backend.mm": "a1a6635dc565638b2cac858bee28c2f79e0fd126c17d603c97d13aa4fd7c003f",
+    "doom_learning_v6/metal/backend.py": "9797b8bcd1e8a49ffb6e6133ff42dd42c7abfcdfa762ac96da9f00e2b41f71e7",
+    "doom_learning_v6/metal/build.py": "585d555601d2ce3749aebac55fd6fcd7e8aa851ad3c6d36892c09fc28060d3b3",
+    "doom_learning_v6/metal/graph.py": "79286a9a37f606ace87218a1cb0ba6fb9bfc1a05526b46963c3564d146681f49",
+    "doom_learning_v6/metal/kernels.metal": "03b2ef8c5c13feac8695d952fa59ef404a33552f0b48211f0b52ba847ceab8bc",
+    "doom_learning_v6/metal/validate.py": "8a573e1cc1e28a7a14451cf3dfc6e72bba5974f82a1b4c3d0d5cc5d1817e95de",
+    "doom_learning_v6/metal/benchmark.py": "28dc9a0d0a7a34b12338dab6a7a4f4d9ee00a9712fc8c88773ce5e443f968604"
+  },
+  "batch_owner_sha256": "cab1c0a69148c6e92d2505e408aab5d6b46402a0ed7bce84817cb002f215386a",
+  "trials": [
+    {
+      "trial": "baseline",
+      "lane_order": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "lane_trace_sha256": [
+        "9000a665af9cfcf95dbd530279bce884a80ef3f98eaa7a2253619003cf9d2060",
+        "ceb750fa2db687ae51e59bb5c5976e566e6cc70a600044d27f9b991725a80215",
+        "9000a665af9cfcf95dbd530279bce884a80ef3f98eaa7a2253619003cf9d2060",
+        "ceb750fa2db687ae51e59bb5c5976e566e6cc70a600044d27f9b991725a80215"
+      ],
+      "per_lane_serial_bitwise": true,
+      "neighbor_isolated": true,
+      "dark_ms": 2000,
+      "RGB_frames": 35,
+      "RGB_ticks": 10000,
+      "diagnostic_capture": true,
+      "memory_before": {
+        "free_percent": 87,
+        "swap_used_mib": 0.0
+      },
+      "memory_after": {
+        "free_percent": 83,
+        "swap_used_mib": 0.0
+      },
+      "trace_sha256": "2abf06905171d901fa93e50ea00f0c1b3ca94b6da0b45ceb06d3a088826d98ca"
+    },
+    {
+      "trial": "repeat",
+      "lane_order": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "lane_trace_sha256": [
+        "9000a665af9cfcf95dbd530279bce884a80ef3f98eaa7a2253619003cf9d2060",
+        "ceb750fa2db687ae51e59bb5c5976e566e6cc70a600044d27f9b991725a80215",
+        "9000a665af9cfcf95dbd530279bce884a80ef3f98eaa7a2253619003cf9d2060",
+        "ceb750fa2db687ae51e59bb5c5976e566e6cc70a600044d27f9b991725a80215"
+      ],
+      "per_lane_serial_bitwise": true,
+      "neighbor_isolated": true,
+      "dark_ms": 2000,
+      "RGB_frames": 35,
+      "RGB_ticks": 10000,
+      "diagnostic_capture": true,
+      "memory_before": {
+        "free_percent": 87,
+        "swap_used_mib": 0.0
+      },
+      "memory_after": {
+        "free_percent": 84,
+        "swap_used_mib": 0.0
+      },
+      "trace_sha256": "791ee7cc4e01f13a765a2d1aaf2774d7344fa3e77093f2c81b18152dda98f874"
+    },
+    {
+      "trial": "reversed",
+      "lane_order": [
+        3,
+        2,
+        1,
+        0
+      ],
+      "lane_trace_sha256": [
+        "9000a665af9cfcf95dbd530279bce884a80ef3f98eaa7a2253619003cf9d2060",
+        "ceb750fa2db687ae51e59bb5c5976e566e6cc70a600044d27f9b991725a80215",
+        "9000a665af9cfcf95dbd530279bce884a80ef3f98eaa7a2253619003cf9d2060",
+        "ceb750fa2db687ae51e59bb5c5976e566e6cc70a600044d27f9b991725a80215"
+      ],
+      "per_lane_serial_bitwise": true,
+      "neighbor_isolated": true,
+      "dark_ms": 2000,
+      "RGB_frames": 35,
+      "RGB_ticks": 10000,
+      "diagnostic_capture": true,
+      "memory_before": {
+        "free_percent": 87,
+        "swap_used_mib": 0.0
+      },
+      "memory_after": {
+        "free_percent": 82,
+        "swap_used_mib": 0.0
+      },
+      "trace_sha256": "e057e034f27349eade6a1d79696e7f6fc89dfe802ce6b86105962701753b53b0"
+    },
+    {
+      "trial": "pixels",
+      "lane_order": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "lane_trace_sha256": [
+        "5d01bb425f22d1121dcea06b174587f3a3e9c9c878f2285e8727a18beb3c0a72",
+        "ceb750fa2db687ae51e59bb5c5976e566e6cc70a600044d27f9b991725a80215",
+        "9000a665af9cfcf95dbd530279bce884a80ef3f98eaa7a2253619003cf9d2060",
+        "ceb750fa2db687ae51e59bb5c5976e566e6cc70a600044d27f9b991725a80215"
+      ],
+      "per_lane_serial_bitwise": true,
+      "neighbor_isolated": true,
+      "dark_ms": 2000,
+      "RGB_frames": 35,
+      "RGB_ticks": 10000,
+      "diagnostic_capture": true,
+      "memory_before": {
+        "free_percent": 86,
+        "swap_used_mib": 0.0
+      },
+      "memory_after": {
+        "free_percent": 81,
+        "swap_used_mib": 0.0
+      },
+      "trace_sha256": "b1f8ee6b77c3ff692bde1e6ad980c6223d3023fd60e5700e0a7e5c67a43d60f9"
+    },
+    {
+      "trial": "teacher",
+      "lane_order": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "lane_trace_sha256": [
+        "eafcfaefc30e8d055aecb273ab3ca69307c896a774a723846549abc1bbaa385b",
+        "ceb750fa2db687ae51e59bb5c5976e566e6cc70a600044d27f9b991725a80215",
+        "9000a665af9cfcf95dbd530279bce884a80ef3f98eaa7a2253619003cf9d2060",
+        "ceb750fa2db687ae51e59bb5c5976e566e6cc70a600044d27f9b991725a80215"
+      ],
+      "per_lane_serial_bitwise": true,
+      "neighbor_isolated": true,
+      "dark_ms": 2000,
+      "RGB_frames": 35,
+      "RGB_ticks": 10000,
+      "diagnostic_capture": true,
+      "memory_before": {
+        "free_percent": 86,
+        "swap_used_mib": 0.0
+      },
+      "memory_after": {
+        "free_percent": 81,
+        "swap_used_mib": 0.0
+      },
+      "trace_sha256": "794bd2a3ae54c52b86a4ccf1d49c25d78fed0edc5abfd1e98478da238e735348"
+    },
+    {
+      "trial": "state",
+      "lane_order": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "lane_trace_sha256": [
+        "6883cbbc56a5b46cbd5eea4810c6e6fbb7525b3f68ef23ee510d13445fb12b92",
+        "ceb750fa2db687ae51e59bb5c5976e566e6cc70a600044d27f9b991725a80215",
+        "9000a665af9cfcf95dbd530279bce884a80ef3f98eaa7a2253619003cf9d2060",
+        "ceb750fa2db687ae51e59bb5c5976e566e6cc70a600044d27f9b991725a80215"
+      ],
+      "per_lane_serial_bitwise": true,
+      "neighbor_isolated": true,
+      "dark_ms": 2000,
+      "RGB_frames": 35,
+      "RGB_ticks": 10000,
+      "diagnostic_capture": true,
+      "memory_before": {
+        "free_percent": 85,
+        "swap_used_mib": 0.0
+      },
+      "memory_after": {
+        "free_percent": 80,
+        "swap_used_mib": 0.0
+      },
+      "trace_sha256": "388cea5e74c2c951af7a95594497f8dabb66507ceae7f202ead119eb27f060a9"
+    }
+  ],
+  "diagnostic_capture": true,
+  "interpretation": "Bounded batch/serial identity and isolation only. Original long CPU mismatch and cancellation failures remain separately preserved. Diagnostic walls are not training throughput.",
+  "learning_demonstrated": false,
+  "announcement_ready": false
+}

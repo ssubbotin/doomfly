@@ -1,0 +1,1720 @@
+{
+  "schema": 1,
+  "source_commit": "08015d7101778e6aa3fc88103418d811db1481e5",
+  "script_sha256": "2c1b48a4161649df160923dc6bf4b2cdba58c3e277c917dbb6379a265a45a855",
+  "numerical_parent": "b24249ecfee12aa84b55ed803ffe47bd09c487ad",
+  "mode": "timing",
+  "execution": "serial",
+  "lanes": 2,
+  "serial_active_concurrency": 1,
+  "repetitions": 3,
+  "datasets": [
+    {
+      "dataset": "Yunncheng/gamewam-vizdoom",
+      "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+      "scenario": "defend_the_center",
+      "episode_index": 0,
+      "video_sha256": "4fb2a7b08d2a3e91244073ff9b7dc0b848eefcb9e6235d8a357a0330af4f5efe",
+      "control_sha256": "fe6a070d684a8e72beb1e36a0cec30e1e4a6ab2409bfc039ba4460e39212c54a"
+    },
+    {
+      "dataset": "Yunncheng/gamewam-vizdoom",
+      "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+      "scenario": "defend_the_center",
+      "episode_index": 1,
+      "video_sha256": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501",
+      "control_sha256": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+    }
+  ],
+  "validation_sources": {
+    "doom_learning_v6/brain.py": "9b57f539fc806c0511e00903f105b53b7a0de5c80ac7144776ebd9be1c0d40c7",
+    "doom_learning_v6/kernel.cpp": "87893f237ddad3aebb614d68037f7bd0ecd4503c2093a10e73616531a5840406",
+    "doom_learning_v6/rule.py": "0df2ae1bf10b97a213064b3ac3934227539d08e51521a99cdb56fe7f5b44b725",
+    "doom_learning_v6/visual.py": "1ed714224c119e7b5252a5e8b407ab8eed4dc32826dd11c757e1543246021437",
+    "doom_learning_v6/calibration.py": "c9006ef72436c74453209f896e4f1d9371179311e33fa1ae734ad52fc26408b9",
+    "doom_learning_v6/survival.py": "1c85e94e0a1fb9bc1f500c167a861ca91975a61e0716abce52eaea8801b7f568",
+    "doom_learning/common.py": "79de9a34c3d53db399ce67b12df084ab000d6b66123b658e5c2bfb5c6d108d12",
+    "doom_learning_v2/vision.py": "20279cdc14352b23fcbb76db2ee4bdebcc26394bccc04a1ad5fcedc5e3accdeb",
+    "doom/engine.py": "5fc0ce73c05a49ff58af01729a9169018080bb5b913cedb2268116a95c04aeb3",
+    "doom_learning_v6/metal/api.h": "afff60bf395de9a639d4f77c15e2bcfefa5c45d7df0082e2b8e51dd618f872bd",
+    "doom_learning_v6/metal/decay_tables.h": "85702606729011f942be2174e4ba074d1ca90066f586d6980025458862570065",
+    "doom_learning_v6/metal/backend.mm": "a1a6635dc565638b2cac858bee28c2f79e0fd126c17d603c97d13aa4fd7c003f",
+    "doom_learning_v6/metal/backend.py": "9797b8bcd1e8a49ffb6e6133ff42dd42c7abfcdfa762ac96da9f00e2b41f71e7",
+    "doom_learning_v6/metal/build.py": "585d555601d2ce3749aebac55fd6fcd7e8aa851ad3c6d36892c09fc28060d3b3",
+    "doom_learning_v6/metal/graph.py": "79286a9a37f606ace87218a1cb0ba6fb9bfc1a05526b46963c3564d146681f49",
+    "doom_learning_v6/metal/kernels.metal": "03b2ef8c5c13feac8695d952fa59ef404a33552f0b48211f0b52ba847ceab8bc",
+    "doom_learning_v6/metal/validate.py": "8a573e1cc1e28a7a14451cf3dfc6e72bba5974f82a1b4c3d0d5cc5d1817e95de",
+    "doom_learning_v6/metal/benchmark.py": "28dc9a0d0a7a34b12338dab6a7a4f4d9ee00a9712fc8c88773ce5e443f968604"
+  },
+  "batch_owner_sha256": "cab1c0a69148c6e92d2505e408aab5d6b46402a0ed7bce84817cb002f215386a",
+  "reference_identities": {
+    "results.json": {
+      "bytes": 46547,
+      "sha256": "084291bbec53fc6418a97706907358e8d2d3a861a8b522bed470a2552add967e"
+    },
+    "protocol.json": {
+      "bytes": 8798,
+      "sha256": "b5362dae9e14e8a8b92c5b7526b9f0d0283416c036b49ad6249f71b775f7033e"
+    },
+    "provenance.json": {
+      "bytes": 8299,
+      "sha256": "96ba97a62b0a87f5f748a7c5627e17b4f0c74f8ee2b3ddf41eb09b59d7df6a2c"
+    },
+    "initial.npz": {
+      "bytes": 126316356,
+      "sha256": "8aa5870fd67cd22e7dbb9768ef57f441849996d380805f97faced196708bbad7"
+    },
+    "plastic/learned.npz": {
+      "bytes": 126316404,
+      "sha256": "96339fdccd6873f0d1da870dcc81f6f14f6c6314dcb88f1a84f792edb1aea67c"
+    },
+    "frozen/learned.npz": {
+      "bytes": 126316400,
+      "sha256": "10d1217b11d0c7593181b7f4617a93d14c762ba9b011ce5f4c089b19eeebe864"
+    },
+    "shifted/learned.npz": {
+      "bytes": 126316404,
+      "sha256": "4bfbe7b631908b05c654524379afa25d764251aaf3702ed3188b17ffa92425f5"
+    },
+    "plastic/train-0-0/episode.json": {
+      "bytes": 4232305,
+      "sha256": "b57c0d6ad7fad05d020cb1ceb87e1337e15f89f0684465beab646d5ee73f60fa"
+    },
+    "frozen/train-0-0/episode.json": {
+      "bytes": 4200874,
+      "sha256": "9fb91d87a1ad63487c2675687a569f94bb72e71b871ca30fe2a221ce23e1086a"
+    },
+    "shifted/train-0-0/episode.json": {
+      "bytes": 4234064,
+      "sha256": "d9311129674d642aa47913052b08682b7082c28e1f4346bc20ee0042defd205b"
+    },
+    "plastic/eval-0/episode.json": {
+      "bytes": 4231256,
+      "sha256": "6750a383d296b80a56a7e17519b4400423126cafc7b27940e51f28abb0bd6843"
+    },
+    "frozen/eval-0/episode.json": {
+      "bytes": 4199940,
+      "sha256": "3440450fbb6df32c9b2465a62cea0839d2f02435f24392f3530e2826417acdd4"
+    },
+    "shifted/eval-0/episode.json": {
+      "bytes": 4232062,
+      "sha256": "4c7766285f65f12f14c8c21a4b636ede328af681bee59c94f8e83c507e0463fd"
+    },
+    "plastic/retention-0/episode.json": {
+      "bytes": 4232409,
+      "sha256": "42ff1d100689c81aa1de40b3675543ba34812cf21c21e565f092a2e0ffea3996"
+    },
+    "plastic/erased-0/episode.json": {
+      "bytes": 4199928,
+      "sha256": "060bb8cfe68a304ad52dd7564ae42e0cb37e2b59653ba046dbdd8cf0677bccfb"
+    }
+  },
+  "phases": [
+    {
+      "complete": true,
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 0,
+        "video_sha256": "4fb2a7b08d2a3e91244073ff9b7dc0b848eefcb9e6235d8a357a0330af4f5efe",
+        "control_sha256": "fe6a070d684a8e72beb1e36a0cec30e1e4a6ab2409bfc039ba4460e39212c54a"
+      },
+      "frames": 982,
+      "lanes": 2,
+      "training": [
+        true,
+        true
+      ],
+      "frozen": [
+        false,
+        true
+      ],
+      "shifts": [
+        0,
+        0
+      ],
+      "RGB_ticks_per_lane": 280571,
+      "RGB_brain_seconds_per_lane": 28.057100000000002,
+      "aggregate_RGB_brain_seconds": 56.114200000000004,
+      "RGB_wall_seconds": 373.296705959001,
+      "aggregate_RGB_brain_seconds_per_wall_second": 0.15032064067064926,
+      "per_lane_completion_seconds": [
+        373.296055042003,
+        373.2966478340022
+      ],
+      "completion_definition": "Elapsed RGB phase time through each lane's final decode/teacher/record; decoder close follows separately in phase wall.",
+      "backend_seconds": 367.4379463210862,
+      "host_rule_seconds_per_lane": [
+        0.7369905288651353,
+        0.05743406891997438
+      ],
+      "host_rule_seconds": 0.7944245977851097,
+      "timing": {
+        "native_total_seconds": 366.88925850999976,
+        "gpu_seconds": 364.8285322081865,
+        "counts_clear_seconds": 0.016792011000000003,
+        "encode_seconds": 0.4505893850000002,
+        "commit_call_seconds": 0.025829837000000067,
+        "wait_call_seconds": 366.38188956700037,
+        "native_event_copy_seconds": 0.0027580130000000023,
+        "native_event_copy_bytes": 7930512,
+        "full_upload_seconds": 0.0,
+        "full_upload_bytes": 0,
+        "materialize_seconds": 0.0,
+        "materialize_bytes": 0,
+        "drive_copy_seconds": 0.27795614597562235,
+        "drive_copy_bytes": 3928785600,
+        "counts_copy_seconds": 0.17839059291873127,
+        "counts_copy_bytes": 3928785600,
+        "event_conversion_sort_seconds": 0.1442235856447951,
+        "eligibility_seconds": 0.06621908811939647,
+        "sparse_weight_update_seconds": 0.44297971803462133,
+        "sparse_weight_update_bytes": 147912768,
+        "backend_seconds": 367.4379463210862,
+        "encoder_count": 5892,
+        "dispatch_count": 1134068,
+        "mark_grid_threads": 93542371400,
+        "gather_grid_threads": 93542371400,
+        "indirect_dispatch_count": 0,
+        "edge_bitmap_words": 799467
+      },
+      "warmup_wall_seconds": 9.086437915997521,
+      "warmup_brain_seconds_per_lane": 2.0,
+      "measured_trace_hash_record_seconds": 1.0797622759564547,
+      "measured_observer_seconds": 0.022152379344333895,
+      "full_state_or_spike_capture": false,
+      "before": [
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        }
+      ],
+      "after": [
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "016f8c049d4c3556d34f68760396954c5c9eaae6055d8deda234df3e5227d920",
+          "rate_dan_sha256": "c7e7911ad89b3b683f53be50122b60ea2ae1d514dfa83c5975a488a71d700045"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "866e6bf658d575de8687036365177401d003dd1a9dc64554d24dabe9cc2552d9",
+          "rate_dan_sha256": "a387e10b5cb7f2792051016ff5cf1f9d008622a827a66ef13eabfdafcd18907b"
+        }
+      ],
+      "scores": [
+        {
+          "mae_degrees": 3.417838675920911,
+          "direction_support": {
+            "left": 618,
+            "idle": 96,
+            "right": 268
+          },
+          "direction_recall": {
+            "left": 0.22815533980582525,
+            "idle": 0.125,
+            "right": 0.6753731343283582
+          },
+          "balanced_direction_recall": 0.34284282471139454,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -3.014415733197556,
+              "mae_degrees": 2.372920369606066,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 3.014415733197556,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 3.014415733197556,
+              "mae_degrees": 4.470503754443526,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        },
+        {
+          "mae_degrees": 3.318367753044691,
+          "direction_support": {
+            "left": 618,
+            "idle": 96,
+            "right": 268
+          },
+          "direction_recall": {
+            "left": 0.2669902912621359,
+            "idle": 0.08333333333333333,
+            "right": 0.6716417910447762
+          },
+          "balanced_direction_recall": 0.34065513854674845,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -3.014415733197556,
+              "mae_degrees": 2.372920369606066,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 3.014415733197556,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 3.014415733197556,
+              "mae_degrees": 4.470503754443526,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        }
+      ],
+      "resident": {
+        "shared_bytes": 826013424,
+        "mutable_bytes": 229555016,
+        "total_bytes": 1055568440,
+        "native_owner_count": 2
+      },
+      "memory_status": {
+        "free_percent": 83,
+        "swap_used_mib": 0.0
+      },
+      "instrumentation": "Canonical per-frame hashes and actual-call timing observation enabled. Measured instrumentation stages reported; counter-call overhead remains inside actual wall. GPU/native/wait/rule stages overlap and are not added as wall.",
+      "trace_sha256": "d0be9873e849775f91517071a8d99ede3a68ad54aa6d221bcde51fb3933c8ac2"
+    },
+    {
+      "complete": true,
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 1,
+        "video_sha256": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501",
+        "control_sha256": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+      },
+      "frames": 988,
+      "lanes": 2,
+      "training": [
+        false,
+        false
+      ],
+      "frozen": [
+        true,
+        true
+      ],
+      "shifts": [
+        0,
+        0
+      ],
+      "RGB_ticks_per_lane": 282286,
+      "RGB_brain_seconds_per_lane": 28.2286,
+      "aggregate_RGB_brain_seconds": 56.4572,
+      "RGB_wall_seconds": 372.9476784590006,
+      "aggregate_RGB_brain_seconds_per_wall_second": 0.15138102007573304,
+      "per_lane_completion_seconds": [
+        372.94702962500014,
+        372.94762150000315
+      ],
+      "completion_definition": "Elapsed RGB phase time through each lane's final decode/teacher/record; decoder close follows separately in phase wall.",
+      "backend_seconds": 367.80869972770597,
+      "host_rule_seconds_per_lane": [
+        0.0583196640436654,
+        0.05746533608180471
+      ],
+      "host_rule_seconds": 0.1157850001254701,
+      "timing": {
+        "native_total_seconds": 367.26163054799963,
+        "gpu_seconds": 365.17235583320144,
+        "counts_clear_seconds": 0.01701527799999995,
+        "encode_seconds": 0.45192428099999965,
+        "commit_call_seconds": 0.026810338000000045,
+        "wait_call_seconds": 366.75115935900016,
+        "native_event_copy_seconds": 0.0027280000000000086,
+        "native_event_copy_bytes": 7860752,
+        "full_upload_seconds": 0.0,
+        "full_upload_bytes": 0,
+        "materialize_seconds": 0.0,
+        "materialize_bytes": 0,
+        "drive_copy_seconds": 0.27889085325296037,
+        "drive_copy_bytes": 3952790400,
+        "counts_copy_seconds": 0.17777224590827245,
+        "counts_copy_bytes": 3952790400,
+        "event_conversion_sort_seconds": 0.14298134420823772,
+        "eligibility_seconds": 0.06487487792765023,
+        "sparse_weight_update_seconds": 0.0,
+        "sparse_weight_update_bytes": 0,
+        "backend_seconds": 367.80869972770597,
+        "encoder_count": 5928,
+        "dispatch_count": 1141000,
+        "mark_grid_threads": 94114152400,
+        "gather_grid_threads": 94114152400,
+        "indirect_dispatch_count": 0,
+        "edge_bitmap_words": 799467
+      },
+      "warmup_wall_seconds": 9.02588358399953,
+      "warmup_brain_seconds_per_lane": 2.0,
+      "measured_trace_hash_record_seconds": 1.0899077472204226,
+      "measured_observer_seconds": 0.022096211454481818,
+      "full_state_or_spike_capture": false,
+      "before": [
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        }
+      ],
+      "after": [
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "7232519aa1ab54cffe5a845ff493c4a1c3f9bcc57bdd0b002cf1e3508d4b7b91",
+          "rate_dan_sha256": "f3fa0ca35405925dea13353208bb68db564557713338e167219b2309ccaae452"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "ab060078ba6b671441972d1fd1f5d27fe66ab6a4bcf82c67ba690aad2153a593",
+          "rate_dan_sha256": "dbce010483d8c6b665756df830071245222d15901ef589b1e9e118ed5313f9ad"
+        }
+      ],
+      "scores": [
+        {
+          "mae_degrees": 3.2029875211602943,
+          "direction_support": {
+            "left": 624,
+            "idle": 176,
+            "right": 188
+          },
+          "direction_recall": {
+            "left": 0.2644230769230769,
+            "idle": 0.045454545454545456,
+            "right": 0.7074468085106383
+          },
+          "balanced_direction_recall": 0.33910814362942027,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -2.709664410425101,
+              "mae_degrees": 2.168082318669172,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 2.709664410425101,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 2.709664410425101,
+              "mae_degrees": 4.41124241146798,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        },
+        {
+          "mae_degrees": 3.153095521525519,
+          "direction_support": {
+            "left": 624,
+            "idle": 176,
+            "right": 188
+          },
+          "direction_recall": {
+            "left": 0.2419871794871795,
+            "idle": 0.028409090909090908,
+            "right": 0.7074468085106383
+          },
+          "balanced_direction_recall": 0.3259476929689696,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -2.709664410425101,
+              "mae_degrees": 2.168082318669172,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 2.709664410425101,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 2.709664410425101,
+              "mae_degrees": 4.41124241146798,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        }
+      ],
+      "resident": {
+        "shared_bytes": 826013424,
+        "mutable_bytes": 229555016,
+        "total_bytes": 1055568440,
+        "native_owner_count": 2
+      },
+      "memory_status": {
+        "free_percent": 83,
+        "swap_used_mib": 0.0
+      },
+      "instrumentation": "Canonical per-frame hashes and actual-call timing observation enabled. Measured instrumentation stages reported; counter-call overhead remains inside actual wall. GPU/native/wait/rule stages overlap and are not added as wall.",
+      "trace_sha256": "de3e14a07f88b3ea77637fc73e1f10ae980c0bfc70e3d150e2f0f4bf3cbe7d57"
+    },
+    {
+      "complete": true,
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 0,
+        "video_sha256": "4fb2a7b08d2a3e91244073ff9b7dc0b848eefcb9e6235d8a357a0330af4f5efe",
+        "control_sha256": "fe6a070d684a8e72beb1e36a0cec30e1e4a6ab2409bfc039ba4460e39212c54a"
+      },
+      "frames": 982,
+      "lanes": 2,
+      "training": [
+        true,
+        true
+      ],
+      "frozen": [
+        false,
+        true
+      ],
+      "shifts": [
+        0,
+        0
+      ],
+      "RGB_ticks_per_lane": 280571,
+      "RGB_brain_seconds_per_lane": 28.057100000000002,
+      "aggregate_RGB_brain_seconds": 56.114200000000004,
+      "RGB_wall_seconds": 373.276537042002,
+      "aggregate_RGB_brain_seconds_per_wall_second": 0.15032876281127172,
+      "per_lane_completion_seconds": [
+        373.2758848750018,
+        373.2764801250014
+      ],
+      "completion_definition": "Elapsed RGB phase time through each lane's final decode/teacher/record; decoder close follows separately in phase wall.",
+      "backend_seconds": 367.40861111193226,
+      "host_rule_seconds_per_lane": [
+        0.7371399727562675,
+        0.057580194079491775
+      ],
+      "host_rule_seconds": 0.7947201668357593,
+      "timing": {
+        "native_total_seconds": 366.86167596900003,
+        "gpu_seconds": 364.8019347500085,
+        "counts_clear_seconds": 0.016479091000000008,
+        "encode_seconds": 0.4531758320000003,
+        "commit_call_seconds": 0.025859951999999995,
+        "wait_call_seconds": 366.35219740600064,
+        "native_event_copy_seconds": 0.0027152860000000103,
+        "native_event_copy_bytes": 7930512,
+        "full_upload_seconds": 0.0,
+        "full_upload_bytes": 0,
+        "materialize_seconds": 0.0,
+        "materialize_bytes": 0,
+        "drive_copy_seconds": 0.27777294118277496,
+        "drive_copy_bytes": 3928785600,
+        "counts_copy_seconds": 0.1779700067054364,
+        "counts_copy_bytes": 3928785600,
+        "event_conversion_sort_seconds": 0.14596261789120035,
+        "eligibility_seconds": 0.06530423565709498,
+        "sparse_weight_update_seconds": 0.444370677236293,
+        "sparse_weight_update_bytes": 147912768,
+        "backend_seconds": 367.40861111193226,
+        "encoder_count": 5892,
+        "dispatch_count": 1134068,
+        "mark_grid_threads": 93542371400,
+        "gather_grid_threads": 93542371400,
+        "indirect_dispatch_count": 0,
+        "edge_bitmap_words": 799467
+      },
+      "warmup_wall_seconds": 9.074860749999061,
+      "warmup_brain_seconds_per_lane": 2.0,
+      "measured_trace_hash_record_seconds": 1.0807934968688642,
+      "measured_observer_seconds": 0.02218528080265969,
+      "full_state_or_spike_capture": false,
+      "before": [
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        }
+      ],
+      "after": [
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "016f8c049d4c3556d34f68760396954c5c9eaae6055d8deda234df3e5227d920",
+          "rate_dan_sha256": "c7e7911ad89b3b683f53be50122b60ea2ae1d514dfa83c5975a488a71d700045"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "866e6bf658d575de8687036365177401d003dd1a9dc64554d24dabe9cc2552d9",
+          "rate_dan_sha256": "a387e10b5cb7f2792051016ff5cf1f9d008622a827a66ef13eabfdafcd18907b"
+        }
+      ],
+      "scores": [
+        {
+          "mae_degrees": 3.417838675920911,
+          "direction_support": {
+            "left": 618,
+            "idle": 96,
+            "right": 268
+          },
+          "direction_recall": {
+            "left": 0.22815533980582525,
+            "idle": 0.125,
+            "right": 0.6753731343283582
+          },
+          "balanced_direction_recall": 0.34284282471139454,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -3.014415733197556,
+              "mae_degrees": 2.372920369606066,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 3.014415733197556,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 3.014415733197556,
+              "mae_degrees": 4.470503754443526,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        },
+        {
+          "mae_degrees": 3.318367753044691,
+          "direction_support": {
+            "left": 618,
+            "idle": 96,
+            "right": 268
+          },
+          "direction_recall": {
+            "left": 0.2669902912621359,
+            "idle": 0.08333333333333333,
+            "right": 0.6716417910447762
+          },
+          "balanced_direction_recall": 0.34065513854674845,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -3.014415733197556,
+              "mae_degrees": 2.372920369606066,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 3.014415733197556,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 3.014415733197556,
+              "mae_degrees": 4.470503754443526,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        }
+      ],
+      "resident": {
+        "shared_bytes": 826013424,
+        "mutable_bytes": 229555016,
+        "total_bytes": 1055568440,
+        "native_owner_count": 2
+      },
+      "memory_status": {
+        "free_percent": 83,
+        "swap_used_mib": 0.0
+      },
+      "instrumentation": "Canonical per-frame hashes and actual-call timing observation enabled. Measured instrumentation stages reported; counter-call overhead remains inside actual wall. GPU/native/wait/rule stages overlap and are not added as wall.",
+      "trace_sha256": "d0be9873e849775f91517071a8d99ede3a68ad54aa6d221bcde51fb3933c8ac2"
+    },
+    {
+      "complete": true,
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 1,
+        "video_sha256": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501",
+        "control_sha256": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+      },
+      "frames": 988,
+      "lanes": 2,
+      "training": [
+        false,
+        false
+      ],
+      "frozen": [
+        true,
+        true
+      ],
+      "shifts": [
+        0,
+        0
+      ],
+      "RGB_ticks_per_lane": 282286,
+      "RGB_brain_seconds_per_lane": 28.2286,
+      "aggregate_RGB_brain_seconds": 56.4572,
+      "RGB_wall_seconds": 372.8332292089981,
+      "aggregate_RGB_brain_seconds_per_wall_second": 0.1514274897647386,
+      "per_lane_completion_seconds": [
+        372.83257504200446,
+        372.8331781250017
+      ],
+      "completion_definition": "Elapsed RGB phase time through each lane's final decode/teacher/record; decoder close follows separately in phase wall.",
+      "backend_seconds": 367.6836684074078,
+      "host_rule_seconds_per_lane": [
+        0.05841609572962625,
+        0.05770320801093476
+      ],
+      "host_rule_seconds": 0.11611930374056101,
+      "timing": {
+        "native_total_seconds": 367.13563346700016,
+        "gpu_seconds": 365.0544485414139,
+        "counts_clear_seconds": 0.016678586999999995,
+        "encode_seconds": 0.4509564950000006,
+        "commit_call_seconds": 0.026426996,
+        "wait_call_seconds": 366.6270619620001,
+        "native_event_copy_seconds": 0.002684323999999999,
+        "native_event_copy_bytes": 7860752,
+        "full_upload_seconds": 0.0,
+        "full_upload_bytes": 0,
+        "materialize_seconds": 0.0,
+        "materialize_bytes": 0,
+        "drive_copy_seconds": 0.2792841529008001,
+        "drive_copy_bytes": 3952790400,
+        "counts_copy_seconds": 0.17816496983141406,
+        "counts_copy_bytes": 3952790400,
+        "event_conversion_sort_seconds": 0.14321241389552597,
+        "eligibility_seconds": 0.06498160865157843,
+        "sparse_weight_update_seconds": 0.0,
+        "sparse_weight_update_bytes": 0,
+        "backend_seconds": 367.6836684074078,
+        "encoder_count": 5928,
+        "dispatch_count": 1141000,
+        "mark_grid_threads": 94114152400,
+        "gather_grid_threads": 94114152400,
+        "indirect_dispatch_count": 0,
+        "edge_bitmap_words": 799467
+      },
+      "warmup_wall_seconds": 9.026041709003039,
+      "warmup_brain_seconds_per_lane": 2.0,
+      "measured_trace_hash_record_seconds": 1.0908815958027844,
+      "measured_observer_seconds": 0.02214074537914712,
+      "full_state_or_spike_capture": false,
+      "before": [
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        }
+      ],
+      "after": [
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "7232519aa1ab54cffe5a845ff493c4a1c3f9bcc57bdd0b002cf1e3508d4b7b91",
+          "rate_dan_sha256": "f3fa0ca35405925dea13353208bb68db564557713338e167219b2309ccaae452"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "ab060078ba6b671441972d1fd1f5d27fe66ab6a4bcf82c67ba690aad2153a593",
+          "rate_dan_sha256": "dbce010483d8c6b665756df830071245222d15901ef589b1e9e118ed5313f9ad"
+        }
+      ],
+      "scores": [
+        {
+          "mae_degrees": 3.2029875211602943,
+          "direction_support": {
+            "left": 624,
+            "idle": 176,
+            "right": 188
+          },
+          "direction_recall": {
+            "left": 0.2644230769230769,
+            "idle": 0.045454545454545456,
+            "right": 0.7074468085106383
+          },
+          "balanced_direction_recall": 0.33910814362942027,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -2.709664410425101,
+              "mae_degrees": 2.168082318669172,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 2.709664410425101,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 2.709664410425101,
+              "mae_degrees": 4.41124241146798,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        },
+        {
+          "mae_degrees": 3.153095521525519,
+          "direction_support": {
+            "left": 624,
+            "idle": 176,
+            "right": 188
+          },
+          "direction_recall": {
+            "left": 0.2419871794871795,
+            "idle": 0.028409090909090908,
+            "right": 0.7074468085106383
+          },
+          "balanced_direction_recall": 0.3259476929689696,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -2.709664410425101,
+              "mae_degrees": 2.168082318669172,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 2.709664410425101,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 2.709664410425101,
+              "mae_degrees": 4.41124241146798,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        }
+      ],
+      "resident": {
+        "shared_bytes": 826013424,
+        "mutable_bytes": 229555016,
+        "total_bytes": 1055568440,
+        "native_owner_count": 2
+      },
+      "memory_status": {
+        "free_percent": 83,
+        "swap_used_mib": 0.0
+      },
+      "instrumentation": "Canonical per-frame hashes and actual-call timing observation enabled. Measured instrumentation stages reported; counter-call overhead remains inside actual wall. GPU/native/wait/rule stages overlap and are not added as wall.",
+      "trace_sha256": "de3e14a07f88b3ea77637fc73e1f10ae980c0bfc70e3d150e2f0f4bf3cbe7d57"
+    },
+    {
+      "complete": true,
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 0,
+        "video_sha256": "4fb2a7b08d2a3e91244073ff9b7dc0b848eefcb9e6235d8a357a0330af4f5efe",
+        "control_sha256": "fe6a070d684a8e72beb1e36a0cec30e1e4a6ab2409bfc039ba4460e39212c54a"
+      },
+      "frames": 982,
+      "lanes": 2,
+      "training": [
+        true,
+        true
+      ],
+      "frozen": [
+        false,
+        true
+      ],
+      "shifts": [
+        0,
+        0
+      ],
+      "RGB_ticks_per_lane": 280571,
+      "RGB_brain_seconds_per_lane": 28.057100000000002,
+      "aggregate_RGB_brain_seconds": 56.114200000000004,
+      "RGB_wall_seconds": 373.5164855829935,
+      "aggregate_RGB_brain_seconds_per_wall_second": 0.1502321909899522,
+      "per_lane_completion_seconds": [
+        373.5158403329988,
+        373.5164265409985
+      ],
+      "completion_definition": "Elapsed RGB phase time through each lane's final decode/teacher/record; decoder close follows separately in phase wall.",
+      "backend_seconds": 367.6408159139464,
+      "host_rule_seconds_per_lane": [
+        0.7368302831237088,
+        0.057538243010640144
+      ],
+      "host_rule_seconds": 0.7943685261343489,
+      "timing": {
+        "native_total_seconds": 367.09154809599966,
+        "gpu_seconds": 365.034693749898,
+        "counts_clear_seconds": 0.01766653300000002,
+        "encode_seconds": 0.4495290339999995,
+        "commit_call_seconds": 0.025831965000000016,
+        "wait_call_seconds": 366.5844537829992,
+        "native_event_copy_seconds": 0.002871804000000009,
+        "native_event_copy_bytes": 7930512,
+        "full_upload_seconds": 0.0,
+        "full_upload_bytes": 0,
+        "materialize_seconds": 0.0,
+        "materialize_bytes": 0,
+        "drive_copy_seconds": 0.2782584317246801,
+        "drive_copy_bytes": 3928785600,
+        "counts_copy_seconds": 0.17857154596276814,
+        "counts_copy_bytes": 3928785600,
+        "event_conversion_sort_seconds": 0.14628444668778684,
+        "eligibility_seconds": 0.06618854223779636,
+        "sparse_weight_update_seconds": 0.44281127292924793,
+        "sparse_weight_update_bytes": 147912768,
+        "backend_seconds": 367.6408159139464,
+        "encoder_count": 5892,
+        "dispatch_count": 1134068,
+        "mark_grid_threads": 93542371400,
+        "gather_grid_threads": 93542371400,
+        "indirect_dispatch_count": 0,
+        "edge_bitmap_words": 799467
+      },
+      "warmup_wall_seconds": 9.072451833999366,
+      "warmup_brain_seconds_per_lane": 2.0,
+      "measured_trace_hash_record_seconds": 1.0781045890544192,
+      "measured_observer_seconds": 0.022316987327940296,
+      "full_state_or_spike_capture": false,
+      "before": [
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        }
+      ],
+      "after": [
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "016f8c049d4c3556d34f68760396954c5c9eaae6055d8deda234df3e5227d920",
+          "rate_dan_sha256": "c7e7911ad89b3b683f53be50122b60ea2ae1d514dfa83c5975a488a71d700045"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "866e6bf658d575de8687036365177401d003dd1a9dc64554d24dabe9cc2552d9",
+          "rate_dan_sha256": "a387e10b5cb7f2792051016ff5cf1f9d008622a827a66ef13eabfdafcd18907b"
+        }
+      ],
+      "scores": [
+        {
+          "mae_degrees": 3.417838675920911,
+          "direction_support": {
+            "left": 618,
+            "idle": 96,
+            "right": 268
+          },
+          "direction_recall": {
+            "left": 0.22815533980582525,
+            "idle": 0.125,
+            "right": 0.6753731343283582
+          },
+          "balanced_direction_recall": 0.34284282471139454,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -3.014415733197556,
+              "mae_degrees": 2.372920369606066,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 3.014415733197556,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 3.014415733197556,
+              "mae_degrees": 4.470503754443526,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        },
+        {
+          "mae_degrees": 3.318367753044691,
+          "direction_support": {
+            "left": 618,
+            "idle": 96,
+            "right": 268
+          },
+          "direction_recall": {
+            "left": 0.2669902912621359,
+            "idle": 0.08333333333333333,
+            "right": 0.6716417910447762
+          },
+          "balanced_direction_recall": 0.34065513854674845,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -3.014415733197556,
+              "mae_degrees": 2.372920369606066,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 3.014415733197556,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 3.014415733197556,
+              "mae_degrees": 4.470503754443526,
+              "direction_support": {
+                "left": 618,
+                "idle": 96,
+                "right": 268
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        }
+      ],
+      "resident": {
+        "shared_bytes": 826013424,
+        "mutable_bytes": 229555016,
+        "total_bytes": 1055568440,
+        "native_owner_count": 2
+      },
+      "memory_status": {
+        "free_percent": 83,
+        "swap_used_mib": 0.0
+      },
+      "instrumentation": "Canonical per-frame hashes and actual-call timing observation enabled. Measured instrumentation stages reported; counter-call overhead remains inside actual wall. GPU/native/wait/rule stages overlap and are not added as wall.",
+      "trace_sha256": "d0be9873e849775f91517071a8d99ede3a68ad54aa6d221bcde51fb3933c8ac2"
+    },
+    {
+      "complete": true,
+      "identity": {
+        "dataset": "Yunncheng/gamewam-vizdoom",
+        "dataset_revision": "6cc00d60462885c1d61dd480228af58c3b81b807",
+        "scenario": "defend_the_center",
+        "episode_index": 1,
+        "video_sha256": "ec3378d85a591b839c3065267a06128819eb739182b89fb4e3fee47fd7564501",
+        "control_sha256": "196f59d7f5e240c84dc0f144d301ac278032e7e1245bd00e66ed55dfa7623141"
+      },
+      "frames": 988,
+      "lanes": 2,
+      "training": [
+        false,
+        false
+      ],
+      "frozen": [
+        true,
+        true
+      ],
+      "shifts": [
+        0,
+        0
+      ],
+      "RGB_ticks_per_lane": 282286,
+      "RGB_brain_seconds_per_lane": 28.2286,
+      "aggregate_RGB_brain_seconds": 56.4572,
+      "RGB_wall_seconds": 373.02909408299456,
+      "aggregate_RGB_brain_seconds_per_wall_second": 0.1513479803466454,
+      "per_lane_completion_seconds": [
+        373.02844724999886,
+        373.02903949999745
+      ],
+      "completion_definition": "Elapsed RGB phase time through each lane's final decode/teacher/record; decoder close follows separately in phase wall.",
+      "backend_seconds": 367.885627293108,
+      "host_rule_seconds_per_lane": [
+        0.05798885496187722,
+        0.05716817874053959
+      ],
+      "host_rule_seconds": 0.11515703370241681,
+      "timing": {
+        "native_total_seconds": 367.33751440300017,
+        "gpu_seconds": 365.25168016650423,
+        "counts_clear_seconds": 0.01762074399999998,
+        "encode_seconds": 0.45125968100000047,
+        "commit_call_seconds": 0.026606288000000033,
+        "wait_call_seconds": 366.8276461940001,
+        "native_event_copy_seconds": 0.002903921000000009,
+        "native_event_copy_bytes": 7860752,
+        "full_upload_seconds": 0.0,
+        "full_upload_bytes": 0,
+        "materialize_seconds": 0.0,
+        "materialize_bytes": 0,
+        "drive_copy_seconds": 0.2792875976592768,
+        "drive_copy_bytes": 3952790400,
+        "counts_copy_seconds": 0.17845175674301572,
+        "counts_copy_bytes": 3952790400,
+        "event_conversion_sort_seconds": 0.1445631638271152,
+        "eligibility_seconds": 0.0649735610713833,
+        "sparse_weight_update_seconds": 0.0,
+        "sparse_weight_update_bytes": 0,
+        "backend_seconds": 367.885627293108,
+        "encoder_count": 5928,
+        "dispatch_count": 1141000,
+        "mark_grid_threads": 94114152400,
+        "gather_grid_threads": 94114152400,
+        "indirect_dispatch_count": 0,
+        "edge_bitmap_words": 799467
+      },
+      "warmup_wall_seconds": 9.026236375000735,
+      "warmup_brain_seconds_per_lane": 2.0,
+      "measured_trace_hash_record_seconds": 1.0924384699683287,
+      "measured_observer_seconds": 0.022284319282334764,
+      "full_state_or_spike_capture": false,
+      "before": [
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_dan_sha256": "64e0b7e19531f48421d4f8614352b4cf90f159c4934ca6f235aabc9b785ede07"
+        }
+      ],
+      "after": [
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 1953,
+          "mean_efficacy": 0.9321745038032532,
+          "minimum_efficacy": 0.45040401816368103,
+          "sha256": "4237a599e406b7157dbb903e5363d76a1803850d6b2f0bb0a0e4d3ae9f2c9724",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "b84fb1b51acdaac79713ebf72f07b9f519740f92b48a7eb1ed2d428680bdf29e",
+          "memory_w_sha256": "127bdec92cc872fc54767bf5c3ff2ffe1c7de5dd95ff0ea7d7b263093130d33d",
+          "rate_kc_sha256": "7232519aa1ab54cffe5a845ff493c4a1c3f9bcc57bdd0b002cf1e3508d4b7b91",
+          "rate_dan_sha256": "f3fa0ca35405925dea13353208bb68db564557713338e167219b2309ccaae452"
+        },
+        {
+          "plastic_edges": 4184,
+          "changed_edges": 0,
+          "mean_efficacy": 1.0,
+          "minimum_efficacy": 1.0,
+          "sha256": "68ca0e5ed93eb735d2a3185aabdc7b373f7ea4b38993af4e8859ca7562c74a43",
+          "model": "adaptive-centered-v6",
+          "memory_u_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "memory_w_sha256": "128cb7d8c9f79f33914090ec6dab0697e8457ca5b741271432af812fcdece1f0",
+          "rate_kc_sha256": "ab060078ba6b671441972d1fd1f5d27fe66ab6a4bcf82c67ba690aad2153a593",
+          "rate_dan_sha256": "dbce010483d8c6b665756df830071245222d15901ef589b1e9e118ed5313f9ad"
+        }
+      ],
+      "scores": [
+        {
+          "mae_degrees": 3.2029875211602943,
+          "direction_support": {
+            "left": 624,
+            "idle": 176,
+            "right": 188
+          },
+          "direction_recall": {
+            "left": 0.2644230769230769,
+            "idle": 0.045454545454545456,
+            "right": 0.7074468085106383
+          },
+          "balanced_direction_recall": 0.33910814362942027,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -2.709664410425101,
+              "mae_degrees": 2.168082318669172,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 2.709664410425101,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 2.709664410425101,
+              "mae_degrees": 4.41124241146798,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        },
+        {
+          "mae_degrees": 3.153095521525519,
+          "direction_support": {
+            "left": 624,
+            "idle": 176,
+            "right": 188
+          },
+          "direction_recall": {
+            "left": 0.2419871794871795,
+            "idle": 0.028409090909090908,
+            "right": 0.7074468085106383
+          },
+          "balanced_direction_recall": 0.3259476929689696,
+          "dead_zone_degrees": 0.1,
+          "constant_baselines": {
+            "left": {
+              "turn_degrees": -2.709664410425101,
+              "mae_degrees": 2.168082318669172,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 1.0,
+                "idle": 0.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "idle": {
+              "turn_degrees": 0.0,
+              "mae_degrees": 2.709664410425101,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 1.0,
+                "right": 0.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            },
+            "right": {
+              "turn_degrees": 2.709664410425101,
+              "mae_degrees": 4.41124241146798,
+              "direction_support": {
+                "left": 624,
+                "idle": 176,
+                "right": 188
+              },
+              "direction_recall": {
+                "left": 0.0,
+                "idle": 0.0,
+                "right": 1.0
+              },
+              "balanced_direction_recall": 0.3333333333333333
+            }
+          },
+          "constant_baseline_definition": "Idle zero; left/right signed mean absolute target turn, above the dead zone."
+        }
+      ],
+      "resident": {
+        "shared_bytes": 826013424,
+        "mutable_bytes": 229555016,
+        "total_bytes": 1055568440,
+        "native_owner_count": 2
+      },
+      "memory_status": {
+        "free_percent": 83,
+        "swap_used_mib": 0.0
+      },
+      "instrumentation": "Canonical per-frame hashes and actual-call timing observation enabled. Measured instrumentation stages reported; counter-call overhead remains inside actual wall. GPU/native/wait/rule stages overlap and are not added as wall.",
+      "trace_sha256": "de3e14a07f88b3ea77637fc73e1f10ae980c0bfc70e3d150e2f0f4bf3cbe7d57"
+    }
+  ],
+  "complete": true,
+  "duplicate_controls": "Alternating plastic/frozen lanes. N4 lanes2/3 duplicate0/1; matched controls are execution/timing controls, not independent learning replicas.",
+  "learning_demonstrated": false,
+  "announcement_ready": false
+}
