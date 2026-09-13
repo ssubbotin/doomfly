@@ -308,7 +308,11 @@ def _physical_tree(tmp_path):
                  'connectome_data/malecns_v1/normalized/neurons.feather']:
         put(name, 'physical input')
     for name in ['results.json', 'protocol.json', 'provenance.json', 'initial.npz', 'plastic/learned.npz',
-                 'plastic/train-0-0/episode.json', 'plastic/eval-0/episode.json', 'frozen/eval-0/episode.json']:
+                 'frozen/learned.npz', 'shifted/learned.npz',
+                 'plastic/train-0-0/episode.json', 'plastic/eval-0/episode.json',
+                 'plastic/retention-0/episode.json', 'plastic/erased-0/episode.json',
+                 'frozen/train-0-0/episode.json', 'frozen/eval-0/episode.json',
+                 'shifted/train-0-0/episode.json', 'shifted/eval-0/episode.json']:
         path = reference / name
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text('reference bytes')
@@ -316,6 +320,27 @@ def _physical_tree(tmp_path):
     subprocess.run(['git', '-C', str(root), '-c', 'user.name=Test', '-c', 'user.email=test@example.org',
                     'commit', '--allow-empty', '-qm', 'test'], check=True)
     return root, reference
+
+
+def test_round2_trusted_reference_coverage_includes_every_consumed_control_and_checkpoint(tmp_path, monkeypatch):
+    from doom_learning_v6 import causal_pilot as pilot
+    root, reference = _physical_tree(tmp_path)
+    monkeypatch.setattr(pilot, '_ROOT', root)
+    observed = pilot._physical_pins(reference)
+    roles = {'results.json', 'protocol.json', 'provenance.json', 'initial.npz',
+             'plastic/learned.npz', 'frozen/learned.npz', 'shifted/learned.npz',
+             'plastic/train-0-0/episode.json', 'plastic/eval-0/episode.json',
+             'plastic/retention-0/episode.json', 'plastic/erased-0/episode.json',
+             'frozen/train-0-0/episode.json', 'frozen/eval-0/episode.json',
+             'shifted/train-0-0/episode.json', 'shifted/eval-0/episode.json'}
+    assert set(observed['references']) == roles
+    expected = tmp_path / 'expected.json'
+    expected.write_text(json.dumps(observed))
+    pilot._validate_expected_pins(expected, observed)
+    observed['references'].pop('shifted/learned.npz')
+    expected.write_text(json.dumps(observed))
+    with pytest.raises(ValueError):
+        pilot._validate_expected_pins(expected, observed)
 
 
 @pytest.mark.parametrize('mutation', ['cpu_source', 'cpu_binary', 'cpu_flags', 'metal_source',

@@ -28,8 +28,11 @@ _INPUT_ROLES = ('outputs/doom/malecns_v1/graph.npz',
                 'connectome_data/malecns_v1/annotations.feather',
                 'connectome_data/malecns_v1/normalized/neurons.feather')
 _REFERENCE_ROLES = ('results.json', 'protocol.json', 'provenance.json', 'initial.npz',
-                    'plastic/learned.npz', 'plastic/train-0-0/episode.json',
-                    'plastic/eval-0/episode.json', 'frozen/eval-0/episode.json')
+                    'plastic/learned.npz', 'frozen/learned.npz', 'shifted/learned.npz',
+                    'plastic/train-0-0/episode.json', 'plastic/eval-0/episode.json',
+                    'plastic/retention-0/episode.json', 'plastic/erased-0/episode.json',
+                    'frozen/train-0-0/episode.json', 'frozen/eval-0/episode.json',
+                    'shifted/train-0-0/episode.json', 'shifted/eval-0/episode.json')
 _CPU_ROLES = {
     'outputs/doom-learning/libmemory.dylib.json': ('doom_learning/kernel.cpp', 'gamma1-eligibility-ltd-v1'),
     **{f'outputs/doom-learning/physiology-v{version}/libmemory.dylib.json':
@@ -713,8 +716,8 @@ def _reference_relationships(reference, observed):
             'implementation_changes': changes,
             'abi_transition': {'original': 5, 'current': observed['native_abi'],
                                'condition': 'Exact A canonical trace and all 24 checkpoint arrays required'},
-            'control_pins': {str(path.relative_to(root)): _file_pin(path)
-                             for path in sorted(root.glob('*/**/episode.json'))}}
+            'control_pins': {name: _file_pin(root / name)
+                             for name in _REFERENCE_ROLES if name.endswith('/episode.json')}}
 
 
 def _schedule_correlations(aligned, shifted, targets, errors):
