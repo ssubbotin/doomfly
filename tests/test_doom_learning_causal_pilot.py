@@ -1,6 +1,7 @@
 """Resident causal runner contracts, including real native RGB trajectories."""
 
 import json
+import hashlib
 import os
 from pathlib import Path
 import subprocess
@@ -17,6 +18,90 @@ READOUTS = [
     {'index': 1, 'type': 'DNpe017', 'side': 'L'},
     {'index': 3, 'type': 'DNpe017', 'side': 'R'},
 ]
+
+
+def test_round2_pressure_persists_rejected_boundary_and_detects_phase_gap(tmp_path, monkeypatch):
+    from doom_learning_v6 import causal_pilot as pilot
+    readings = iter([{'free_percent': 80, 'swap_used_mib': 0},
+                     {'free_percent': 70, 'swap_used_mib': 0},
+                     {'free_percent': 60, 'swap_used_mib': 1}])
+    monkeypatch.setattr(pilot, '_memory_pressure', lambda: next(readings))
+    pressure = pilot._PressureHistory(tmp_path)
+    pressure.observe('before_training')
+    pressure.observe('after_training')
+    with pytest.raises(ValueError, match='Swap grew'):
+        pressure.observe('before_evaluation')
+    saved = json.loads((tmp_path / 'pressure.json').read_text())
+    assert [r['name'] for r in saved['observations']] == [
+        'before_training', 'after_training', 'before_evaluation']
+    assert saved['observations'][-1]['value']['swap_used_mib'] == 1
+    assert saved['observations'][-1]['accepted'] is False
+
+
+def test_round2_low_pressure_is_recorded_before_rejection(tmp_path, monkeypatch):
+    from doom_learning_v6 import causal_pilot as pilot
+    monkeypatch.setattr(pilot, '_memory_pressure', lambda: {'free_percent': 24, 'swap_used_mib': 0})
+    with pytest.raises(ValueError, match='free memory'):
+        pilot._PressureHistory(tmp_path).observe('initial')
+    assert json.loads((tmp_path / 'pressure.json').read_text())['observations'][0]['value']['free_percent'] == 24
+
+
+def test_round2_cleanup_preserves_original_error_and_closes_registered_resources(tmp_path):
+    from doom_learning_v6 import causal_pilot as pilot
+    closed = []
+    class Resource:
+        def __init__(self, name, fail=False):
+            self.name, self.fail = name, fail
+        def close(self):
+            closed.append(self.name)
+            if self.fail:
+                raise OSError('close failed')
+    original = RuntimeError('restore failed')
+    with pytest.raises(RuntimeError) as caught:
+        with pilot._Resources() as resources:
+            resources.add(Resource('first'))
+            resources.add(Resource('second', True))
+            raise original
+    assert caught.value is original
+    assert closed == ['second', 'first']
+    assert any('OSError' in note for note in original.__notes__)
+
+
+def test_round2_expected_pins_rejects_matching_but_empty_role_maps(tmp_path):
+    from doom_learning_v6.causal_pilot import _validate_expected_pins
+    empty = {'source_commit': 'a' * 40, 'sources': {}, 'inputs': {},
+             'references': {}, 'cpu': {}, 'native': {}, 'native_abi': 8}
+    path = tmp_path / 'expected.json'
+    path.write_text(json.dumps(empty))
+    with pytest.raises(ValueError):
+        _validate_expected_pins(path, empty)
+
+
+def test_round2_reference_rejects_missing_controls_even_when_trace_complete(tmp_path):
+    from doom_learning_v6.causal_pilot import _check_reference
+    (tmp_path / 'plastic/train-0-0').mkdir(parents=True)
+    (tmp_path / 'results.json').write_text(json.dumps({'complete': True}))
+    (tmp_path / 'protocol.json').write_text(json.dumps({'eta': .001, 'epochs': 1, 'diagnostic_limit': None}))
+    (tmp_path / 'plastic/train-0-0/episode.json').write_text(json.dumps(
+        {'complete': True, 'identity': {'test': True}, 'trace': [{}, {}, {}]}))
+    with pytest.raises(ValueError):
+        _check_reference(tmp_path, SimpleNamespace(frame_count=3, identity={'test': True}))
+
+
+def test_round2_residual_correlations_record_undefined_and_nonzero_relations():
+    from doom_learning_v6.causal_pilot import _schedule_correlations
+    value = _schedule_correlations([0, 1, 2], [0, 2, 1], [0, 1, 2], [1, 1, 1])
+    assert value['aligned_shifted'] == pytest.approx(.5)
+    assert value['shifted_target'] == pytest.approx(.5)
+    assert value['shifted_error'] is None
+
+
+def test_round2_checkpoint_bitwise_comparison_rejects_signed_zero(tmp_path):
+    from doom_learning_v6.causal_pilot import _compare_checkpoint_arrays
+    np.savez(tmp_path / 'a.npz', memory_w=np.array([0.], dtype=np.float64))
+    np.savez(tmp_path / 'b.npz', memory_w=np.array([-0.], dtype=np.float64))
+    with pytest.raises(ValueError, match='memory_w'):
+        _compare_checkpoint_arrays(tmp_path / 'a.npz', tmp_path / 'b.npz')
 
 
 class _ValidationData:
@@ -166,20 +251,290 @@ def test_directional_sensitivity_controls_are_distinct_from_uniform_controls():
 
 def test_expected_pins_require_matching_source_and_required_roles(tmp_path):
     """A self-hash cannot substitute for the controller's trusted expectation."""
-    from doom_learning_v6.causal_pilot import _validate_expected_pins
+    from doom_learning_v6.causal_pilot import _validate_expected_pins, _physical_pins
+    root, reference = _physical_tree(tmp_path)
+    import doom_learning_v6.causal_pilot as pilot
+    old_root = pilot._ROOT
+    pilot._ROOT = root
+    try:
+        observed = _physical_pins(reference)
+    finally:
+        pilot._ROOT = old_root
     expected = tmp_path / 'expected.json'
-    expected.write_text(json.dumps({'source_commit': 'a' * 40, 'sources': {'x': {'sha256': '1', 'bytes': 1}},
-                                    'inputs': {'graph': {'sha256': '2', 'bytes': 2}},
-                                    'references': {'initial': {'sha256': '3', 'bytes': 3}},
-                                    'cpu': {'manifest': 'cpu'}, 'native': {'manifest': 'metal'}, 'native_abi': 8}))
-    observed = {'source_commit': 'a' * 40, 'sources': {'x': {'sha256': '1', 'bytes': 1}},
-                'inputs': {'graph': {'sha256': '2', 'bytes': 2}},
-                'references': {'initial': {'sha256': '3', 'bytes': 3}},
-                'cpu': {'manifest': 'cpu'}, 'native': {'manifest': 'metal'}, 'native_abi': 8}
-    assert _validate_expected_pins(expected, observed)['source_commit'] == 'a' * 40
+    expected.write_text(json.dumps(observed))
+    assert _validate_expected_pins(expected, observed)['source_commit'] == observed['source_commit']
     observed['native_abi'] = 7
     with pytest.raises(ValueError, match='expected pins'):
         _validate_expected_pins(expected, observed)
+
+
+def _physical_tree(tmp_path):
+    """Independent physical bytes and complete build manifests; no native load."""
+    root, reference = tmp_path / 'repo', tmp_path / 'reference'
+    def put(name, value):
+        path = root / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(value)
+        return hashlib.sha256(value.encode()).hexdigest()
+    for directory in ['doom', 'doom_learning', 'doom_learning_v2', 'doom_learning_v4',
+                      'doom_learning_v5', 'doom_learning_v6', 'tests']:
+        put(directory + '/example.py', 'source')
+    for directory, phase, model in [('doom_learning', '', 'gamma1-eligibility-ltd-v1'),
+            ('doom_learning_v2', 'physiology-v2/', 'all-modulators-separated-v2'),
+            ('doom_learning_v4', 'physiology-v4/', 'kc-adaptive-lif-v4'),
+            ('doom_learning_v5', 'physiology-v5/', 'centered-antihebbian-v5'),
+            ('doom_learning_v6', 'physiology-v6/', 'adaptive-centered-v6')]:
+        source = put(directory + '/kernel.cpp', 'kernel for ' + directory)
+        name = 'outputs/doom-learning/' + phase + 'libmemory.dylib'
+        binary = put(name, 'physical binary for ' + directory)
+        put(name + '.json', json.dumps({'model': model, 'source_sha256': source,
+             'binary_sha256': binary, 'flags': ['-O3', '-std=c++17', '-shared', '-fPIC']}))
+    sources = {n: put('doom_learning_v6/metal/' + n, 'native ' + n)
+               for n in ('api.h', 'backend.mm', 'kernels.metal', 'decay_tables.h')}
+    builder = put('doom_learning_v6/metal/build.py', 'builder')
+    binaries = {role: put('outputs/doom-learning/metal/' + name, 'binary ' + name)
+                for role, name in [('air', 'kernels.air'), ('metallib', 'kernels.metallib'),
+                                   ('library', 'libmemory-metal.dylib')]}
+    configuration = {'abi_version': 8, 'builder_sha256': builder,
+        'numerical_parent': 'b24249ecfee12aa84b55ed803ffe47bd09c487ad',
+        'numerical_order': 'epoch-5-zero-seeded-ascending-incoming',
+        'metal_compile_flags': ['-std=macos-metal2.4', '-fno-fast-math', '-ffp-contract=off'],
+        'library_compile_flags': ['-O3', '-std=c++17', '-dynamiclib', '-fobjc-arc', '-arch', 'arm64',
+                                  '-mmacosx-version-min=13.0']}
+    put('outputs/doom-learning/metal/build.json', json.dumps({'schema': 2, 'abi_version': 8,
+        'architecture': 'arm64', 'metal_language': 'macos-metal2.4', 'sources': sources,
+        'binaries': binaries, 'build_configuration': configuration}))
+    for name in ['outputs/doom/malecns_v1/graph.npz', 'connectome_data/malecns_v1/annotations.feather',
+                 'connectome_data/malecns_v1/normalized/neurons.feather']:
+        put(name, 'physical input')
+    for name in ['results.json', 'protocol.json', 'provenance.json', 'initial.npz', 'plastic/learned.npz',
+                 'plastic/train-0-0/episode.json', 'plastic/eval-0/episode.json', 'frozen/eval-0/episode.json']:
+        path = reference / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text('reference bytes')
+    subprocess.run(['git', 'init', '-q', str(root)], check=True)
+    subprocess.run(['git', '-C', str(root), '-c', 'user.name=Test', '-c', 'user.email=test@example.org',
+                    'commit', '--allow-empty', '-qm', 'test'], check=True)
+    return root, reference
+
+
+@pytest.mark.parametrize('mutation', ['cpu_source', 'cpu_binary', 'cpu_flags', 'metal_source',
+                                    'metal_binary', 'metal_flags', 'metal_builder', 'missing_file'])
+def test_round2_physical_manifest_relationships_reject_tampering(tmp_path, monkeypatch, mutation):
+    from doom_learning_v6 import causal_pilot as pilot
+    root, reference = _physical_tree(tmp_path)
+    monkeypatch.setattr(pilot, '_ROOT', root)
+    valid = pilot._physical_pins(reference)
+    assert len(valid['cpu']) == 5 and len(valid['native']) == 4
+    if mutation == 'cpu_source':
+        (root / 'doom_learning_v6/kernel.cpp').write_text('changed source')
+    elif mutation == 'cpu_binary':
+        (root / 'outputs/doom-learning/physiology-v6/libmemory.dylib').write_text('changed binary')
+    elif mutation == 'cpu_flags':
+        path = root / 'outputs/doom-learning/physiology-v6/libmemory.dylib.json'
+        record = json.loads(path.read_text()); record['flags'].append('-ffast-math'); path.write_text(json.dumps(record))
+    elif mutation == 'metal_source':
+        (root / 'doom_learning_v6/metal/kernels.metal').write_text('changed source')
+    elif mutation == 'metal_binary':
+        (root / 'outputs/doom-learning/metal/kernels.air').write_text('changed binary')
+    elif mutation == 'metal_builder':
+        (root / 'doom_learning_v6/metal/build.py').write_text('changed builder')
+    elif mutation == 'metal_flags':
+        path = root / 'outputs/doom-learning/metal/build.json'
+        record = json.loads(path.read_text()); record['build_configuration']['metal_compile_flags'] = ['-ffast-math']
+        path.write_text(json.dumps(record))
+    else:
+        (root / 'outputs/doom-learning/metal/kernels.metallib').unlink()
+    with pytest.raises(ValueError):
+        pilot._physical_pins(reference)
+
+
+def test_round2_registered_brain_cleanup_covers_factory_and_restore_failures(tmp_path):
+    from doom_learning_v6 import causal_pilot as pilot
+    closed = []
+    original = RuntimeError('restore failed')
+    class Brain:
+        def __init__(self):
+            self.backend = SimpleNamespace(close=lambda: closed.append('brain'))
+        def restore(self, path):
+            raise original
+    with pytest.raises(RuntimeError) as caught:
+        with pilot._Resources() as resources:
+            pilot._restored_brains(resources, Brain, tmp_path / 'initial.npz', 4)
+    assert caught.value is original and closed == ['brain']
+
+
+def test_round2_failure_writer_keeps_error_and_persists_secondary_notes(tmp_path, monkeypatch):
+    from doom_learning_v6 import causal_pilot as pilot
+    from doom_learning import common
+    def fail(*args, **kwargs):
+        raise OSError('writer failed')
+    monkeypatch.setattr(common, 'save_json', fail)
+    original = RuntimeError('simulation failed')
+    pilot._save_failure(tmp_path, original, pilot._PressureHistory(tmp_path))
+    record = json.loads((tmp_path / 'failure-fallback.json').read_text())
+    assert record['failure']['type'] == 'RuntimeError'
+    assert any('OSError' in note for note in record['failure']['secondary_notes'])
+
+
+def test_round2_snapshot_captures_configuration_values_before_mutation(monkeypatch):
+    from doom_learning_v6 import causal_pilot as pilot
+    configuration = {'rule': {'minimum_fraction': .1}}
+    brain = SimpleNamespace(configuration_signature=lambda: configuration)
+    monkeypatch.setattr(pilot, '_model_gate', lambda brains, protocol: {'ids_sha256': 'original'})
+    before = pilot._snapshot([brain], {})
+    configuration['rule']['minimum_fraction'] = .2
+    after = pilot._snapshot([brain], {})
+    assert before['configuration'][0]['rule']['minimum_fraction'] == .1
+    assert before != after
+
+
+def test_round2_phase_failure_keeps_post_pressure_and_primary_error(tmp_path, monkeypatch):
+    from doom_learning_v6 import causal_pilot as pilot
+    readings = iter([{'free_percent': 80, 'swap_used_mib': 0}, {'free_percent': 20, 'swap_used_mib': 0}])
+    monkeypatch.setattr(pilot, '_memory_pressure', lambda: next(readings))
+    original = RuntimeError('iterator failed')
+    pressure = pilot._PressureHistory(tmp_path)
+    with pytest.raises(RuntimeError) as caught:
+        with pilot._phase_boundary(pressure, 'training'):
+            raise original
+    assert caught.value is original
+    saved = json.loads((tmp_path / 'pressure.json').read_text())['observations']
+    assert [r['name'] for r in saved] == ['before_training', 'after_training']
+    assert saved[1]['accepted'] is False
+    assert any('ValueError' in note for note in original.__notes__)
+
+
+def test_round2_phase_failure_attempts_all_lane_checkpoints_when_json_writer_fails(tmp_path, monkeypatch):
+    from doom_learning_v6 import causal_pilot as pilot
+    from doom_learning import common
+    checkpointed = []
+    brains = [SimpleNamespace(checkpoint=lambda path: checkpointed.append(path)) for _ in range(2)]
+    def fail(*args, **kwargs):
+        raise OSError('json writer failed')
+    monkeypatch.setattr(common, 'save_json', fail)
+    original = RuntimeError('frame iterator failed')
+    records = [{'complete': False, 'trace': []} for _ in brains]
+    pilot._write_phase(tmp_path, brains, records, failure=original)
+    assert checkpointed == [tmp_path / 'lane-0/failure.npz', tmp_path / 'lane-1/failure.npz']
+    assert any('OSError' in note for note in original.__notes__)
+
+
+@pytest.mark.parametrize('fail_at', [None, 'construct', 'restore', 'model', 'pressure', 'replay', 'close'])
+def test_round2_causal_orchestration_cleans_all_brains_and_snapshots_while_open(tmp_path, monkeypatch, fail_at):
+    """Keep orchestration real; replace only full graph/native execution boundaries."""
+    from doom_learning_v6 import causal_pilot as pilot, calibration
+    from doom_learning_v6.metal import batch
+    from doom_learning.common import digest
+    created, snapshots = [], []
+    original = RuntimeError('controlled ' + str(fail_at))
+    class Brain:
+        def __init__(self):
+            self.closed = False
+            self.weight = np.array([1.], dtype=np.float32)
+            self.backend = SimpleNamespace(close=self.close)
+        def close(self):
+            self.closed = True
+        def restore(self, path):
+            if fail_at == 'restore':
+                raise original
+        def configuration_signature(self):
+            return {'initial_weight': digest(self.weight)}
+        def checkpoint(self, path):
+            pass
+    def factory(*args, **kwargs):
+        if fail_at == 'construct' and created:
+            raise original
+        brain = Brain(); created.append(brain); return brain
+    class Executor:
+        def __init__(self, brains, *, window_ticks):
+            assert window_ticks == 18
+            self.brains = brains
+        def close(self):
+            for brain in self.brains:
+                brain.closed = True
+            if fail_at == 'close':
+                raise original
+    def model_gate(brains, protocol):
+        assert all(not b.closed for b in brains)
+        snapshots.append(len(brains))
+        if fail_at == 'model':
+            raise original
+        return {'ids_sha256': 'original', 'plastic_slots_sha256': 'positive-original'}
+    def memory_pressure():
+        if fail_at == 'pressure':
+            raise original
+        return {'free_percent': 80, 'swap_used_mib': 0}
+    trace = [{'target_turn': float(i), 'teacher_error': 0.} for i in range(4)]
+    def replay(*args, **kwargs):
+        if fail_at == 'replay':
+            raise original
+        return {'lanes': [{'trace': trace} for _ in range(4)]}
+    monkeypatch.setattr(calibration, 'calibrated_brain', factory)
+    monkeypatch.setattr(batch, 'MetalBatchExecutor', Executor)
+    monkeypatch.setattr(pilot, '_check_reference', lambda *a, **k: (tmp_path, {'trace': trace}))
+    monkeypatch.setattr(pilot, '_reference_schedule', lambda *a: (np.array([0., 1., 2., 3.]), np.array([286, 285, 286, 286])))
+    monkeypatch.setattr(pilot, '_model_gate', model_gate)
+    monkeypatch.setattr(pilot, '_memory_pressure', memory_pressure)
+    monkeypatch.setattr(pilot, 'replay_episode', replay)
+    monkeypatch.setattr(pilot, '_compare_checkpoint_arrays', lambda *a: {'passed': True, 'arrays': list(range(24))})
+    (tmp_path / 'protocol.json').write_text('{}')
+    data = SimpleNamespace(frame_count=4)
+    if fail_at is None:
+        result = pilot._run_causal(SimpleNamespace(), data, data, tmp_path, READOUTS, tmp_path)
+        assert snapshots == [4, 4, 4]
+        assert result['invariants']['before'] == result['invariants']['after']
+        assert result['configuration']['before'] == result['configuration']['after']
+    else:
+        with pytest.raises(RuntimeError) as caught:
+            pilot._run_causal(SimpleNamespace(), data, data, tmp_path, READOUTS, tmp_path)
+        assert caught.value is original
+    assert created and all(b.closed for b in created)
+
+
+def test_round2_cli_preserves_all_manifest_readouts_for_original_trace(tmp_path, monkeypatch):
+    from doom_learning_v6 import causal_pilot as pilot
+    from doom_learning import common
+    rows = [{'index': i + 10, 'type': 'DNa02', 'side': 'L'} for i in range(10)] + READOUTS
+    (tmp_path / 'manifest.json').write_text(json.dumps({'readouts': rows}))
+    monkeypatch.setattr(common, 'GRAPH', tmp_path / 'graph.npz')
+    assert pilot._readouts() == rows
+
+
+def test_round2_replay_records_separate_actual_wall_intervals_using_real_cpu_rgb(tmp_path, monkeypatch):
+    from doom_learning_v6 import causal_pilot as pilot
+    from test_doom_metal_batch_rgb import visual_brain
+    brain = visual_brain(tmp_path)
+    class SerialCpuExecutor:
+        brains = (brain,)
+        def metadata(self):
+            return {'shared_resident_bytes': 0, 'mutable_resident_bytes': 0}
+        def rgb_step(self, images, duration, *, learning, stimulations=None):
+            flag = learning[0] if isinstance(learning, list) else learning
+            counts, elapsed = brain.rgb_step(images[0], duration, learning=flag,
+                stimulation=None if stimulations is None else stimulations[0])
+            return [counts], elapsed
+    ticks = iter(range(100))
+    monkeypatch.setattr(pilot, 'time', SimpleNamespace(perf_counter=lambda: float(next(ticks))))
+    try:
+        result = pilot.replay_episode([brain], SerialCpuExecutor(), _ThreeFrames(), READOUTS,
+            np.zeros((1, 3)), learning=[False], frozen=[True], directory=tmp_path / 'timed', warmup_ms=.1)
+    finally:
+        brain.backend.close()
+    intervals = result['lanes'][0]['phase_timing']
+    assert intervals == {'setup_reset_wall_seconds': 1., 'dark_warmup_wall_seconds': 1., 'rgb_loop_wall_seconds': 1.}
+    assert result['lanes'][0]['warmup']['brain_steps'] == [1]
+    assert result['lanes'][0]['brain_steps'] == 857
+    assert (tmp_path / 'timed/lane-0/final.npz').exists()
+
+
+def test_round2_sensitivity_null_uses_actual_controls_despite_readout_changes():
+    from doom_learning_v6 import causal_pilot as pilot
+    baseline = {'trace': [{'action': {'turn': 1., 'forward': True, 'attack': False, 'readouts': {'DNp20': 1}}}]}
+    changed = {'trace': [{'action': {'turn': 1., 'forward': True, 'attack': False, 'readouts': {'DNp20': 2}}}]}
+    assert pilot._decoded_controls(baseline) == pilot._decoded_controls(changed)
+    changed['trace'][0]['action']['attack'] = True
+    assert pilot._decoded_controls(baseline) != pilot._decoded_controls(changed)
 
 
 class _ThreeFrames:
