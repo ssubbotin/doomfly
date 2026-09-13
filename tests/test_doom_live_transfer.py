@@ -280,15 +280,36 @@ def test_cli_requires_every_declared_input_and_rejects_platform_before_native(ca
     assert not case.executor.rgb_calls
 
 
+def _native_live_visual_brain(tmp_path):
+    """Keep the numerical graph while giving gain the native DAN-by-slot schema."""
+    brain = _same_slot_visual_brain(tmp_path)
+    brain.circuit['gain'] = np.ascontiguousarray(brain.circuit['gain'].reshape(1, 4184), dtype=np.float32)
+    return brain
+
+
 @pytest.mark.skipif(sys.platform != 'darwin', reason='Real Metal requires macOS')
 def test_native_four_lane_live_fixture(tmp_path):
     from doom_learning_v6.metal.batch import MetalBatchExecutor
-    brains = [_same_slot_visual_brain(tmp_path) for _ in range(4)]
+    brains = [_native_live_visual_brain(tmp_path) for _ in range(4)]
     with MetalBatchExecutor(brains, window_ticks=18) as executor:
         result = runner().live_wave(brains, executor, [ShortGame(death=d) for d in (1, 2, 3, 99)],
                                     READOUTS14, horizon_tics=4, warmup_ms=10, directory=tmp_path / 'native')
         assert result['complete'] is True
         assert [b.cursor for b in brains] == [1243] * 4
+
+
+def test_native_live_synthetic_graph_passes_real_portable_schema_validator(tmp_path):
+    from doom_learning_v6.metal.batch import _validate_graph
+    original = _same_slot_visual_brain(tmp_path)
+    brain = _native_live_visual_brain(tmp_path)
+    assert _validate_graph(brain) is None
+    assert brain.circuit['gain'].shape == (1, 4184)
+    assert brain.circuit['gain'].dtype == np.float32 and brain.circuit['gain'].flags.c_contiguous
+    assert brain.circuit['gain'].tobytes() == original.circuit['gain'].tobytes()
+    for name in ('ptr', 'post', 'ids', 'weight', 'baseline_plastic'):
+        np.testing.assert_array_equal(getattr(brain, name), getattr(original, name))
+    for name in ('edges', 'pre', 'dan', 'kc_mask', 'dan_index'):
+        np.testing.assert_array_equal(brain.circuit[name], original.circuit[name])
 
 
 def test_real_doom_rgb_act_observer_boundary(tmp_path):
