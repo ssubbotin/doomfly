@@ -76,6 +76,16 @@ def _host_frozen(brain):
             'configuration': brain.configuration_signature()}
 
 
+def _setup_frozen(brain, record):
+    """Keep failed setup-download ownership separate from snapshot validation."""
+    try:
+        brain.backend.materialize('same-slot-frozen-full-weight')
+    except BaseException as error:
+        record.update(materialization_failed=True, terminal_state_error={'type': type(error).__name__})
+        raise
+    return _host_frozen(brain)
+
+
 def _observe(game):
     """Observer state controls termination only, downstream of neural decoding."""
     raw = game.observation()
@@ -102,12 +112,15 @@ def _retain(failure, directory, brains, records):
 
 
 def _terminal_evidence(brains, directory, records, failure, expected, timing):
-    """One terminal pass per lane. A failed sync permanently suppresses its CP."""
+    """One terminal pass per lane; a known failed download suppresses sync/CP."""
     directory = Path(directory)
     for lane, (brain, record) in enumerate(zip(brains, records)):
         record.update(terminal_state_available=False, checkpoint_available=False,
                       checkpoint_attempted=False,
                       checkpoint_scope=_CHECKPOINT_SCOPE if record['complete'] else 'interrupted neural prefix; complete padding unavailable')
+        if record.get('materialization_failed'):
+            record['frozen_verified'] = False
+            continue
         materialize = time.perf_counter()
         try:
             record['terminal_state'] = _state_hashes(brain)
@@ -288,7 +301,7 @@ def live_wave(brains, executor, games, readouts, *, horizon_tics, warmup_ms, dir
         return counts
 
     try:
-        expected = [_frozen(brain) for brain in lanes]
+        expected = [_setup_frozen(brain, record) for brain, record in zip(lanes, records)]
         installed_epochs = _epochs(lanes)
         retained = [brain.weight[brain.circuit['edges']].copy() for brain in lanes]
         for brain in lanes:
@@ -442,6 +455,7 @@ def evaluate(executor, candidates, readouts, protocol, out, *, game_factory):
                      'used': budget.charge(4, reserve_after=protocol['budget']['reserved'])}
             waves.append(entry)
             phase = None
+            records = [{'trace': [], 'complete': False, 'frozen_verified': False} for _ in brains]
             try:
                 ledger()  # Durable four-lane charge precedes installation/reset/rollout.
                 with _phase_boundary(pressure, directory.name), _Resources() as resources:
@@ -449,7 +463,7 @@ def evaluate(executor, candidates, readouts, protocol, out, *, game_factory):
                     for lane, role in enumerate(planned['roles']):
                         vector = candidates['baseline' if role == 'baseline-filler' else role]
                         executor.install_efficacies(lane, vector, brains[lane].circuit['edges'])
-                    installed = [_frozen(brain) for brain in brains]
+                    installed = [_setup_frozen(brain, record) for brain, record in zip(brains, records)]
                     for lane, (brain, role, snapshot) in enumerate(zip(brains, planned['roles'], installed)):
                         vector = candidates['baseline' if role == 'baseline-filler' else role]
                         if (snapshot['u'] != digest(vector - 1.) or snapshot['w'] != digest(vector - 1.) or
@@ -490,7 +504,6 @@ def evaluate(executor, candidates, readouts, protocol, out, *, game_factory):
                 owns_terminal = (availability is not None and availability['directory'] == str(directory.resolve()) and
                                  availability['lane_ids'] == tuple(map(id, brains)))
                 if phase is None and not owns_terminal:
-                    records = [{'trace': [], 'complete': False, 'frozen_verified': False} for _ in brains]
                     timing = {'terminal_materialization_wall_seconds': 0., 'checkpoint_wall_seconds': 0.}
                     error = _terminal_evidence(brains, directory, records, error, None, timing)
                     _persist_phase(directory, brains, records, error, timing, [])

@@ -371,6 +371,122 @@ def test_non_poisoning_terminal_failure_is_primary_and_never_retried(case, monke
     assert json.loads((case.out / 'lane-1/episode.json').read_text())['complete'] is False
 
 
+def _setup_download_fault(executor, monkeypatch, failed_lane, primary, *, after_install):
+    """Fault only the backend download; leave the owner usable and evidence real."""
+    calls = {'downloads': [], 'syncs': [], 'checkpoints': [], 'resets': [], 'uploads': []}
+    failed = False
+    for lane, brain in enumerate(executor.brains):
+        backend = brain.backend
+        download, sync, cp = backend.materialize, backend.sync_for_checkpoint, brain.checkpoint
+        reset, restore, update = brain.reset, backend.restore_from_host, backend.update_weights
+        def materialize(reason, lane=lane, download=download):
+            nonlocal failed
+            calls['downloads'].append((lane, reason))
+            if (lane == failed_lane and reason == 'same-slot-frozen-full-weight' and
+                    (not after_install or len(executor.installs) == 4) and not failed):
+                failed = True
+                raise primary
+            return download(reason)
+        def synchronize(lane=lane, sync=sync):
+            calls['syncs'].append(lane)
+            return sync()
+        def checkpoint(path, lane=lane, cp=cp):
+            calls['checkpoints'].append(lane)
+            return cp(path)
+        def resetting(*args, lane=lane, reset=reset, **kwargs):
+            calls['resets'].append(lane)
+            return reset(*args, **kwargs)
+        def restoring(*args, lane=lane, restore=restore, **kwargs):
+            calls['uploads'].append((lane, 'restore'))
+            return restore(*args, **kwargs)
+        def updating(*args, lane=lane, update=update, **kwargs):
+            calls['uploads'].append((lane, 'update'))
+            return update(*args, **kwargs)
+        monkeypatch.setattr(backend, 'materialize', materialize)
+        monkeypatch.setattr(backend, 'sync_for_checkpoint', synchronize)
+        monkeypatch.setattr(brain, 'checkpoint', checkpoint)
+        monkeypatch.setattr(brain, 'reset', resetting)
+        monkeypatch.setattr(backend, 'restore_from_host', restoring)
+        monkeypatch.setattr(backend, 'update_weights', updating)
+    return calls
+
+
+def _assert_setup_failure_evidence(executor, directory, failed_lane, primary, calls, *, initial_snapshots):
+    records = primary._doomfly_live_availability['lanes']
+    assert primary._doomfly_live_availability['directory'] == str(directory.resolve())
+    assert primary._doomfly_live_availability['lane_ids'] == tuple(map(id, executor.brains))
+    failed = records[failed_lane]
+    # Removing setup-failure ownership would retry this still-usable owner.
+    assert [reason for lane, reason in calls['downloads'] if lane == failed_lane] == [
+        'same-slot-frozen-full-weight'] * (initial_snapshots + 1)
+    assert failed_lane not in calls['syncs']
+    assert failed_lane not in calls['checkpoints']
+    assert failed['terminal_state_available'] is False
+    assert failed['terminal_state_error'] == {'type': 'KeyboardInterrupt'}
+    assert failed['checkpoint_available'] is False and failed['checkpoint_attempted'] is False
+    assert failed['frozen_proof_scope'] == 'frozen proof unavailable; overall phase incomplete'
+    assert not list((directory / f'lane-{failed_lane}').glob('*.npz'))
+    assert all(record['trace'] == [] and record['complete'] is False for record in records)
+    assert calls['resets'] == [] and executor.rgb_calls == []
+    assert all(brain.cursor == 0 for brain in executor.brains)
+    summary = json.loads((directory / 'summary.json').read_text())
+    assert summary['complete'] is False
+    for lane, brain in enumerate(executor.brains):
+        episode = json.loads((directory / f'lane-{lane}/episode.json').read_text())
+        assert episode['complete'] is False and episode['trace'] == []
+        if lane == failed_lane:
+            assert episode['terminal_state_available'] is False
+            continue
+        record = records[lane]
+        assert record['terminal_state_available'] is True
+        assert record['checkpoint_available'] is True and record['checkpoint_attempted'] is True
+        assert calls['syncs'].count(lane) == 2 and calls['checkpoints'].count(lane) == 1
+        with np.load(directory / record['checkpoint_path'], allow_pickle=False) as cp:
+            assert len(set(cp.files) - {'metadata'}) == 24
+            assert set(cp.files) == {'weight', *brain.fields, 'metadata'}
+            assert json.loads(str(cp['metadata']))['cursor'] == 0
+            for name in {'weight', *brain.fields}:
+                np.testing.assert_array_equal(cp[name], getattr(brain, name))
+                assert digest(cp[name]) == record['terminal_state'][name + '_sha256']
+
+
+@pytest.mark.parametrize('failed_lane', [0, 2])
+def test_live_setup_snapshot_failure_never_retries_usable_owner(case, monkeypatch, failed_lane):
+    primary = KeyboardInterrupt('single non-poisoning live setup download')
+    calls = _setup_download_fault(case.executor, monkeypatch, failed_lane, primary, after_install=False)
+    with pytest.raises(KeyboardInterrupt) as caught:
+        wave(case, warmup_ms=0)
+    assert caught.value is primary
+    assert calls['uploads'] == [] and case.executor.installs == []
+    assert all(game.act_calls == game.pixels_calls == 0 for game in case.games)
+    assert all(brain.backend._host_weight_epoch == brain.backend._device_weight_epoch == 0
+               for brain in case.brains)
+    _assert_setup_failure_evidence(case.executor, case.out, failed_lane, primary, calls, initial_snapshots=0)
+
+
+@pytest.mark.parametrize('failed_lane', [0, 2])
+def test_evaluate_installed_snapshot_failure_never_retries_usable_owner(study, monkeypatch, failed_lane):
+    module, protocol, candidates, executor, out = study
+    primary = KeyboardInterrupt('single non-poisoning installed snapshot download')
+    calls = _setup_download_fault(executor, monkeypatch, failed_lane, primary, after_install=True)
+    with pytest.raises(KeyboardInterrupt) as caught:
+        module.evaluate(executor, candidates, READOUTS14, protocol, out,
+                        game_factory=lambda *args: pytest.fail('Game allocated after failed snapshot'))
+    assert caught.value is primary
+    assert executor.installs == [0, 1, 2, 3]
+    assert calls['uploads'] == [(lane, 'update') for lane in range(4)]
+    assert all(brain.backend._host_weight_epoch == brain.backend._device_weight_epoch == 1
+               for brain in executor.brains)
+    ledger = json.loads((out / 'attempt-ledger.json').read_text())
+    assert (ledger['used'], ledger['remaining']) == (4, 76)
+    assert len(ledger['waves']) == 1
+    assert ledger['waves'][0]['state'] == 'failed' and ledger['waves'][0]['complete'] is False
+    assert json.loads((out / 'interrupted-progress.json').read_text())['attempts'] == 4
+    assert json.loads((out / 'failure.json').read_text())['complete'] is False
+    _assert_setup_failure_evidence(executor, out / 'waves/w-00', failed_lane, primary, calls,
+                                   initial_snapshots=1)
+
+
 def test_all_neural_lanes_keep_trace_when_first_action_interrupts(case):
     primary = KeyboardInterrupt('first action')
     case.games[0].failure = primary

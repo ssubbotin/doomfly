@@ -246,8 +246,9 @@ They are not measurements of a fly's visual or motor mapping.
 
 Chosen dynamics: `adaptive-centered-v6`, `eta=0.001`, Metal window width 18,
 and the existing 4,184 KC-to-MBON11 plastic slots define the modeled dynamics.
-This particular evaluation freezes mutable state and supplies zero imposed
-reinforcement current.
+This particular evaluation freezes weights, `memory_u` and `memory_w` and
+supplies zero imposed reinforcement current. Neural activity and its associated
+fast state continue evolving.
 
 Unresolved biological mechanisms: the sensory and angular/control mappings,
 dynamics, reinforcement placement, and their biological correspondence remain
